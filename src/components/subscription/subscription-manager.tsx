@@ -280,7 +280,7 @@ export function SubscriptionManager() {
               <>
                 {subscription.cancel_at_period_end ? (
                   <Button
-                    variant="default"
+                    variant="cyan"
                     onClick={handleReactivateSubscription}
                     disabled={actionLoading === 'reactivate'}
                   >

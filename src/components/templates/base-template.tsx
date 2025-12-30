@@ -95,7 +95,7 @@ export default function BaseTemplate({
 
             {/* Actions */}
             <div className="flex items-center gap-2">
-              <Badge variant="default" className="hidden sm:flex">
+              <Badge variant="purple" className="hidden sm:flex">
                 {template.requiredRole.replace('_', ' ')}
               </Badge>
               
@@ -180,10 +180,10 @@ export default function BaseTemplate({
                     {template.description}
                   </p>
                   <div className="flex items-center gap-2 flex-wrap">
-                    <Badge variant={template.isInteractive ? 'default' : 'secondary'}>
+                    <Badge variant={template.isInteractive ? 'cyan' : 'purple'}>
                       {template.isInteractive ? 'Interactive' : 'Static'}
                     </Badge>
-                    <Badge variant="outline">
+                    <Badge variant="purple">
                       Category: {template.category}
                     </Badge>
                   </div>

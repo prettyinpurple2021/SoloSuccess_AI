@@ -162,7 +162,7 @@ export default function RootLayout({
   )
 
   return (
-    <html lang="en" suppressHydrationWarning className={`${orbitronFont.variable} ${jetbrainsMonoFont.variable} ${inter.variable} ${jetbrains.variable} ${orbitron.variable} ${rajdhani.variable}`} suppressHydrationWarning>
+    <html lang="en" suppressHydrationWarning className={`${orbitronFont.variable} ${jetbrainsMonoFont.variable} ${inter.variable} ${jetbrains.variable} ${orbitron.variable} ${rajdhani.variable}`}>
       <head>
         <Script
           id="strip-css-scripts"
@@ -181,81 +181,71 @@ export default function RootLayout({
                 }
               }
 
-              // Suppress backendManager errors from browser extensions
-              // This is a targeted suppression for third-party extension errors only
-              // We use a wrapper that checks the error source before suppressing
+              // Suppress backendManager errors and other third-party extension noise
               if (typeof window !== 'undefined' && window.addEventListener) {
                 const originalErrorHandler = window.onerror;
                 window.onerror = function(message, source, lineno, colno, error) {
-                  // Only suppress if it's clearly from a browser extension (backendManager.js)
-                  if (typeof message === 'string' && 
-                      message.includes('Cannot read properties of undefined') && 
-                      message.includes('reading \'has\'') &&
-                      (source && source.includes('backendManager'))) {
-                    // Suppress browser extension errors silently
+                  const msg = typeof message === 'string' ? message : '';
+                  const src = typeof source === 'string' ? source : '';
+                  
+                  // Suppress known third-party extension errors
+                  const isExtensionError = 
+                    (msg.includes('Cannot read properties of undefined') && msg.includes('has') && src.includes('backendManager')) ||
+                    (msg.includes('Failed to execute \'appendChild\' on \'Node\'') && src.includes('framework')) ||
+                    (msg.includes('__REACT_DEVTOOLS_GLOBAL_HOOK__.on is not a function')) ||
+                    (src.includes('chrome-extension://')) ||
+                    (src.includes('moz-extension://'));
+
+                  if (isExtensionError) {
                     return true;
                   }
-                  // For all other errors, use the original handler or let them through
+
                   if (originalErrorHandler) {
                     return originalErrorHandler.call(this, message, source, lineno, colno, error);
                   }
                   return false;
                 };
-              }
 
-              // Reuse a single observer and clean it up on unload/pagehide to avoid leaks
-              if (window.__ssCssScriptObserver) {
-                window.__ssCssScriptObserver.disconnect();
-                window.__ssCssScriptObserver = undefined;
-              }
-              const removeCssScripts = () => {
-                const nodes = Array.from(document.querySelectorAll('script[src]')).filter((el) => {
-                  try {
-                    const src = el.getAttribute('src') || '';
-                    const url = new URL(src, window.location.href);
-                    return url.pathname.endsWith('.css');
-                  } catch {
-                    return false;
+                // Catch unhandled rejections as well
+                window.addEventListener('unhandledrejection', function(event) {
+                  if (event.reason && event.reason.message && event.reason.message.includes('__REACT_DEVTOOLS_GLOBAL_HOOK__.on')) {
+                    event.preventDefault();
                   }
                 });
-                nodes.forEach((el) => {
-                  try {
-                    el.parentElement?.removeChild(el);
-                  } catch (e) {
-                    // Ignore removal errors
+              }
+
+              // Refined CSS script removal: Only remove if they are explicitly identified as problematic
+              // instead of a blanket removal which can cause "Refused to execute script" warnings.
+              const cleanupProblematicScripts = () => {
+                const scripts = Array.from(document.querySelectorAll('script[src]'));
+                scripts.forEach((script) => {
+                  const src = script.getAttribute('src') || '';
+                  // If a .css file is being loaded as a script, it's a mistake that causes MIME type errors
+                  if (src.split('?')[0].endsWith('.css')) {
+                    try { script.parentElement?.removeChild(script); } catch (e) {}
                   }
                 });
               };
-              // Initial pass - run immediately
+
               if (document.readyState === 'loading') {
-                document.addEventListener('DOMContentLoaded', removeCssScripts);
+                document.addEventListener('DOMContentLoaded', cleanupProblematicScripts);
               } else {
-                removeCssScripts();
+                cleanupProblematicScripts();
               }
-              // Watch for future insertions during streaming/hydration
-              const observer = new MutationObserver(() => removeCssScripts());
-              window.__ssCssScriptObserver = observer;
+
+              const observer = new MutationObserver(() => cleanupProblematicScripts());
               const target = document.documentElement || document.body;
               if (target) {
                 observer.observe(target, { childList: true, subtree: true });
               }
+
               const teardown = () => {
-                if (window.__ssCssScriptObserver) {
-                  window.__ssCssScriptObserver.disconnect();
-                  window.__ssCssScriptObserver = undefined;
-                }
+                observer.disconnect();
                 window.removeEventListener('pagehide', teardown);
                 window.removeEventListener('beforeunload', teardown);
-                document.removeEventListener('visibilitychange', onHidden);
-              };
-              const onHidden = () => {
-                if (document.visibilityState === 'hidden') {
-                  teardown();
-                }
               };
               window.addEventListener('pagehide', teardown);
               window.addEventListener('beforeunload', teardown);
-              document.addEventListener('visibilitychange', onHidden);
             } catch (err) {
               // no-op
             }

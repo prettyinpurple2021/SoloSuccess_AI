@@ -3,6 +3,7 @@
 import { logger, logError, logWarn, logInfo, logDebug, logApi, logDb, logAuth } from '@/lib/logger'
 import { useState, useEffect, createContext, useContext} from "react"
 import { useUserPreferences } from "@/hooks/use-user-preferences"
+import { useAuth } from "@/hooks/use-auth"
 import { Button} from "@/components/ui/button"
 import { Switch} from "@/components/ui/switch"
 import { Label} from "@/components/ui/label"
@@ -48,6 +49,8 @@ export function AccessibilityProvider({ children }: { children: React.ReactNode 
     fallbackToLocalStorage: true
   })
   
+  const { session } = useAuth()
+  
   const accessibilityPrefs = preferences.accessibility || {
     highContrast: false,
     reducedMotion: false,
@@ -91,8 +94,8 @@ export function AccessibilityProvider({ children }: { children: React.ReactNode 
 
     root.style.fontSize = fontSize === "small" ? "14px" : fontSize === "large" ? "18px" : "16px"
 
-    // Save to database
-    if (!loading) {
+    // Save to database only if authenticated
+    if (!loading && session?.user) {
       setPreference('accessibility', {
         highContrast,
         reducedMotion,
@@ -101,7 +104,7 @@ export function AccessibilityProvider({ children }: { children: React.ReactNode 
         focusVisible
       }).catch(error => logError('Failed to save accessibility preferences:', error))
     }
-  }, [highContrast, reducedMotion, screenReader, fontSize, focusVisible, loading, setPreference])
+  }, [highContrast, reducedMotion, screenReader, fontSize, focusVisible, loading, setPreference, session])
 
   const toggleHighContrast = () => setHighContrast(!highContrast)
   const toggleReducedMotion = () => setReducedMotion(!reducedMotion)
@@ -220,7 +223,7 @@ export function AccessibilityPanel() {
             {(["small", "medium", "large"] as const).map((size) => (
               <Button
                 key={size}
-                variant={fontSize === size ? "default" : "outline"}
+                variant={fontSize === size ? "cyan" : "outline"}
                 size="sm"
                 onClick={() => setFontSize(size)}
                 aria-label={`Set font size to ${size}`}

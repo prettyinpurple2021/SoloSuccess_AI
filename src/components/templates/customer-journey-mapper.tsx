@@ -329,7 +329,7 @@ export default function CustomerJourneyMapper({ template, onSave: _onSave, onExp
 
   // Get touchpoint icon
   const getTouchpointIcon = (type: string) => {
-    const icons: { [key: string]: JSX.Element } = {
+    const icons: { [key: string]: React.ReactNode } = {
       website: <Globe className="w-4 h-4" />,
       'mobile-app': <Smartphone className="w-4 h-4" />,
       'social-media': <MessageCircle className="w-4 h-4" />,
@@ -1352,7 +1352,7 @@ export default function CustomerJourneyMapper({ template, onSave: _onSave, onExp
 
                       <div className="flex items-center justify-between pt-3 border-t">
                         <div className="flex items-center gap-2">
-                          <Badge variant="default">{touchpoint.type.replace('-', ' ')}</Badge>
+                          <Badge variant="cyan">{touchpoint.type.replace('-', ' ')}</Badge>
                           <div className={`flex items-center gap-1 ${getEmotionColor(touchpoint.emotionScore)}`}>
                             {getEmotionIcon(touchpoint.emotionScore)}
                             <span className="text-sm">Emotion: {touchpoint.emotionScore}/10</span>
@@ -1465,7 +1465,7 @@ export default function CustomerJourneyMapper({ template, onSave: _onSave, onExp
                           <div key={touchpoint.id} className="flex items-center justify-between text-sm">
                             <span>{touchpoint.name}</span>
                             <div className="flex items-center gap-2">
-                              <Badge variant="default" className="text-red-600 border-red-200">
+                              <Badge variant="orange" className="text-red-600 border-red-200">
                                 {touchpoint.emotionScore}/10
                               </Badge>
                               <div className="text-red-600">

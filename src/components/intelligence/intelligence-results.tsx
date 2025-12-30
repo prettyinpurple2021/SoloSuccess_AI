@@ -368,7 +368,7 @@ export function IntelligenceResults({
                               {item.extractedData.title || item.dataType}
                             </h4>
                             <Badge
-                              variant="outline"
+                              variant="cyan"
                               className={importanceColors[item.importance as keyof typeof importanceColors]}
                             >
                               {item.importance.toUpperCase()}
@@ -384,7 +384,7 @@ export function IntelligenceResults({
                                 <span className="text-gray-500">({item.competitor.domain})</span>
                               )}
                               <Badge
-                                variant="outline"
+                                variant="purple"
                                 className={threatLevelColors[item.competitor.threatLevel as keyof typeof threatLevelColors]}
                               >
                                 {item.competitor.threatLevel}
@@ -487,7 +487,7 @@ export function IntelligenceResults({
                                     <div className="flex items-center gap-2">
                                       <span className="font-medium text-sm">{insight.title}</span>
                                       <Badge
-                                        variant="outline"
+                                        variant="orange"
                                         className={`text-xs ${getUrgencyColor(insight.urgency)}`}
                                       >
                                         {insight.urgency}
@@ -547,12 +547,12 @@ export function IntelligenceResults({
                       {item.tags.length > 0 && (
                         <div className="flex items-center gap-1">
                           {item.tags.slice(0, 3).map((tag) => (
-                            <Badge key={tag} variant="secondary" className="text-xs">
+                            <Badge key={tag} variant="cyan" className="text-xs">
                               {tag}
                             </Badge>
                           ))}
                           {item.tags.length > 3 && (
-                            <Badge variant="secondary" className="text-xs">
+                            <Badge variant="cyan" className="text-xs">
                               +{item.tags.length - 3}
                             </Badge>
                           )}
@@ -593,7 +593,7 @@ export function IntelligenceResults({
                   return (
                     <Button
                       key={page}
-                      variant={page === pagination.page ? "default" : "outline"}
+                      variant={page === pagination.page ? "cyan" : "outline"}
                       size="sm"
                       onClick={() => onPageChange(page)}
                       className="w-8 h-8 p-0"
