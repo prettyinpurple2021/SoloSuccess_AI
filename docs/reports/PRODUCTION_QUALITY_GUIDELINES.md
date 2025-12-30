@@ -2,7 +2,7 @@
 ## SoloSuccess AI - Mandatory Standards for All Contributors
 
 **STATUS**: MANDATORY - ALL CODE MUST ADHERE TO THESE STANDARDS  
-**LAST UPDATED**: 2025-01-13  
+**LAST UPDATED**: 2025-12-30  
 **ENFORCEMENT**: Zero tolerance policy - violations block deployment
 
 ---
@@ -460,7 +460,7 @@ catch (error) {
 **Test Pattern**:
 
 ```typescript
-import { describe, it, expect, beforeAll } from 'vitest'
+import { describe, it, expect, beforeAll } from '@testing-library/react'
 
 describe('API Route: /api/users', () => {
   it('should require authentication', async () => {

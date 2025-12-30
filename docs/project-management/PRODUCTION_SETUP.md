@@ -81,7 +81,7 @@ NEXT_PUBLIC_APP_URL=https://your-app.com
 2. **Run Database Migrations**
    ```bash
    # Run the migration scripts
-   npm run db:migrate
+   npm run db:push
    ```
 
 ### **Step 3: OpenAI Setup**
@@ -177,6 +177,6 @@ NEXT_PUBLIC_APP_URL=https://your-app.com
 
 ---
 
-**Last Updated:** January 2025
+**Last Updated:** December 30, 2025
 **Status:** Production Ready
 **Next Review:** After deployment

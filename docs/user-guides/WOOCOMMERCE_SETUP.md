@@ -229,5 +229,5 @@ A: Contact SoloSuccess AI support for custom endpoint configuration.
 
 ---
 
-**Last Updated**: January 2025
+**Last Updated**: December 30, 2025
 

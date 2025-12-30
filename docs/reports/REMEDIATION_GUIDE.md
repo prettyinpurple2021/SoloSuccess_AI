@@ -1199,4 +1199,4 @@ Before deploying to production:
 
 ---
 
-**Last Updated:** November 10, 2024
+**Last Updated:** December 30, 2025

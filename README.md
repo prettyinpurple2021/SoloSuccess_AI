@@ -1,20 +1,63 @@
-<div align="center">
-<img width="1200" height="475" alt="GHBanner" src="https://github.com/user-attachments/assets/0aa67016-6eaf-458a-adb2-6e31a0763ed6" />
-</div>
+# SoloSuccess AI
 
-# Run and deploy your AI Studio app
+SoloSuccess AI is a comprehensive platform designed to empower solopreneurs with advanced AI-driven tools for business intelligence, learning, and automation.
 
-This contains everything you need to run your app locally.
+## Core Features
 
-View your app in AI Studio: https://ai.studio/apps/drive/1aqa6e70uIgVn_tGPTUNv0S692kCOcb6e
+- **Competitive Intelligence**: Real-time monitoring and analysis of competitors across various platforms.
+- **Learning Center**: Personalized learning paths and analytics to track skill development and achievements.
+- **Workflow Automation**: Build and execute complex business workflows with an integrated AI-powered engine.
+- **Content Planner**: Strategic content scheduling and generation powered by Gemini and other LLMs.
+- **Social Media Monitoring**: Multi-platform integration to keep a pulse on market trends and brand mentions.
 
-## Run Locally
+## Tech Stack
 
-**Prerequisites:**  Node.js
+- **Framework**: [Next.js 15](https://nextjs.org/) (App Router)
+- **Database**: [PostgreSQL](https://www.postgresql.org/) with [Drizzle ORM](https://orm.drizzle.team/) (hosted on [Neon](https://neon.tech/))
+- **Styling**: [Tailwind CSS](https://tailwindcss.com/)
+- **Components**: [Radix UI](https://www.radix-ui.com/) & [Lucide Icons](https://lucide.dev/)
+- **Authentication**: [Auth.js](https://authjs.dev/) (NextAuth v5 Beta)
+- **AI Integration**: [Vercel AI SDK](https://sdk.vercel.ai/) with Anthropic, Google Gemini, and OpenAI
+- **Animations**: [Framer Motion](https://www.framer.com/motion/)
 
+## Getting Started
 
-1. Install dependencies:
-   `npm install`
-2. Set the `GEMINI_API_KEY` in [.env.local](.env.local) to your Gemini API key
-3. Run the app:
-   `npm run dev`
+### Prerequisites
+
+- Node.js (Latest LTS recommended)
+- A PostgreSQL database (Neon recommended)
+- API Keys for AI services (Google AI Studio, OpenAI, Anthropic)
+
+### Installation
+
+1. Clone the repository:
+   ```bash
+   git clone <repository-url>
+   cd SoloSuccess-AI
+   ```
+
+2. Install dependencies:
+   ```bash
+   npm install
+   ```
+
+3. Set up environment variables:
+   Copy `.env.example` to `.env.local` and fill in the required keys.
+
+4. Run the development server:
+   ```bash
+   npm run dev
+   ```
+
+Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+
+## Documentation
+
+For more detailed information, please refer to the following:
+- [Production Quality Guidelines](PRODUCTION_QUALITY_GUIDELINES.md)
+- [Production Readiness Report](docs/reports/PRODUCTION_READINESS_REPORT.md)
+- [User Guides](docs/user-guides/)
+- [Implementation Gaps](docs/IMPLEMENTATION_GAPS.md)
+
+---
+**Last Updated**: December 30, 2025

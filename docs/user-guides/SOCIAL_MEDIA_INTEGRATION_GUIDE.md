@@ -163,5 +163,5 @@ A: Not without explicit permission. We only request read permissions by default.
 
 ---
 
-**Last Updated**: January 2025
+**Last Updated**: December 30, 2025
 

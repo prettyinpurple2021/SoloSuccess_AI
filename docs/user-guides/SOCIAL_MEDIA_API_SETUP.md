@@ -333,5 +333,5 @@ If you encounter issues:
 
 ---
 
-**Last Updated**: January 2025
+**Last Updated**: December 30, 2025
 
