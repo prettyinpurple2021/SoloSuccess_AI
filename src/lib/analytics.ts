@@ -3,6 +3,7 @@ import { NextRequest } from 'next/server'
 import { db } from '@/db'
 import { analyticsEvents, users } from '@/db/schema'
 import { desc, eq, sql, and, gte } from 'drizzle-orm'
+import { RevenueTrackingService } from './revenue-tracking'
 
 // Analytics event types
 export type AnalyticsEvent =
@@ -51,6 +52,8 @@ export interface UserMetrics {
   firstSeenAt: Date
   averageSessionDuration: number
   retentionScore: number
+  revenue: number
+  mrr: number
 }
 
 export interface PerformanceMetrics {
@@ -148,7 +151,9 @@ class AnalyticsService {
       lastActiveAt: events[events.length - 1]?.timestamp || new Date(),
       firstSeenAt: events[0]?.timestamp || new Date(),
       averageSessionDuration: 0, // Complex to calculate without session tracking
-      retentionScore: 0 // Placeholder
+      retentionScore: 0, // Placeholder
+      revenue: await RevenueTrackingService.calculateRevenue(userId, new Date(Date.now() - 30 * 24 * 60 * 60 * 1000), new Date()),
+      mrr: await RevenueTrackingService.calculateMRR(userId)
     }
 
     return metrics
@@ -225,7 +230,7 @@ class AnalyticsService {
       featureAdoptionRate: {}, // TODO: Implement
       conversionRate: 0, // TODO: Implement
       churnRate: 0, // TODO: Implement
-      revenue: 0,
+      revenue: 0, // Global revenue aggregation would go here if needed
       mrr: 0
     }
   }

@@ -1,10 +1,7 @@
-/**
- * Analytics Export System
- * Handles exporting analytics data in various formats (PDF, Excel, CSV, JSON)
- */
-
 import { logger, logError, logWarn, logInfo, logDebug, logApi, logDb, logAuth } from '@/lib/logger'
 import { z } from 'zod'
+import { jsPDF } from 'jspdf'
+import ExcelJS from 'exceljs'
 
 // Export format types
 export const ExportFormatSchema = z.enum(['pdf', 'excel', 'csv', 'json', 'png', 'svg'])
@@ -169,22 +166,22 @@ export class AnalyticsExportService {
       
       switch (config.format) {
         case 'pdf':
-          result = await this.exportToPDF(processedData, config)
+          result = await this.exportToPDF(processedData, config, jobId)
           break
         case 'excel':
-          result = await this.exportToExcel(processedData, config)
+          result = await this.exportToExcel(processedData, config, jobId)
           break
         case 'csv':
-          result = await this.exportToCSV(processedData, config)
+          result = await this.exportToCSV(processedData, config, jobId)
           break
         case 'json':
-          result = await this.exportToJSON(processedData, config)
+          result = await this.exportToJSON(processedData, config, jobId)
           break
         case 'png':
-          result = await this.exportToPNG(processedData, config)
+          result = await this.exportToPNG(processedData, config, jobId)
           break
         case 'svg':
-          result = await this.exportToSVG(processedData, config)
+          result = await this.exportToSVG(processedData, config, jobId)
           break
         default:
           throw new Error(`Unsupported export format: ${config.format}`)
@@ -269,45 +266,146 @@ export class AnalyticsExportService {
   /**
    * Export to PDF
    */
-  private async exportToPDF(data: ProcessedData, config: ExportConfig): Promise<ExportResult> {
-    // This would integrate with a PDF generation library like Puppeteer or jsPDF
-    // For now, return a mock result
-    
-    const pdfContent = this.generatePDFContent(data, config)
-    
-    return {
-      format: 'pdf',
-      filename: `analytics-report-${new Date().toISOString().split('T')[0]}.pdf`,
-      content: pdfContent,
-      size: pdfContent.length,
-      mimeType: 'application/pdf',
-      downloadUrl: `/api/analytics/export/download/${crypto.randomUUID()}`
+  private async exportToPDF(data: ProcessedData, config: ExportConfig, jobId: string): Promise<ExportResult> {
+    try {
+      const doc = new jsPDF()
+      let y = 20
+
+      // Title
+      doc.setFontSize(22)
+      doc.text(data.title, 20, y)
+      y += 10
+
+      // Description
+      doc.setFontSize(12)
+      doc.text(data.description, 20, y)
+      y += 10
+
+      // Metadata
+      doc.setFontSize(10)
+      doc.text(`Generated: ${data.generatedAt.toLocaleString()}`, 20, y)
+      y += 10
+      doc.text(`User ID: ${data.generatedBy}`, 20, y)
+      y += 20
+
+      // Data Table
+      if (data.data.length > 0) {
+        doc.setFontSize(14)
+        doc.text('Data Report', 20, y)
+        y += 10
+
+        doc.setFontSize(10)
+        // Header
+        doc.text('Name', 20, y)
+        doc.text('Value', 80, y)
+        doc.text('Type', 130, y)
+        doc.text('Timestamp', 160, y)
+        y += 7
+        doc.line(20, y, 190, y)
+        y += 10
+
+        // Rows
+        for (const item of data.data.slice(0, 20)) { // Limit for basic implementation
+          if (y > 270) {
+            doc.addPage()
+            y = 20
+          }
+          doc.text(item.name.substring(0, 30), 20, y)
+          doc.text(item.value.toString().substring(0, 20), 80, y)
+          doc.text(item.type, 130, y)
+          doc.text(item.timestamp.toISOString().split('T')[0], 160, y)
+          y += 10
+        }
+      }
+
+      const pdfBase64 = doc.output('datauristring').split(',')[1]
+      
+      return {
+        format: 'pdf',
+        filename: `analytics-report-${new Date().toISOString().split('T')[0]}.pdf`,
+        content: pdfBase64,
+        size: Math.round((pdfBase64.length * 3) / 4), // Approximate bytes
+        mimeType: 'application/pdf',
+        downloadUrl: `/api/analytics/export/download/${jobId}`
+      }
+    } catch (error) {
+      logError('PDF Generation Error:', error)
+      throw error
     }
   }
 
   /**
    * Export to Excel
    */
-  private async exportToExcel(data: ProcessedData, config: ExportConfig): Promise<ExportResult> {
-    // This would integrate with a library like xlsx or exceljs
-    // For now, return a mock result
-    
-    const excelContent = this.generateExcelContent(data, config)
-    
-    return {
-      format: 'excel',
-      filename: `analytics-report-${new Date().toISOString().split('T')[0]}.xlsx`,
-      content: excelContent,
-      size: excelContent.length,
-      mimeType: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-      downloadUrl: `/api/analytics/export/download/${crypto.randomUUID()}`
+  private async exportToExcel(data: ProcessedData, config: ExportConfig, jobId: string): Promise<ExportResult> {
+    try {
+      const workbook = new ExcelJS.Workbook()
+      const worksheet = workbook.addWorksheet('Analytics Data')
+
+      // Add report header
+      worksheet.addRow([data.title])
+      worksheet.addRow([data.description])
+      worksheet.addRow([`Generated: ${data.generatedAt.toLocaleString()}`])
+      worksheet.addRow([])
+
+      // Set columns
+      worksheet.columns = [
+        { header: 'Name', key: 'name', width: 30 },
+        { header: 'Value', key: 'value', width: 20 },
+        { header: 'Type', key: 'type', width: 15 },
+        { header: 'Timestamp', key: 'timestamp', width: 25 },
+        { header: 'Metadata', key: 'metadata', width: 40 }
+      ]
+
+      // Add data rows
+      data.data.forEach(item => {
+        worksheet.addRow({
+          name: item.name,
+          value: item.value,
+          type: item.type,
+          timestamp: item.timestamp.toISOString(),
+          metadata: JSON.stringify(item.metadata || {})
+        })
+      })
+
+      // Add chart info sheet if charts included
+      if (config.includeCharts && data.charts.length > 0) {
+        const chartSheet = workbook.addWorksheet('Charts Info')
+        chartSheet.columns = [
+          { header: 'Chart Title', key: 'title', width: 30 },
+          { header: 'Type', key: 'type', width: 20 },
+          { header: 'Data Source', key: 'source', width: 30 }
+        ]
+        data.charts.forEach(chart => {
+          chartSheet.addRow({
+            title: chart.title,
+            type: chart.type,
+            source: chart.metadata.dataSource
+          })
+        })
+      }
+
+      const buffer = await workbook.xlsx.writeBuffer()
+      const excelBase64 = Buffer.from(buffer).toString('base64')
+      
+      return {
+        format: 'excel',
+        filename: `analytics-report-${new Date().toISOString().split('T')[0]}.xlsx`,
+        content: excelBase64,
+        size: buffer.byteLength,
+        mimeType: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+        downloadUrl: `/api/analytics/export/download/${jobId}`
+      }
+    } catch (error) {
+      logError('Excel Generation Error:', error)
+      throw error
     }
   }
 
   /**
    * Export to CSV
    */
-  private async exportToCSV(data: ProcessedData, config: ExportConfig): Promise<ExportResult> {
+  private async exportToCSV(data: ProcessedData, config: ExportConfig, jobId: string): Promise<ExportResult> {
     const csvContent = this.generateCSVContent(data)
     
     return {
@@ -316,14 +414,14 @@ export class AnalyticsExportService {
       content: csvContent,
       size: csvContent.length,
       mimeType: 'text/csv',
-      downloadUrl: `/api/analytics/export/download/${crypto.randomUUID()}`
+      downloadUrl: `/api/analytics/export/download/${jobId}`
     }
   }
 
   /**
    * Export to JSON
    */
-  private async exportToJSON(data: ProcessedData, config: ExportConfig): Promise<ExportResult> {
+  private async exportToJSON(data: ProcessedData, config: ExportConfig, jobId: string): Promise<ExportResult> {
     const jsonContent = JSON.stringify(data, null, 2)
     
     return {
@@ -332,14 +430,14 @@ export class AnalyticsExportService {
       content: jsonContent,
       size: jsonContent.length,
       mimeType: 'application/json',
-      downloadUrl: `/api/analytics/export/download/${crypto.randomUUID()}`
+      downloadUrl: `/api/analytics/export/download/${jobId}`
     }
   }
 
   /**
    * Export to PNG
    */
-  private async exportToPNG(data: ProcessedData, config: ExportConfig): Promise<ExportResult> {
+  private async exportToPNG(data: ProcessedData, config: ExportConfig, jobId: string): Promise<ExportResult> {
     // This would generate PNG images of charts
     const pngContent = this.generatePNGContent(data, config)
     
@@ -349,14 +447,14 @@ export class AnalyticsExportService {
       content: pngContent,
       size: pngContent.length,
       mimeType: 'image/png',
-      downloadUrl: `/api/analytics/export/download/${crypto.randomUUID()}`
+      downloadUrl: `/api/analytics/export/download/${jobId}`
     }
   }
 
   /**
    * Export to SVG
    */
-  private async exportToSVG(data: ProcessedData, config: ExportConfig): Promise<ExportResult> {
+  private async exportToSVG(data: ProcessedData, config: ExportConfig, jobId: string): Promise<ExportResult> {
     const svgContent = this.generateSVGContent(data, config)
     
     return {
@@ -365,7 +463,7 @@ export class AnalyticsExportService {
       content: svgContent,
       size: svgContent.length,
       mimeType: 'image/svg+xml',
-      downloadUrl: `/api/analytics/export/download/${crypto.randomUUID()}`
+      downloadUrl: `/api/analytics/export/download/${jobId}`
     }
   }
 
@@ -572,7 +670,7 @@ type ExportJobStatus = 'pending' | 'processing' | 'completed' | 'failed' | 'canc
 interface ExportResult {
   format: ExportFormat
   filename: string
-  content: string
+  content: string // Base64 encoded for binary formats, plain text for CSV/JSON
   size: number
   mimeType: string
   downloadUrl: string

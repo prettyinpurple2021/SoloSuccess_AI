@@ -8,6 +8,7 @@ import { z } from 'zod'
 import { db } from '@/db'
 import { workflows, workflowExecutions, users } from '@/db/schema'
 import { eq, desc, and } from 'drizzle-orm'
+import { Parser } from 'expr-eval'
 
 // Workflow Types
 export const WorkflowNodeSchema = z.object({
@@ -334,12 +335,33 @@ export class WorkflowEngine {
         condition: z.string(), // JavaScript expression
         variable: z.string().optional()
       }),
-      execute: async (config: unknown, _context) => {
+      execute: async (config: unknown, context) => {
         const configTyped = config as { condition: string; variable?: string }
         try {
-          // Simple condition evaluation - in production, use a proper expression evaluator
-          logInfo('Condition evaluated', { condition: configTyped.condition })
-          return { condition: configTyped.condition, result: true }
+          const parser = new Parser()
+          const expr = parser.parse(configTyped.condition)
+          
+          // Prepare evaluation context
+          const evalContext = {
+            ...context.variables,
+            results: Object.fromEntries(context.nodeResults),
+            // Shortcut for specific variable if defined
+            ...(configTyped.variable ? { [configTyped.variable]: context.variables[configTyped.variable] } : {})
+          }
+          
+          const result = expr.evaluate(evalContext)
+          const resultBool = !!result
+          
+          logInfo('Condition evaluated', { 
+            condition: configTyped.condition, 
+            result: resultBool 
+          })
+          
+          return { 
+            condition: configTyped.condition, 
+            result: resultBool,
+            outputs: resultBool ? ['true'] : ['false'] 
+          }
         } catch (error) {
           logError('Condition evaluation failed:', error instanceof Error ? error : new Error(String(error)))
           throw new Error(`Condition evaluation failed: ${error}`)
