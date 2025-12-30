@@ -1,8 +1,10 @@
 import { db } from '@/db'
 import { paymentProviderConnections } from '@/db/schema'
-import { eq, and, gte, lte, sql } from 'drizzle-orm'
+import { eq, and, gte, lte, sql, inArray } from 'drizzle-orm'
 import { logError, logInfo, logWarn } from '@/lib/logger'
 import Stripe from 'stripe'
+
+type PaymentConnection = typeof paymentProviderConnections.$inferSelect
 
 export interface RevenueMetrics {
   mrr: number // Monthly Recurring Revenue
@@ -77,33 +79,46 @@ export class RevenueTrackingService {
   /**
     * Stripe-specific MRR calculation
     */
-  private static async calculateStripeMRR(connection: any): Promise<number> {
+  private static async calculateStripeMRR(connection: PaymentConnection): Promise<number> {
     if (!connection.access_token) return 0
     try {
       const stripe = new Stripe(connection.access_token, {
-        apiVersion: '2025-12-15.clover'
-      })
-
-      const subscriptions = await stripe.subscriptions.list({
-        status: 'active',
-        limit: 100
+        apiVersion: '2025-02-24.acacia'
       })
 
       let mrr = 0
-      for (const subscription of subscriptions.data) {
-        if (subscription.items.data.length > 0) {
-          const price = subscription.items.data[0].price
-          if (price && price.recurring) {
-            const amount = (price.unit_amount || 0) / 100
-            switch (price.recurring.interval) {
-              case 'month': mrr += amount; break
-              case 'year': mrr += amount / 12; break
-              case 'week': mrr += amount * 4.33; break
-              case 'day': mrr += amount * 30; break
+      let hasMore = true
+      let startingAfter: string | undefined = undefined
+
+      while (hasMore) {
+        const subscriptions = await stripe.subscriptions.list({
+          status: 'active',
+          limit: 100,
+          starting_after: startingAfter
+        })
+
+        for (const subscription of subscriptions.data) {
+          for (const item of subscription.items.data) {
+            const price = item.price
+            if (price && price.recurring) {
+              const quantity = item.quantity || 1
+              const amount = ((price.unit_amount || 0) / 100) * quantity
+              switch (price.recurring.interval) {
+                case 'month': mrr += amount; break
+                case 'year': mrr += amount / 12; break
+                case 'week': mrr += amount * 4.33; break
+                case 'day': mrr += amount * 30; break
+              }
             }
           }
         }
+
+        hasMore = subscriptions.has_more
+        if (hasMore && subscriptions.data.length > 0) {
+          startingAfter = subscriptions.data[subscriptions.data.length - 1].id
+        }
       }
+
       return mrr
     } catch (error) {
       logError('Stripe MRR calculation failed:', error)
@@ -114,11 +129,11 @@ export class RevenueTrackingService {
   /**
     * Stripe-specific revenue calculation
     */
-  private static async calculateStripeRevenue(connection: any, startDate: Date, endDate: Date): Promise<number> {
+  private static async calculateStripeRevenue(connection: PaymentConnection, startDate: Date, endDate: Date): Promise<number> {
     if (!connection.access_token) return 0
     try {
       const stripe = new Stripe(connection.access_token, {
-        apiVersion: '2025-12-15.clover'
+        apiVersion: '2025-02-24.acacia'
       })
 
       const charges = await stripe.charges.list({
@@ -166,18 +181,20 @@ export class RevenueTrackingService {
   /**
     * PayPal-specific MRR calculation (Placeholder for real API)
     */
-  private static async calculatePayPalMRR(connection: any): Promise<number> {
+  private static async calculatePayPalMRR(connection: PaymentConnection): Promise<number> {
     // PayPal Subscription API would be used here
     // requires paypal-rest-sdk or fetch calls to PayPal API
     // For now returning 0 as we only have Stripe SDK installed
+    logWarn('PayPal MRR calculation not implemented', { connectionId: connection.id })
     return 0
   }
 
   /**
     * PayPal-specific revenue calculation (Placeholder for real API)
     */
-  private static async calculatePayPalRevenue(connection: any, startDate: Date, endDate: Date): Promise<number> {
+  private static async calculatePayPalRevenue(connection: PaymentConnection, startDate: Date, endDate: Date): Promise<number> {
     // PayPal Orders/Transactions API would be used here
+    logWarn('PayPal Revenue calculation not implemented', { connectionId: connection.id })
     return 0
   }
 
@@ -216,17 +233,19 @@ export class RevenueTrackingService {
       let activeCount = 0
       for (const conn of connections) {
         if (conn.provider === 'stripe' && conn.access_token) {
-          const stripe = new Stripe(conn.access_token, { apiVersion: '2025-12-15.clover' })
+          const stripe = new Stripe(conn.access_token, { apiVersion: '2025-02-24.acacia' })
           const subs = await stripe.subscriptions.list({ status: 'active', limit: 100 })
           activeCount += subs.data.length
+          // Note: In production, we should handle pagination here too
         }
       }
 
-      // Update sync timestamps
-      for (const conn of connections) {
+      // Update sync timestamps in batch
+      const connectionIds = connections.map(c => c.id)
+      if (connectionIds.length > 0) {
         await db.update(paymentProviderConnections)
           .set({ last_synced_at: new Date(), updated_at: new Date() })
-          .where(eq(paymentProviderConnections.id, conn.id))
+          .where(inArray(paymentProviderConnections.id, connectionIds))
       }
 
       return {
@@ -259,7 +278,7 @@ export class RevenueTrackingService {
   /**
     * Get all active payment connections for a user
     */
-  private static async getActiveConnections(userId: string) {
+  private static async getActiveConnections(userId: string): Promise<PaymentConnection[]> {
     return await db
       .select()
       .from(paymentProviderConnections)

@@ -1,4 +1,5 @@
 # 🎯 PRODUCTION QUALITY GUIDELINES
+
 ## SoloSuccess AI - Mandatory Standards for All Contributors
 
 **STATUS**: MANDATORY - ALL CODE MUST ADHERE TO THESE STANDARDS  
@@ -164,11 +165,13 @@ const { name, email, age } = data
 ### Database Security
 
 **FORBIDDEN**:
+
 - ❌ String interpolation in SQL: `` `SELECT * FROM users WHERE id = ${userId}` ``
 - ❌ Concatenating SQL strings
 - ❌ Raw SQL with user input
 
 **REQUIRED**:
+
 - ✅ Use Drizzle ORM for all queries
 - ✅ Use parameterized queries for raw SQL
 - ✅ Validate all input before database operations
@@ -193,6 +196,7 @@ const query = `SELECT * FROM users WHERE id = ${userId}`
 ### WCAG 2.1 AA Compliance (MANDATORY)
 
 **Form Requirements**:
+
 - All inputs MUST have associated `<label>` or `aria-label`
 - Error messages MUST have `role="alert"` and `aria-describedby`
 - Required fields MUST have `aria-required="true"`
@@ -220,12 +224,14 @@ const query = `SELECT * FROM users WHERE id = ${userId}`
 ```
 
 **Keyboard Navigation**:
+
 - All interactive elements MUST be keyboard accessible
 - Focus order MUST be logical
 - Focus indicators MUST be visible
 - Modal dialogs MUST trap focus
 
 **Screen Reader Support**:
+
 - Complex interactions MUST have ARIA labels
 - Status changes MUST be announced
 - Loading states MUST be communicated
@@ -251,6 +257,7 @@ All pages MUST meet these thresholds:
    - Acceptable: < 0.25
 
 **Optimization Requirements**:
+
 - Images MUST be optimized (Next.js Image component)
 - Code MUST be split (dynamic imports for large components)
 - Database queries MUST be optimized (indexes, pagination)
@@ -263,6 +270,7 @@ All pages MUST meet these thresholds:
 ### Mobile-First Approach (MANDATORY)
 
 **Breakpoints** (Tailwind CSS):
+
 - `sm: 640px` - Small devices
 - `md: 768px` - Tablets
 - `lg: 1024px` - Desktops
@@ -270,12 +278,14 @@ All pages MUST meet these thresholds:
 - `2xl: 1536px` - Extra large desktops
 
 **Testing Requirements**:
+
 - MUST test at 320px (minimum mobile)
 - MUST test at 768px (tablet)
 - MUST test at 1024px (desktop)
 - MUST test at 1920px (large desktop)
 
 **Requirements**:
+
 - NO horizontal scrolling at any breakpoint
 - Touch targets MUST be at least 44x44px
 - Text MUST be readable without zooming
@@ -283,6 +293,7 @@ All pages MUST meet these thresholds:
 - Navigation MUST be mobile-friendly
 
 **FORBIDDEN**:
+
 - ❌ Inline styles (use Tailwind classes)
 - ❌ Fixed widths without responsive alternatives
 - ❌ Desktop-only layouts
@@ -294,18 +305,21 @@ All pages MUST meet these thresholds:
 ### Holographic Design System (MANDATORY)
 
 **Component Usage**:
+
 - ✅ Use `HolographicButton` for all buttons
 - ✅ Use `HolographicCard` for all cards
 - ✅ Use `GradientText` for headings
 - ✅ Use `HolographicLoader` for loading states
 
 **Colors**:
+
 - Primary: `#B621FF` (purple)
 - Secondary: `#18FFFF` (cyan)
 - Tertiary: `#FF1FAF` (pink)
 - Text: `#000000` (black)
 
 **Animations**:
+
 - MUST use Framer Motion for all animations
 - MUST respect `prefers-reduced-motion`
 - MUST use hardware-accelerated transforms
@@ -360,11 +374,13 @@ async function generateContent(prompt: string) {
 ```
 
 **ACCEPTABLE FALLBACKS**:
+
 - SVG generation for logos (programmatic, not mock)
 - Template-based generation (using real templates)
 - Cached previous results (if valid)
 
 **UNACCEPTABLE FALLBACKS**:
+
 - ❌ Mock data
 - ❌ Placeholder responses
 - ❌ Empty results
@@ -425,12 +441,14 @@ catch (error) {
 ### Database Operations (MANDATORY)
 
 **REQUIRED**:
+
 - ✅ All queries MUST use parameterized statements
 - ✅ All transactions MUST have rollback handling
 - ✅ All foreign key constraints MUST be respected
 - ✅ All unique constraints MUST be checked
 
 **FORBIDDEN**:
+
 - ❌ Direct SQL string concatenation
 - ❌ Raw queries without validation
 - ❌ Bypassing ORM for convenience
@@ -450,6 +468,7 @@ catch (error) {
 ### Integration Tests (MANDATORY FOR NEW FEATURES)
 
 **REQUIRED COVERAGE**:
+
 - All API routes
 - Critical user flows
 - Database operations
@@ -487,12 +506,14 @@ describe('API Route: /api/users', () => {
 ### Vercel Configuration (MANDATORY)
 
 **Build Requirements**:
+
 - `npm run build` MUST succeed
 - Environment variables MUST be configured
 - Database migrations MUST be run
 - All API routes MUST be accessible
 
 **Pre-Deployment Checklist**:
+
 - [ ] All tests pass
 - [ ] Build succeeds
 - [ ] TypeScript compiles

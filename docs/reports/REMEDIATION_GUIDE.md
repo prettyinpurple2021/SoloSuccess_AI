@@ -11,12 +11,14 @@ This guide provides detailed remediation steps with code examples for fixing the
 **Current State:** API and frontend both use hardcoded mock data
 
 **Files to Fix:**
+
 - `app/api/learning/analytics/route.ts`
 - `app/dashboard/learning/page.tsx`
 
 **Remediation Steps:**
 
 1. **Create Database Schema for Learning** (if not exists):
+
 ```sql
 -- Add to schema if missing
 CREATE TABLE learning_modules (
@@ -51,7 +53,7 @@ CREATE TABLE skill_assessments (
 );
 ```
 
-2. **Fix `getLearningOverview()` Function:**
+1. **Fix `getLearningOverview()` Function:**
 
 Replace lines 80-142 in `app/api/learning/analytics/route.ts`:
 
@@ -185,7 +187,7 @@ async function calculateLearningStreak(db: any, userId: string) {
 }
 ```
 
-3. **Fix Frontend to Use Real API:**
+1. **Fix Frontend to Use Real API:**
 
 Replace lines 115-226 in `app/dashboard/learning/page.tsx`:
 
@@ -348,7 +350,7 @@ async function getIntelligenceStats(db: any, userId: string) {
 }
 ```
 
-2. **Update Frontend to Use Real API:**
+1. **Update Frontend to Use Real API:**
 
 Replace lines 82-160 in `app/dashboard/competitors/intelligence/page.tsx`:
 
@@ -398,7 +400,7 @@ useEffect(() => {
 npm install @googleapis/calendar microsoft-graph-client
 ```
 
-2. **Create OAuth Configuration Service:**
+1. **Create OAuth Configuration Service:**
 
 Create new file: `lib/calendar-oauth.ts`
 
@@ -443,7 +445,7 @@ export class CalendarOAuthService {
 }
 ```
 
-3. **Create Calendar API Service:**
+1. **Create Calendar API Service:**
 
 Create new file: `lib/calendar-service.ts`
 
@@ -519,7 +521,7 @@ export class CalendarService {
 }
 ```
 
-4. **Create Calendar API Endpoints:**
+1. **Create Calendar API Endpoints:**
 
 Create `app/api/calendar/connect/route.ts`:
 
@@ -642,7 +644,7 @@ export async function GET(request: NextRequest) {
 }
 ```
 
-5. **Update Calendar Integration Component:**
+1. **Update Calendar Integration Component:**
 
 Replace `loadCalendarEvents()` function in `components/integrations/calendar-integration.tsx`:
 
@@ -707,7 +709,7 @@ private async scrapeLinkedInPosts(handle: string): Promise<SocialMediaPost[]> {
 }
 ```
 
-2. **Implement Real LinkedIn API Integration:**
+1. **Implement Real LinkedIn API Integration:**
 
 ```typescript
 private async fetchLinkedInCompanyPosts(handle: string): Promise<SocialMediaPost[]> {
@@ -771,11 +773,11 @@ private async getLinkedInAccessToken(): Promise<string> {
 }
 ```
 
-3. **Remove Mock Data Generator:**
+1. **Remove Mock Data Generator:**
 
 Delete lines 754-765 and all references to `generateMockPosts()` function.
 
-4. **Add Proper Error Handling:**
+1. **Add Proper Error Handling:**
 
 ```typescript
 // In the calling function, handle empty results gracefully
@@ -963,7 +965,7 @@ export class RevenueTrackingService {
 }
 ```
 
-2. **Update Analytics Service:**
+1. **Update Analytics Service:**
 
 Replace lines 298-299 in `lib/analytics.ts`:
 
@@ -991,7 +993,7 @@ const businessMetrics = {
 };
 ```
 
-3. **Create Stripe Webhook Handler for Revenue Tracking:**
+1. **Create Stripe Webhook Handler for Revenue Tracking:**
 
 Create `app/api/webhooks/stripe/route.ts`:
 
@@ -1081,7 +1083,7 @@ export async function POST(request: NextRequest) {
 }
 ```
 
-4. **Add Database Schema for Payments:**
+1. **Add Database Schema for Payments:**
 
 Add to `db/schema.ts` if not present:
 

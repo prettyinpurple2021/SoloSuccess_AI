@@ -1,6 +1,6 @@
 # SoloSuccess AI Platform - Documentation Hub
 
-*Your comprehensive guide to building and scaling with SoloSuccess AI*
+## Your comprehensive guide to building and scaling with SoloSuccess AI*
 
 ---
 

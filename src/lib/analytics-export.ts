@@ -236,7 +236,7 @@ export class AnalyticsExportService {
       charts: charts,
       metadata: {
         totalRecords: data.length,
-        dateRange: config.dateRange || { start: new Date(0), end: new Date() },
+        dateRange: (config.dateRange || { start: new Date(0), end: new Date() }) as { start: Date; end: Date },
         filters: config.filters || {},
         exportConfig: config
       }
@@ -284,8 +284,6 @@ export class AnalyticsExportService {
       // Metadata
       doc.setFontSize(10)
       doc.text(`Generated: ${data.generatedAt.toLocaleString()}`, 20, y)
-      y += 10
-      doc.text(`User ID: ${data.generatedBy}`, 20, y)
       y += 20
 
       // Data Table
@@ -305,7 +303,9 @@ export class AnalyticsExportService {
         y += 10
 
         // Rows
-        for (const item of data.data.slice(0, 20)) { // Limit for basic implementation
+        const maxRows = 20
+        const displayedData = data.data.slice(0, maxRows)
+        for (const item of displayedData) {
           if (y > 270) {
             doc.addPage()
             y = 20
@@ -315,6 +315,14 @@ export class AnalyticsExportService {
           doc.text(item.type, 130, y)
           doc.text(item.timestamp.toISOString().split('T')[0], 160, y)
           y += 10
+        }
+
+        if (data.data.length > maxRows) {
+          y += 5
+          doc.setFontSize(9)
+          doc.setTextColor(100, 100, 100)
+          doc.text(`... and ${data.data.length - maxRows} more records (truncated for PDF preview)`, 20, y)
+          doc.setTextColor(0, 0, 0)
         }
       }
 
@@ -348,24 +356,26 @@ export class AnalyticsExportService {
       worksheet.addRow([`Generated: ${data.generatedAt.toLocaleString()}`])
       worksheet.addRow([])
 
-      // Set columns
-      worksheet.columns = [
-        { header: 'Name', key: 'name', width: 30 },
-        { header: 'Value', key: 'value', width: 20 },
-        { header: 'Type', key: 'type', width: 15 },
-        { header: 'Timestamp', key: 'timestamp', width: 25 },
-        { header: 'Metadata', key: 'metadata', width: 40 }
-      ]
+      // Add column headers row
+      const headerRow = worksheet.addRow(['Name', 'Value', 'Type', 'Timestamp', 'Metadata'])
+      headerRow.font = { bold: true }
+      
+      // Set column widths
+      worksheet.getColumn(1).width = 30
+      worksheet.getColumn(2).width = 20
+      worksheet.getColumn(3).width = 15
+      worksheet.getColumn(4).width = 25
+      worksheet.getColumn(5).width = 40
 
       // Add data rows
       data.data.forEach(item => {
-        worksheet.addRow({
-          name: item.name,
-          value: item.value,
-          type: item.type,
-          timestamp: item.timestamp.toISOString(),
-          metadata: JSON.stringify(item.metadata || {})
-        })
+        worksheet.addRow([
+          item.name,
+          item.value,
+          item.type,
+          item.timestamp.toISOString(),
+          JSON.stringify(item.metadata || {})
+        ])
       })
 
       // Add chart info sheet if charts included
@@ -405,7 +415,7 @@ export class AnalyticsExportService {
   /**
    * Export to CSV
    */
-  private async exportToCSV(data: ProcessedData, config: ExportConfig, jobId: string): Promise<ExportResult> {
+  private async exportToCSV(data: ProcessedData, _config: ExportConfig, jobId: string): Promise<ExportResult> {
     const csvContent = this.generateCSVContent(data)
     
     return {
@@ -421,7 +431,7 @@ export class AnalyticsExportService {
   /**
    * Export to JSON
    */
-  private async exportToJSON(data: ProcessedData, config: ExportConfig, jobId: string): Promise<ExportResult> {
+  private async exportToJSON(data: ProcessedData, _config: ExportConfig, jobId: string): Promise<ExportResult> {
     const jsonContent = JSON.stringify(data, null, 2)
     
     return {

@@ -5,6 +5,9 @@ import { analyticsEvents, users } from '@/db/schema'
 import { desc, eq, sql, and, gte } from 'drizzle-orm'
 import { RevenueTrackingService } from './revenue-tracking'
 
+const REVENUE_WINDOW_DAYS = 30
+const MS_PER_DAY = 24 * 60 * 60 * 1000
+
 // Analytics event types
 export type AnalyticsEvent =
   | 'user_signup'
@@ -152,8 +155,14 @@ class AnalyticsService {
       firstSeenAt: events[0]?.timestamp || new Date(),
       averageSessionDuration: 0, // Complex to calculate without session tracking
       retentionScore: 0, // Placeholder
-      revenue: await RevenueTrackingService.calculateRevenue(userId, new Date(Date.now() - 30 * 24 * 60 * 60 * 1000), new Date()),
-      mrr: await RevenueTrackingService.calculateMRR(userId)
+      revenue: await RevenueTrackingService.calculateRevenue(userId, new Date(Date.now() - REVENUE_WINDOW_DAYS * MS_PER_DAY), new Date()).catch(err => {
+        console.error('Failed to calculate revenue for user:', userId, err)
+        return 0
+      }),
+      mrr: await RevenueTrackingService.calculateMRR(userId).catch(err => {
+        console.error('Failed to calculate MRR for user:', userId, err)
+        return 0
+      })
     }
 
     return metrics
@@ -230,7 +239,7 @@ class AnalyticsService {
       featureAdoptionRate: {}, // TODO: Implement
       conversionRate: 0, // TODO: Implement
       churnRate: 0, // TODO: Implement
-      revenue: 0, // Global revenue aggregation would go here if needed
+      revenue: 0, // In production, this would sum up all user revenue via a background job
       mrr: 0
     }
   }

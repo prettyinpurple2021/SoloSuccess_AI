@@ -137,7 +137,6 @@
     * [Common Issues & Troubleshooting](wiki/troubleshooting/common-issues.md)
   * [User Manual - Complete Guide to SoloSuccess AI Platform](wiki/user-guides/README.md)
 * [.cursor](.cursor/README.md)
-  * [rules](.cursor/rules/README.md)
-    * [rules](.cursor/rules/rules.md)
+  * [Rules](.cursor/rules/README.md)
 * [public](public/README.md)
   * [Agent metadata (public/agents)](public/agents/README.md)

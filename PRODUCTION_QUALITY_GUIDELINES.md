@@ -405,7 +405,7 @@ chore: update dependencies
 
 ### Pull Request Standards
 
-#### Every PR Must Include:
+#### Every PR Must Include
 
 - ✅ Clear description of changes
 - ✅ Link to related issue

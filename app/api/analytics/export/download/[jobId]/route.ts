@@ -8,7 +8,7 @@ import { analyticsExportService } from '@/lib/analytics-export'
 import { verifyAuth } from '@/lib/auth-server'
 import { logError, logApi } from '@/lib/logger'
 
-export const runtime = 'edge'
+export const runtime = 'nodejs'
 export const dynamic = 'force-dynamic'
 
 /**
@@ -73,11 +73,16 @@ export async function GET(
       filename: result.filename
     })
 
+    // Sanitize filename for Content-Disposition header
+    const sanitizedFilename = result.filename
+      .replace(/["\r\n]/g, '')
+      .replace(/[^\x20-\x7E]/g, '_')
+
     return new NextResponse(body, {
       status: 200,
       headers: {
         'Content-Type': result.mimeType,
-        'Content-Disposition': `attachment; filename="${result.filename}"`,
+        'Content-Disposition': `attachment; filename="${sanitizedFilename}"`,
         'Content-Length': body.length.toString(),
         'Cache-Control': 'no-store, max-age=0'
       }

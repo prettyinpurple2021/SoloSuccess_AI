@@ -8,7 +8,10 @@ import { z } from 'zod'
 import { db } from '@/db'
 import { workflows, workflowExecutions, users } from '@/db/schema'
 import { eq, desc, and } from 'drizzle-orm'
-import { Parser } from 'expr-eval'
+import { Parser } from 'expr-eval-fork'
+
+// Static parser for high-throughput evaluation
+const conditionParser = new Parser()
 
 // Workflow Types
 export const WorkflowNodeSchema = z.object({
@@ -338,22 +341,26 @@ export class WorkflowEngine {
       execute: async (config: unknown, context) => {
         const configTyped = config as { condition: string; variable?: string }
         try {
-          const parser = new Parser()
-          const expr = parser.parse(configTyped.condition)
+          const expr = conditionParser.parse(configTyped.condition)
           
           // Prepare evaluation context
           const evalContext = {
             ...context.variables,
             results: Object.fromEntries(context.nodeResults),
-            // Shortcut for specific variable if defined
-            ...(configTyped.variable ? { [configTyped.variable]: context.variables[configTyped.variable] } : {})
+            // Provide shortcut alias 'value' for a specific variable if defined
+            ...(configTyped.variable ? { value: context.variables[configTyped.variable] } : {})
           }
           
-          const result = expr.evaluate(evalContext)
+          const result = expr.evaluate(evalContext as any)
           const resultBool = !!result
           
+          // Sanitize condition in logs to prevent sensitive data exposure
+          const sanitizedCondition = configTyped.condition.length > 50 
+            ? `${configTyped.condition.substring(0, 47)}...` 
+            : configTyped.condition
+
           logInfo('Condition evaluated', { 
-            condition: configTyped.condition, 
+            condition: sanitizedCondition, 
             result: resultBool 
           })
           
