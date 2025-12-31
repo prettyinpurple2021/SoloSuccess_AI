@@ -77,6 +77,55 @@ export class RevenueTrackingService {
   }
 
   /**
+   * Calculate total MRR across platform
+   */
+  static async calculateGlobalMRR(): Promise<number> {
+    try {
+      const connections = await this.getAllActiveConnections()
+      let totalMRR = 0
+
+      for (const connection of connections) {
+        if (connection.provider === 'stripe') {
+          totalMRR += await this.calculateStripeMRR(connection)
+        } else if (connection.provider === 'paypal') {
+          totalMRR += await this.calculatePayPalMRR(connection)
+        }
+      }
+
+      return Math.round(totalMRR * 100) / 100
+    } catch (error) {
+      logError('Error calculating global MRR:', error)
+      return 0
+    }
+  }
+
+  /**
+   * Calculate total revenue across platform
+   */
+  static async calculateGlobalRevenue(
+    startDate: Date,
+    endDate: Date
+  ): Promise<number> {
+    try {
+      const connections = await this.getAllActiveConnections()
+      let totalRevenue = 0
+
+      for (const connection of connections) {
+        if (connection.provider === 'stripe') {
+          totalRevenue += await this.calculateStripeRevenue(connection, startDate, endDate)
+        } else if (connection.provider === 'paypal') {
+          totalRevenue += await this.calculatePayPalRevenue(connection, startDate, endDate)
+        }
+      }
+
+      return Math.round(totalRevenue * 100) / 100
+    } catch (error) {
+      logError('Error calculating global revenue:', error)
+      return 0
+    }
+  }
+
+  /**
     * Stripe-specific MRR calculation
     */
   private static async calculateStripeMRR(connection: PaymentConnection): Promise<number> {
@@ -288,6 +337,16 @@ export class RevenueTrackingService {
           eq(paymentProviderConnections.is_active, true)
         )
       )
+  }
+
+  /**
+   * Get all active payment connections across platform
+   */
+  private static async getAllActiveConnections(): Promise<PaymentConnection[]> {
+    return await db
+      .select()
+      .from(paymentProviderConnections)
+      .where(eq(paymentProviderConnections.is_active, true))
   }
 
   /**

@@ -4,6 +4,9 @@ import { authenticateRequest} from '@/lib/auth-server';
 import { rateLimitByIp} from '@/lib/rate-limit';
 import { alertSystem} from '@/lib/competitor-alert-system';
 import { z} from 'zod';
+import { db } from '@/db';
+import { competitorAlerts } from '@/db/schema';
+import { eq } from 'drizzle-orm';
 
 // Edge runtime enabled after refactoring to jose and Neon HTTP
 export const runtime = 'edge'
@@ -94,14 +97,30 @@ export async function GET(
     const params = await context.params;
     const alertId = params.id;
 
-    // Get alert details (this would need to be implemented in the alert system)
-    // For now, return a placeholder response
+    // Get alert details
+    const [alert] = await db.select()
+      .from(competitorAlerts)
+      .where(eq(competitorAlerts.id, alertId))
+      .limit(1);
+
+    if (!alert) {
+      return NextResponse.json(
+        { error: 'Alert not found' },
+        { status: 404 }
+      );
+    }
+
+    // Verify ownership
+    if (alert.user_id !== user.id) {
+      return NextResponse.json(
+        { error: 'Unauthorized' },
+        { status: 403 }
+      );
+    }
+
     return NextResponse.json({
       success: true,
-      alert: {
-        id: alertId,
-        message: 'Alert details endpoint - to be implemented',
-      },
+      alert,
     });
 
   } catch (error) {

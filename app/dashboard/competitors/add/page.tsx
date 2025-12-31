@@ -110,15 +110,15 @@ export default function AddCompetitorPage() {
     try {
       setLoading(true)
       
-      // For now, just simulate success and redirect
-      await new Promise(resolve => setTimeout(resolve, 2000))
-      
-      // TODO: Replace with actual API call
-      // const response = await fetch('/api/competitors', {
-      //   method: 'POST',
-      //   headers: { 'Content-Type': 'application/json' },
-      //   body: JSON.stringify(formData)
-      // })
+      const response = await fetch('/api/competitors', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData)
+      })
+
+      if (!response.ok) {
+        throw new Error('Failed to create competitor')
+      }
       
       router.push('/dashboard/competitors')
     } catch (error) {

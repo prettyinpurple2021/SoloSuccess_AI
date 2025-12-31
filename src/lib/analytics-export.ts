@@ -4,7 +4,7 @@ import { jsPDF } from 'jspdf'
 import ExcelJS from 'exceljs'
 
 // Export format types
-export const ExportFormatSchema = z.enum(['pdf', 'excel', 'csv', 'json', 'png', 'svg'])
+export const ExportFormatSchema = z.enum(['pdf', 'excel', 'csv', 'json'])
 export type ExportFormat = z.infer<typeof ExportFormatSchema>
 
 // Export configuration
@@ -176,12 +176,6 @@ export class AnalyticsExportService {
           break
         case 'json':
           result = await this.exportToJSON(processedData, config, jobId)
-          break
-        case 'png':
-          result = await this.exportToPNG(processedData, config, jobId)
-          break
-        case 'svg':
-          result = await this.exportToSVG(processedData, config, jobId)
           break
         default:
           throw new Error(`Unsupported export format: ${config.format}`)
@@ -444,159 +438,7 @@ export class AnalyticsExportService {
     }
   }
 
-  /**
-   * Export to PNG
-   */
-  private async exportToPNG(data: ProcessedData, config: ExportConfig, jobId: string): Promise<ExportResult> {
-    // This would generate PNG images of charts
-    const pngContent = this.generatePNGContent(data, config)
-    
-    return {
-      format: 'png',
-      filename: `analytics-charts-${new Date().toISOString().split('T')[0]}.png`,
-      content: pngContent,
-      size: pngContent.length,
-      mimeType: 'image/png',
-      downloadUrl: `/api/analytics/export/download/${jobId}`
-    }
-  }
 
-  /**
-   * Export to SVG
-   */
-  private async exportToSVG(data: ProcessedData, config: ExportConfig, jobId: string): Promise<ExportResult> {
-    const svgContent = this.generateSVGContent(data, config)
-    
-    return {
-      format: 'svg',
-      filename: `analytics-charts-${new Date().toISOString().split('T')[0]}.svg`,
-      content: svgContent,
-      size: svgContent.length,
-      mimeType: 'image/svg+xml',
-      downloadUrl: `/api/analytics/export/download/${jobId}`
-    }
-  }
-
-  /**
-   * Generate PDF content
-   */
-  private generatePDFContent(data: ProcessedData, config: ExportConfig): string {
-    // Mock PDF content generation
-    const content = `
-      <html>
-        <head>
-          <title>${data.title}</title>
-          <style>
-            body { font-family: Arial, sans-serif; margin: 20px; }
-            .header { text-align: center; margin-bottom: 30px; }
-            .chart { margin: 20px 0; }
-            .data-table { width: 100%; border-collapse: collapse; }
-            .data-table th, .data-table td { border: 1px solid #ddd; padding: 8px; }
-          </style>
-        </head>
-        <body>
-          <div class="header">
-            <h1>${data.title}</h1>
-            <p>${data.description}</p>
-            <p>Generated: ${data.generatedAt.toLocaleString()}</p>
-          </div>
-          
-          ${data.charts.map(chart => `
-            <div class="chart">
-              <h3>${chart.title}</h3>
-              <p>Chart would be rendered here</p>
-            </div>
-          `).join('')}
-          
-          ${data.data.length > 0 ? `
-            <h3>Data Table</h3>
-            <table class="data-table">
-              <thead>
-                <tr>
-                  <th>Name</th>
-                  <th>Value</th>
-                  <th>Type</th>
-                  <th>Timestamp</th>
-                </tr>
-              </thead>
-              <tbody>
-                ${data.data.map(item => `
-                  <tr>
-                    <td>${item.name}</td>
-                    <td>${item.value}</td>
-                    <td>${item.type}</td>
-                    <td>${item.timestamp.toLocaleString()}</td>
-                  </tr>
-                `).join('')}
-              </tbody>
-            </table>
-          ` : ''}
-        </body>
-      </html>
-    `
-    
-    return content
-  }
-
-  /**
-   * Generate Excel content
-   */
-  private generateExcelContent(data: ProcessedData, config: ExportConfig): string {
-    // Mock Excel content - in reality this would use a proper Excel library
-    const rows = [
-      ['Name', 'Value', 'Type', 'Timestamp'],
-      ...data.data.map(item => [
-        item.name,
-        item.value.toString(),
-        item.type,
-        item.timestamp.toISOString()
-      ])
-    ]
-    
-    return rows.map(row => row.join(',')).join('\n')
-  }
-
-  /**
-   * Generate CSV content
-   */
-  private generateCSVContent(data: ProcessedData): string {
-    const headers = ['Name', 'Value', 'Type', 'Timestamp']
-    const rows = data.data.map(item => [
-      item.name,
-      item.value.toString(),
-      item.type,
-      item.timestamp.toISOString()
-    ])
-    
-    return [headers, ...rows].map(row => 
-      row.map(field => `"${field.toString().replace(/"/g, '""')}"`).join(',')
-    ).join('\n')
-  }
-
-  /**
-   * Generate PNG content
-   */
-  private generatePNGContent(data: ProcessedData, config: ExportConfig): string {
-    // Mock PNG content - in reality this would generate actual PNG images
-    return 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg=='
-  }
-
-  /**
-   * Generate SVG content
-   */
-  private generateSVGContent(data: ProcessedData, config: ExportConfig): string {
-    return `
-      <svg width="800" height="400" xmlns="http://www.w3.org/2000/svg">
-        <rect width="100%" height="100%" fill="white"/>
-        <text x="400" y="200" text-anchor="middle" font-family="Arial" font-size="24">
-          Analytics Charts
-        </text>
-        <text x="400" y="230" text-anchor="middle" font-family="Arial" font-size="16">
-          ${data.charts.length} charts would be rendered here
-        </text>
-      </svg>
-    `
-  }
 
   /**
    * Update job status

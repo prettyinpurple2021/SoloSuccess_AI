@@ -1,5 +1,7 @@
 import { logger, logError, logWarn, logInfo, logDebug, logApi, logDb, logAuth } from '@/lib/logger'
 import { CompetitiveIntelligenceIntegration } from './competitive-intelligence-integration'
+import { notificationDelivery } from './notification-delivery-system'
+import { CompetitorAlert } from '@/hooks/use-competitor-alerts'
 import { getSql } from '@/lib/api-utils'
 
 
@@ -145,20 +147,49 @@ export class CompetitiveIntelligenceAutomation {
     rule: AutomationRule, 
     userId: string
   ): Promise<void> {
-    // This would integrate with notification services
-    // For now, we'll log the notification
-    logInfo(`Notification triggered for alert ${alert.id} via rule ${rule.id}`, {
-      channels,
-      alert_title: alert.title,
-      competitor: alert.competitor_name,
-      severity: alert.severity
-    })
-    
-    // TODO: Implement actual notification delivery
-    // - Email notifications
-    // - Slack/Discord webhooks
-    // - Push notifications
-    // - SMS alerts for critical threats
+    try {
+      // Get user preferences
+      const preferences = await notificationDelivery.getNotificationPreferences(userId)
+      
+      // Filter channels based on rule configuration
+      // If rule specifies channels, we only send to those ENABLED in user preferences
+      const effectiveChannels = preferences.channels.filter(c => 
+        c.enabled && channels.includes(c.type === 'email' ? 'email' : c.id)
+      )
+      
+      // Create effective preferences for this specific alert
+      const effectivePreferences = {
+        ...preferences,
+        channels: effectiveChannels,
+        // Bypass quiet hours for critical automation rules if needed
+        quietHours: rule.conditions.severity_levels.includes('critical') ? 
+          { ...preferences.quietHours, enabled: false } : 
+          preferences.quietHours
+      }
+
+      // Cast alert to CompetitorAlert
+      const competitorAlert: CompetitorAlert = {
+        id: alert.id,
+        competitor_id: alert.competitor_id,
+        alert_type: alert.alert_type,
+        severity: alert.severity,
+        title: alert.title,
+        description: alert.description,
+        is_read: alert.is_read || false,
+        created_at: alert.created_at instanceof Date ? alert.created_at.toISOString() : alert.created_at,
+        competitor_name: alert.competitor_name,
+        competitor_threat_level: alert.threat_level
+      }
+      
+      await notificationDelivery.deliverNotification(competitorAlert, effectivePreferences)
+      
+      logInfo(`Notifications delivered for alert ${alert.id} via rule ${rule.id}`, {
+        channels: effectiveChannels.map(c => c.id),
+        alert_title: alert.title
+      })
+    } catch (error) {
+      logError('Failed to deliver notifications for automation rule:', error)
+    }
   }
   
   /**

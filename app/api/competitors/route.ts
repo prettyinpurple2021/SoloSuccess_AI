@@ -3,7 +3,10 @@ import { authenticateRequest } from '@/lib/auth-server'
 import { rateLimitByIp } from '@/lib/rate-limit'
 import { getSql } from '@/lib/api-utils'
 import { createErrorResponse } from '@/lib/api-response'
-import { logError } from '@/lib/logger'
+import { logError, logInfo } from '@/lib/logger'
+import { db } from '@/db'
+import { competitorProfiles } from '@/db/schema'
+import { z } from 'zod'
 
 // Edge runtime enabled after refactoring to jose and Neon HTTP
 export const runtime = 'edge'
@@ -150,5 +153,86 @@ export async function GET(request: NextRequest) {
       { error: 'Failed to fetch competitors' },
       { status: 500 }
     )
+  }
+}
+
+// Validator for competitor creation
+const createCompetitorSchema = z.object({
+  name: z.string().min(1, 'Name is required'),
+  domain: z.string().optional(),
+  description: z.string().optional(),
+  industry: z.string().optional(),
+  headquarters: z.string().optional(),
+  foundedYear: z.number().nullable().optional(),
+  employeeCount: z.number().nullable().optional(),
+  fundingStage: z.string().optional(),
+  threatLevel: z.string().default('medium'),
+  monitoringStatus: z.string().default('active'),
+  socialMediaHandles: z.record(z.string()).optional(),
+  monitoringConfig: z.record(z.any()).optional()
+})
+
+export async function POST(request: NextRequest) {
+  try {
+    // 1. Rate Limiting
+    const ip = request.headers.get('x-forwarded-for') || 'unknown'
+    const { allowed } = rateLimitByIp('competitors:create', ip, 60_000, 10)
+    
+    if (!allowed) {
+      return NextResponse.json({ error: 'Too many requests' }, { status: 429 })
+    }
+
+    // 2. Authentication
+    const { user, error: authError } = await authenticateRequest()
+    if (authError || !user) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+    }
+
+    // 3. Parse & Validate Body
+    const body = await request.json()
+    const validatedData = createCompetitorSchema.parse(body)
+
+    // 4. Database Insertion
+    const [newCompetitor] = await db.insert(competitorProfiles).values({
+      user_id: user.id,
+      name: validatedData.name,
+      domain: validatedData.domain,
+      description: validatedData.description,
+      industry: validatedData.industry,
+      headquarters: validatedData.headquarters,
+      founded_year: validatedData.foundedYear,
+      employee_count: validatedData.employeeCount,
+      funding_stage: validatedData.fundingStage,
+      threat_level: validatedData.threatLevel,
+      monitoring_status: validatedData.monitoringStatus,
+      social_media_handles: validatedData.socialMediaHandles,
+      monitoring_config: validatedData.monitoringConfig || {},
+      created_at: new Date(),
+      updated_at: new Date(),
+      // Default values for other fields
+      key_personnel: [],
+      products: [],
+      market_position: {},
+      competitive_advantages: [],
+      vulnerabilities: []
+    }).returning()
+
+    logInfo('Competitor created', { 
+      competitorId: newCompetitor.id, 
+      userId: user.id 
+    })
+
+    return NextResponse.json({ 
+      success: true, 
+      competitor: newCompetitor 
+    }, { status: 201 })
+
+  } catch (error) {
+    if (error instanceof z.ZodError) {
+      return NextResponse.json({ error: 'Validation failed', details: error.errors }, { status: 400 })
+    }
+
+    logError('Error creating competitor:', error)
+    return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 })
   }
 }

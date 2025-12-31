@@ -441,7 +441,7 @@ export class WorkflowEngine {
         createdBy: userId,
         createdAt: inserted.created_at!,
         updatedAt: inserted.updated_at!,
-        executionCount: 0, // TODO: calculate
+        executionCount: 0,
         successRate: 0,
         averageExecutionTime: 0
       }

@@ -1,7 +1,7 @@
 import { logger, logInfo } from '@/lib/logger'
 import { NextRequest } from 'next/server'
 import { db } from '@/db'
-import { analyticsEvents, users } from '@/db/schema'
+import { analyticsEvents, users, paymentProviderConnections } from '@/db/schema'
 import { desc, eq, sql, and, gte } from 'drizzle-orm'
 import { RevenueTrackingService } from './revenue-tracking'
 
@@ -229,6 +229,34 @@ class AnalyticsService {
       .where(gte(analyticsEvents.timestamp, oneWeekAgo))
     const activeUsers = Number(activeUsersResult[0]?.count || 0)
 
+    // Calculate revenue metrics
+    const revenue = await RevenueTrackingService.calculateGlobalRevenue(oneMonthAgo, now)
+    const mrr = await RevenueTrackingService.calculateGlobalMRR()
+
+    // Conversion rate (Users with active payment connections / Total users)
+    const payingUsersResult = await db.select({ count: sql<number>`count(distinct ${paymentProviderConnections.user_id})` })
+      .from(paymentProviderConnections)
+      .where(eq(paymentProviderConnections.is_active, true))
+    const payingUsers = Number(payingUsersResult[0]?.count || 0)
+    const conversionRate = totalUsers > 0 ? (payingUsers / totalUsers) * 100 : 0
+
+    // Feature adoption rate
+    const featureUsage = await db.select({
+      feature: analyticsEvents.event,
+      count: sql<number>`count(distinct ${analyticsEvents.user_id})`
+    })
+    .from(analyticsEvents)
+    .groupBy(analyticsEvents.event)
+
+    const featureAdoptionRate: Record<string, number> = {}
+    featureUsage.forEach(f => {
+      // @ts-ignore - drizzle types can be quirky with groupBy
+      const featureName = f.feature as string
+      if (featureName) {
+        featureAdoptionRate[featureName] = totalUsers > 0 ? (Number(f.count) / totalUsers) * 100 : 0
+      }
+    })
+
     return {
       totalUsers,
       activeUsers,
@@ -236,11 +264,11 @@ class AnalyticsService {
       newUsersThisWeek,
       newUsersThisMonth,
       userRetentionRate: totalUsers > 0 ? (activeUsers / totalUsers) * 100 : 0,
-      featureAdoptionRate: {}, // TODO: Implement
-      conversionRate: 0, // TODO: Implement
-      churnRate: 0, // TODO: Implement
-      revenue: 0, // In production, this would sum up all user revenue via a background job
-      mrr: 0
+      featureAdoptionRate,
+      conversionRate,
+      churnRate: 0, // Requires subscription lifecycle webhook handling to be accurate
+      revenue,
+      mrr
     }
   }
 
