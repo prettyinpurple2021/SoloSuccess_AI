@@ -181,22 +181,23 @@ export default function RootLayout({
                 }
               }
 
-              // Suppress backendManager errors and other third-party extension noise
+              // Suppress specific extension errors without blocking others
               if (typeof window !== 'undefined' && window.addEventListener) {
                 const originalErrorHandler = window.onerror;
                 window.onerror = function(message, source, lineno, colno, error) {
-                  const msg = typeof message === 'string' ? message : '';
-                  const src = typeof source === 'string' ? source : '';
+                  const msg = String(message);
+                  const src = String(source || '');
                   
-                  // Suppress known third-party extension errors
-                  const isExtensionError = 
-                    (msg.includes('Cannot read properties of undefined') && msg.includes('has') && src.includes('backendManager')) ||
-                    (msg.includes('Failed to execute \'appendChild\' on \'Node\'') && src.includes('framework')) ||
-                    (msg.includes('__REACT_DEVTOOLS_GLOBAL_HOOK__.on is not a function')) ||
+                  // Known browser extension and third-party noise
+                  const isIgnorable = 
+                    (msg.includes('backendManager') || src.includes('backendManager')) ||
+                    (msg.includes('appendChild') && src.includes('framework')) || 
+                    (msg.includes('__REACT_DEVTOOLS_GLOBAL_HOOK__')) ||
                     (src.includes('chrome-extension://')) ||
-                    (src.includes('moz-extension://'));
+                    (src.includes('moz-extension://')) ||
+                    (msg.includes('ResizeObserver loop'));
 
-                  if (isExtensionError) {
+                  if (isIgnorable) {
                     return true;
                   }
 
@@ -206,46 +207,18 @@ export default function RootLayout({
                   return false;
                 };
 
-                // Catch unhandled rejections as well
+                // Suppress unhandled promise rejections from extensions
                 window.addEventListener('unhandledrejection', function(event) {
-                  if (event.reason && event.reason.message && event.reason.message.includes('__REACT_DEVTOOLS_GLOBAL_HOOK__.on')) {
+                  const reason = event.reason?.message || String(event.reason || '');
+                  if (
+                    reason.includes('backendManager') || 
+                    reason.includes('Extension context invalidated') ||
+                    reason.includes('disconnected port')
+                  ) {
                     event.preventDefault();
                   }
                 });
               }
-
-              // Refined CSS script removal: Only remove if they are explicitly identified as problematic
-              // instead of a blanket removal which can cause "Refused to execute script" warnings.
-              const cleanupProblematicScripts = () => {
-                const scripts = Array.from(document.querySelectorAll('script[src]'));
-                scripts.forEach((script) => {
-                  const src = script.getAttribute('src') || '';
-                  // If a .css file is being loaded as a script, it's a mistake that causes MIME type errors
-                  if (src.split('?')[0].endsWith('.css')) {
-                    try { script.parentElement?.removeChild(script); } catch (e) {}
-                  }
-                });
-              };
-
-              if (document.readyState === 'loading') {
-                document.addEventListener('DOMContentLoaded', cleanupProblematicScripts);
-              } else {
-                cleanupProblematicScripts();
-              }
-
-              const observer = new MutationObserver(() => cleanupProblematicScripts());
-              const target = document.documentElement || document.body;
-              if (target) {
-                observer.observe(target, { childList: true, subtree: true });
-              }
-
-              const teardown = () => {
-                observer.disconnect();
-                window.removeEventListener('pagehide', teardown);
-                window.removeEventListener('beforeunload', teardown);
-              };
-              window.addEventListener('pagehide', teardown);
-              window.addEventListener('beforeunload', teardown);
             } catch (err) {
               // no-op
             }
