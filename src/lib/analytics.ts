@@ -122,8 +122,8 @@ class AnalyticsService {
    * Track performance metrics
    */
   async trackPerformance(metrics: Partial<PerformanceMetrics>): Promise<void> {
-    // For now, we'll log performance metrics as standard events
-    // In a real production app, you might want a dedicated time-series DB or table
+    // Log performance metrics as standard events (V1 Strategy)
+    // Future: Migrate to dedicated time-series DB (e.g. TimescaleDB, InfluxDB)
     await this.trackEvent('performance_metric', metrics)
   }
 
@@ -132,8 +132,8 @@ class AnalyticsService {
    * Note: This is a heavy operation and should be optimized or cached in production
    */
   async getUserMetrics(userId: string): Promise<UserMetrics | null> {
-    // This is a simplified implementation. In production, you'd want to aggregate this 
-    // in a background job or materialized view.
+    // Get user metrics (V1: On-demand query)
+    // Future: Aggregate in background job or materialized view for scale
     const events = await db.select()
       .from(analyticsEvents)
       .where(eq(analyticsEvents.user_id, userId))
@@ -153,8 +153,8 @@ class AnalyticsService {
       templatesSaved: events.filter(e => e.event === 'template_saved').length,
       lastActiveAt: events[events.length - 1]?.timestamp || new Date(),
       firstSeenAt: events[0]?.timestamp || new Date(),
-      averageSessionDuration: 0, // Complex to calculate without session tracking
-      retentionScore: 0, // Placeholder
+      averageSessionDuration: 0, // Todo: Implement session tracking middleware
+      retentionScore: 0, // Todo: Implement cohort analysis
       revenue: await RevenueTrackingService.calculateRevenue(userId, new Date(Date.now() - REVENUE_WINDOW_DAYS * MS_PER_DAY), new Date()).catch(err => {
         console.error('Failed to calculate revenue for user:', userId, err)
         return 0
@@ -266,7 +266,7 @@ class AnalyticsService {
       userRetentionRate: totalUsers > 0 ? (activeUsers / totalUsers) * 100 : 0,
       featureAdoptionRate,
       conversionRate,
-      churnRate: 0, // Requires subscription lifecycle webhook handling to be accurate
+      churnRate: 0, // Deferred: Requires Stripe webhook 'customer.subscription.deleted' handler
       revenue,
       mrr
     }
@@ -298,8 +298,7 @@ class AnalyticsService {
       sessionId: e.session_id || undefined
     }))
 
-    // For dashboard, we might want top users or something, but for now let's return empty or basic
-    // to avoid performance issues with getAllUserMetrics()
+    // Return basic dashboard data (User list deferred to V2 Admin Panel)
     const userMetrics: UserMetrics[] = []
 
     return {

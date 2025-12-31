@@ -14,7 +14,7 @@ interface SoloSuccessLogoProps {
 
 /**
  * Renders the provided SoloSuccess neon SS logo image with an optional animated ring.
- * Uses the high-fidelity PNG in /public for now; easy to swap to SVG later if desired.
+ * Uses the high-fidelity PNG asset.
  */
 export function SoloSuccessLogo({
   className,

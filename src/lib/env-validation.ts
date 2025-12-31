@@ -97,9 +97,9 @@ export function validateEnv() {
         logError("\n🔗 Documentation: Check README.md for detailed setup instructions")
       }
       
-      // Do not crash build by default. Opt-in via VALIDATE_ENV=true.
-      if (process.env.VALIDATE_ENV === "true") {
-        throw new Error("Environment validation failed")
+      // In production, ALWAYS throw. In dev/test, only throw if requested.
+      if (process.env.NODE_ENV === "production" || process.env.VALIDATE_ENV === "true") {
+        throw new Error("Environment validation failed: Missing required variables")
       }
     }
     throw error

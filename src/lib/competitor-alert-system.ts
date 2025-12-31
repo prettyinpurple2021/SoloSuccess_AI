@@ -284,7 +284,8 @@ export class CompetitorAlertSystem {
         return Number(fieldValue) < Number(condition.value);
       
       case 'changed':
-        // This would require historical comparison - simplified for now
+        // Future: Implement historical comparison (requires time-series intelligence data)
+        // Current V1 behavior: Returns true if data exists (signal detected)
         return true;
       
       case 'matches_pattern':

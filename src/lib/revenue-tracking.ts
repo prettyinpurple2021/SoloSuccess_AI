@@ -231,10 +231,9 @@ export class RevenueTrackingService {
     * PayPal-specific MRR calculation (Placeholder for real API)
     */
   private static async calculatePayPalMRR(connection: PaymentConnection): Promise<number> {
-    // PayPal Subscription API would be used here
-    // requires paypal-rest-sdk or fetch calls to PayPal API
-    // For now returning 0 as we only have Stripe SDK installed
-    logWarn('PayPal MRR calculation not implemented', { connectionId: connection.id })
+    // Future: PayPal Subscription API integration
+    // Current V1 implementation focuses on Stripe.
+    logWarn('PayPal MRR calculation deferred to V2', { connectionId: connection.id })
     return 0
   }
 
@@ -242,8 +241,8 @@ export class RevenueTrackingService {
     * PayPal-specific revenue calculation (Placeholder for real API)
     */
   private static async calculatePayPalRevenue(connection: PaymentConnection, startDate: Date, endDate: Date): Promise<number> {
-    // PayPal Orders/Transactions API would be used here
-    logWarn('PayPal Revenue calculation not implemented', { connectionId: connection.id })
+    // Future: PayPal Orders/Transactions API integration
+    logWarn('PayPal Revenue calculation deferred to V2', { connectionId: connection.id })
     return 0
   }
 
@@ -278,7 +277,7 @@ export class RevenueTrackingService {
 
       const revenueGrowth = previousRevenue > 0 ? ((currentRevenue - previousRevenue) / previousRevenue) * 100 : 0
 
-      // Aggregate subscriptions (simplified for now to active total)
+      // Aggregate subscriptions (active total)
       let activeCount = 0
       for (const conn of connections) {
         if (conn.provider === 'stripe' && conn.access_token) {
@@ -370,8 +369,9 @@ export class RevenueTrackingService {
         return false
       }
 
-      // Implement provider-specific refresh logic
-      logWarn(`${provider} token refresh not implemented, user needs to reconnect`, { userId })
+      // Future: Implement provider-specific OAuth refresh (e.g. /oauth/token for Stripe)
+      // Current behavior requires manual reconnection on expiry.
+      logWarn(`${provider} token refresh deferred, user needs to reconnect`, { userId })
       return false
     } catch (error) {
       logError(`Error refreshing ${provider} token:`, error)

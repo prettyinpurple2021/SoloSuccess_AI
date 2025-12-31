@@ -368,10 +368,15 @@ export const storageService = {
     },
 
     async saveProductSpecs(specs: ProductSpec[]): Promise<void> {
-        // Batch save not supported by generic CRUD yet, loop for now or add batch endpoint
-        // For now, just save one by one or assume this is rarely used
-        for (const spec of specs) {
-            await this.saveProductSpec(spec);
+        // Optimized: Parallel execution using Promise.allSettled for robustness
+        // Future: Implement true batch API endpoint '/api/resources/product-specs/batch'
+        const results = await Promise.allSettled(specs.map(spec => this.saveProductSpec(spec)));
+        
+        // Log any failures
+        const failures = results.filter(r => r.status === 'rejected');
+        if (failures.length > 0) {
+            console.error(`Failed to save ${failures.length} product specs`, failures);
+            throw new Error(`Batch save failed for ${failures.length} items`);
         }
     },
 

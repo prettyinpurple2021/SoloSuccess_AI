@@ -17,6 +17,7 @@ export interface AgentPerformanceProfile {
   weaknesses: string[]
   improvementAreas: string[]
   recommendations: string[]
+  structuredRecommendations: TrainingRecommendation[]
   performanceInsights: PerformanceInsight[]
   benchmarkComparison: {
     vsAverage: number
@@ -56,6 +57,7 @@ export class PerformanceAnalytics {
         weaknesses: ['Insufficient training data'],
         improvementAreas: ['Data collection'],
         recommendations: ['Increase interaction volume to enable analysis'],
+        structuredRecommendations: [],
         performanceInsights: [],
         benchmarkComparison: {
           vsAverage: 0,
@@ -76,6 +78,7 @@ export class PerformanceAnalytics {
       weaknesses: this.identifyWeaknesses(agentMetrics),
       improvementAreas: this.identifyImprovementAreas(agentMetrics, insights),
       recommendations: recommendations.map(r => r.description),
+      structuredRecommendations: recommendations,
       performanceInsights: insights,
       benchmarkComparison: this.calculateBenchmarkComparison(agentMetrics, metrics)
     }
@@ -370,9 +373,7 @@ export class PerformanceAnalytics {
     )
 
     const allRecommendations = agentProfiles.flatMap(profile => 
-      this.generateRecommendations(profile.agentId, this.calculateAgentMetrics(
-        [] // We'd need to get the data again, but for now use empty array
-      ), profile.performanceInsights)
+      profile.structuredRecommendations
     )
 
     const allInsights = agentProfiles.flatMap(profile => profile.performanceInsights)
