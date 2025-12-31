@@ -177,7 +177,7 @@ export class SimpleTrainingCollector {
       averageResponseTime,
       averageConfidence,
       topPerformingAgents,
-      commonFailurePatterns: [], // TODO: Implement pattern analysis
+      commonFailurePatterns: this.analyzeFailurePatterns(filteredInteractions),
       userSatisfactionTrends
     }
   }
@@ -217,6 +217,40 @@ export class SimpleTrainingCollector {
   // Clear all data (for testing)
   clearData(): void {
     this.interactions = []
+  }
+
+
+  private analyzeFailurePatterns(interactions: TrainingInteraction[]): Array<{ pattern: string; frequency: number; agents: string[] }> {
+    const failedInteractions = interactions.filter(i => !i.success || (i.userRating && i.userRating <= 2))
+    if (failedInteractions.length === 0) return []
+
+    const patterns = new Map<string, { count: number; agents: Set<string> }>()
+    
+    failedInteractions.forEach(i => {
+      // Simple keyword extraction for basic pattern matching
+      // In a real system, this would use NLP or clustering
+      let pattern = 'Unknown Error'
+      const msg = i.userMessage.toLowerCase()
+      
+      if (msg.includes('error') || msg.includes('fail')) pattern = 'Explicit Error Mention'
+      else if (msg.includes('wrong') || msg.includes('incorrect')) pattern = 'Incorrect Information'
+      else if (msg.includes('slow') || msg.includes('latency')) pattern = 'High Latency'
+      else if (msg.includes('format')) pattern = 'Formatting Issue'
+      else if (i.confidence < 0.5) pattern = 'Low Confidence'
+      
+      const entry = patterns.get(pattern) || { count: 0, agents: new Set() }
+      entry.count++
+      entry.agents.add(i.agentId)
+      patterns.set(pattern, entry)
+    })
+
+    return Array.from(patterns.entries())
+      .map(([pattern, data]) => ({
+        pattern,
+        frequency: data.count,
+        agents: Array.from(data.agents)
+      }))
+      .sort((a, b) => b.frequency - a.frequency)
   }
 }
 

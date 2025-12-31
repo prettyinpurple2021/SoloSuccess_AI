@@ -1,4 +1,5 @@
 import { logger, logError, logWarn, logInfo, logDebug, logApi, logDb, logAuth } from '@/lib/logger'
+import OpenAI from 'openai'
 import { SimpleTrainingCollector } from "./simple-training-collector"
 import type { TrainingInteraction } from "./simple-training-collector"
 import { PerformanceAnalytics, TrainingRecommendation } from "./performance-analytics"
@@ -257,28 +258,69 @@ export class FineTuningPipeline {
       job.status = 'training'
       await this.updateJobStatus(job)
 
-      // Simulate training process (in real implementation, call actual fine-tuning API)
-      const results = await this.simulateFineTuning(job, dataset)
+      // Initialize OpenAI client
+      const openai = new OpenAI({
+        apiKey: process.env.OPENAI_API_KEY
+      })
 
-      // Update job status
-      job.status = 'validating'
-      await this.updateJobStatus(job)
+      // Create JSONL file content
+      const fileContent = dataset.data.map(d => JSON.stringify({
+        messages: [
+          { role: 'system', content: `You are an AI assistant specialized in ${d.metadata.specialization}.` },
+          { role: 'user', content: d.userMessage },
+          { role: 'assistant', content: d.agentResponse }
+        ]
+      })).join('\n')
 
-      // Validate results
-      const validationResults = await this.validateFineTuningResults(job, results)
+      // Upload file to OpenAI
+      // Note: In a real edge environment, we might need a workaround for File objects,
+      // but for standard Node.js this works. 
+      // Ideally we would use a proper file upload service, but constructing a File/Blob here:
+      const file = new File([fileContent], `${job.id}_training.jsonl`, { type: 'application/jsonl' })
+      
+      const uploadedFile = await openai.files.create({
+        file: file,
+        purpose: 'fine-tune'
+      })
 
-      // Update job status
-      job.status = 'completed'
-      job.completedAt = new Date()
-      job.results = validationResults
+      logInfo(`Uploaded training file ${uploadedFile.id} for job ${job.id}`)
+
+      // Start Fine-Tuning Job
+      const ftJob = await openai.fineTuning.jobs.create({
+        training_file: uploadedFile.id,
+        model: job.parameters.model || 'gpt-3.5-turbo-0125',
+        hyperparameters: {
+          n_epochs: job.parameters.epochs || 'auto',
+          batch_size: job.parameters.batchSize ? job.parameters.batchSize : 'auto',
+          learning_rate_multiplier: job.parameters.learningRate ? job.parameters.learningRate : 'auto'
+        },
+        suffix: `solosuccess-${job.agentId}`
+      })
+
+      logInfo(`Started OpenAI fine-tuning job ${ftJob.id} for local job ${job.id}`)
+
+      // For now, we'll mark it as 'training' and rely on a separate polling mechanism or webhook
+      // to check status. Since we don't have that yet, we will just update with the OpenAI Job ID
+      // so we can track it later.
+      
+      // We'll update the job results with the OpenAI ID for reference
+      job.results = {
+        ...job.results,
+        beforeMetrics: { ...job.results?.beforeMetrics, openaiJobId: ftJob.id }
+      } as any
+
       await this.updateJobStatus(job)
 
     } catch (error) {
+      logError('Error starting fine-tuning process:', error)
       job.status = 'failed'
       job.error = error instanceof Error ? error.message : 'Unknown error'
       await this.updateJobStatus(job)
     }
   }
+
+  // Helper to simulate validation for now, or could fetch from OpenAI metrics if available immediately (unlikely)
+  // The actual simulation method 'simulateFineTuning' is removed as we are now doing real calls.
 
   private async createTrainingDataset(job: FineTuningJob, data: TrainingInteraction[]): Promise<TrainingDataset> {
     const dataset: TrainingDataset = {
@@ -331,20 +373,7 @@ export class FineTuningPipeline {
     return ratio
   }
 
-  private async simulateFineTuning(job: FineTuningJob, dataset: TrainingDataset): Promise<any> {
-    // Simulate training process
-    logInfo(`Simulating fine-tuning for ${job.agentId} with ${dataset.size} samples`)
-    
-    // In real implementation, this would call the actual fine-tuning API
-    await new Promise(resolve => setTimeout(resolve, 5000)) // Simulate 5 second training
-    
-    return {
-      accuracy: 0.85 + Math.random() * 0.1,
-      loss: 0.1 + Math.random() * 0.05,
-      validationAccuracy: 0.82 + Math.random() * 0.08,
-      validationLoss: 0.12 + Math.random() * 0.03
-    }
-  }
+  // simulateFineTuning removed
 
   private async validateFineTuningResults(job: FineTuningJob, results: any): Promise<FineTuningResults> {
     // Get before metrics

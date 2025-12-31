@@ -78,7 +78,7 @@ const MessageBubble: React.FC<{
   isOwn: boolean
   showSender?: boolean
   onReply?: (message: Message) => void
-  onEdit?: (message: Message) => void
+  onEdit?: (message: Message, newContent: string) => void
   onDelete?: (message: Message) => void
 }> = ({ message, isOwn, showSender = true, onReply, onEdit, onDelete }) => {
   const [showActions, setShowActions] = useState(false)
@@ -118,6 +118,16 @@ const MessageBubble: React.FC<{
       hour: '2-digit', 
       minute: '2-digit' 
     })
+  }
+
+  const [isEditing, setIsEditing] = useState(false)
+  const [editContent, setEditContent] = useState(message.content)
+
+  const handleSaveEdit = () => {
+    if (editContent !== message.content) {
+      onEdit?.(message, editContent)
+    }
+    setIsEditing(false)
   }
 
   return (
@@ -170,53 +180,69 @@ const MessageBubble: React.FC<{
           onMouseEnter={() => setShowActions(true)}
           onMouseLeave={() => setShowActions(false)}
         >
-          {/* Message Type Icon */}
-          {getMessageIcon() && (
-            <div className="flex items-center gap-2 mb-1">
-              {getMessageIcon()}
-              <span className="text-xs font-medium">
-                {message.type.charAt(0).toUpperCase() + message.type.slice(1)}
-              </span>
+          {isEditing ? (
+            <div className="flex flex-col gap-2 min-w-[200px]">
+              <Textarea 
+                value={editContent} 
+                onChange={(e) => setEditContent(e.target.value)}
+                className="text-black min-h-[60px]"
+              />
+              <div className="flex gap-2 justify-end">
+                <Button size="sm" variant="ghost" onClick={() => setIsEditing(false)}>Cancel</Button>
+                <Button size="sm" onClick={handleSaveEdit}>Save</Button>
+              </div>
             </div>
-          )}
-
-          {/* Content */}
-          <div className="text-sm whitespace-pre-wrap break-words">
-            {message.content}
-          </div>
-
-          {/* Code Block Styling */}
-          {message.type === 'code' && (
-            <div className="mt-2 p-2 bg-black/10 rounded text-xs font-mono">
-              {message.metadata?.codeLanguage && (
-                <div className="text-xs text-muted-foreground mb-1">
-                  {message.metadata.codeLanguage}
+          ) : (
+            <>
+              {/* Message Type Icon */}
+              {getMessageIcon() && (
+                <div className="flex items-center gap-2 mb-1">
+                  {getMessageIcon()}
+                  <span className="text-xs font-medium">
+                    {message.type.charAt(0).toUpperCase() + message.type.slice(1)}
+                  </span>
                 </div>
               )}
-              <pre className="whitespace-pre-wrap">{message.content}</pre>
-            </div>
-          )}
 
-          {/* Attachments */}
-          {message.attachments && message.attachments.length > 0 && (
-            <div className="mt-2 space-y-1">
-              {message.attachments.map(attachment => (
-                <div key={attachment.id} className="flex items-center gap-2 p-2 bg-white/10 rounded">
-                  <FileText className="w-4 h-4" />
-                  <span className="text-xs flex-1 truncate">{attachment.name}</span>
-                  <span className="text-xs text-muted-foreground">
-                    {(attachment.size / 1024).toFixed(1)}KB
-                  </span>
-                  <Button size="sm" variant="ghost" className="h-6 w-6 p-0">
-                    <Download className="w-3 h-3" />
-                  </Button>
+              {/* Content */}
+              <div className="text-sm whitespace-pre-wrap break-words">
+                {message.content}
+              </div>
+
+              {/* Code Block Styling */}
+              {message.type === 'code' && (
+                <div className="mt-2 p-2 bg-black/10 rounded text-xs font-mono">
+                  {message.metadata?.codeLanguage && (
+                    <div className="text-xs text-muted-foreground mb-1">
+                      {message.metadata.codeLanguage}
+                    </div>
+                  )}
+                  <pre className="whitespace-pre-wrap">{message.content}</pre>
                 </div>
-              ))}
-            </div>
+              )}
+
+              {/* Attachments */}
+              {message.attachments && message.attachments.length > 0 && (
+                <div className="mt-2 space-y-1">
+                  {message.attachments.map(attachment => (
+                    <div key={attachment.id} className="flex items-center gap-2 p-2 bg-white/10 rounded">
+                      <FileText className="w-4 h-4" />
+                      <span className="text-xs flex-1 truncate">{attachment.name}</span>
+                      <span className="text-xs text-muted-foreground">
+                        {(attachment.size / 1024).toFixed(1)}KB
+                      </span>
+                      <Button size="sm" variant="ghost" className="h-6 w-6 p-0">
+                        <Download className="w-3 h-3" />
+                      </Button>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </>
           )}
 
           {/* Action Buttons */}
-          {showActions && message.type !== 'system' && (
+          {showActions && !isEditing && message.type !== 'system' && (
             <div className={cn(
               "absolute top-0 flex gap-1 bg-background border rounded shadow-sm p-1",
               isOwn ? "-left-20" : "-right-20"
@@ -224,7 +250,7 @@ const MessageBubble: React.FC<{
               <TooltipProvider>
                 <Tooltip>
                   <TooltipTrigger asChild>
-                    <Button size="sm" variant="ghost" className="h-6 w-6 p-0" onClick={() => onReply?.(message)}>
+                    <Button size="sm" variant="ghost" className="h-6 w-6 p-0 text-foreground" onClick={() => onReply?.(message)}>
                       <Reply className="w-3 h-3" />
                     </Button>
                   </TooltipTrigger>
@@ -233,7 +259,7 @@ const MessageBubble: React.FC<{
 
                 <Tooltip>
                   <TooltipTrigger asChild>
-                    <Button size="sm" variant="ghost" className="h-6 w-6 p-0" onClick={() => navigator.clipboard.writeText(message.content)}>
+                    <Button size="sm" variant="ghost" className="h-6 w-6 p-0 text-foreground" onClick={() => navigator.clipboard.writeText(message.content)}>
                       <Copy className="w-3 h-3" />
                     </Button>
                   </TooltipTrigger>
@@ -244,7 +270,7 @@ const MessageBubble: React.FC<{
                   <>
                     <Tooltip>
                       <TooltipTrigger asChild>
-                        <Button size="sm" variant="ghost" className="h-6 w-6 p-0" onClick={() => onEdit?.(message)}>
+                        <Button size="sm" variant="ghost" className="h-6 w-6 p-0 text-foreground" onClick={() => setIsEditing(true)}>
                           <Edit className="w-3 h-3" />
                         </Button>
                       </TooltipTrigger>
@@ -307,6 +333,7 @@ const MessageInterface: React.FC<{ sessionId: string }> = ({ sessionId }) => {
   const [messages, setMessages] = useState<Message[]>([])
   const [participants, setParticipants] = useState<SessionParticipant[]>([])
   const [newMessage, setNewMessage] = useState('')
+  const [editingMessage, setEditingMessage] = useState<Message | null>(null)
   const [messageType, setMessageType] = useState<'text' | 'code'>('text')
   const [loading, setLoading] = useState(true)
   const [sending, setSending] = useState(false)
@@ -436,11 +463,30 @@ const MessageInterface: React.FC<{ sessionId: string }> = ({ sessionId }) => {
     textareaRef.current?.focus()
   }
 
-  // Handle edit (placeholder)
-  const handleEdit = (message: Message) => {
-    setNewMessage(message.content)
-    setMessageType(message.type as 'text' | 'code')
-    textareaRef.current?.focus()
+  // Handle edit
+  const handleEdit = async (message: Message, newContent: string) => {
+    try {
+      const response = await fetch(`/api/collaboration/sessions/${sessionId}/messages/${message.id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ content: newContent })
+      })
+
+      if (response.ok) {
+        setMessages(prev => prev.map(msg => 
+          msg.id === message.id ? { ...msg, content: newContent } : msg
+        ))
+        toast.success('Message updated')
+        setEditingMessage(null)
+      } else {
+        toast.error('Failed to update message')
+      }
+    } catch (error) {
+      logError('Error updating message:', error)
+      toast.error('Failed to update message')
+    }
   }
 
   // Handle delete (placeholder)
