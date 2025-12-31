@@ -1,4 +1,4 @@
-// @ts-nocheck
+
 'use client'
 
 import { logger, logError, logWarn, logInfo, logDebug, logApi, logDb, logAuth } from '@/lib/logger'
@@ -64,7 +64,7 @@ interface AgentCapability {
 
 interface AgentActivity {
   id: string
-  timestamp: string
+  timestamp: string | Date
   action: string
   sessionId?: string
   details: string
@@ -157,7 +157,7 @@ const AgentCard: React.FC<{ agent: Agent; onSelect?: (agent: Agent) => void; com
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-2">
             <h4 className="text-sm font-semibold truncate">{agent.name}</h4>
-            <Badge variant="secondary" className="text-xs">
+            <Badge variant="purple" className="mb-2">
               {agent.specialization}
             </Badge>
           </div>
@@ -189,7 +189,7 @@ const AgentCard: React.FC<{ agent: Agent; onSelect?: (agent: Agent) => void; com
             <h3 className="font-semibold text-lg">{agent.name}</h3>
             <p className="text-sm text-muted-foreground">{agent.specialization}</p>
             {agent.version && (
-              <Badge variant="outline" className="text-xs mt-1">
+              <Badge variant="cyan" className="text-xs mt-1">
                 v{agent.version}
               </Badge>
             )}
@@ -243,12 +243,12 @@ const AgentCard: React.FC<{ agent: Agent; onSelect?: (agent: Agent) => void; com
         {/* Capabilities Preview */}
         <div className="flex flex-wrap gap-1">
           {agent.capabilities.slice(0, 3).map((capability, index) => (
-            <Badge key={index} variant="secondary" className="text-xs">
+            <Badge key={index} variant="purple" className="text-xs">
               {capability}
             </Badge>
           ))}
           {agent.capabilities.length > 3 && (
-            <Badge variant="secondary" className="text-xs">
+            <Badge variant="purple" className="text-xs">
               +{agent.capabilities.length - 3}
             </Badge>
           )}
@@ -286,56 +286,28 @@ const AgentCard: React.FC<{ agent: Agent; onSelect?: (agent: Agent) => void; com
 const AgentDetailsView: React.FC<{ agent: Agent }> = ({ agent }) => {
   const [activeTab, setActiveTab] = useState('overview')
   const [activities, setActivities] = useState<AgentActivity[]>([])
-  const [capabilities, setCapabilities] = useState<AgentCapability[]>([])
 
-  // Mock data for demonstration
+  // Load agent activity from API
   useEffect(() => {
-    // Mock activities
-    setActivities([
-      {
-        id: '1',
-        timestamp: '2024-01-16T10:30:00Z',
-        action: 'Session Joined',
-        sessionId: 'sess-123',
-        details: 'Joined project collaboration session',
-        status: 'success'
-      },
-      {
-        id: '2',
-        timestamp: '2024-01-16T09:15:00Z',
-        action: 'Task Completed',
-        details: 'Code analysis completed successfully',
-        status: 'success'
-      },
-      {
-        id: '3',
-        timestamp: '2024-01-16T08:45:00Z',
-        action: 'Error Encountered',
-        details: 'Network timeout during API call',
-        status: 'error'
-      }
-    ])
-
-    // Mock capabilities
-    setCapabilities([
-      {
-        name: 'Code Analysis',
-        description: 'Analyze code quality, structure, and potential issues',
-        inputTypes: ['text/code', 'file/source'],
-        outputTypes: ['text/report', 'json/metrics'],
-        estimatedTime: '2-5 minutes',
-        complexity: 'medium'
-      },
-      {
-        name: 'Documentation Generation',
-        description: 'Generate comprehensive documentation from code',
-        inputTypes: ['file/source', 'text/code'],
-        outputTypes: ['text/markdown', 'html/docs'],
-        estimatedTime: '3-8 minutes',
-        complexity: 'high'
-      }
-    ])
-  }, [])
+    // In a real app this would fetch from /api/collaboration/agents/${agent.id}/activity
+    // For now we simulate it or derive from agent.activeSessions if available
+    
+    // We can use the activeSessions prop if it was passed down, but the type definition
+    // for Agent in this file doesn't match the full API response perfectly yet.
+    // Let's type cast for now or update the interface later.
+    const agentData = agent as any
+    if (agentData.activeSessions && Array.isArray(agentData.activeSessions)) {
+       const mappedActivities = agentData.activeSessions.map((session: any) => ({
+         id: session.id,
+         timestamp: session.lastActivity || session.createdAt,
+         action: 'Active Session',
+         sessionId: session.id,
+         details: `Working on project: ${session.projectName || 'Untitled'}`,
+         status: session.status === 'error' ? 'error' : 'success'
+       }))
+       setActivities(mappedActivities)
+    }
+  }, [agent])
 
   return (
     <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-4">
@@ -376,56 +348,36 @@ const AgentDetailsView: React.FC<{ agent: Agent }> = ({ agent }) => {
         <Card className="p-4">
           <h4 className="font-semibold mb-2">Description</h4>
           <p className="text-muted-foreground">
-            {agent.description || 'A specialized AI agent designed to assist with various tasks and provide intelligent automation.'}
+            {agent.description}
           </p>
+          
+          <div className="mt-4">
+            <h4 className="font-semibold mb-2">Personality</h4>
+            <div className="bg-muted/50 p-3 rounded-md text-sm italic">
+              &ldquo;{(agent as any).personality || 'Professional and helpful.'}&rdquo;
+            </div>
+          </div>
         </Card>
       </TabsContent>
 
       <TabsContent value="capabilities" className="space-y-4">
         <div className="grid gap-4">
-          {capabilities.map((capability, index) => (
+          {agent.capabilities.map((capability, index) => (
             <Card key={index} className="p-4">
               <div className="flex items-start justify-between mb-2">
-                <h4 className="font-semibold">{capability.name}</h4>
-                <Badge variant={
-                  capability.complexity === 'high' ? 'destructive' :
-                  capability.complexity === 'medium' ? 'default' : 'secondary'
-                }>
-                  {capability.complexity}
-                </Badge>
+                <h4 className="font-semibold">{capability}</h4>
+                <Badge variant="purple">Capability</Badge>
               </div>
               <p className="text-sm text-muted-foreground mb-3">
-                {capability.description}
+                This agent is specialized in {capability}.
               </p>
-              
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-3 text-xs">
-                <div>
-                  <span className="font-medium">Input Types:</span>
-                  <div className="flex flex-wrap gap-1 mt-1">
-                    {capability.inputTypes.map((type, idx) => (
-                      <Badge key={idx} variant="outline" className="text-xs">
-                        {type}
-                      </Badge>
-                    ))}
-                  </div>
-                </div>
-                <div>
-                  <span className="font-medium">Output Types:</span>
-                  <div className="flex flex-wrap gap-1 mt-1">
-                    {capability.outputTypes.map((type, idx) => (
-                      <Badge key={idx} variant="outline" className="text-xs">
-                        {type}
-                      </Badge>
-                    ))}
-                  </div>
-                </div>
-                <div>
-                  <span className="font-medium">Est. Time:</span>
-                  <p className="text-muted-foreground">{capability.estimatedTime}</p>
-                </div>
-              </div>
             </Card>
           ))}
+          {agent.capabilities.length === 0 && (
+            <div className="text-center p-8 text-muted-foreground">
+              No specific capabilities listed.
+            </div>
+          )}
         </div>
       </TabsContent>
 
@@ -444,7 +396,7 @@ const AgentDetailsView: React.FC<{ agent: Agent }> = ({ agent }) => {
                     <h5 className="font-medium">{activity.action}</h5>
                     <p className="text-sm text-muted-foreground">{activity.details}</p>
                     {activity.sessionId && (
-                      <Badge variant="outline" className="text-xs mt-1">
+                      <Badge variant="cyan" className="text-xs mt-1">
                         Session: {activity.sessionId}
                       </Badge>
                     )}
@@ -570,7 +522,7 @@ const AgentInterface: React.FC = () => {
           {(['all', 'available', 'busy', 'offline'] as const).map(status => (
             <Button
               key={status}
-              variant={filter === status ? 'default' : 'outline'}
+              variant={filter === status ? 'cyan' : 'outline'}
               size="sm"
               onClick={() => setFilter(status)}
               className="capitalize"

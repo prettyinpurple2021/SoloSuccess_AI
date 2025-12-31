@@ -60,7 +60,9 @@ export default function FileMetadataPanel({
   onUpdateCategory
 }: FileMetadataPanelProps) {
   const [isEditingDescription, setIsEditingDescription] = useState(false)
+  const [isEditingCategory, setIsEditingCategory] = useState(false)
   const [description, setDescription] = useState(file.description || '')
+  const [category, setCategory] = useState(file.category || 'uncategorized')
   const [newTag, setNewTag] = useState('')
   const [copiedField, setCopiedField] = useState<string | null>(null)
   const { toast } = useToast()
@@ -136,10 +138,19 @@ export default function FileMetadataPanel({
       }
     } else if (e.key === 'Escape') {
       if (isEditingDescription) {
-        setDescription(file.description || '')
         setIsEditingDescription(false)
+      } else if (isEditingCategory) {
+        setCategory(file.category || 'uncategorized')
+        setIsEditingCategory(false)
       }
     }
+  }
+
+  const handleSaveCategory = async () => {
+    if (onUpdateCategory && category !== file.category) {
+      await onUpdateCategory(category)
+    }
+    setIsEditingCategory(false)
   }
 
   return (
@@ -224,16 +235,34 @@ export default function FileMetadataPanel({
             <div>
               <span className="text-gray-600">Category:</span>
               <div className="flex items-center gap-2">
-                <Badge variant="secondary">{file.category}</Badge>
-                {onUpdateCategory && (
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    onClick={() => {/* TODO: Implement category edit */}}
-                    className="h-6 w-6 p-0"
-                  >
-                    <Edit className="w-3 h-3" />
-                  </Button>
+                {isEditingCategory ? (
+                  <div className="flex items-center gap-1">
+                    <input
+                      type="text"
+                      value={category}
+                      onChange={(e) => setCategory(e.target.value)}
+                      onKeyDown={handleKeyPress}
+                      className="h-6 w-32 px-1 text-xs border rounded"
+                      autoFocus
+                    />
+                    <Button variant="ghost" size="sm" onClick={handleSaveCategory} className="h-6 w-6 p-0">
+                      <Check className="w-3 h-3 text-green-600" />
+                    </Button>
+                  </div>
+                ) : (
+                  <>
+                    <Badge variant="purple">{file.category}</Badge>
+                    {onUpdateCategory && (
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={() => setIsEditingCategory(true)}
+                        className="h-6 w-6 p-0"
+                      >
+                        <Edit className="w-3 h-3" />
+                      </Button>
+                    )}
+                  </>
                 )}
               </div>
             </div>

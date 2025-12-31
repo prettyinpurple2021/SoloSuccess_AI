@@ -323,6 +323,33 @@ export default function FileSharingModal({
     }
   }, [file, toast])
 
+  // Delete share link
+  const deleteShareLink = useCallback(async (linkId: string) => {
+    if (!file) return
+
+    try {
+      const response = await fetch(`/api/briefcase/files/${file.id}/share-links/${linkId}`, {
+        method: 'DELETE'
+      })
+
+      if (!response.ok) throw new Error('Failed to delete share link')
+
+      setShareLinks(prev => prev.filter(l => l.id !== linkId))
+
+      toast({
+        title: "Link deleted",
+        description: "Share link has been deactivated",
+      })
+
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Failed to delete share link",
+        variant: "destructive"
+      })
+    }
+  }, [file, toast])
+
   // Copy link to clipboard
   const copyLinkToClipboard = useCallback(async (url: string) => {
     try {
@@ -651,9 +678,9 @@ export default function FileSharingModal({
                             {getRoleIcon(permission.role)}
                             <span className="ml-1 capitalize">{permission.role}</span>
                           </Badge>
-                          {permission.status === 'pending' && (
-                            <Badge variant="outline">Pending</Badge>
-                          )}
+                          <Badge variant="cyan" className="ml-2">
+                            Password Protected
+                          </Badge>
                         </div>
                       </div>
                     </div>
@@ -713,9 +740,14 @@ export default function FileSharingModal({
                           {link.permissions}
                         </Badge>
                         {link.password && (
-                          <Badge variant="outline">
+                          <Badge variant="cyan">
                             <Lock className="w-3 h-3 mr-1" />
                             Protected
+                          </Badge>
+                        )}
+                        {link.maxAccess && (
+                          <Badge variant="cyan">
+                            {link.accessCount} / {link.maxAccess} uses
                           </Badge>
                         )}
                       </div>
@@ -730,7 +762,7 @@ export default function FileSharingModal({
                         <Button
                           variant="ghost"
                           size="sm"
-                          onClick={() => {/* TODO: Delete link */}}
+                          onClick={() => deleteShareLink(link.id)}
                         >
                           <Trash2 className="w-4 h-4" />
                         </Button>

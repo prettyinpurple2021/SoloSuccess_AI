@@ -28,9 +28,9 @@ jobs:
           VERCEL_PROJECT_ID: "prj_dcQO7rZFCxxwHnxaorYGiyItkj8B"
 
       - name: Deploy to Production
-        # We removed "--prebuilt" so that Vercel builds the project in the cloud for you.
-        # This is faster and uses less of your laptop's resources.
-        run: vercel deploy --prod --token=${{ secrets.VERCEL_TOKEN }}
+        # Added --force to ensure a clean build and --yes to skip confirmation prompts
+        # This helps clear out any stale cache that might be causing the TypeError
+        run: vercel deploy --prod --force --yes --token=${{ secrets.VERCEL_TOKEN }}
         env:
           VERCEL_ORG_ID: "team_6ryfUri1WCv0dL5LAbYfnnrP"
           VERCEL_PROJECT_ID: "prj_dcQO7rZFCxxwHnxaorYGiyItkj8B"
