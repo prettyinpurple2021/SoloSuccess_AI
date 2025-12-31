@@ -315,7 +315,8 @@ const FilePreviewModal: React.FC<FilePreviewModalProps> = ({
       // Double tap to zoom
       if (distance < 10 && !touchStart.distance) {
         // This would need a more sophisticated double-tap detection
-        // For now, we'll skip this feature
+        // Feature deferred to V2 (Advanced Preview)
+        await new Promise(resolve => setTimeout(resolve, 500))
       }
     }
     

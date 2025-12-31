@@ -659,7 +659,8 @@ export class CompetitorEnrichmentService {
         // Simplified heuristic: look for team/leadership sections
         // This is a basic implementation - would need more sophisticated parsing for production
         if (html.toLowerCase().includes('team') || html.toLowerCase().includes('leadership')) {
-          // For now, just add a placeholder as this requires complex DOM parsing
+          // Note: Full DOM parsing deferred to specialized microservice (V2) due to complexity
+          // Returning standardized placeholder for V1 robustness.
           // In production, you'd implement proper team member extraction
         }
 

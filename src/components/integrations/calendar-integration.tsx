@@ -312,7 +312,8 @@ export function CalendarIntegration({ className = "" }: CalendarIntegrationProps
       
       // TODO: Implement task sync to calendar
       // This would fetch tasks and create calendar events for them
-      // For now, show a message that this feature is in development
+      // Status: Development pending for V2
+      toast({
       
       toast({
         title: "Feature in development",
@@ -336,7 +337,8 @@ export function CalendarIntegration({ className = "" }: CalendarIntegrationProps
       
       // TODO: Implement calendar event creation
       // This would open a dialog to create a new event and POST to Google Calendar API
-      // For now, show a message that this feature is in development
+      // Status: Development pending for V2
+      toast({
       
       toast({
         title: "Feature in development",

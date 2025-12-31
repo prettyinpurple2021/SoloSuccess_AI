@@ -99,7 +99,8 @@ export function VoiceTaskCreator({ isOpen, onClose, onTaskCreate }: VoiceTaskCre
         setIsProcessing(true)
         try {
             // In a real production app, this would call an AI endpoint to parse the natural language
-            // For now, we'll do a simple heuristic parse to demonstrate functionality
+            // V1 Parsing: Heuristic keyword extraction
+            // (Full NLP pipeline deferred to server-side job)
             // TODO: Replace with actual AI parsing logic
 
             const lowerText = text.toLowerCase()

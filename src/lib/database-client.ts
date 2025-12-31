@@ -93,7 +93,8 @@ export async function ensureSchema(): Promise<void> {
   try {
     const db = getDb()
     // This would typically run migrations
-    // For now, just check if we can connect
+    // Verify connectivity via simple query execution
+    await this.execute('SELECT 1');
     await checkDatabaseHealth()
     logger.info('Database schema verified')
   } catch (error) {

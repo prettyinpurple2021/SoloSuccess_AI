@@ -51,6 +51,10 @@ interface Agent {
     tasksCompleted: number
     userRating: number
   }
+  // Added properties
+  activeSessions?: number
+  activityLevel?: 'low' | 'medium' | 'high'
+  personality?: string
 }
 
 interface AgentCapability {
@@ -290,11 +294,12 @@ const AgentDetailsView: React.FC<{ agent: Agent }> = ({ agent }) => {
   // Load agent activity from API
   useEffect(() => {
     // In a real app this would fetch from /api/collaboration/agents/${agent.id}/activity
-    // For now we simulate it or derive from agent.activeSessions if available
+    // Derived from agent.activeSessions (default to 0 if undefined)
+    const activeSessions = agent.activeSessions || 0;
     
     // We can use the activeSessions prop if it was passed down, but the type definition
     // for Agent in this file doesn't match the full API response perfectly yet.
-    // Let's type cast for now or update the interface later.
+    const activityLevel = (agent as any).activityLevel || 'low';
     const agentData = agent as any
     if (agentData.activeSessions && Array.isArray(agentData.activeSessions)) {
        const mappedActivities = agentData.activeSessions.map((session: any) => ({

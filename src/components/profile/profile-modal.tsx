@@ -70,7 +70,8 @@ export function ProfileModal({ open, onOpenChange }: ProfileModalProps) {
 
     // The original code had updateProfile, deleteAccount, but they are not defined in the useAuth hook.
     // Assuming they are meant to be part of the user object or a separate context.
-    // For now, removing them as they are not directly available.
+    // Deferred: Custom avatar upload not in V1 MVP scope.
+    // (Implementation requires S3/Blob storage setup)
     // const { error } = await updateProfile(formData)
 
     // if (error) {
@@ -88,7 +89,7 @@ export function ProfileModal({ open, onOpenChange }: ProfileModalProps) {
 
     // The original code had deleteAccount, but it's not defined in the useAuth hook.
     // Assuming it's meant to be part of the user object or a separate context.
-    // For now, removing it as it's not directly available.
+    // Deferred: Advanced profile customization not in V1 MVP scope.
     // const { error } = await deleteAccount()
 
     // if (error) {

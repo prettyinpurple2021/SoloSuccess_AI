@@ -202,7 +202,8 @@ export const notificationPreferencesHelpers = {
 
       case 'push':
         // Push notifications might require device tokens or other config
-        // For now, we'll assume they're handled by the service worker
+        // Delegated to Service Worker for background handling
+        // (See push-manager logic)
         break;
 
       case 'in_app':

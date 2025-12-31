@@ -1,36 +1,50 @@
 // Stripe Integration Setup
 import Stripe from 'stripe';
+import { db } from './db';
+import { subscriptions, usageTracking, pitchDecks, competitorReports, businessContext, contacts } from './db/schema';
+import { eq, and, count } from 'drizzle-orm';
 
 // Initialize Stripe with secret key from environment
 export const stripe = new Stripe(process.env.STRIPE_SECRET_KEY || '', {
     apiVersion: '2025-11-17.clover',
 });
 
-// Price IDs for each tier (set these after creating products in Stripe dashboard)
+// Price IDs for each tier
 export const PRICE_IDS = {
-    starter: process.env.STRIPE_STARTER_PRICE_ID || '',
-    professional: process.env.STRIPE_PROFESSIONAL_PRICE_ID || '',
-    empire: process.env.STRIPE_EMPIRE_PRICE_ID || '',
+    free: '', // Free tier has no price ID
+    solo: process.env.STRIPE_SOLO_PRICE_ID || '',
+    pro: process.env.STRIPE_PRO_PRICE_ID || '',
+    agency: process.env.STRIPE_AGENCY_PRICE_ID || '',
 };
 
 // Tier limits for feature gating
 export const TIER_LIMITS = {
-    starter: {
+    free: {
         businesses: 1,
-        aiGenerations: 200, // per month
-        competitors: 3,
-        features: ['core', 'agents', 'basic_tools']
+        storage: 5, // Total saved items
+        aiGenerations: 10, // Daily limit (soft cap)
+        competitors: 1,
+        features: ['core', 'view_only']
     },
-    professional: {
+    solo: {
+        businesses: 1,
+        storage: 50,
+        aiGenerations: -1, // Unlimited
+        competitors: 5,
+        features: ['core', 'agents', 'basic_tools', 'advanced_tools']
+    },
+    pro: {
         businesses: 3,
-        aiGenerations: -1, // unlimited
-        competitors: -1, // unlimited
+        storage: -1, // Unlimited
+        aiGenerations: -1,
+        competitors: 15,
         features: ['core', 'agents', 'basic_tools', 'advanced_tools', 'email_integration', 'forecasting']
     },
-    empire: {
-        businesses: -1, // unlimited
+    agency: {
+        businesses: -1,
+        storage: -1,
         aiGenerations: -1,
-        competitors: -1,
+        competitors: 50,
         features: ['all', 'api_access', 'team_collaboration', 'whitelabel', 'custom_training']
     }
 };
@@ -38,10 +52,26 @@ export const TIER_LIMITS = {
 /**
  * Get user's subscription tier
  */
-export async function getUserTier(userId: number): Promise<string> {
-    // TODO: Query subscriptions table
-    // For now, return 'starter' as default
-    return 'starter';
+export async function getUserTier(userId: number): Promise<keyof typeof TIER_LIMITS> {
+    try {
+        const sub = await db.select()
+            .from(subscriptions)
+            .where(eq(subscriptions.userId, userId))
+            .limit(1);
+
+        // If no subscription or not active, return free
+        if (!sub.length || sub[0].status !== 'active') {
+            return 'free';
+        }
+
+        // Map old tiers to new ones if necessary
+        // Default to 'free' if tier is unrecognized or inactive
+        const tier = sub[0].tier as keyof typeof TIER_LIMITS;
+        return TIER_LIMITS[tier] ? tier : 'free';
+    } catch (error) {
+        console.error('Error fetching user tier:', error);
+        return 'free';
+    }
 }
 
 /**
@@ -49,7 +79,7 @@ export async function getUserTier(userId: number): Promise<string> {
  */
 export async function canAccessFeature(userId: number, feature: string): Promise<boolean> {
     const tier = await getUserTier(userId);
-    const limits = TIER_LIMITS[tier as keyof typeof TIER_LIMITS];
+    const limits = TIER_LIMITS[tier];
 
     if (!limits) return false;
 
@@ -57,28 +87,164 @@ export async function canAccessFeature(userId: number, feature: string): Promise
 }
 
 /**
+ * Get current storage usage (Total items)
+ */
+async function getStorageUsage(userId: number): Promise<number> {
+    try {
+        // Count items in various tables
+        const [decks] = await db.select({ count: count() })
+            .from(pitchDecks)
+            .where(eq(pitchDecks.userId, userId));
+
+        // Note: userId in competitorReports/businessContext might be text depending on schema version
+        // We ensure consistent string usage here as a safeguard
+        const userIdStr = userId.toString();
+
+        const [reports] = await db.select({ count: count() })
+            .from(competitorReports)
+            .where(eq(competitorReports.userId, userIdStr));
+
+        const [businesses] = await db.select({ count: count() })
+            .from(businessContext)
+            .where(eq(businessContext.userId, userIdStr));
+
+        const [contactList] = await db.select({ count: count() })
+            .from(contacts)
+            .where(eq(contacts.userId, userId));
+
+        return (decks?.count || 0) + (reports?.count || 0) + (businesses?.count || 0) + (contactList?.count || 0);
+    } catch (error) {
+        console.error('Error calculating storage:', error);
+        return 0;
+    }
+}
+
+/**
  * Check if user has exceeded usage limits
  */
 export async function checkUsageLimit(
     userId: number,
-    type: 'aiGenerations' | 'competitors' | 'businesses'
+    type: 'aiGenerations' | 'competitors' | 'businesses' | 'storage'
 ): Promise<{ allowed: boolean; limit: number; current: number }> {
-    const tier = await getUserTier(userId);
-    const limits = TIER_LIMITS[tier as keyof typeof TIER_LIMITS];
+    try {
+        const tier = await getUserTier(userId);
+        const limits = TIER_LIMITS[tier];
 
-    const limit = limits[type];
+        // Handle Storage separately
+        if (type === 'storage') {
+            const limit = limits.storage;
+            if (limit === -1) return { allowed: true, limit: -1, current: 0 };
 
-    // -1 means unlimited
-    if (limit === -1) {
+            const current = await getStorageUsage(userId);
+            return {
+                allowed: current < limit,
+                limit,
+                current
+            };
+        }
+
+        const limit = limits[type];
+
+        // -1 means unlimited
+        if (limit === -1) {
+            return { allowed: true, limit: -1, current: 0 };
+        }
+
+        // Check specific resource counts
+        if (type === 'businesses') {
+            const userIdStr = userId.toString();
+            const [countRes] = await db.select({ count: count() })
+                .from(businessContext)
+                .where(eq(businessContext.userId, userIdStr));
+            const current = countRes?.count || 0;
+            return { allowed: current < limit, limit, current };
+        }
+
+        if (type === 'competitors') {
+            const userIdStr = userId.toString();
+            const [countRes] = await db.select({ count: count() })
+                .from(competitorReports)
+                .where(eq(competitorReports.userId, userIdStr));
+            const current = countRes?.count || 0;
+            return { allowed: current < limit, limit, current };
+        }
+
+        // For AI Generations, use usageTracking
+        const month = new Date().toISOString().slice(0, 7);
+        let usage = await db.select()
+            .from(usageTracking)
+            .where(
+                and(
+                    eq(usageTracking.userId, userId),
+                    eq(usageTracking.month, month)
+                )
+            )
+            .limit(1);
+
+        if (!usage.length) {
+            // Initialize if empty
+            const [newUsage] = await db.insert(usageTracking)
+                .values({
+                    userId,
+                    month,
+                    aiGenerations: 0,
+                    competitorsTracked: 0,
+                    businessProfiles: 0
+                })
+                .returning();
+            usage = [newUsage];
+        }
+
+        const current = usage[0].aiGenerations || 0;
+
+        return {
+            allowed: current < limit,
+            limit,
+            current
+        };
+    } catch (error) {
+        console.error('Error checking usage limit:', error);
+        // On error, allow the action to prevent blocking users
         return { allowed: true, limit: -1, current: 0 };
     }
+}
 
-    // TODO: Query usage_tracking table for current usage
-    const current = 0; // Placeholder
+/**
+ * Increment usage counter (Only for event-based limits like AI Generations)
+ */
+export async function incrementUsage(
+    userId: number,
+    type: 'aiGenerations'
+): Promise<void> {
+    try {
+        const month = new Date().toISOString().slice(0, 7);
 
-    return {
-        allowed: current < limit,
-        limit,
-        current
-    };
+        // Get or create usage record
+        let usage = await db.select()
+            .from(usageTracking)
+            .where(
+                and(
+                    eq(usageTracking.userId, userId),
+                    eq(usageTracking.month, month)
+                )
+            )
+            .limit(1);
+
+        if (usage.length) {
+            await db.update(usageTracking)
+                .set({ aiGenerations: (usage[0].aiGenerations || 0) + 1 })
+                .where(eq(usageTracking.id, usage[0].id));
+        } else {
+            await db.insert(usageTracking)
+                .values({
+                    userId,
+                    month,
+                    aiGenerations: 1,
+                    competitorsTracked: 0,
+                    businessProfiles: 0
+                });
+        }
+    } catch (error) {
+        console.error('Error incrementing usage:', error);
+    }
 }

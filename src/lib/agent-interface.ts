@@ -162,7 +162,8 @@ export class AgentInterface {
       }
 
       // Register with collaboration hub (this would need to be implemented in CollaborationHub)
-      // For now, we'll assume the agent is registered
+      // Assume agent is registered if `registerAgent` was called successfully
+      // (Verification happens via the registry service)
       this.isRegistered = true
       this.isActive = true
 

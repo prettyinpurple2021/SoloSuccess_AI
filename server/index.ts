@@ -1,9 +1,11 @@
 import 'dotenv/config';
-import express from 'express';
+import * as Sentry from '@sentry/node';
+import express, { Request, Response } from 'express';
 import { createServer } from 'http';
-import { Server as SocketServer } from 'socket.io';
+import { Server as SocketServer, Socket } from 'socket.io';
 import cors from 'cors';
 import { db } from './db';
+
 import { users, tasks, chatHistory, competitorReports, businessContext } from './db/schema';
 import { eq, desc, and, or } from 'drizzle-orm';
 import { z } from 'zod';
@@ -12,17 +14,53 @@ import { Redis } from '@upstash/redis';
 import bcrypt from 'bcryptjs';
 import { generateToken, verifyToken } from './utils/jwt';
 import { authMiddleware, AuthRequest } from './middleware/auth';
+import { SearchIndexer } from './utils/searchIndexer';
 import adminRouter from './routes/admin';
+import contactsRouter from './routes/contacts';
+import pitchDecksRouter from './routes/pitchDecks';
+import stripeRouter from './routes/stripe';
 import path from 'path';
+import { setIo, broadcastToUser } from './realtime';
+import { logWarn, logError } from './utils/logger';
+import rateLimit from 'express-rate-limit';
 
 const app = express();
+// Trust proxy for correct IP identification behind reverse proxies (e.g., Render, Heroku, AWS)
+app.set('trust proxy', 1);
+
+// Initialize Sentry for Express backend (after app creation)
+Sentry.init({
+  dsn: process.env.SENTRY_DSN || "https://c658e25682ffbbce0cd373c74bf48f1d@o4510500686331904.ingest.us.sentry.io/4510500686659584",
+  environment: process.env.NODE_ENV || 'development',
+  tracesSampleRate: process.env.NODE_ENV === 'production' ? 0.1 : 1.0,
+  integrations: [
+    Sentry.httpIntegration(),
+    Sentry.expressIntegration(),
+  ],
+});
+
 const httpServer = createServer(app);
+// Allow localhost when NODE_ENV is undefined (local dev) or explicitly 'development'
+// Block localhost when NODE_ENV is 'production', 'staging', 'test', etc.
+const isDevelopment = !process.env.NODE_ENV || process.env.NODE_ENV === 'development';
+const allowedOrigins = Array.from(
+    new Set(
+        [
+            process.env.CLIENT_URL || "https://solosuccessai.fun",
+            "https://solosuccessai.fun",
+            // Only allow localhost in development (undefined or 'development')
+            ...(isDevelopment ? ["http://localhost:3000", "http://localhost:3001"] : []),
+        ].filter(Boolean)
+    )
+);
+
 const io = new SocketServer(httpServer, {
     cors: {
-        origin: process.env.CLIENT_URL || "http://localhost:3001",
-        methods: ["GET", "POST"]
+        origin: allowedOrigins,
+        methods: ["GET", "POST"],
     }
 });
+setIo(io);
 
 const PORT = process.env.PORT || 3000;
 
@@ -32,8 +70,32 @@ const redis = new Redis({
     token: process.env.UPSTASH_REDIS_REST_TOKEN!,
 });
 
-app.use(cors());
+// Sentry request middleware must be first
+const sentryRequestMiddleware =
+  (Sentry as any).Handlers?.requestHandler?.() ??
+  (Sentry as any).requestHandler?.() ??
+  ((req: express.Request, res: express.Response, next: express.NextFunction) => next());
+app.use(sentryRequestMiddleware);
+
+app.use(cors({
+    origin: allowedOrigins,
+    credentials: true
+}));
 app.use(express.json());
+
+// Sanity check for critical env vars (log only, do not crash)
+const requiredEnv = [
+    'DATABASE_URL',
+    'UPSTASH_REDIS_REST_URL',
+    'UPSTASH_REDIS_REST_TOKEN',
+    'CLIENT_URL',
+    'OPENAI_API_KEY',
+    'STRIPE_SECRET_KEY',
+];
+const missingEnv = requiredEnv.filter((key) => !process.env[key]);
+if (missingEnv.length > 0) {
+    logWarn('Missing critical environment variables', { missingEnv });
+}
 
 // Middleware to extract user from Auth headers
 const getUserId = (req: express.Request): string | null => {
@@ -81,7 +143,7 @@ async function invalidateCache(pattern: string): Promise<void> {
 }
 
 // WebSocket connection handling
-io.on('connection', (socket) => {
+io.on('connection', (socket: Socket) => {
     console.log('Client connected:', socket.id);
 
     // Join user-specific room
@@ -95,17 +157,31 @@ io.on('connection', (socket) => {
     });
 });
 
-// Broadcast update to user's room
-function broadcastToUser(userId: string, event: string, data: any) {
-    io.to(`user:${userId}`).emit(event, data);
-}
+// Broadcast helper now provided by realtime.ts (setIo called above)
 
 // --- Routes ---
 
+import resourcesRouter from './routes/resources';
+
+// ... (imports)
+
+import searchRouter from './routes/search';
+import notificationsRouter from './routes/notifications';
+import aiRouter from './routes/ai';
+
+// ... (imports)
+
 app.use('/api/admin', adminRouter);
+app.use('/api/contacts', contactsRouter);
+app.use('/api/pitch-decks', pitchDecksRouter);
+app.use('/api/stripe', stripeRouter);
+app.use('/api/resources', resourcesRouter);
+app.use('/api/ai', aiRouter);
+app.use('/api/search', searchRouter);
+app.use('/api/notifications', notificationsRouter);
 
 // Auth Routes
-app.post('/api/auth/signup', async (req, res) => {
+app.post('/api/auth/signup', async (req: Request, res: Response) => {
     try {
         const { email, password } = req.body;
 
@@ -128,13 +204,13 @@ app.post('/api/auth/signup', async (req, res) => {
         const token = generateToken(String(newUser[0].id), email);
 
         res.json({ token, user: newUser[0] });
-    } catch (error) {
+    } catch (error: any) {
         console.error('Signup error:', error);
-        res.status(500).json({ error: 'Signup failed' });
+        res.status(500).json({ error: `Signup failed: ${error.message}` });
     }
 });
 
-app.post('/api/auth/login', async (req, res) => {
+app.post('/api/auth/login', async (req: Request, res: Response) => {
     try {
         const { email, password } = req.body;
 
@@ -162,7 +238,7 @@ app.post('/api/auth/login', async (req, res) => {
 });
 
 // AI Generation Proxy
-app.post('/api/generate', async (req, res) => {
+app.post('/api/generate', async (req: Request, res: Response) => {
     try {
         const { prompt, systemInstruction, model, history, temperature, maxOutputTokens } = req.body;
         const apiKey = process.env.GEMINI_API_KEY;
@@ -212,8 +288,19 @@ app.post('/api/generate', async (req, res) => {
     }
 });
 
+// Root route for developer convenience (Development only)
+if (isDevelopment) {
+    app.get('/', (req: Request, res: Response) => {
+        res.send(`
+            <h1>SoloSuccess AI Backend is Running 🚀</h1>
+            <p>You are currently accessing the backend API server.</p>
+            <p>Please visit the frontend application at: <a href="${process.env.CLIENT_URL || 'http://localhost:3001'}">${process.env.CLIENT_URL || 'http://localhost:3001'}</a></p>
+        `);
+    });
+}
+
 // Health Check
-app.get('/api/health', (req, res) => {
+app.get('/api/health', (req: Request, res: Response) => {
     res.json({
         status: 'ok',
         db: process.env.DATABASE_URL ? 'configured' : 'missing_env',
@@ -223,7 +310,7 @@ app.get('/api/health', (req, res) => {
 });
 
 // User Progress
-app.get('/api/user', async (req, res) => {
+app.get('/api/user', async (req: Request, res: Response) => {
     try {
         const userId = getUserId(req);
         if (!userId) {
@@ -269,7 +356,7 @@ app.get('/api/user', async (req, res) => {
     }
 });
 
-app.post('/api/user/progress', async (req, res) => {
+app.post('/api/user/progress', async (req: Request, res: Response) => {
     try {
         const userId = getUserId(req);
         if (!userId) {
@@ -304,7 +391,7 @@ app.post('/api/user/progress', async (req, res) => {
 });
 
 // Tasks with multi-user support
-app.get('/api/tasks', async (req, res) => {
+app.get('/api/tasks', async (req: Request, res: Response) => {
     try {
         const userId = getUserId(req);
         if (!userId) {
@@ -329,7 +416,7 @@ app.get('/api/tasks', async (req, res) => {
     }
 });
 
-app.post('/api/tasks', async (req, res) => {
+app.post('/api/tasks', async (req: Request, res: Response) => {
     try {
         const userId = getUserId(req);
         if (!userId) {
@@ -352,6 +439,9 @@ app.post('/api/tasks', async (req, res) => {
         await invalidateCache(`tasks:${userId}`);
         broadcastToUser(userId, 'task:updated', result[0]);
 
+        // Index for search
+        await SearchIndexer.indexTask(userId, result[0]);
+
         res.json(result[0]);
     } catch (error) {
         console.error(error);
@@ -359,7 +449,7 @@ app.post('/api/tasks', async (req, res) => {
     }
 });
 
-app.post('/api/tasks/batch', async (req, res) => {
+app.post('/api/tasks/batch', async (req: Request, res: Response) => {
     try {
         const userId = getUserId(req);
         if (!userId) {
@@ -382,6 +472,8 @@ app.post('/api/tasks/batch', async (req, res) => {
             } else {
                 await db.insert(tasks).values(taskData);
             }
+            // Index each task
+            await SearchIndexer.indexTask(userId, taskData);
         }
 
         await invalidateCache(`tasks:${userId}`);
@@ -393,7 +485,7 @@ app.post('/api/tasks/batch', async (req, res) => {
     }
 });
 
-app.delete('/api/tasks/:id', async (req, res) => {
+app.delete('/api/tasks/:id', async (req: Request, res: Response) => {
     try {
         const userId = getUserId(req);
         if (!userId) {
@@ -408,13 +500,16 @@ app.delete('/api/tasks/:id', async (req, res) => {
         await invalidateCache(`tasks:${userId}`);
         broadcastToUser(userId, 'task:deleted', { id });
 
+        // Remove from index
+        await SearchIndexer.removeFromIndex(userId, 'task', id);
+
         res.json({ success: true });
     } catch (error) {
         res.status(500).json({ error: 'Failed to delete task' });
     }
 });
 
-app.delete('/api/tasks', async (req, res) => {
+app.delete('/api/tasks', async (req: Request, res: Response) => {
     try {
         const userId = getUserId(req);
         if (!userId) {
@@ -432,7 +527,7 @@ app.delete('/api/tasks', async (req, res) => {
 });
 
 // Chat History with multi-user
-app.get('/api/chat/:agentId', async (req, res) => {
+app.get('/api/chat/:agentId', async (req: Request, res: Response) => {
     try {
         const userId = getUserId(req);
         if (!userId) {
@@ -462,7 +557,7 @@ app.get('/api/chat/:agentId', async (req, res) => {
     }
 });
 
-app.post('/api/chat', async (req, res) => {
+app.post('/api/chat', async (req: Request, res: Response) => {
     try {
         const userId = getUserId(req);
         if (!userId) {
@@ -497,7 +592,7 @@ app.post('/api/chat', async (req, res) => {
 });
 
 // Business Context with multi-user
-app.get('/api/context', async (req, res) => {
+app.get('/api/context', async (req: Request, res: Response) => {
     try {
         const userId = getUserId(req);
         if (!userId) {
@@ -522,7 +617,7 @@ app.get('/api/context', async (req, res) => {
     }
 });
 
-app.post('/api/context', async (req, res) => {
+app.post('/api/context', async (req: Request, res: Response) => {
     try {
         const userId = getUserId(req);
         if (!userId) {
@@ -554,7 +649,7 @@ app.post('/api/context', async (req, res) => {
 });
 
 // Reports with multi-user
-app.get('/api/reports', async (req, res) => {
+app.get('/api/reports', async (req: Request, res: Response) => {
     try {
         const userId = getUserId(req);
         if (!userId) {
@@ -571,7 +666,7 @@ app.get('/api/reports', async (req, res) => {
             .where(eq(competitorReports.userId, userId))
             .orderBy(desc(competitorReports.generatedAt));
 
-        const formatted = reports.map(r => ({
+        const formatted = reports.map((r: any) => ({
             ...r.data as object,
             id: r.id,
             generatedAt: r.generatedAt
@@ -584,7 +679,7 @@ app.get('/api/reports', async (req, res) => {
     }
 });
 
-app.post('/api/reports', async (req, res) => {
+app.post('/api/reports', async (req: Request, res: Response) => {
     try {
         const userId = getUserId(req);
         if (!userId) {
@@ -603,6 +698,11 @@ app.post('/api/reports', async (req, res) => {
         await invalidateCache(`reports:${userId}`);
         broadcastToUser(userId, 'report:created', report);
 
+        // Index for search
+        // Use regex replace to normalize ID if missing
+        const reportId = report.competitorName || 'unknown_id';
+        await SearchIndexer.indexReport(userId, { ...report, id: reportId });
+
         res.json({ success: true });
     } catch (error) {
         res.status(500).json({ error: 'Failed to save report' });
@@ -614,13 +714,34 @@ if (process.env.NODE_ENV === 'production') {
     const distPath = path.join(__dirname, '../../dist');
     app.use(express.static(distPath));
 
+    // Rate limiter for index.html (client-side routing)
+    const clientRouteLimiter = rateLimit({
+        windowMs: 15 * 60 * 1000, // 15 minutes
+        max: 1000, // limit each IP to 1000 requests per windowMs
+        standardHeaders: true, // Return rate limit info in the `RateLimit-*` headers
+        legacyHeaders: false, // Disable the `X-RateLimit-*` headers
+    });
+
     // Handle client-side routing
-    app.get('*', (req, res) => {
+    app.get('*', clientRouteLimiter, (req: Request, res: Response) => {
         if (!req.path.startsWith('/api')) {
             res.sendFile(path.join(distPath, 'index.html'));
         }
     });
 }
+
+// Sentry error handler must be last, before any other error middleware
+const sentryErrorMiddleware =
+  (Sentry as any).Handlers?.errorHandler?.() ??
+  (Sentry as any).errorHandler?.() ??
+  ((err: unknown, req: express.Request, res: express.Response, next: express.NextFunction) => next(err));
+app.use(sentryErrorMiddleware);
+
+// Express error handler
+app.use((err: Error, req: express.Request, res: express.Response, next: express.NextFunction) => {
+    logError('Unhandled error in Express middleware', err, { path: req.path, method: req.method });
+    res.status(500).json({ error: 'Internal server error' });
+});
 
 httpServer.listen(PORT, () => {
     console.log(`Server running on http://localhost:${PORT}`);

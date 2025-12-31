@@ -266,7 +266,8 @@ export function useBlazeGrowthIntelligence() {
       setError(null)
 
       // This would typically be part of the comprehensive analysis
-      // For now, we'll use the comprehensive analysis endpoint
+      // Use the comprehensive analysis endpoint for V1
+      const response = await fetch('/api/intelligence/analyze', {
       const response = await fetch(`/api/competitors/${competitorId}/growth-analysis`, {
         method: 'POST',
         headers: {

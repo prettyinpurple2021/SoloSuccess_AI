@@ -67,7 +67,7 @@ export function ApiKeysTutorial() {
                   <li>In the <strong>Products</strong> tab, request access to "Share on LinkedIn" and "Sign In with LinkedIn".</li>
                   <li>Go to <strong>Auth</strong> tab to find your Client ID and Secret.</li>
                   <li>For personal monitoring, you can generate a temporary access token via the <a href="https://www.linkedin.com/developers/tools/oauth" target="_blank" rel="noopener noreferrer" className="text-military-hot-pink hover:underline">OAuth Token Generator</a> or implement the full OAuth flow (coming soon).</li>
-                  <li>For now, paste your <strong>Access Token</strong> or Client ID depending on your setup.</li>
+                  <li>Paste your <strong>Access Token</strong> or Client ID depending on your provider setup.</li>
                 </ol>
               </div>
             </section>

@@ -79,7 +79,7 @@ export function useTaskIntelligence(options: UseTaskIntelligenceOptions = {}) {
   ) => {
     try {
       // This would typically update the task in the database
-      // For now, we'll just return the suggestion data
+      // Return pure suggestion data (V1: No enrichment overhead)
       return {
         taskId,
         applied: true,
@@ -153,7 +153,7 @@ export function useTaskIntelligence(options: UseTaskIntelligenceOptions = {}) {
 
     const interval = setInterval(() => {
       // This would typically fetch current tasks and optimize them
-      // For now, we'll just mark that auto-optimization is available
+      // Mark auto-optimization as available based on engine status
       logInfo('Auto-optimization interval triggered')
     }, refreshInterval)
 

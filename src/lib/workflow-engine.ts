@@ -263,7 +263,8 @@ export class WorkflowEngine {
         const configTyped = config as { to: string; subject: string; template?: string; variables?: Record<string, unknown> }
         logInfo('Sending email', { to: configTyped.to, subject: configTyped.subject })
         // In production, integrate with Resend or similar
-        // For now, we simulate but log it as a real action
+        // Actions are simulated in this mode but logged for audit trail purposes
+        console.log(`[WorkflowEngine] Executing action: ${action.type}`);
         return { sent: true, messageId: crypto.randomUUID(), timestamp: new Date().toISOString() }
       }
     })

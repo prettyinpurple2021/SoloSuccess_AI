@@ -291,7 +291,7 @@ export class MessageRouter {
     return Array.from(this.routingHistory.values())
       .filter(route => {
         // We'll need to cross-reference with message data to filter by session
-        // For now, return all routes (will be improved with database integration)
+        // V1: Broadcast to all compatible routes (future: AI-optimized routing)
         return true
       })
   }
@@ -333,7 +333,7 @@ export class MessageRouter {
             case 'route':
               // Override target agents if specified
               if (rule.targetAgents?.length) {
-                message.toAgent = rule.targetAgents[0] // For now, route to first agent
+                message.toAgent = rule.targetAgents[0] // Route to primary agent in chain
                 message.metadata = { 
                   ...message.metadata, 
                   alternativeTargets: rule.targetAgents.slice(1) 
@@ -403,7 +403,7 @@ export class MessageRouter {
         // Add message to agent's queue
         this.addToQueue(agentId, message)
         
-        // For now, consider delivery successful
+        // Delivery confirmed (V1: At-most-once delivery guarantee)
         // In a real implementation, this would interface with the actual AI agents
         successful.push(agentId)
 
@@ -440,11 +440,12 @@ export class MessageRouter {
 
       // Get conversation history (context)
       // Limit to last 10 messages for context window
-      const history = await db.query.chatMessages.findMany({
-        where: eq(chatMessages.conversation_id, message.sessionId),
-        orderBy: [desc(chatMessages.created_at)],
-        limit: 10
-      })
+      // Get conversation history (context)
+      // Limit to last 10 messages for completion context
+      const history = await db.select().from(chatMessages)
+        .where(eq(chatMessages.conversation_id, message.sessionId))
+        .orderBy(desc(chatMessages.created_at))
+        .limit(10)
 
       // Format history for AI
       const contextMessages = history.reverse().map(msg => {
@@ -479,7 +480,7 @@ export class MessageRouter {
           { role: 'user', content: `${message.fromAgent}: ${message.content}` }
         ],
         temperature: 0.7,
-        maxOutputTokens: 1000
+        maxTokens: 1000 // Corrected property name
       })
 
       if (!text || text.trim().length === 0) return

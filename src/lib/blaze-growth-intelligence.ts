@@ -530,7 +530,7 @@ ${pricingSummary || 'No direct pricing intelligence available - infer using comp
       // Get all competitor profiles
       const competitors = await db.select()
         .from(competitorProfiles)
-        .where(eq(competitorProfiles.id, competitorIds[0])) // For now, analyze one competitor
+        .where(eq(competitorProfiles.id, competitorIds[0])) // V1 Limit: Analyze primary competitor
 
       // Get recent intelligence for market analysis
       const recentIntelligence = await db.select()

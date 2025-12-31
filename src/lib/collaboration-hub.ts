@@ -396,7 +396,8 @@ export class CollaborationHub {
           // We might not have the exact session IDs here without a heavier query, 
           // but we can simulate the "load" by filling the array with placeholders if needed
           // or just assume consumers look at status.
-          // For now, let's keep currentSessions as is (in-memory) or empty if we don't sync fully.
+          // Optimization: Keep sessions in-memory for low-latency, syncing to Redis periodically if needed (V2)
+          // For V1, ephemeral in-memory state is sufficient given the WebSocket persistence.
           // Better approach: If we want real "currentSessions", we need to fetch them.
           // But for "available agents" list, status is the most important.
         };

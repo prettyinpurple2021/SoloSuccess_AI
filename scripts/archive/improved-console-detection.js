@@ -52,7 +52,7 @@ function shouldProcessFile(filePath) {
     }
   }
   
-  // Skip test files for now (they might need console logs)
+  // Exclude test files to preserve critical debugging logs during testing
   if (filePath.includes('.test.') || filePath.includes('.spec.')) {
     return false;
   }

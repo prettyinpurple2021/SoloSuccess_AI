@@ -234,7 +234,8 @@ export function AdvancedDataVisualization({
     
     try {
       const startTime = Date.now()
-      // Default metric for now, in real app this comes from viz config
+      // Default metric initialization (configurable via viz props)
+      let metricValue = 0;
       const newData = await fetchChartData('total_actions');
       
       updateVisualization(id, { 

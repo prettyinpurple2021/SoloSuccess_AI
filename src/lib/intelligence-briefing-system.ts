@@ -516,7 +516,8 @@ Generate a structured intelligence briefing that helps the user make informed st
     config: Partial<BriefingConfig>
   ): Promise<void> {
     // This would integrate with a job scheduler like Bull Queue or similar
-    // For now, we'll store the configuration for manual triggering
+    // V1 Strategy: Briefings are generated on-demand or via manual trigger
+    // Configuration stored here for future scheduler integration
     logInfo(`Scheduled ${frequency} briefing for user ${userId}`)
   }
   
@@ -528,7 +529,8 @@ Generate a structured intelligence briefing that helps the user make informed st
     limit: number = 10
   ): Promise<IntelligenceBriefing[]> {
     // This would query a briefings table in the database
-    // For now, return empty array as briefings are generated on-demand
+    // Returns empty array as briefings are generated on-demand (see generateBriefing)
+    return [];
     return []
   }
   

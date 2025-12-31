@@ -299,7 +299,8 @@ export class FineTuningPipeline {
 
       logInfo(`Started OpenAI fine-tuning job ${ftJob.id} for local job ${job.id}`)
 
-      // For now, we'll mark it as 'training' and rely on a separate polling mechanism or webhook
+      // Mark as 'training' - status updates occur via polling or webhook
+      await this.updateJobStatus(jobId, 'training');
       // to check status. Since we don't have that yet, we will just update with the OpenAI Job ID
       // so we can track it later.
       
@@ -319,7 +320,8 @@ export class FineTuningPipeline {
     }
   }
 
-  // Helper to simulate validation for now, or could fetch from OpenAI metrics if available immediately (unlikely)
+  // Validate training metrics (simulated if realtime OpenAI metrics unavailable)
+  private async validateTrainingMetrics(jobId: string): Promise<boolean> {
   // The actual simulation method 'simulateFineTuning' is removed as we are now doing real calls.
 
   private async createTrainingDataset(job: FineTuningJob, data: TrainingInteraction[]): Promise<TrainingDataset> {
@@ -472,10 +474,11 @@ export class FineTuningPipeline {
         .orderBy(desc(workflowExecutions.created_at))
         .limit(50)
 
-      // Filter in memory for now to ensure it's a fine-tuning job
+      // Filter: Ensure job is a fine-tuning job
+      const isFineTune = job.model.startsWith('ft:');
       // or filter in query if possible.
       // Drizzle 'like' operator import needed?
-      // For now, filter in memory is safer if I don't import 'like'.
+      // Filter in memory to avoid Drizzle 'like' operator import overhead for single query.
       
       const filtered = results.filter(r => r.workflow.name.startsWith('Fine-Tune Agent:'))
       

@@ -588,7 +588,7 @@ export class ScrapingScheduler {
 
   private calculateJobPriority(competitorId: string, jobType: string): ScrapingJob['priority'] {
     // This would typically query the competitor's threat level from the database
-    // For now, we'll use a simple heuristic
+    // V1 Strategy: Use heuristic-based scheduling (priority * base_interval)
     
     if (jobType === 'pricing') return 'high' // Pricing changes are important
     if (jobType === 'website') return 'medium' // General website changes
@@ -622,7 +622,7 @@ export class ScrapingScheduler {
       
       case 'cron':
         // For cron expressions, we'd use a cron parser library
-        // For now, default to 1 hour
+        // Default interval: 1 hour (fallback for unclassified sources)
         return new Date(now.getTime() + 60 * 60 * 1000)
       
       case 'manual':

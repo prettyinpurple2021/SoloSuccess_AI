@@ -114,18 +114,29 @@ router.get('/users/:userId', async (req, res) => {
 router.post('/users/:userId/suspend', async (req, res) => {
     try {
         const userId = Number(req.params.userId);
-        // In a real app, we'd have a suspended flag or status
-        // For now, we'll just log the action
+        const { reason } = req.body;
+        const adminUserId = Number(((req as unknown) as AuthRequest).userId!);
 
+        // Update user suspended status in database
+        await db.update(users)
+            .set({
+                suspended: true,
+                suspendedAt: new Date(),
+                suspendedReason: reason || 'Account suspended by administrator'
+            })
+            .where(eq(users.id, userId));
+
+        // Log the admin action
         await db.insert(adminActions).values({
-            adminUserId: Number(((req as unknown) as AuthRequest).userId!),
+            adminUserId,
             action: 'suspend_user',
             targetUserId: userId,
-            details: { reason: req.body.reason }
+            details: { reason }
         });
 
-        res.json({ success: true, message: 'User suspended (logged)' });
+        res.json({ success: true, message: 'User suspended successfully' });
     } catch (error) {
+        console.error('Error suspending user:', error);
         res.status(500).json({ error: 'Failed to suspend user' });
     }
 });

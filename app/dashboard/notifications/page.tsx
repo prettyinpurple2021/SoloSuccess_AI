@@ -52,9 +52,17 @@ export default function NotificationsPage() {
   const handleSaveSettings = async () => {
     setIsLoading(true)
     try {
-      // Here you would save the notification preferences to your backend
-      // For now, we'll just simulate the save
-      await new Promise(resolve => setTimeout(resolve, 1000))
+      const response = await fetch('/api/notifications/preferences', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(notifications),
+      })
+
+      if (!response.ok) {
+        throw new Error('Failed to save settings')
+      }
       
       toast({
         title: "Settings Saved",
@@ -73,8 +81,9 @@ export default function NotificationsPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen gradient-background p-6 flex items-center justify-center">
-        <Loading variant="boss" size="lg" text="Checking your access..." />
+      <div className="min-h-screen gradient-background p-6 flex flex-col items-center justify-center gap-4">
+        <Loading variant="bounce" size="lg" />
+        <p className="text-muted-foreground animate-pulse">Checking your access...</p>
       </div>
     )
   }

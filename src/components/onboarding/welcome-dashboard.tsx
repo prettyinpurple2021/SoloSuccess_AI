@@ -429,7 +429,7 @@ export function WelcomeDashboard({ userData, onStartOnboarding, onSkipOnboarding
               className="text-lg px-8 py-4 border-military-storm-grey text-military-glass-white hover:bg-military-tactical-black"
               size="lg"
             >
-              Skip for Now
+              Do it Later
             </Button>
           </div>
         </motion.div>

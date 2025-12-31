@@ -196,7 +196,8 @@ export class CompetitiveIntelligenceAutomation {
    * Get automation rules for user
    */
   private static async getAutomationRules(userId: string): Promise<AutomationRule[]> {
-    // For now, return default automation rules
+    // Return standard V1 automation rules
+    return [
     // In production, these would be stored in database and configurable by users
     return [
       {

@@ -168,7 +168,7 @@ export function SimpleOnboarding({ open, onCompleteAction, onSkipAction, userDat
                   variant="outline"
                   className="border-military-storm-grey/50 text-military-glass-white hover:bg-military-tactical-black hover:border-military-storm-grey transition-colors"
                 >
-                  Skip for Now
+                  Do it Later
                 </Button>
                 <Button
                   onClick={handleNext}

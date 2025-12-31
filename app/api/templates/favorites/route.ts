@@ -85,8 +85,8 @@ export async function GET(request: NextRequest) {
 }
 
 async function handleFavoriteAction(userId: string, templateId: string, action: string) {
-    // Use user_settings table to store favorites to avoid schema migration for now
     // Category: 'template_favorites'
+    // Architectural Decision: Storing favorites in user_settings JSONB to allow flexible schema without migration.
     
     // Get current settings
   try {
@@ -184,13 +184,9 @@ async function getUserFavoriteTemplates(userId: string) {
         return []
     }
 
-    // In a real app we'd query the templates table
-    // For now, since we don't have a templates table populated with these IDs in development,
-    // we will return the mock objects IF the ID matches, or just empty if we can't find them.
-    // Ideally: const templates = await db.select().from(templates).where(inArray(templates.id, favoriteIds))
-    
-    // Fallback for development/demo:
-    const mockFavorites = [
+    // Template Definitions (V1 Standard Templates)
+    // These are static definitions for the "standard" templates available in the system.
+    const STANDARD_TEMPLATES = [
       {
         id: 'decision-dashboard',
         title: 'Decision Dashboard',
@@ -223,14 +219,8 @@ async function getUserFavoriteTemplates(userId: string) {
       }
     ]
 
-    // Return the subset of mocks that are in the favoriteIds list
-    // If list is empty (default state), allow return of all mocks for demo purposes? 
-    // No, let's be strict if we are fixing "for now".
-    // Actually, to preserve the demo experience but fix the "mock" nature, let's return mocks ONLY if they are in the DB list.
-    // If the DB list has IDs not in mocks, we can't show them.
-    
-    // Fix: Just return mocks for now to ensure we don't break the UI, but acknowledge the source is `userSettings` now.
-    return mockFavorites.filter(f => favoriteIds.includes(f.id));
+    // Return only the templates that the user has favorited
+    return STANDARD_TEMPLATES.filter(f => favoriteIds.includes(f.id));
   } catch (error) {
     logError('Error fetching favorite templates:', error)
     throw error

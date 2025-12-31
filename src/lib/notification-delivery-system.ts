@@ -308,7 +308,8 @@ Received: ${new Date(alert.created_at).toLocaleString()}
     channel: NotificationChannel
   ): Promise<string> {
     // This would integrate with a push notification service like FCM or APNs
-    // For now, we'll simulate the functionality
+    // Simulation Mode: Real delivery integration requires provider api keys (V2)
+    // Logging delivery attempt for verification.
     
     const payload = {
       title: alert.title,

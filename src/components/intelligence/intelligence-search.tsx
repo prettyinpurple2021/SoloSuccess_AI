@@ -188,7 +188,8 @@ export function IntelligenceSearch({
 
   const loadDataTypes = async () => {
     // This would typically come from an API endpoint
-    // For now, we'll use common data types
+    // Use standard V1 data types
+    const types = ['competitor_profile', 'market_report', 'trend_analysis'];
     setAvailableDataTypes([
       'pricing_update',
       'product_launch',

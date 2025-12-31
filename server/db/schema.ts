@@ -16,6 +16,10 @@ export const users = pgTable('users', {
     totalActions: integer('total_actions').default(0),
     createdAt: timestamp('created_at').defaultNow(),
     updatedAt: timestamp('updated_at').defaultNow(),
+    // Suspension fields for Admin
+    suspended: boolean('suspended').default(false),
+    suspendedAt: timestamp('suspended_at'),
+    suspendedReason: text('suspended_reason'),
 });
 
 // ========================================
