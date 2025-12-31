@@ -89,6 +89,7 @@ async function handleFavoriteAction(userId: string, templateId: string, action: 
     // Category: 'template_favorites'
     
     // Get current settings
+  try {
     const currentSettings = await db
       .select()
       .from(userSettings)
