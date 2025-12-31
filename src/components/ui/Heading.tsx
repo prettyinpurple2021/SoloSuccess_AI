@@ -1,11 +1,11 @@
 'use client'
 
-import { ReactNode } from 'react'
+import React, { ReactNode } from 'react'
 import { cn } from '@/lib/utils'
 
 interface HeadingProps {
   level?: 1 | 2 | 3 | 4 | 5 | 6
-  color?: 'white' | 'cyan' | 'magenta' | 'lime' | 'purple'
+  color?: 'white' | 'cyan' | 'magenta' | 'lime' | 'purple' | 'orange'
   glitch?: boolean
   children: ReactNode
   className?: string
@@ -31,9 +31,10 @@ export const Heading = ({
     magenta: 'text-neon-magenta',
     lime: 'text-neon-lime',
     purple: 'text-neon-purple',
+    orange: 'text-neon-orange',
   }
   
-  const Tag = headingTags[level] as keyof JSX.IntrinsicElements
+  const Tag = headingTags[level] as React.ElementType
   
   return (
     <Tag 

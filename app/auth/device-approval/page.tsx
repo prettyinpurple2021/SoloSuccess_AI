@@ -114,7 +114,7 @@ export default function DeviceApprovalPage() {
   }
 
   const handleDeny = async () => {
-    router.push("/signin")
+    router.push("/login")
   }
 
   const getDeviceIcon = (deviceType: string) => {

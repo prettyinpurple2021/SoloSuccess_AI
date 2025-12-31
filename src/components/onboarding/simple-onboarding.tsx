@@ -61,7 +61,29 @@ export function SimpleOnboarding({ open, onCompleteAction, onSkipAction, userDat
     }
   }
 
-  const handleComplete = () => {
+  const [isLoading, setIsLoading] = useState(false)
+  const [loadingStep, setLoadingStep] = useState(0)
+  
+  const loadingMessages = [
+    "Analyzing your goals...",
+    "Consulting AI Strategy Engine...",
+    "Building your Launch Mission...",
+    "Finalizing your Empire Roadmap..."
+  ]
+
+  // Rotate loading messages
+  const startLoadingSequence = () => {
+    let current = 0
+    return setInterval(() => {
+      current = (current + 1) % loadingMessages.length
+      setLoadingStep(current)
+    }, 1500)
+  }
+
+  const handleComplete = async () => {
+    setIsLoading(true)
+    const interval = startLoadingSequence()
+
     const data = {
       personalInfo: { name, businessType },
       goals: { primaryGoals: goals },
@@ -69,15 +91,43 @@ export function SimpleOnboarding({ open, onCompleteAction, onSkipAction, userDat
       completionDate: new Date().toISOString()
     }
     
-    logInfo('Simple onboarding completed', data)
+    logInfo('Starting Empire Builder generation...', data)
     
-    fetch('/api/profile', {
-      method: 'PATCH',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ onboarding_completed: true, onboarding_data: data })
-    }).catch(() => {})
-    
-    onCompleteAction(data)
+    try {
+      // 1. Update basic profile
+      await fetch('/api/profile', {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ onboarding_completed: true, onboarding_data: data })
+      })
+
+      // 2. Generate Roadmap
+      const response = await fetch('/api/onboarding/generate-plan', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+      })
+
+      if (!response.ok) throw new Error('Failed to generate plan')
+
+      logInfo('Empire Roadmap created successfully')
+      
+      // Artificial delay to let user see "Finalizing..." if it was too fast
+      await new Promise(r => setTimeout(r, 1000))
+      
+      clearInterval(interval)
+      onCompleteAction(data)
+      
+      // Force reload to refresh dashboard data with new tasks
+      window.location.href = '/dashboard'
+      
+    } catch (error) {
+      console.error('Onboarding failed:', error)
+      clearInterval(interval)
+      setIsLoading(false)
+      // Fallback: just close
+      onCompleteAction(data)
+    }
   }
 
   if (!open) return null
@@ -247,6 +297,29 @@ export function SimpleOnboarding({ open, onCompleteAction, onSkipAction, userDat
                   Launch Your Empire!
                 </Button>
               </div>
+            </motion.div>
+          )}
+
+          {/* Loading Overlay */}
+          {isLoading && (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              className="absolute inset-0 z-20 bg-military-tactical-black/95 backdrop-blur-md flex flex-col items-center justify-center text-center p-8 rounded-xl"
+            >
+              <div className="relative w-24 h-24 mb-8">
+                <div className="absolute inset-0 rounded-full border-t-2 border-military-hot-pink animate-spin"></div>
+                <div className="absolute inset-2 rounded-full border-r-2 border-military-cyan animate-spin-slow"></div>
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <Rocket className="h-8 w-8 text-white animate-pulse" />
+                </div>
+              </div>
+              <h3 className="text-2xl font-bold text-white mb-2 font-heading">
+                Initialize Sequence
+              </h3>
+              <p className="text-lg text-military-glass-white animate-in fade-in slide-in-from-bottom-2 duration-300">
+                {loadingMessages[loadingStep]}
+              </p>
             </motion.div>
           )}
         </GlassCard>

@@ -300,6 +300,7 @@ const nextConfig = {
             key: "Content-Security-Policy",
             value: [
               "default-src 'self';",
+              "form-action 'self' https:;",
               "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://js.stripe.com https://challenges.cloudflare.com https://www.googletagmanager.com https://www.google-analytics.com https://www.chatbase.co https://app.bytesroute.com https://vercel.live https://*.vercel.live blob:;",
               "worker-src 'self' blob:;",
               "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdnjs.cloudflare.com https://use.typekit.net https://p.typekit.net;",

@@ -85,7 +85,7 @@ export function useUser() {
 // Deprecated / Stubbed methods
 export async function verifyTOTP() { throw new Error("Not implemented in new auth system") }
 export async function resend2FACode() { throw new Error("Not implemented in new auth system") }
-export async function approveDevice() { return { data: true, error: null } } 
+export async function approveDevice(data?: any) { return { data: true, error: null } } 
 export async function getSessions() { return { data: { sessions: [] }, error: null } }
 export async function revokeSession() { return { data: true, error: null } }
 export async function revokeOtherSessions() { return { data: true, error: null } }

@@ -1,0 +1,113 @@
+
+import { OpenAI } from 'openai';
+import { logInfo, logError } from '@/lib/logger';
+
+interface OnboardingProfile {
+  name: string;
+  businessType: string;
+  goals: string[];
+}
+
+interface GeneratedTask {
+  title: string;
+  description: string;
+  estimatedMinutes: number;
+}
+
+interface GeneratedPhase {
+  phaseName: string; // e.g., "Week 1: Foundation"
+  tasks: GeneratedTask[];
+}
+
+export interface LaunchPlan {
+  roadmap: GeneratedPhase[];
+}
+
+export class OnboardingAIService {
+  private openai: OpenAI | null = null;
+
+  constructor() {
+    if (process.env.OPENAI_API_KEY) {
+      this.openai = new OpenAI({
+        apiKey: process.env.OPENAI_API_KEY,
+      });
+    } else {
+      console.warn('⚠️ OPENAI_API_KEY is not set. Onboarding AI Service will use fallback mode.');
+    }
+  }
+
+  async generateLaunchPlan(profile: OnboardingProfile): Promise<LaunchPlan> {
+    if (!this.openai) {
+      return this.generateFallbackPlan(profile);
+    }
+
+    try {
+      logInfo('Generating AI Launch Plan...', { profile });
+
+      const prompt = `
+        You are an expert business strategist for solopreneurs.
+        Create a 4-week "Launch Mission" for a new ${profile.businessType} named "${profile.name}".
+        Their primary goals are: ${profile.goals.join(', ')}.
+
+        Return ONLY a JSON object with this exact structure (no markdown, no extra text):
+        {
+          "roadmap": [
+            {
+              "phaseName": "Week 1: [Theme]",
+              "tasks": [
+                { "title": "[Actionable Title]", "description": "[Short specific instruction]", "estimatedMinutes": [number 15-60] }
+              ]
+            }
+          ]
+        }
+        Create exactly 4 phases (Week 1 to Week 4). Each phase should have 3-5 high-impact tasks.
+        Make the tasks specific to being a ${profile.businessType}.
+      `;
+
+      const response = await this.openai.chat.completions.create({
+        model: 'gpt-4-turbo-preview', // Or gpt-3.5-turbo if cost is concern, but 4 is better for strategy
+        messages: [
+          { role: 'system', content: 'You are a JSON-only API that outputs precise business roadmaps.' },
+          { role: 'user', content: prompt }
+        ],
+        response_format: { type: 'json_object' },
+        temperature: 0.7,
+      });
+
+      const content = response.choices[0].message.content;
+      if (!content) throw new Error('No content received from OpenAI');
+
+      const plan = JSON.parse(content) as LaunchPlan;
+      return plan;
+
+    } catch (error) {
+      logError('Failed to generate AI Launch Plan', error);
+      return this.generateFallbackPlan(profile);
+    }
+  }
+
+  private generateFallbackPlan(profile: OnboardingProfile): LaunchPlan {
+    // Fallback if AI fails or no key
+    return {
+      roadmap: [
+        {
+          phaseName: "Week 1: Foundation (Fallback)",
+          tasks: [
+            { title: "Define Ideal Customer Profile", description: "Write down exactly who you serve.", estimatedMinutes: 30 },
+            { title: "Set Up Business Banking", description: "Separate personal and business finances.", estimatedMinutes: 60 },
+            { title: "Claim Social Handles", description: `Secure ${profile.name} on all platforms.`, estimatedMinutes: 45 }
+          ]
+        },
+        {
+          phaseName: "Week 2: Offer Validation",
+          tasks: [
+            { title: "Talk to 5 Potential Customers", description: "Validate your problem/solution fit.", estimatedMinutes: 120 },
+            { title: "Draft Service Agreement", description: "Create a standard contract template.", estimatedMinutes: 60 }
+          ]
+        }
+      ]
+    };
+  }
+}
+
+export const onboardingAI = new OnboardingAIService();

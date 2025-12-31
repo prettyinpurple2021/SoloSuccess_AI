@@ -34,7 +34,7 @@ export function CyberNav() {
           >
             Initialize
           </Link>
-          <Link href="/signin">
+          <Link href="/login">
             <CyberButton variant="ghost" size="sm">
               USER_LOGIN
             </CyberButton>

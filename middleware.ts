@@ -42,7 +42,8 @@ export default auth((req) => {
     "upgrade-insecure-requests"
   ].join('; ')
   
-  response.headers.set('Content-Security-Policy', csp)
+  // CSP is handled in next.config.mjs to avoid conflicts
+  // response.headers.set('Content-Security-Policy', csp)
   
   return response
 })
