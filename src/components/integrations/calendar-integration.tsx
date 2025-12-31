@@ -314,8 +314,6 @@ export function CalendarIntegration({ className = "" }: CalendarIntegrationProps
       // This would fetch tasks and create calendar events for them
       // Status: Development pending for V2
       toast({
-      
-      toast({
         title: "Feature in development",
         description: "Task sync to calendar is coming soon",
       })
@@ -338,8 +336,6 @@ export function CalendarIntegration({ className = "" }: CalendarIntegrationProps
       // TODO: Implement calendar event creation
       // This would open a dialog to create a new event and POST to Google Calendar API
       // Status: Development pending for V2
-      toast({
-      
       toast({
         title: "Feature in development",
         description: "Event creation is coming soon",
@@ -482,7 +478,7 @@ export function CalendarIntegration({ className = "" }: CalendarIntegrationProps
                     {calendarInfo.email && (
                       <p className="text-sm text-gray-600">{calendarInfo.email}</p>
                     )}
-                    <Badge variant="secondary" className="text-xs mt-1">
+                    <Badge variant="cyan" className="text-xs mt-1">
                       Active
                     </Badge>
                   </div>
@@ -546,7 +542,7 @@ export function CalendarIntegration({ className = "" }: CalendarIntegrationProps
                     <div className="flex items-center gap-2 mb-1">
                       <span className="font-medium truncate">{event.title}</span>
                       {event.isRecurring && (
-                        <Badge variant="outline" className="text-xs">
+                        <Badge variant="purple" className="text-xs">
                           Recurring
                         </Badge>
                       )}
@@ -567,7 +563,7 @@ export function CalendarIntegration({ className = "" }: CalendarIntegrationProps
                         <Calendar className="w-3 h-3" />
                         {formatEventDate(event.startTime)}
                       </div>
-                      <Badge variant="secondary" className="text-xs">
+                      <Badge variant="cyan" className="text-xs">
                         {event.calendarName}
                       </Badge>
                     </div>

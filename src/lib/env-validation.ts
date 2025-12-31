@@ -12,6 +12,7 @@ const envSchema = z.object({
   
   // JWT Authentication - Required for authentication
   JWT_SECRET: z.string().min(32, "JWT secret must be at least 32 characters"),
+  AUTH_SECRET: z.string().min(32, "Auth secret is required for NextAuth V5").optional(), // Optional for now to avoid breaking local if using JWT_SECRET fallback
   
   // Stack Auth - Optional (for backward compatibility)
   NEXT_PUBLIC_STACK_PROJECT_ID: z.string().min(1, "Stack Auth project ID is required").optional(),

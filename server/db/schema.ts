@@ -8,6 +8,11 @@ export const users = pgTable('users', {
     id: serial('id').primaryKey(),
     email: text('email').unique(),
     password: text('password'), // Hashed password
+    name: text('name'), // NextAuth standard
+    full_name: text('full_name'), // App specific
+    username: text('username').unique(),
+    image: text('image'),
+    date_of_birth: timestamp('date_of_birth'),
     stackUserId: text('stack_user_id').unique(), // Stack Auth user ID (optional now)
     role: text('role').default('user'), // 'user' | 'admin'
     adminPinHash: text('admin_pin_hash'), // Hashed PIN for admin access
