@@ -31,11 +31,7 @@ const nextConfig = {
     ignoreBuildErrors: true,
   },
 
-  // Environment variables configuration
-  env: {
-    DATABASE_URL: process.env.DATABASE_URL,
-    JWT_SECRET: process.env.JWT_SECRET,
-  },
+
 
   // Optimized for Vercel deployment
   // output: "standalone", // Disabled for Vercel deployment

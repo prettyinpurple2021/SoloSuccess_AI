@@ -1,6 +1,6 @@
 "use client"
 
-import { logInfo } from '@/lib/logger'
+import { logInfo, logError } from '@/lib/logger'
 import { useState } from "react"
 import { motion } from "framer-motion"
 import { Button} from "@/components/ui/button"
@@ -122,7 +122,7 @@ export function SimpleOnboarding({ open, onCompleteAction, onSkipAction, userDat
       window.location.href = '/dashboard'
       
     } catch (error) {
-      console.error('Onboarding failed:', error)
+      logError('Onboarding failed', error)
       clearInterval(interval)
       setIsLoading(false)
       // Fallback: just close

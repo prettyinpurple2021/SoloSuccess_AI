@@ -1,11 +1,12 @@
 
-import { auth } from '@/auth';
+import { auth } from '@/lib/auth';
 import { db } from '@/db';
 import { goals, tasks, briefcases } from '@/db/schema';
-import { onboardingAI } from '@/src/services/onboarding-ai';
+import { onboardingAI } from '@/services/onboarding-ai';
 import { ApiError, handleApiError, successResponse } from '@/lib/api-utils';
 import { logInfo, logError } from '@/lib/logger';
 import { v4 as uuidv4 } from 'uuid';
+import { z } from 'zod';
 
 export async function POST(req: Request) {
   try {
@@ -14,11 +15,25 @@ export async function POST(req: Request) {
       throw new ApiError('Unauthorized', 401);
     }
 
-    const { personalInfo, goals: userGoals } = await req.json();
+    const body = await req.json();
 
-    if (!personalInfo || !userGoals) {
-      throw new ApiError('Missing onboarding data', 400);
+    const schema = z.object({
+      personalInfo: z.object({
+        name: z.string(),
+        businessType: z.string(),
+      }),
+      goals: z.object({
+        primaryGoals: z.array(z.string()),
+      }),
+    });
+
+    const validation = schema.safeParse(body);
+
+    if (!validation.success) {
+      throw new ApiError('Invalid onboarding data', 400);
     }
+
+    const { personalInfo, goals: userGoals } = validation.data;
 
     const userId = session.user.id;
 

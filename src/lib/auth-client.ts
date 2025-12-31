@@ -35,11 +35,11 @@ export async function signIn(email: string, password: string) {
   }
 }
 
-export async function signUp(email: string, password: string, metadata?: any) {
+export async function signUp(email: string, password: string, metadata?: Record<string, unknown>) {
   const res = await fetch("/api/register", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ email, password, name: metadata?.full_name || metadata?.username }),
+    body: JSON.stringify({ email, password, name: (metadata?.full_name as string) || (metadata?.username as string) }),
   })
 
   if (!res.ok) {
@@ -85,7 +85,14 @@ export function useUser() {
 // Deprecated / Stubbed methods
 export async function verifyTOTP() { throw new Error("Not implemented in new auth system") }
 export async function resend2FACode() { throw new Error("Not implemented in new auth system") }
-export async function approveDevice(data?: any) { return { data: true, error: null } } 
+interface ApproveDeviceParams {
+  deviceFingerprint: string;
+  deviceName: string;
+  deviceType: string;
+  trustDevice: boolean;
+}
+
+export async function approveDevice(data?: ApproveDeviceParams) { return { data: true, error: null } } 
 export async function getSessions() { return { data: { sessions: [] }, error: null } }
 export async function revokeSession() { return { data: true, error: null } }
 export async function revokeOtherSessions() { return { data: true, error: null } }

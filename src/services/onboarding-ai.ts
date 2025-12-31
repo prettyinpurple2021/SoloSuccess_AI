@@ -1,6 +1,7 @@
 
 import { OpenAI } from 'openai';
-import { logInfo, logError } from '@/lib/logger';
+import { z } from 'zod';
+import { logInfo, logError, logWarn } from '@/lib/logger';
 
 interface OnboardingProfile {
   name: string;
@@ -32,7 +33,7 @@ export class OnboardingAIService {
         apiKey: process.env.OPENAI_API_KEY,
       });
     } else {
-      console.warn('⚠️ OPENAI_API_KEY is not set. Onboarding AI Service will use fallback mode.');
+      logWarn('OPENAI_API_KEY is not set. Onboarding AI Service will use fallback mode.');
     }
   }
 
@@ -77,8 +78,26 @@ export class OnboardingAIService {
       const content = response.choices[0].message.content;
       if (!content) throw new Error('No content received from OpenAI');
 
-      const plan = JSON.parse(content) as LaunchPlan;
-      return plan;
+      // Define schema for validation
+      const TaskSchema = z.object({
+        title: z.string(),
+        description: z.string(),
+        estimatedMinutes: z.number(),
+      });
+
+      const PhaseSchema = z.object({
+        phaseName: z.string(),
+        tasks: z.array(TaskSchema),
+      });
+
+      const LaunchPlanSchema = z.object({
+        roadmap: z.array(PhaseSchema),
+      });
+
+      const plan = JSON.parse(content);
+      const validatedPlan = LaunchPlanSchema.parse(plan);
+      
+      return validatedPlan as unknown as LaunchPlan;
 
     } catch (error) {
       logError('Failed to generate AI Launch Plan', error);
@@ -88,7 +107,7 @@ export class OnboardingAIService {
 
   private generateFallbackPlan(profile: OnboardingProfile): LaunchPlan {
     // Fallback if AI fails or no key
-    return {
+    const plan: LaunchPlan = {
       roadmap: [
         {
           phaseName: "Week 1: Foundation (Fallback)",
@@ -107,6 +126,7 @@ export class OnboardingAIService {
         }
       ]
     };
+    return plan;
   }
 }
 

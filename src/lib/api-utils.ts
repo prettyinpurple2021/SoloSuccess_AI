@@ -22,7 +22,7 @@ export function getSql() {
 export function createErrorResponse(
   message: string, 
   status: number = 500, 
-  details?: any
+  details?: unknown
 ) {
   logError(`API Error (${status}): ${message}`, details)
   return NextResponse.json(
@@ -34,11 +34,33 @@ export function createErrorResponse(
   )
 }
 
+export class ApiError extends Error {
+  statusCode: number;
+  details?: unknown;
+
+  constructor(message: string, statusCode: number = 500, details?: unknown) {
+    super(message);
+    this.statusCode = statusCode;
+    this.details = details;
+  }
+}
+
+export function handleApiError(error: unknown) {
+  logError('API Error caught', error);
+  const message = error instanceof Error ? error.message : 'Internal Server Error';
+  const statusCode = error instanceof ApiError ? error.statusCode : 500;
+  const details = error instanceof ApiError ? error.details : undefined;
+  
+  return createErrorResponse(message, statusCode, details);
+}
+
+export const successResponse = createSuccessResponse;
+
 /**
  * Standardized success response utility
  */
 export function createSuccessResponse(
-  data: any, 
+  data: unknown, 
   message?: string, 
   status: number = 200
 ) {
@@ -46,7 +68,7 @@ export function createSuccessResponse(
     {
       success: true,
       ...(message && { message }),
-      ...data
+      ...(typeof data === 'object' && data !== null ? data : { data })
     },
     { status }
   )
@@ -110,12 +132,13 @@ export async function authenticateRequest(request: NextRequest) {
  * Eliminates duplication in input validation
  */
 export function validateRequiredFields(
-  data: Record<string, any>, 
+  data: Record<string, unknown>, 
   requiredFields: string[]
 ): { isValid: boolean; missingFields: string[] } {
-  const missingFields = requiredFields.filter(field => 
-    !data[field] || (typeof data[field] === 'string' && data[field].trim() === '')
-  )
+  const missingFields = requiredFields.filter(field => {
+    const value = data[field];
+    return !value || (typeof value === 'string' && value.trim() === '')
+  })
   
   return {
     isValid: missingFields.length === 0,
@@ -156,7 +179,7 @@ export async function parseRequestBody(
  * Database query wrapper with error handling
  * Eliminates duplication in database operations
  */
-export async function executeQuery<T = any>(
+export async function executeQuery<T>(
   queryFn: () => Promise<T>,
   errorMessage: string = 'Database query failed'
 ): Promise<{ data: T | null; error: string | null }> {
@@ -196,21 +219,33 @@ export function parsePaginationParams(request: NextRequest) {
  * Common API route wrapper
  * Eliminates duplication in route structure and error handling
  */
+/**
+ * Common API route wrapper
+ * Eliminates duplication in route structure and error handling
+ */
 export function withApiHandler(
-  handler: (request: NextRequest, context?: any) => Promise<NextResponse>
+  handler: (request: NextRequest, context?: unknown) => Promise<NextResponse>
 ) {
-  return async (request: NextRequest, context?: any) => {
+  return async (request: NextRequest, context?: unknown) => {
     try {
       return await handler(request, context)
     } catch (error) {
-      logError('Unhandled API error:', error)
+      logError('Unhandled API error:', error);
+      const isApiError = error instanceof ApiError;
       return createErrorResponse(
         'Internal server error',
         500,
-        process.env.NODE_ENV === 'development' ? error : undefined
+        process.env.NODE_ENV === 'development' ? error : (isApiError ? (error as ApiError).details : undefined)
       )
     }
   }
+}
+
+export interface AuthenticatedUser {
+  id: string;
+  email: string;
+  role?: string;
+  [key: string]: unknown;
 }
 
 /**
@@ -218,16 +253,16 @@ export function withApiHandler(
  * Eliminates duplication in authentication checks
  */
 export function withAuth(
-  handler: (request: NextRequest, user: any, context?: any) => Promise<NextResponse>
+  handler: (request: NextRequest, user: AuthenticatedUser, context?: unknown) => Promise<NextResponse>
 ) {
-  return withApiHandler(async (request: NextRequest, context?: any) => {
+  return withApiHandler(async (request: NextRequest, context?: unknown) => {
     const { user, error } = await authenticateRequest(request)
     
     if (!user || error) {
       return createErrorResponse(error || 'Authentication required', 401)
     }
     
-    return handler(request, user, context)
+    return handler(request, user as AuthenticatedUser, context)
   })
 }
 
@@ -247,7 +282,7 @@ export async function verifyDocumentOwnership(
   documentId: string,
   userId: string,
   selectFields: string = 'id'
-): Promise<{ document: any | null; error: string | null }> {
+): Promise<{ document: unknown | null; error: string | null }> {
   try {
     // Validate selectFields against whitelist to prevent SQL injection
     const requestedFields = selectFields.split(',').map(f => f.trim())
@@ -310,10 +345,10 @@ export async function verifyDocumentOwnership(
  * Parse document tags safely
  * Centralized tag parsing logic
  */
-export function parseDocumentTags(tagsField: any): string[] {
+export function parseDocumentTags(tagsField: unknown): string[] {
   if (!tagsField) return []
   try {
-    return typeof tagsField === 'string' ? JSON.parse(tagsField) : tagsField
+    return typeof tagsField === 'string' ? JSON.parse(tagsField) : tagsField as string[]
   } catch (error) {
     logError('Failed to parse document tags:', error)
     return []
@@ -327,14 +362,14 @@ export function parseDocumentTags(tagsField: any): string[] {
 export function withDocumentAuth(
   handler: (
     request: NextRequest,
-    user: any,
+    user: AuthenticatedUser,
     documentId: string,
-    context?: any
+    context?: unknown
   ) => Promise<NextResponse>,
   selectFields: string = 'id'
 ) {
-  return withAuth(async (request: NextRequest, user: any, context?: any) => {
-    const params = await context.params
+  return withAuth(async (request: NextRequest, user: AuthenticatedUser, context?: unknown) => {
+    const params = await (context as { params: Promise<{ id: string }> }).params
     const { id: documentId } = params
     
     if (!documentId) {
