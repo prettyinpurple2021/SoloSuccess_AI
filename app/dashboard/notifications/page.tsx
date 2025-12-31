@@ -94,7 +94,7 @@ export default function NotificationsPage() {
         <div className="text-center">
           <h1 className="text-2xl font-bold mb-4">Please sign in to access notifications</h1>
           <Button asChild>
-            <a href="/signin">Sign In</a>
+            <a href="/login">Sign In</a>
           </Button>
         </div>
       </div>

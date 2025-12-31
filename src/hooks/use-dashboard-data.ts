@@ -128,9 +128,9 @@ export function useDashboardData() {
           // Token expired or invalid
           localStorage.removeItem('authToken')
           setError('Authentication expired. Please sign in again.')
-          // Only redirect if we're not already on the signin page
-          if (window.location.pathname !== '/signin') {
-            window.location.href = '/signin'
+          // Only redirect if we're not already on the login page
+          if (window.location.pathname !== '/login') {
+            window.location.href = '/login'
           }
           return
         }

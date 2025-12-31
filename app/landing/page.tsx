@@ -50,7 +50,7 @@ export default function LandingPage() {
               Get Started
             </Link>
             <Link 
-              href="/signin"
+              href="/login"
               className="relative px-6 py-2 overflow-hidden group bg-transparent border border-cyber-purple/50 inline-block"
             >
               <span className="absolute w-0 h-full bg-cyber-purple left-0 top-0 transition-all duration-300 group-hover:w-full opacity-20" />

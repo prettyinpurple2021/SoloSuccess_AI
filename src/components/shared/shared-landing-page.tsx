@@ -212,7 +212,7 @@ export function SharedLandingPage(_props: SharedLandingPageProps) {
                 Pricing
               </a>
               <ThemeToggle />
-              <Link href="/signin">
+              <Link href="/login">
                 <Button variant="ghost" className="text-gray-300 hover:text-neon-cyan">
                   Sign In
                 </Button>
@@ -280,7 +280,7 @@ export function SharedLandingPage(_props: SharedLandingPageProps) {
                   >
                     Pricing
                   </a>
-                  <Link href="/signin">
+                  <Link href="/login">
                     <Button variant="ghost" className="text-gray-300 hover:text-neon-cyan w-full">
                       Sign In
                     </Button>
@@ -518,7 +518,7 @@ export function SharedLandingPage(_props: SharedLandingPageProps) {
                       </div>
                     </div>
                     <CardTitle className="text-xl font-bold text-white">{agent.name}</CardTitle>
-                    <Badge variant="secondary" className="bg-neon-purple/20 text-neon-purple border border-neon-purple/30">
+                    <Badge variant="purple" className="bg-neon-purple/20 text-neon-purple border border-neon-purple/30">
                       {agent.role}
                     </Badge>
                   </CardHeader>
@@ -625,7 +625,7 @@ export function SharedLandingPage(_props: SharedLandingPageProps) {
                           ? "bg-gradient-to-r from-neon-cyan to-neon-purple hover:from-neon-cyan hover:to-neon-magenta text-white"
                           : "border-neon-cyan/50 text-neon-cyan hover:bg-neon-cyan/10"
                       }`}
-                      variant={plan.popular ? "default" : "outline"}
+                      variant={plan.popular ? "cyan" : "outline"}
                       onClick={() => {
                         if (plan.cta === "Contact Sales") {
                           router.push("/contact")
