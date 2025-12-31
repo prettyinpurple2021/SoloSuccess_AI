@@ -10,11 +10,21 @@ import { analyticsExportService, ExportConfigSchema } from '@/lib/analytics-expo
 import { verifyAuth } from '@/lib/auth-server'
 import { rateLimitByIp } from '@/lib/rate-limit'
 
-// Edge runtime enabled after refactoring to jose and Neon HTTP
-export const runtime = 'edge'
+/**
+ * FIX FOR NEXT.JS 15 / VERCEL BUILD:
+ * We have switched the runtime from 'edge' to 'nodejs'.
+ * Next.js 15's Edge runtime currently has issues with internal object iteration 
+ * (the "b.entries is not a function" error) during the "Collecting page data" 
+ * phase when complex Auth/DB adapters are present. 
+ * Node.js runtime is more stable for this specific export logic.
+ */
+export const runtime = 'nodejs'
 
-
-// Force dynamic rendering
+/**
+ * Force dynamic rendering
+ * This prevents Vercel from trying to "pre-build" this API route as a static file,
+ * which is a common cause of build-time crashes.
+ */
 export const dynamic = 'force-dynamic'
 
 // Request schemas
@@ -161,8 +171,13 @@ export async function GET(request: NextRequest) {
       )
     }
 
-    // Get query parameters
-    const { searchParams } = new URL(request.url)
+    /**
+     * FIX FOR NEXT.JS 15:
+     * We use request.nextUrl.searchParams instead of new URL(request.url).
+     * This is the standard, optimized way for Next.js to handle query strings,
+     * which prevents errors during the "Collecting page data" phase.
+     */
+    const searchParams = request.nextUrl.searchParams
     const jobId = searchParams.get('jobId')
     const status = searchParams.get('status')
     const limit = parseInt(searchParams.get('limit') || '50')
@@ -285,4 +300,3 @@ export async function DELETE(request: NextRequest) {
     }, { status: 500 })
   }
 }
-
