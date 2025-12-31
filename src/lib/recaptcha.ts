@@ -25,8 +25,8 @@ export async function createAssessment(
 ): Promise<number | null> {
   try {
     if (!RECAPTCHA_CONFIG.secretKey) {
-      logWarn('reCAPTCHA secret key not configured, skipping validation')
-      return 0.9 // Return high score if not configured
+      logError('reCAPTCHA secret key not configured, validation failed secure')
+      return null
     }
 
     const response = await fetch('https://www.google.com/recaptcha/api/siteverify', {

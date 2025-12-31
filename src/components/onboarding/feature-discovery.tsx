@@ -278,17 +278,17 @@ export function FeatureDiscovery({ open, onComplete, onSkip, userPreferences }: 
                 </motion.div>
               </div>
 
-              {/* Interactive Demo */}
+              {/* Interactive Guide */}
               <div className="space-y-6">
                 <motion.div
-                  key={`demo-${currentFeature}`}
+                  key={`guide-${currentFeature}`}
                   initial={{ opacity: 0, x: 20 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ duration: 0.4 }}
                   className="bg-gradient-to-br from-gray-50 to-gray-100 rounded-xl p-6 border-2 border-dashed border-gray-300"
                 >
                   <div className="text-center mb-4">
-                    <h3 className="text-lg font-semibold mb-2">Try It Out!</h3>
+                    <h3 className="text-lg font-semibold mb-2">Quick Start Guide</h3>
                     <p className="text-sm text-muted-foreground">
                       {currentFeatureData.demo.type === "interactive" && "Click around to explore"}
                       {currentFeatureData.demo.type === "conversation" && "Start a conversation"}
@@ -322,7 +322,7 @@ export function FeatureDiscovery({ open, onComplete, onSkip, userPreferences }: 
                       className="punk-button text-white"
                     >
                       <CheckCircle className="h-4 w-4 mr-2" />
-                      I've Tried This Feature
+                      I've Completed This Step
                     </Button>
                   </div>
                 </motion.div>

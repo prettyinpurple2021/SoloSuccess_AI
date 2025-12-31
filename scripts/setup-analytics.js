@@ -66,7 +66,7 @@ class AnalyticsSetup {
 window.dataLayer = window.dataLayer || [];
 function gtag(){dataLayer.push(arguments);}
 gtag('js', new Date());
-gtag('config', '${this.analyticsConfig.googleAnalytics.measurementId}', {
+gtag('config', process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID || '${this.analyticsConfig.googleAnalytics.measurementId}', {
   custom_map: {
     'custom_dimension1': 'user_plan',
     'custom_dimension2': 'ai_agent',

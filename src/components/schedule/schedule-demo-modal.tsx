@@ -6,7 +6,8 @@ import { Button} from "@/components/ui/button"
 import { Input} from "@/components/ui/input"
 import { Label} from "@/components/ui/label"
 import { Dialog, DialogContent, DialogHeader, DialogTitle} from "@/components/ui/dialog"
-import { Calendar, Clock} from "lucide-react"
+import { Calendar, Clock, CheckCircle, Loader2} from "lucide-react"
+import { toast } from "sonner"
 
 interface ScheduleDemoModalProps {
   isOpen: boolean
@@ -14,15 +15,32 @@ interface ScheduleDemoModalProps {
 }
 
 export function ScheduleDemoModal({ isOpen, onClose }: ScheduleDemoModalProps) {
+  const [isLoading, setIsLoading] = useState(false)
   const [name, setName] = useState("")
   const [email, setEmail] = useState("")
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    alert("Demo request submitted! We'll contact you soon.")
-    setName("")
-    setEmail("")
-    onClose()
+    setIsLoading(true)
+
+    try {
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name, email, type: 'demo_request' })
+      })
+
+      if (!response.ok) throw new Error('Failed to submit')
+
+      toast.success("Demo request submitted! We'll contact you soon.")
+      setName("")
+      setEmail("")
+      onClose()
+    } catch (error) {
+      toast.error("Failed to submit request. Please try again.")
+    } finally {
+      setIsLoading(false)
+    }
   }
 
   return (
@@ -69,8 +87,15 @@ export function ScheduleDemoModal({ isOpen, onClose }: ScheduleDemoModalProps) {
               />
             </div>
             
-            <Button type="submit" className="w-full">
-              Request Demo
+            <Button type="submit" className="w-full bg-gradient-to-r from-purple-600 to-pink-600 text-white" disabled={isLoading}>
+              {isLoading ? (
+                <>
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                  Submitting...
+                </>
+              ) : (
+                "Request Demo"
+              )}
             </Button>
           </form>
         </div>
