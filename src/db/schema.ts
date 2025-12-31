@@ -19,7 +19,7 @@ export const users = pgTable('users', {
   total_actions: integer('total_actions').default(0),
   suspended: boolean('suspended').default(false),
   suspended_at: timestamp('suspended_at'),
-  suspended_reason: text('suspended_reason'),
+      suspended_reason: text('suspended_reason'),
   stripe_customer_id: text('stripe_customer_id'),
   subscription_tier: text('subscription_tier').default('free'),
   subscription_status: text('subscription_status').default('active'),
