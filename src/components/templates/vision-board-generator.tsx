@@ -57,42 +57,43 @@ export function VisionBoardGenerator() {
     ));
   };
 
-  const generateSampleVision = () => {
-    const sampleElements: VisionElement[] = [
-      {
-        id: '1',
-        category: 'business',
-        title: '6-Figure Business',
-        description: 'Build a sustainable business generating $100k+ annually',
-        timeline: '18 months',
-        priority: 'high'
-      },
-      {
-        id: '2',
-        category: 'personal',
-        title: 'Work-Life Balance',
-        description: 'Maintain healthy boundaries and time for family',
-        timeline: '6 months',
-        priority: 'high'
-      },
-      {
-        id: '3',
-        category: 'financial',
-        title: 'Emergency Fund',
-        description: 'Save 6 months of expenses for security',
-        timeline: '12 months',
+  const [isGenerating, setIsGenerating] = useState(false);
+
+  const generateWithAI = async () => {
+    setIsGenerating(true);
+    try {
+      const response = await fetch('/api/ai/generate', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ 
+          type: 'vision_board',
+          context: visionStatement || 'general success and happiness'
+        }),
+      });
+
+      if (!response.ok) throw new Error('Failed to generate vision board');
+
+      const data = await response.json();
+      
+      setVisionStatement(data.vision_statement || visionStatement);
+      setCoreValues(Array.isArray(data.core_values) ? data.core_values.join(', ') : data.core_values || '');
+      
+      const newElements = (data.elements || []).map((el: any) => ({
+        id: crypto.randomUUID(),
+        category: el.category?.toLowerCase() || 'personal',
+        title: el.title || 'New Goal',
+        description: el.description || '',
+        timeline: '1 year',
         priority: 'medium'
-      },
-      {
-        id: '4',
-        category: 'lifestyle',
-        title: 'Dream Vacation',
-        description: 'Take a month-long trip to Europe',
-        timeline: '2 years',
-        priority: 'low'
-      }
-    ];
-    setElements(sampleElements);
+      }));
+
+      setElements(newElements);
+    } catch (error) {
+      console.error('Failed to generate:', error);
+      // Fallback or toast error here
+    } finally {
+      setIsGenerating(false);
+    }
   };
 
   const handleSave = async () => {
@@ -192,8 +193,18 @@ export function VisionBoardGenerator() {
                 );
               })}
             </div>
-            <Button variant="outline" onClick={generateSampleVision} className="w-full">
-              Generate Sample Vision
+            <Button variant="outline" onClick={generateWithAI} disabled={isGenerating} className="w-full">
+              {isGenerating ? (
+                <>
+                  <Sparkles className="w-4 h-4 mr-2 animate-spin" />
+                  Generating...
+                </>
+              ) : (
+                <>
+                  <Sparkles className="w-4 h-4 mr-2" />
+                  Generate with AI
+                </>
+              )}
             </Button>
           </div>
         </div>

@@ -301,9 +301,33 @@ export function CustomReportBuilder({
     
     setIsSaving(true)
     try {
+      const response = await fetch('/api/analytics/reports', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: report.name,
+          description: report.description,
+          config: {
+            visualizations: report.visualizations,
+            globalFilters: report.globalFilters,
+            category: report.category,
+            tags: report.tags,
+            isPublic: report.isPublic,
+            isTemplate: report.isTemplate,
+          },
+          schedule: report.schedule,
+        }),
+      });
+
+      if (!response.ok) throw new Error('Failed to save report');
+
+      const savedReport = await response.json();
+      
       const updatedReport = {
         ...report,
-        updatedAt: new Date()
+        id: savedReport.id,
+        updatedAt: new Date(savedReport.updated_at),
+        createdAt: new Date(savedReport.created_at),
       }
       
       setReport(updatedReport)
@@ -312,7 +336,7 @@ export function CustomReportBuilder({
       toast({
         title: 'Report Saved',
         description: 'Your custom report has been saved successfully',
-        variant: 'success'
+        variant: 'default' // Changed from 'success' as it might not be a valid variant in standard shadcn
       })
       
       logInfo('Custom report saved:', { reportId: updatedReport.id, name: updatedReport.name })

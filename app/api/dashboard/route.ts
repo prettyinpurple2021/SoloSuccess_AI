@@ -365,16 +365,6 @@ export async function GET(request: NextRequest) {
       updated_at: b.updated_at,
     }))
 
-    // Generate some sample insights for new users
-    const insights = todaysTasks.length === 0 && recentBriefcases.length === 0 ? [
-      {
-        type: 'welcome',
-        title: 'Welcome to SoloSuccess AI!',
-        description: 'Start by creating your first briefcase (project) to get organized.',
-        action: 'Create Briefcase'
-      }
-    ] : []
-
     // Get real user stats from database
     const userStats = (userStatsRes?.[0] as any) || {
       total_tasks_completed: 0,
@@ -388,6 +378,60 @@ export async function GET(request: NextRequest) {
       current_streak: 0,
       wellness_score: 50
     };
+
+    // Generate dynamic insights
+    const insights = [];
+
+    // Welcome Insight
+    if (todaysTasks.length === 0 && recentBriefcases.length === 0) {
+      insights.push({
+        type: 'welcome',
+        title: 'Welcome to SoloSuccess AI!',
+        description: 'Start by creating your first briefcase (project) to get organized.',
+        action: 'Create Briefcase'
+      });
+    }
+
+    // Streak Insight
+    if (userStats.current_streak >= 3) {
+      insights.push({
+        type: 'streak',
+        title: `You're on fire! 🔥`,
+        description: `You've maintained a ${userStats.current_streak} day streak. Keep it up!`,
+        action: 'View Progress'
+      });
+    }
+
+    // Productivity Insight
+    const productivityScore = todaysStatsRow.productivity_score || 0;
+    if (productivityScore > 0 && productivityScore < 50 && todaysTasks.length > 0) {
+      insights.push({
+        type: 'productivity',
+        title: 'Need a boost?',
+        description: 'Your productivity score is low today. Try a Focus Session to get back on track.',
+        action: 'Start Focus Session'
+      });
+    } else if (productivityScore >= 90) {
+      insights.push({
+        type: 'productivity',
+        title: 'Outstanding Performance! 🌟',
+        description: 'You are crushing your tasks today. Excellent work!',
+        action: 'View Analytics'
+      });
+    }
+
+    // Goal Insight
+    const nearCompletionGoal = activeGoals.find((g: any) => g.progress_percentage >= 80 && g.progress_percentage < 100);
+    if (nearCompletionGoal) {
+      insights.push({
+        type: 'goal',
+        title: 'Almost there!',
+        description: `You are close to completing "${nearCompletionGoal.title}". Finish strong!`,
+        action: `View Goal`
+      });
+    }
+
+
 
     const responseData = {
       user: {

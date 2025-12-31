@@ -633,6 +633,22 @@ export const feedbackTypeEnum = pgEnum('feedback_type', ['bug', 'feature_request
 export const feedbackStatusEnum = pgEnum('feedback_status', ['pending', 'in_progress', 'resolved', 'closed', 'dismissed']);
 export const feedbackPriorityEnum = pgEnum('feedback_priority', ['low', 'medium', 'high', 'critical']);
 
+// Custom Reports table
+export const customReports = pgTable('custom_reports', {
+  id: text('id').primaryKey().$defaultFn(() => uuidv4()),
+  user_id: text('user_id').notNull().references(() => users.id, { onDelete: 'cascade' }),
+  name: varchar('name', { length: 255 }).notNull(),
+  description: text('description'),
+  config: jsonb('config').notNull().default('{}'), // Stores the report configuration (metrics, filters, visualization type)
+  schedule: jsonb('schedule'), // Stores scheduling frequency and recipients
+  is_favorite: boolean('is_favorite').default(false),
+  last_run_at: timestamp('last_run_at'),
+  created_at: timestamp('created_at').defaultNow(),
+  updated_at: timestamp('updated_at').defaultNow(),
+}, (table) => ({
+  userIdIdx: index('custom_reports_user_id_idx').on(table.user_id),
+}));
+
 // Feedback table for user submissions
 export const feedback = pgTable('feedback', {
   id: text('id').primaryKey().$defaultFn(() => uuidv4()),

@@ -111,73 +111,30 @@ const CHART_TYPES = [
   { id: 'sankey', name: 'Sankey Diagram', icon: TrendingUp, description: 'Show flow between entities' }
 ]
 
-// Sample data generator
-const generateSampleData = (type: string, count: number = 10): DataPoint[] => {
-  const data: DataPoint[] = []
-  
-  switch (type) {
-    case 'bar':
-    case 'line':
-    case 'area':
-      for (let i = 0; i < count; i++) {
-        data.push({
-          x: `Item ${i + 1}`,
-          y: Math.floor(Math.random() * 100) + 10,
-          label: `Data Point ${i + 1}`,
-          metadata: { category: `Category ${Math.floor(i / 3) + 1}` }
-        })
-      }
-      break
-      
-    case 'pie':
-      const categories = ['Desktop', 'Mobile', 'Tablet', 'Other']
-      categories.forEach((category, i) => {
-        data.push({
-          x: category,
-          y: Math.floor(Math.random() * 40) + 10,
-          label: category,
-          color: COLOR_SCHEMES.purple[i % COLOR_SCHEMES.purple.length]
-        })
-      })
-      break
-      
-    case 'scatter':
-      for (let i = 0; i < count; i++) {
-        data.push({
-          x: Math.floor(Math.random() * 100),
-          y: Math.floor(Math.random() * 100),
-          label: `Point ${i + 1}`,
-          metadata: { size: Math.floor(Math.random() * 20) + 5 }
-        })
-      }
-      break
-      
-    case 'funnel':
-      const stages = ['Visitors', 'Leads', 'Opportunities', 'Customers']
-      let cumulative = 1000
-      stages.forEach((stage, i) => {
-        const value = Math.floor(cumulative * (0.6 + Math.random() * 0.3))
-        data.push({
-          x: stage,
-          y: value,
-          label: stage,
-          metadata: { conversion: i > 0 ? (value / data[i-1].y * 100).toFixed(1) + '%' : '100%' }
-        })
-        cumulative = value
-      })
-      break
-      
-    default:
-      for (let i = 0; i < count; i++) {
-        data.push({
-          x: i,
-          y: Math.floor(Math.random() * 100),
-          label: `Data ${i + 1}`
-        })
-      }
+// Data fetcher
+const fetchChartData = async (metric: string): Promise<DataPoint[]> => {
+  try {
+    const response = await fetch('/api/analytics/query', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ metric }),
+    });
+    
+    if (!response.ok) throw new Error('Failed to fetch data');
+    
+    const data = await response.json();
+    
+    // Transform API response to DataPoint[]
+    // Assuming API returns { history: [{ name: 'Mon', value: 10 }] }
+    return data.history.map((item: any) => ({
+      x: item.name,
+      y: item.value,
+      label: item.name,
+    }));
+  } catch (error) {
+    console.error('Error fetching chart data:', error);
+    return [];
   }
-  
-  return data
 }
 
 export function AdvancedDataVisualization({ 
@@ -198,6 +155,7 @@ export function AdvancedDataVisualization({
 
   // Create new visualization
   const createVisualization = useCallback((type: string) => {
+    // Initial empty state, will load data on mount/refresh
     const newViz: VisualizationData = {
       id: crypto.randomUUID(),
       config: {
@@ -213,11 +171,11 @@ export function AdvancedDataVisualization({
         showTooltip: true,
         responsive: true
       },
-      data: generateSampleData(type),
+      data: [], // Starts empty
       filters: {},
       metadata: {
         lastUpdated: new Date(),
-        dataSource: 'sample',
+        dataSource: 'api',
         recordCount: 0,
         processingTime: 0
       }
@@ -227,10 +185,13 @@ export function AdvancedDataVisualization({
     setSelectedViz(newViz)
     setIsCreating(false)
     
+    // Trigger initial fetch
+    refreshData(newViz.id)
+    
     toast({
       title: 'Visualization Created',
       description: `New ${CHART_TYPES.find(t => t.id === type)?.name} has been created`,
-      variant: 'success'
+      variant: 'default'
     })
     
     logInfo('New visualization created:', { type, id: newViz.id })
@@ -272,24 +233,24 @@ export function AdvancedDataVisualization({
     setIsAnimating(true)
     
     try {
-      // Simulate data refresh
-      await new Promise(resolve => setTimeout(resolve, 1000))
+      const startTime = Date.now()
+      // Default metric for now, in real app this comes from viz config
+      const newData = await fetchChartData('total_actions');
       
-      const newData = generateSampleData(viz.config.type, viz.data.length)
       updateVisualization(id, { 
         data: newData,
         metadata: {
           ...viz.metadata,
           lastUpdated: new Date(),
           recordCount: newData.length,
-          processingTime: Math.floor(Math.random() * 500) + 100
+          processingTime: Date.now() - startTime
         }
       })
       
       toast({
         title: 'Data Refreshed',
-        description: 'Visualization data has been updated',
-        variant: 'success'
+        description: 'Visualization data has been updated from live data',
+        variant: 'default'
       })
     } catch (error) {
       logError('Failed to refresh data:', error as Error)
@@ -460,7 +421,7 @@ export function AdvancedDataVisualization({
             <div className="lg:col-span-1 space-y-4">
               <div className="flex items-center justify-between">
                 <h3 className="text-lg font-semibold">Your Charts</h3>
-                <Badge variant="secondary">{visualizations.length}</Badge>
+                <Badge variant="purple">{visualizations.length}</Badge>
               </div>
               
               <ScrollArea className="h-96">
@@ -487,7 +448,7 @@ export function AdvancedDataVisualization({
                             <Button
                               variant="ghost"
                               size="sm"
-                              onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
+                              onClick={(e) => {
                                 e.stopPropagation()
                                 refreshData(viz.id)
                               }}
@@ -502,7 +463,7 @@ export function AdvancedDataVisualization({
                             <Button
                               variant="ghost"
                               size="sm"
-                              onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
+                              onClick={(e) => {
                                 e.stopPropagation()
                                 deleteVisualization(viz.id)
                               }}

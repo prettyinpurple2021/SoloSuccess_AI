@@ -3,7 +3,7 @@ import * as dotenv from 'dotenv';
 dotenv.config({ path: '.env.local' });
 
 export default defineConfig({
-    schema: './db/schema.ts',
+    schema: 'C:/Users/prett/OneDrive/Desktop/projects/SoloSuccess-AI/src/db/schema.ts',
     out: './drizzle',
     dialect: 'postgresql',
     dbCredentials: {
