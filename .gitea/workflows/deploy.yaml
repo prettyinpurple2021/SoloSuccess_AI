@@ -27,9 +27,10 @@ jobs:
           VERCEL_ORG_ID: "team_6ryfUri1WCv0dL5LAbYfnnrP"
           VERCEL_PROJECT_ID: "prj_dcQO7rZFCxxwHnxaorYGiyItkj8B"
 
-      - name: Build and Deploy to Production
-        # This step performs the actual upload to www.solosuccessai.fun
-        run: vercel deploy --prebuilt --prod --token=${{ secrets.VERCEL_TOKEN }}
+      - name: Deploy to Production
+        # We removed "--prebuilt" so that Vercel builds the project in the cloud for you.
+        # This is faster and uses less of your laptop's resources.
+        run: vercel deploy --prod --token=${{ secrets.VERCEL_TOKEN }}
         env:
           VERCEL_ORG_ID: "team_6ryfUri1WCv0dL5LAbYfnnrP"
           VERCEL_PROJECT_ID: "prj_dcQO7rZFCxxwHnxaorYGiyItkj8B"
