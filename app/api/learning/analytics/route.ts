@@ -118,7 +118,8 @@ export async function GET(req: NextRequest) {
       .sort((a, b) => b.time_spent - a.time_spent)
       .slice(0, 5)
 
-    // Weekly Goal Progress (Arbitrary goal of 5 modules/week for now)
+    // Weekly Goal Progress
+    // Default is 5 modules/week. Future: Fetch from user_settings 'learning_goals'
     const weeklyGoal = 5
     const weeklyGoalProgress = Math.min(100, Math.round((learningVelocity / weeklyGoal) * 100))
 

@@ -135,7 +135,7 @@ export async function GET(request: NextRequest) {
       }
     }
 
-    // Get basic data from existing tables (simplified for now)
+    // Get basic data from existing tables
     // PERFORMANCE OPTIMIZATION: Execute all queries in parallel using Promise.allSettled
     // This reduces total query time from ~N queries sequential to single parallel batch
     let todaysStatsRes: any, todaysTasksRes: any, activeGoalsRes: any, conversationsRes: any, achievementsRes: any, weeklyFocusRes: any, briefcasesRes: any, userStatsRes: any;
@@ -216,10 +216,12 @@ export async function GET(request: NextRequest) {
       
       // Query 3: Today's tasks
       sql`
-        SELECT id, title, description, status, priority, due_date
-           FROM tasks
-          WHERE user_id = ${dbUserId}
-          ORDER BY COALESCE(due_date, NOW()) ASC
+        SELECT t.id, t.title, t.description, t.status, t.priority, t.due_date,
+               g.title as goal_title, g.id as goal_id
+           FROM tasks t
+           LEFT JOIN goals g ON t.goal_id = g.id
+          WHERE t.user_id = ${dbUserId}
+          ORDER BY COALESCE(t.due_date, NOW()) ASC
           LIMIT 10
       `,
       
@@ -324,7 +326,7 @@ export async function GET(request: NextRequest) {
       status: r.status,
       priority: r.priority,
       due_date: r.due_date,
-      goal: null, // Simplified for now
+      goal: r.goal_title ? { title: r.goal_title, id: r.goal_id } : null,
     }))
 
     const activeGoals = activeGoalsRes.map((r: any) => ({

@@ -100,8 +100,13 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    // For now, we'll allow any authenticated user to restart
-    // In production, you might want to check for admin role
+    // Verify admin privileges
+    if (user.role !== 'admin') {
+      return NextResponse.json(
+        { error: 'Forbidden', message: 'Admin privileges required' },
+        { status: 403 }
+      )
+    }
     
     const body = await request.json()
     const { action } = body

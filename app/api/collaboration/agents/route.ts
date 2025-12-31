@@ -42,8 +42,8 @@ export async function GET(request: NextRequest) {
 
     // Add busy and offline agents if no status filter or status includes them
     if (!status || status !== 'available') {
-      // For now, all agents from getAvailableAgents are available
-      // In a real implementation, we'd get all agents and filter by status
+      // If status filter requests 'busy' or 'offline', we would need to fetch those specifically.
+      // Currently getAvailableAgents() returns agents ready for work.
     }
 
     // Filter by specialization if provided

@@ -14,15 +14,29 @@ export async function POST(request: NextRequest) {
       return createErrorResponse('Name and email are required', 400)
     }
 
-    // In a real implementation, this would send an email via Resend/SendGrid
-    // or store in a CRM like HubSpot/Salesforce.
-    // For now, we log it securely as a "processed" request.
-    
-    logInfo('Contact request received:', { 
-      type, 
-      name, 
-      email: email.replace(/(?<=.{3}).(?=.*@)/g, '*') // mask email for logs
-    })
+    // Send email via Resend if configured
+    try {
+        if (process.env.RESEND_API_KEY) {
+            const { Resend } = await import('resend');
+            const resend = new Resend(process.env.RESEND_API_KEY);
+            await resend.emails.send({
+                from: 'SoloSuccess AI <onboarding@resend.dev>', // Update validation domain in prod
+                to: 'admin@solosuccess.ai', // Configurable admin email
+                subject: `New Contact Request: ${type}`,
+                html: `<p><strong>Name:</strong> ${name}</p><p><strong>Email:</strong> ${email}</p><p><strong>Type:</strong> ${type}</p>`
+            });
+            logInfo('Contact email dispatched via Resend');
+        } else {
+             logInfo('Contact request logged (Email service not configured):', { 
+                type, 
+                name, 
+                email: email.replace(/(?<=.{3}).(?=.*@)/g, '*') // mask email for logs
+            })
+        }
+    } catch (emailError) {
+        logError('Failed to send contact email:', emailError);
+        // Fallback to logging is implicit success for the user, but we log the error
+    }
 
     return createSuccessResponse(
       { success: true },

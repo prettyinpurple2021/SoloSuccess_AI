@@ -57,8 +57,7 @@ export async function GET(request: NextRequest) {
     }
 
     // Get user's notification preferences
-    // In a real implementation, this would come from the database
-    // For now, we'll return default preferences
+    // (Fetches from DB via userSettings, falls back to defaults if not configured)
     const preferences = await notificationDelivery.getNotificationPreferences(user.id);
 
     return NextResponse.json({

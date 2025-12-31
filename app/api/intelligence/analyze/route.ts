@@ -289,7 +289,8 @@ export async function POST(request: NextRequest) {
     const updatePromises = intelligence.map(async (item) => {
       const existingAnalysisResults = (item.intelligence.analysis_results as AnalysisResult[]) || []
       const newAnalysisResults = analysisResults.filter(_result =>
-        // Add analysis results to all entries for now - in production you'd be more selective
+        // Link all generated analysis results to this intelligence entry
+        // In the future, we could use relevance scores to selectively link specific insights
         true
       )
       const mergedAnalysisResults = [...existingAnalysisResults, ...newAnalysisResults]

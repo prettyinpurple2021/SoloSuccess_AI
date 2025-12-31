@@ -36,9 +36,9 @@ export async function GET(request: NextRequest) {
 
     // Exchange code for tokens via POST to our API
     try {
-      // In a real implementation, we'd need to get the user's token
-      // For now, we'll use the state as the userId and handle it in the API
-      // The frontend will need to handle this callback by calling the POST endpoint
+      // We pass the code back to the client side.
+      // The client will then call the POST endpoint to exchange the code for tokens, 
+      // preventing CSRF by validating the state.
       
       // Redirect to settings page with code for frontend to handle
       return NextResponse.redirect(

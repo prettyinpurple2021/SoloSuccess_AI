@@ -5,7 +5,7 @@ import { getSql } from '@/lib/api-utils'
 import { authenticateRequest} from '@/lib/auth-server'
 import { rateLimitByIp} from '@/lib/rate-limit'
 import { z} from 'zod'
-import { getIdempotencyKeyFromRequest, reserveIdempotencyKey} from '@/lib/idempotency'
+import { getIdempotencyKeyFromRequest, reserveIdempotencyKeyNeon} from '@/lib/idempotency'
 
 // Edge runtime enabled after refactoring to jose and Neon HTTP
 export const runtime = 'edge'
@@ -117,12 +117,13 @@ export async function POST(request: NextRequest) {
 
     // Idempotency support
     const key = getIdempotencyKeyFromRequest(request)
+    const key = getIdempotencyKeyFromRequest(request)
     if (key) {
-      // Note: Idempotency check skipped for now - can be added back if needed
-      // const reserved = await reserveIdempotencyKeyNeon(sql, key)
-      // if (!reserved) {
-      //   return createErrorResponse('Duplicate request', 409)
-      // }
+      // Idempotency check enabled
+      const reserved = await reserveIdempotencyKeyNeon(sql, key)
+      if (!reserved) {
+        return createErrorResponse('Duplicate request', 409)
+      }
     }
     
     const goalRows = await sql`

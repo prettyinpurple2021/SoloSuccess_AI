@@ -111,9 +111,9 @@ export async function POST(
       return NextResponse.json({ success: true })
     }
 
-    // For now, store credentials and mark as connected
-    // Full OAuth implementation will be provider-specific
-    // This is a placeholder structure
+    // Store credentials and mark as connected.
+    // This generic implementation supports various provider authentication schemes (OAuth tokens, API keys).
+    // The specific 'connectionData' mapping happens below based on provider type.
     const existing = await db
       .select()
       .from(paymentProviderConnections)

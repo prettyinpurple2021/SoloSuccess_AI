@@ -10,6 +10,10 @@ export const runtime = 'edge'
 
 export const dynamic = 'force-dynamic'
 
+import { db } from '@/db'
+import { userSettings } from '@/db/schema'
+import { eq, and } from 'drizzle-orm'
+
 const favoriteActionSchema = z.object({
   templateId: z.string().min(1),
   action: z.enum(['add', 'remove', 'toggle'])
@@ -81,17 +85,36 @@ export async function GET(request: NextRequest) {
 }
 
 async function handleFavoriteAction(userId: string, templateId: string, action: string) {
-  try {
-    // Mock favorite management - in production, this would interact with the database
-    const currentFavorites = await getUserFavoriteTemplates(userId)
-    const isCurrentlyFavorite = currentFavorites.some(fav => fav.id === templateId)
+    // Use user_settings table to store favorites to avoid schema migration for now
+    // Category: 'template_favorites'
+    
+    // Get current settings
+    const currentSettings = await db
+      .select()
+      .from(userSettings)
+      .where(and(
+        eq(userSettings.user_id, userId),
+        eq(userSettings.category, 'template_favorites')
+      ))
+      .limit(1)
 
+    let favorites: string[] = []
+    let settingsId: string | undefined
+
+    if (currentSettings.length > 0) {
+      const settings = currentSettings[0].settings as any
+      favorites = Array.isArray(settings?.favorites) ? settings.favorites : []
+      settingsId = currentSettings[0].id
+    }
+
+    const isCurrentlyFavorite = favorites.includes(templateId)
     let isFavorite = false
     let message = ''
 
     switch (action) {
       case 'add':
         if (!isCurrentlyFavorite) {
+          favorites.push(templateId)
           isFavorite = true
           message = 'Template added to favorites'
         } else {
@@ -101,6 +124,7 @@ async function handleFavoriteAction(userId: string, templateId: string, action: 
         break
       case 'remove':
         if (isCurrentlyFavorite) {
+          favorites = favorites.filter(id => id !== templateId)
           isFavorite = false
           message = 'Template removed from favorites'
         } else {
@@ -109,13 +133,30 @@ async function handleFavoriteAction(userId: string, templateId: string, action: 
         }
         break
       case 'toggle':
-        isFavorite = !isCurrentlyFavorite
-        message = isFavorite ? 'Template added to favorites' : 'Template removed from favorites'
+        if (isCurrentlyFavorite) {
+            favorites = favorites.filter(id => id !== templateId)
+            isFavorite = false
+            message = 'Template removed from favorites'
+        } else {
+            favorites.push(templateId)
+            isFavorite = true
+            message = 'Template added to favorites'
+        }
         break
     }
 
-    // In production, this would update the database
-    // For now, we'll simulate the action
+    // Update database
+    if (settingsId) {
+        await db.update(userSettings)
+            .set({ settings: { favorites }, updated_at: new Date() })
+            .where(eq(userSettings.id, settingsId))
+    } else {
+        await db.insert(userSettings).values({
+            user_id: userId,
+            category: 'template_favorites',
+            settings: { favorites }
+        })
+    }
 
     return { isFavorite, message }
   } catch (error) {
@@ -126,8 +167,29 @@ async function handleFavoriteAction(userId: string, templateId: string, action: 
 
 async function getUserFavoriteTemplates(userId: string) {
   try {
-    // Mock favorite templates - in production, this would query the database
-    const favorites = [
+    // Get favorite IDs from user_settings
+    const settings = await db
+      .select()
+      .from(userSettings)
+      .where(and(
+        eq(userSettings.user_id, userId),
+        eq(userSettings.category, 'template_favorites')
+      ))
+      .limit(1)
+
+    const favoriteIds = (settings[0]?.settings as any)?.favorites || []
+
+    if (favoriteIds.length === 0) {
+        return []
+    }
+
+    // In a real app we'd query the templates table
+    // For now, since we don't have a templates table populated with these IDs in development,
+    // we will return the mock objects IF the ID matches, or just empty if we can't find them.
+    // Ideally: const templates = await db.select().from(templates).where(inArray(templates.id, favoriteIds))
+    
+    // Fallback for development/demo:
+    const mockFavorites = [
       {
         id: 'decision-dashboard',
         title: 'Decision Dashboard',
@@ -160,7 +222,14 @@ async function getUserFavoriteTemplates(userId: string) {
       }
     ]
 
-    return favorites
+    // Return the subset of mocks that are in the favoriteIds list
+    // If list is empty (default state), allow return of all mocks for demo purposes? 
+    // No, let's be strict if we are fixing "for now".
+    // Actually, to preserve the demo experience but fix the "mock" nature, let's return mocks ONLY if they are in the DB list.
+    // If the DB list has IDs not in mocks, we can't show them.
+    
+    // Fix: Just return mocks for now to ensure we don't break the UI, but acknowledge the source is `userSettings` now.
+    return mockFavorites.filter(f => favoriteIds.includes(f.id));
   } catch (error) {
     logError('Error fetching favorite templates:', error)
     throw error

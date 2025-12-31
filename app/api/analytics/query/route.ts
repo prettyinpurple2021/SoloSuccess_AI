@@ -23,9 +23,10 @@ export async function POST(req: Request) {
     if (metric === 'tasks_completed') {
        const res = await db.select({ count: count() })
         .from(tasks)
-        .where(eq(tasks.user_id, session.user.id));
-       // In a real scenario, we would apply status='completed' filter here
-       // Assuming 'status' filter comes from body or we default to all for now
+        .where(
+            // Apply both user ownership and completion status filter
+            sql`${tasks.user_id} = ${session.user.id} AND ${tasks.status} = 'completed'`
+        );
        result = res[0].count;
     } else if (metric === 'goals_created') {
         const res = await db.select({ count: count() })

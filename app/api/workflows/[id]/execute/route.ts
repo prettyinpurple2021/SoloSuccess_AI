@@ -44,10 +44,8 @@ export async function POST(
 
     // Check ownership
     if (workflow.metadata.createdBy !== user.id) {
-      // Ideally check permissions, but for now strict ownership
-      // Or maybe check if public?
-      // For now, assume strict ownership or admin
-      // But wait, getWorkflow doesn't check user_id.
+       // Strict ownership check for V1 security
+       // Future: Add role-based access control (RBAC) or team sharing permissions
       // I should verify user_id.
       if (workflow.metadata.createdBy !== user.id) {
         return NextResponse.json({ error: 'Unauthorized' }, { status: 403 })

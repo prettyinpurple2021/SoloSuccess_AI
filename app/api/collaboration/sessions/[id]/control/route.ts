@@ -323,7 +323,7 @@ export async function GET(
     }
 
     // Check if user has access to session
-    // For now, we'll allow access if user owns the session or is a participating agent
+    // Strict access control: Allow if user owns the session or is a participating agent (if user-as-agent concept is used)
     if (session.userId !== userId && !session.participatingAgents.includes(userId.toString())) {
       return NextResponse.json(
         { error: 'Forbidden', message: 'Access denied to this session' },

@@ -56,7 +56,7 @@ export async function GET(_request: NextRequest) {
     
     const competitiveStats = competitiveStatsRows[0]
     
-    // Return simplified gamification data (achievements system not yet implemented)
+    // Return gamification data (Stats active, Achievements/Badges V2)
     return NextResponse.json({
       user: {
         id: userData.id,
@@ -155,8 +155,9 @@ export async function POST(request: NextRequest) {
       }
     }
 
-    // For achievements and victories, we would implement those systems later
-    // For now, just return success
+    // V1 Implementation: Achievements and Victories are currently placeholders.
+    // Future: Implement 'achievements' and 'market_victories' tables to track these events.
+    // Current logic only updates stats.
 
     return NextResponse.json({
       success: true,

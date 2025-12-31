@@ -4,7 +4,7 @@ import { db} from '@/db'
 import { intelligenceData, competitorProfiles} from '@/db/schema'
 import { authenticateRequest} from '@/lib/auth-server'
 import { z} from 'zod'
-import { eq, and, desc, asc, gte, lte, inArray} from 'drizzle-orm'
+import { eq, and, desc, asc, gte, lte, inArray, sql} from 'drizzle-orm'
 
 // Edge runtime enabled after refactoring to jose and Neon HTTP
 export const runtime = 'edge'
@@ -139,8 +139,8 @@ export async function GET(
       // Use JSON contains operator for tags array
       // This is a simplified approach - in  you'd want proper JSON array contains
       conditions.push(
-        // For now, we'll use a simple string match - this should be improved with proper JSON operators
-        eq(intelligenceData.tags, JSON.stringify(filters.tags))
+        // Use JSON containment operator for robust array matching
+        sql`${intelligenceData.tags} @> ${JSON.stringify(filters.tags)}::jsonb`
       )
     }
 

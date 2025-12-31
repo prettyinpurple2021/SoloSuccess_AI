@@ -1,5 +1,6 @@
 import { logger, logError, logWarn, logInfo, logDebug, logApi, logDb, logAuth } from '@/lib/logger'
 import { NextRequest, NextResponse} from "next/server"
+import { auth } from '@/lib/auth';
 import { AgentCollaborationSystem} from "@/lib/custom-ai-agents/agent-collaboration-system"
 
 
@@ -9,8 +10,11 @@ const userCollaborationSystems = new Map<string, AgentCollaborationSystem>()
 
 export async function POST(request: NextRequest) {
   try {
-    // For now, use a default user ID. In production, implement proper authentication
-    const userId = "default-user"
+    const session = await auth();
+    if (!session?.user?.id) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
+    const userId = session.user.id;
 
     const { action, workflowId, stream = false } = await request.json()
 
@@ -153,8 +157,11 @@ export async function POST(request: NextRequest) {
 
 export async function GET(request: NextRequest) {
   try {
-    // For now, use a default user ID. In production, implement proper authentication
-    const userId = "default-user"
+    const session = await auth();
+    if (!session?.user?.id) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
+    const userId = session.user.id;
 
     const { searchParams } = new URL(request.url)
     const workflowId = searchParams.get("workflowId")
