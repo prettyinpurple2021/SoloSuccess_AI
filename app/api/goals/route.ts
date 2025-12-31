@@ -117,7 +117,6 @@ export async function POST(request: NextRequest) {
 
     // Idempotency support
     const key = getIdempotencyKeyFromRequest(request)
-    const key = getIdempotencyKeyFromRequest(request)
     if (key) {
       // Idempotency check enabled
       const reserved = await reserveIdempotencyKeyNeon(sql, key)
