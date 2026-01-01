@@ -1,7 +1,8 @@
 'use client';
 
 import { useActionState } from 'react';
-import { register, socialLogin } from '@/lib/auth-actions';
+import { socialLogin } from '@/lib/auth-actions';
+import { register } from '@/lib/actions/register-action';
 import { PrimaryButton } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -68,7 +69,7 @@ export function RegisterForm() {
             )}
 
             <PrimaryButton className="w-full btn-boss bg-gradient-to-r from-pink-600 to-purple-600 hover:from-pink-500 hover:to-purple-500 border-none mt-4" disabled={isPending}>
-              {isPending ? <Loader2 className="animate-spin mr-2" /> : 'Register Account'}
+              {isPending ? <Loader2 className="animate-spin mr-2" /> : 'Register Now V2'}
             </PrimaryButton>
          </form>
 
