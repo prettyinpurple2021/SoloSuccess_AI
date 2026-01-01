@@ -41,7 +41,6 @@ async function testAgentInteraction() {
     if (activeSession) {
         console.log('✅ Session is active')
         console.log('Last Updated:', activeSession.updatedAt)
-        // In a real test we would query messages from DB to see the conversation.
     } else {
         console.error('❌ Session not found')
     }

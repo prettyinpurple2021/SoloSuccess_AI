@@ -85,196 +85,6 @@ interface WorkflowTemplatesProps {
   className?: string
 }
 
-// Mock templates data (in real implementation, these would come from API)
-const MOCK_TEMPLATES: WorkflowTemplate[] = [
-  {
-    id: 'lead-nurturing-automation',
-    name: 'Lead Nurturing Automation',
-    description: 'Automatically nurture leads with personalized email sequences and follow-up tasks',
-    category: 'Marketing',
-    tags: ['lead generation', 'email marketing', 'automation', 'sales'],
-    complexity: 'intermediate',
-    estimatedTime: '15-30 min',
-    popularity: 95,
-    rating: 4.8,
-    reviews: 234,
-    author: {
-      name: 'Sarah Chen',
-      verified: true
-    },
-    preview: {
-      nodeCount: 12,
-      estimatedExecutionTime: '2-5 days',
-      requiredIntegrations: ['Email Service', 'CRM', 'Analytics']
-    },
-    workflow: {} as Workflow, // Would contain actual workflow definition
-    metadata: {
-      createdAt: new Date('2024-01-15'),
-      updatedAt: new Date('2024-01-20'),
-      downloads: 1542,
-      likes: 89,
-      featured: true,
-      trending: true,
-      verified: true
-    }
-  },
-  {
-    id: 'customer-onboarding',
-    name: 'Customer Onboarding Flow',
-    description: 'Complete customer onboarding with welcome emails, account setup, and progress tracking',
-    category: 'Customer Success',
-    tags: ['onboarding', 'customer success', 'automation', 'retention'],
-    complexity: 'beginner',
-    estimatedTime: '10-20 min',
-    popularity: 87,
-    rating: 4.6,
-    reviews: 156,
-    author: {
-      name: 'Mike Rodriguez',
-      verified: true
-    },
-    preview: {
-      nodeCount: 8,
-      estimatedExecutionTime: '1-3 days',
-      requiredIntegrations: ['Email Service', 'User Management']
-    },
-    workflow: {} as Workflow,
-    metadata: {
-      createdAt: new Date('2024-01-10'),
-      updatedAt: new Date('2024-01-18'),
-      downloads: 892,
-      likes: 67,
-      featured: false,
-      trending: true,
-      verified: true
-    }
-  },
-  {
-    id: 'content-marketing-automation',
-    name: 'Content Marketing Automation',
-    description: 'Automate content creation, distribution, and performance tracking across multiple channels',
-    category: 'Content Marketing',
-    tags: ['content creation', 'social media', 'ai', 'analytics'],
-    complexity: 'advanced',
-    estimatedTime: '30-45 min',
-    popularity: 72,
-    rating: 4.9,
-    reviews: 98,
-    author: {
-      name: 'Alex Thompson',
-      verified: true
-    },
-    preview: {
-      nodeCount: 18,
-      estimatedExecutionTime: '1-2 weeks',
-      requiredIntegrations: ['AI Service', 'Social Media', 'Analytics', 'CMS']
-    },
-    workflow: {} as Workflow,
-    metadata: {
-      createdAt: new Date('2024-01-05'),
-      updatedAt: new Date('2024-01-22'),
-      downloads: 634,
-      likes: 142,
-      featured: true,
-      trending: false,
-      verified: true
-    }
-  },
-  {
-    id: 'sales-funnel-optimization',
-    name: 'Sales Funnel Optimization',
-    description: 'Track and optimize your sales funnel with automated lead scoring and follow-ups',
-    category: 'Sales',
-    tags: ['sales', 'lead scoring', 'funnel', 'optimization'],
-    complexity: 'intermediate',
-    estimatedTime: '20-35 min',
-    popularity: 68,
-    rating: 4.7,
-    reviews: 78,
-    author: {
-      name: 'Emma Davis',
-      verified: false
-    },
-    preview: {
-      nodeCount: 14,
-      estimatedExecutionTime: '3-7 days',
-      requiredIntegrations: ['CRM', 'Analytics', 'Email Service']
-    },
-    workflow: {} as Workflow,
-    metadata: {
-      createdAt: new Date('2024-01-12'),
-      updatedAt: new Date('2024-01-19'),
-      downloads: 456,
-      likes: 34,
-      featured: false,
-      trending: false,
-      verified: false
-    }
-  },
-  {
-    id: 'social-media-scheduler',
-    name: 'Social Media Scheduler',
-    description: 'Automatically schedule and publish social media content across multiple platforms',
-    category: 'Social Media',
-    tags: ['social media', 'scheduling', 'content', 'automation'],
-    complexity: 'beginner',
-    estimatedTime: '10-15 min',
-    popularity: 91,
-    rating: 4.5,
-    reviews: 203,
-    author: {
-      name: 'David Park',
-      verified: true
-    },
-    preview: {
-      nodeCount: 6,
-      estimatedExecutionTime: 'Ongoing',
-      requiredIntegrations: ['Social Media APIs', 'Content Management']
-    },
-    workflow: {} as Workflow,
-    metadata: {
-      createdAt: new Date('2024-01-08'),
-      updatedAt: new Date('2024-01-21'),
-      downloads: 1203,
-      likes: 156,
-      featured: true,
-      trending: true,
-      verified: true
-    }
-  },
-  {
-    id: 'customer-feedback-analysis',
-    name: 'Customer Feedback Analysis',
-    description: 'Automatically collect, analyze, and respond to customer feedback using AI',
-    category: 'Customer Analytics',
-    tags: ['feedback', 'ai analysis', 'customer insights', 'sentiment'],
-    complexity: 'advanced',
-    estimatedTime: '25-40 min',
-    popularity: 54,
-    rating: 4.8,
-    reviews: 45,
-    author: {
-      name: 'Lisa Wang',
-      verified: true
-    },
-    preview: {
-      nodeCount: 16,
-      estimatedExecutionTime: '1-3 days',
-      requiredIntegrations: ['AI Service', 'Feedback Platform', 'Analytics']
-    },
-    workflow: {} as Workflow,
-    metadata: {
-      createdAt: new Date('2024-01-14'),
-      updatedAt: new Date('2024-01-23'),
-      downloads: 289,
-      likes: 73,
-      featured: false,
-      trending: false,
-      verified: true
-    }
-  }
-]
-
 // Category icons
 const CATEGORY_ICONS = {
   'Marketing': TrendingUp,
@@ -297,23 +107,88 @@ export function WorkflowTemplates({
   onCreateCustom, 
   className = "" 
 }: WorkflowTemplatesProps) {
-  const [templates, setTemplates] = useState<WorkflowTemplate[]>(MOCK_TEMPLATES)
-  const [filteredTemplates, setFilteredTemplates] = useState<WorkflowTemplate[]>(MOCK_TEMPLATES)
+  const [templates, setTemplates] = useState<WorkflowTemplate[]>([])
+  const [filteredTemplates, setFilteredTemplates] = useState<WorkflowTemplate[]>([])
   const [searchQuery, setSearchQuery] = useState('')
   const [selectedCategory, setSelectedCategory] = useState<string>('all')
   const [selectedComplexity, setSelectedComplexity] = useState<string>('all')
   const [sortBy, setSortBy] = useState<'popularity' | 'rating' | 'newest' | 'name'>('popularity')
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid')
-  const [loading, setLoading] = useState(false)
+  const [loading, setLoading] = useState(true)
   
   const { toast } = useToast()
+
+  // Fetch templates
+  useEffect(() => {
+    async function fetchTemplates() {
+      try {
+        const response = await fetch('/api/workflows/templates')
+        const data = await response.json()
+        
+        if (data.success && Array.isArray(data.data)) {
+           const mappedTemplates: WorkflowTemplate[] = data.data.map((t: any) => {
+             let parsedWorkflow = {} as Workflow
+             try {
+                parsedWorkflow = typeof t.content === 'string' ? JSON.parse(t.content) : t.content
+             } catch (e) {
+               console.error('Failed to parse workflow content', e)
+             }
+             
+             return {
+               id: t.id,
+               name: t.title,
+               description: t.description || '',
+               category: t.category || 'General',
+               tags: Array.isArray(t.tags) ? t.tags : [],
+               complexity: (t.difficulty?.toLowerCase() || 'beginner') as 'beginner' | 'intermediate' | 'advanced',
+               estimatedTime: `${t.estimated_minutes || 15} min`,
+               popularity: Math.min(100, (t.usage_count || 0) * 10 + 50),
+               rating: Number(t.rating) || 4.5,
+               reviews: 0,
+               author: { 
+                 name: 'SoloSuccess AI', 
+                 verified: true 
+               },
+               preview: {
+                 nodeCount: parsedWorkflow.nodes ? parsedWorkflow.nodes.length : 0,
+                 estimatedExecutionTime: 'Dynamic',
+                 requiredIntegrations: []
+               },
+               workflow: parsedWorkflow,
+               metadata: {
+                 createdAt: new Date(t.created_at || Date.now()),
+                 updatedAt: new Date(t.updated_at || Date.now()),
+                 downloads: t.usage_count || 0,
+                 likes: 0,
+                 featured: t.is_premium || false,
+                 trending: (t.usage_count || 0) > 10,
+                 verified: true
+               }
+             }
+           })
+           setTemplates(mappedTemplates)
+        }
+      } catch (error) {
+        logError('Failed to fetch templates', error)
+        toast({
+          title: 'Error Loading Templates',
+          description: 'Could not load workflow templates. Please try again.',
+          variant: 'destructive'
+        })
+      } finally {
+        setLoading(false)
+      }
+    }
+
+    fetchTemplates()
+  }, [toast])
 
   // Get unique categories
   const categories = ['all', ...Array.from(new Set(templates.map(t => t.category)))]
 
   // Filter and sort templates
   useEffect(() => {
-    let filtered = templates
+    let filtered = [...templates]
 
     // Search filter
     if (searchQuery) {

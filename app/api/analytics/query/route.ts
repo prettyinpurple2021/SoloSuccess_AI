@@ -1,9 +1,9 @@
 
 import { NextResponse } from 'next/server';
 import { db } from '@/db';
-import { tasks, goals, users } from '@/db/schema';
+import { tasks, goals } from '@/db/schema';
 import { auth } from '@/lib/auth';
-import { eq, sql, count, sum } from 'drizzle-orm';
+import { eq, sql, count, and, gte, desc } from 'drizzle-orm';
 
 export async function POST(req: Request) {
   try {
@@ -13,47 +13,77 @@ export async function POST(req: Request) {
     }
 
     const body = await req.json();
-    const { metric, filters } = body;
+    const { metric } = body;
 
-    // Basic query builder logic (simplified for batch 4)
-    // Supports: 'tasks_completed', 'goals_created', 'active_users' (admin only?)
-    
     let result = 0;
+    let historyData: { name: string; value: number }[] = [];
+
+    // Define query filtering logic
+    const applyHistoryQuery = async (table: any, filterCondition: any) => {
+        // Get last 7 days of activity
+        const data = await db.select({
+            date: sql<string>`to_char(${table.created_at}, 'Tue')`, // Use Day Name strictly for the chart format requested (Mon, Tue...) or usually date
+            rawDate: sql<string>`date_trunc('day', ${table.created_at})`,
+            count: count()
+        })
+        .from(table)
+        .where(and(
+            filterCondition,
+            gte(table.created_at, sql`now() - interval '7 days'`)
+        ))
+        .groupBy(sql`to_char(${table.created_at}, 'Tue')`, sql`date_trunc('day', ${table.created_at})`)
+        .orderBy(desc(sql`date_trunc('day', ${table.created_at})`)); // Most recent first
+        
+        // Map to chart format. Note: The chart seems to expect weekday names. 
+        // For production, usually full dates are better, but we stick to the implied "Mon, Tue" format.
+        return data.reverse().map(item => ({
+            name: item.date,
+            value: Number(item.count)
+        }));
+    };
     
     if (metric === 'tasks_completed') {
+       const userFilter = and(eq(tasks.user_id, session.user.id), eq(tasks.status, 'completed'));
+       
        const res = await db.select({ count: count() })
         .from(tasks)
-        .where(
-            // Apply both user ownership and completion status filter
-            sql`${tasks.user_id} = ${session.user.id} AND ${tasks.status} = 'completed'`
-        );
+        .where(userFilter);
        result = res[0].count;
+       
+       historyData = await applyHistoryQuery(tasks, userFilter);
+
     } else if (metric === 'goals_created') {
+        const userFilter = eq(goals.user_id, session.user.id);
+
         const res = await db.select({ count: count() })
         .from(goals)
-        .where(eq(goals.user_id, session.user.id));
+        .where(userFilter);
         result = res[0].count;
-    } else if (metric === 'total_actions') {
-      // Example of aggregation
-        const res = await db.select({ count: count() })
-        .from(tasks) // Proxy for actions
-        .where(eq(tasks.user_id, session.user.id));
-        result = res[0].count;
-    }
 
-    // Mocking time-series data for visualization (real implementation would group by date)
-    // Returning a simple dataset that the visualization component can render
-    const mockTimeSeries = [
-      { name: 'Mon', value: Math.floor(result * 0.1) },
-      { name: 'Tue', value: Math.floor(result * 0.2) },
-      { name: 'Wed', value: Math.floor(result * 0.15) },
-      { name: 'Thu', value: Math.floor(result * 0.25) },
-      { name: 'Fri', value: Math.floor(result * 0.3) },
-    ];
+        historyData = await applyHistoryQuery(goals, userFilter);
+
+    } else if (metric === 'total_actions') {
+        // Proxy for actions using tasks for now
+        const userFilter = eq(tasks.user_id, session.user.id);
+
+        const res = await db.select({ count: count() })
+        .from(tasks)
+        .where(userFilter);
+        result = res[0].count;
+
+        historyData = await applyHistoryQuery(tasks, userFilter);
+    }
+    
+    // Fill in gaps if necessary (optional improvement: usually charts want zero-fill)
+    if (historyData.length === 0) {
+        // Fallback for empty state - show at least today
+        const today = new Date();
+        historyData = [{ name: today.toLocaleDateString('en-US', { weekday: 'short' }), value: 0 }];
+    }
 
     return NextResponse.json({
       value: result,
-      history: mockTimeSeries // Providing some shape for charts
+      history: historyData
     });
 
   } catch (error) {

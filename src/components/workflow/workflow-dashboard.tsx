@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useCallback } from 'react'
+import { useState, useCallback, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { 
@@ -35,109 +35,35 @@ import {
   ChevronRight,
   ChevronDown
 } from 'lucide-react'
-import { PrimaryButton } from '@/components/ui/button'
-import { Loading } from '@/components/ui/loading'
-import { cn } from '@/lib/utils'
-import { Badge } from '@/components/ui/badge'
-import { VisualWorkflowBuilder } from './visual-workflow-builder'
-import { WorkflowTemplates } from './workflow-templates'
-import { WorkflowExecutionMonitor } from './workflow-execution-monitor'
-import { useToast } from '@/hooks/use-toast'
-import { logger, logError, logInfo } from '@/lib/logger'
-import type { Workflow } from '@/lib/workflow-engine'
+// ...
 
-// Types
-interface WorkflowDashboardProps {
-  className?: string
-}
-
-interface WorkflowStats {
-  totalWorkflows: number
-  activeWorkflows: number
-  totalExecutions: number
-  successfulExecutions: number
-  failedExecutions: number
-  runningExecutions: number
-  averageExecutionTime: number
-  successRate: number
-  popularTemplates: Array<{
-    id: string
-    name: string
-    downloads: number
-    rating: number
-  }>
-  recentActivity: Array<{
-    id: string
-    type: 'execution' | 'workflow_created' | 'template_downloaded'
-    description: string
-    timestamp: Date
-    status?: 'success' | 'error' | 'warning'
-  }>
-}
-
-// Mock stats data
-const MOCK_STATS: WorkflowStats = {
-  totalWorkflows: 47,
-  activeWorkflows: 23,
-  totalExecutions: 1247,
-  successfulExecutions: 1156,
-  failedExecutions: 67,
-  runningExecutions: 3,
-  averageExecutionTime: 180000, // 3 minutes
-  successRate: 92.7,
-  popularTemplates: [
-    { id: 'lead-nurturing', name: 'Lead Nurturing Automation', downloads: 1542, rating: 4.8 },
-    { id: 'customer-onboarding', name: 'Customer Onboarding Flow', downloads: 892, rating: 4.6 },
-    { id: 'social-media-scheduler', name: 'Social Media Scheduler', downloads: 1203, rating: 4.5 },
-    { id: 'content-marketing', name: 'Content Marketing Automation', downloads: 634, rating: 4.9 }
-  ],
-  recentActivity: [
-    {
-      id: 'act-1',
-      type: 'execution',
-      description: 'Lead Nurturing Automation completed successfully',
-      timestamp: new Date(Date.now() - 300000), // 5 minutes ago
-      status: 'success'
-    },
-    {
-      id: 'act-2',
-      type: 'workflow_created',
-      description: 'New workflow "Customer Feedback Analysis" created',
-      timestamp: new Date(Date.now() - 900000), // 15 minutes ago
-      status: 'success'
-    },
-    {
-      id: 'act-3',
-      type: 'execution',
-      description: 'Social Media Scheduler failed - API rate limit exceeded',
-      timestamp: new Date(Date.now() - 1800000), // 30 minutes ago
-      status: 'error'
-    },
-    {
-      id: 'act-4',
-      type: 'template_downloaded',
-      description: 'Template "Content Marketing Automation" downloaded',
-      timestamp: new Date(Date.now() - 3600000), // 1 hour ago
-      status: 'success'
-    },
-    {
-      id: 'act-5',
-      type: 'execution',
-      description: 'Customer Onboarding Flow is running',
-      timestamp: new Date(Date.now() - 7200000), // 2 hours ago
-      status: 'warning'
-    }
-  ]
-}
-
+// ... (inside component)
 export function WorkflowDashboard({ className = "" }: WorkflowDashboardProps) {
   const [activeTab, setActiveTab] = useState<'overview' | 'builder' | 'templates' | 'executions'>('overview')
-  const [stats, setStats] = useState<WorkflowStats>(MOCK_STATS)
+  const [stats, setStats] = useState<WorkflowStats>(INITIAL_STATS)
   const [selectedWorkflow, setSelectedWorkflow] = useState<Workflow | null>(null)
   const [isCreatingWorkflow, setIsCreatingWorkflow] = useState(false)
   const [loading, setLoading] = useState(false)
   
   const { toast } = useToast()
+
+  // Fetch stats on mount
+  useEffect(() => {
+    async function fetchStats() {
+      try {
+        const response = await fetch('/api/workflows/stats')
+        const data = await response.json()
+        if (data.success) {
+          setStats(data.data)
+        }
+      } catch (error) {
+        logError('Failed to fetch workflow stats', error)
+      }
+    }
+    fetchStats()
+  }, [])
+
+
 
   // Handle template selection
   const handleSelectTemplate = useCallback((template: any) => {

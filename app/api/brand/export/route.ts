@@ -35,7 +35,7 @@ export async function POST(request: NextRequest) {
     const body = await request.json()
     const { format, includeAssets, includeGuidelines } = exportSchema.parse(body)
 
-    // Generate brand export (production: real data, persisted as document, downloadable)
+    // Generate brand export using real data, persisted as document
     const exportData = await generateBrandExport(authResult.user.id, format, includeAssets, includeGuidelines)
 
     logInfo('Brand export generated successfully', { userId: authResult.user.id, format })

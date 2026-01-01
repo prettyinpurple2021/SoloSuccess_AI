@@ -43,9 +43,16 @@ export default function DeviceApprovalPage() {
 
   const loadDeviceInfo = async () => {
     try {
+      // Get persistent device fingerprint
+      let deviceFingerprint = localStorage.getItem('s_device_id');
+      if (!deviceFingerprint) {
+          deviceFingerprint = crypto.randomUUID();
+          localStorage.setItem('s_device_id', deviceFingerprint);
+      }
+
       // Get current device information
       const deviceInfo = {
-        id: crypto.randomUUID(),
+        id: deviceFingerprint,
         deviceName: getDeviceName(),
         deviceType: getDeviceType(),
         ipAddress: "Loading...", // Will be filled by server
@@ -92,7 +99,7 @@ export default function DeviceApprovalPage() {
     try {
       // Approve the device
       const { data, error: approveError } = await authClient.multiSession.approveDevice({
-        deviceFingerprint: crypto.randomUUID(), // In real implementation, this would be generated properly
+        deviceFingerprint: deviceInfo?.id || crypto.randomUUID(), 
         deviceName: deviceInfo?.deviceName || "Unknown Device",
         deviceType: deviceInfo?.deviceType || "desktop",
         trustDevice: true,

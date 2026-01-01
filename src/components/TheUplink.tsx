@@ -31,6 +31,8 @@ export const TheUplink: React.FC = () => {
         };
     }, []);
 
+    const analyserRef = useRef<AnalyserNode | null>(null);
+
     // Visualizer Loop
     useEffect(() => {
         if (status === 'disconnected') {
@@ -38,17 +40,35 @@ export const TheUplink: React.FC = () => {
             return;
         }
 
-        // Simulated visualizer if we don't have easy access to the raw analyser node in this architecture
-        // In a real app, we'd attach an AnalyserNode. For this demo, we'll simulate "activity" based on state.
-        const interval = setInterval(() => {
-            if (status === 'speaking' || status === 'connected') {
-                // Random fluctuation for effect
-                setVolume(Math.random() * 100);
-            } else {
-                setVolume(10);
+        let animationFrameId: number;
+
+        const updateVisualizer = () => {
+            if (analyserRef.current) {
+                const dataArray = new Uint8Array(analyserRef.current.frequencyBinCount);
+                analyserRef.current.getByteFrequencyData(dataArray);
+                
+                // Calculate average volume
+                let sum = 0;
+                for (let i = 0; i < dataArray.length; i++) {
+                    sum += dataArray[i];
+                }
+                const average = sum / dataArray.length;
+                
+                // Scale for visual effect (0-100 range significantly)
+                setVolume(average * 2); 
+            } else if (status === 'speaking') {
+                 // Fallback if analyser not ready but speaking
+                 setVolume(Math.random() * 50 + 20);
             }
-        }, 100);
-        return () => clearInterval(interval);
+            
+            animationFrameId = requestAnimationFrame(updateVisualizer);
+        };
+
+        updateVisualizer();
+
+        return () => {
+            if (animationFrameId) cancelAnimationFrame(animationFrameId);
+        };
     }, [status]);
 
     const connect = async () => {
@@ -102,6 +122,12 @@ export const TheUplink: React.FC = () => {
                         if (!inputContextRef.current) return;
 
                         inputSourceRef.current = inputContextRef.current.createMediaStreamSource(stream);
+                        
+                        // Create Analyser
+                        analyserRef.current = inputContextRef.current.createAnalyser();
+                        analyserRef.current.fftSize = 256;
+                        inputSourceRef.current.connect(analyserRef.current);
+
                         processorRef.current = inputContextRef.current.createScriptProcessor(4096, 1, 1);
 
                         processorRef.current.onaudioprocess = (e) => {

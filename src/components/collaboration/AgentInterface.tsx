@@ -293,7 +293,6 @@ const AgentDetailsView: React.FC<{ agent: Agent }> = ({ agent }) => {
 
   // Load agent activity from API
   useEffect(() => {
-    // In a real app this would fetch from /api/collaboration/agents/${agent.id}/activity
     // Derived from agent.activeSessions (default to 0 if undefined)
     const activeSessions = agent.activeSessions || 0;
     

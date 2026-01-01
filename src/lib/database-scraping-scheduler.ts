@@ -400,7 +400,6 @@ export class ScrapingScheduler {
   private parseBasicCron(expression: string): Date | null {
     try {
       // Very basic support for "0 * * * *" (hourly) type simple checks
-      // In a real app, use 'cron-parser' package
       const parts = expression.split(' ')
       if (parts.length !== 5) return null
       

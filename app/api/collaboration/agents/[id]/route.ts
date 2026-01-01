@@ -179,6 +179,8 @@ export async function POST(
       }, { status: 423 }) // 423 Locked
     }
 
+    const startTime = Date.now()
+    
     // Execute using real AI agent
     const executionResult = await executeAgentCapability(
       agent,
@@ -186,6 +188,8 @@ export async function POST(
       validatedData.input,
       validatedData.context
     )
+    
+    const duration = Date.now() - startTime
 
     return NextResponse.json({
       success: true,
@@ -197,7 +201,7 @@ export async function POST(
         },
         input: validatedData.input,
         result: executionResult,
-        executionTime: Date.now(), // In real implementation, measure actual time
+        executionTime: duration,
         metadata: {
           agentStatus: agent.status,
           responseTimeMs: agent.responseTimeMs

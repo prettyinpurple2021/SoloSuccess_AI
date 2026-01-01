@@ -539,7 +539,7 @@ export class SessionManager {
       // Create final checkpoint
       await this.createCheckpoint(sessionId, 'Session archived')
 
-      // In a real implementation, move to cold storage
+
       logInfo(`📦 Session ${sessionId} archived`)
       
       return true

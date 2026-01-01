@@ -130,72 +130,31 @@ export function VisualWorkflowBuilder({
   const [_canvasOffset, _setCanvasOffset] = React.useState({ x: 0, y: 0 })
   const [zoom, setZoom] = React.useState(1)
 
-  // Mock node types (in real implementation, these would come from workflow engine)
-  const nodeTypes: NodeType[] = React.useMemo(() => [
-    {
-      id: 'manual_trigger',
-      name: 'Manual Trigger',
-      description: 'Start workflow manually',
-      category: 'trigger',
-      icon: 'Play',
-      color: '#10B981',
-      inputs: [],
-      outputs: [{ id: 'output', name: 'Trigger', type: 'object', required: true }],
-      configSchema: z.object({}),
-      execute: async () => ({ triggered: true })
-    },
-    {
-      id: 'send_email',
-      name: 'Send Email',
-      description: 'Send email notification',
-      category: 'communication',
-      icon: 'Mail',
-      color: '#F59E0B',
-      inputs: [{ id: 'input', name: 'Data', type: 'object', required: true }],
-      outputs: [{ id: 'output', name: 'Result', type: 'object', required: true }],
-      configSchema: z.object({}),
-      execute: async () => ({ sent: true })
-    },
-    {
-      id: 'ai_task',
-      name: 'AI Task',
-      description: 'Execute AI-powered task',
-      category: 'ai',
-      icon: 'Brain',
-      color: '#EC4899',
-      inputs: [{ id: 'input', name: 'Input Data', type: 'object', required: true }],
-      outputs: [{ id: 'output', name: 'AI Result', type: 'object', required: true }],
-      configSchema: z.object({}),
-      execute: async () => ({ result: 'AI task completed' })
-    },
-    {
-      id: 'condition',
-      name: 'Condition',
-      description: 'Conditional branching',
-      category: 'logic',
-      icon: 'GitBranch',
-      color: '#EF4444',
-      inputs: [{ id: 'input', name: 'Input', type: 'object', required: true }],
-      outputs: [
-        { id: 'true', name: 'True', type: 'object', required: true },
-        { id: 'false', name: 'False', type: 'object', required: true }
-      ],
-      configSchema: z.object({}),
-      execute: async () => ({ condition: true })
-    },
-    {
-      id: 'delay',
-      name: 'Delay',
-      description: 'Wait for specified time',
-      category: 'action',
-      icon: 'Timer',
-      color: '#6B7280',
-      inputs: [{ id: 'input', name: 'Input', type: 'object', required: true }],
-      outputs: [{ id: 'output', name: 'Output', type: 'object', required: true }],
-      configSchema: z.object({}),
-      execute: async () => ({ delayed: true })
+  // Fetch node types from API
+  const [nodeTypes, setNodeTypes] = React.useState<NodeType[]>([])
+  const [isLoadingNodeTypes, setIsLoadingNodeTypes] = React.useState(true)
+
+  React.useEffect(() => {
+    async function fetchNodeTypes() {
+      try {
+        const response = await fetch('/api/workflows/node-types')
+        const data = await response.json()
+        if (data.success && Array.isArray(data.data)) {
+           setNodeTypes(data.data as NodeType[])
+        }
+      } catch (error) {
+        logError('Failed to fetch node types', error)
+        toast({
+          title: 'Error',
+          description: 'Failed to load workflow node types',
+          variant: 'destructive'
+        })
+      } finally {
+        setIsLoadingNodeTypes(false)
+      }
     }
-  ], [])
+    fetchNodeTypes()
+  },   [toast])
 
   // Add new node
   const addNode = React.useCallback((nodeType: NodeType, position: NodePosition) => {

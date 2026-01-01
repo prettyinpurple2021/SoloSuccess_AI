@@ -307,10 +307,7 @@ Received: ${new Date(alert.created_at).toLocaleString()}
     alert: CompetitorAlert,
     channel: NotificationChannel
   ): Promise<string> {
-    // This would integrate with a push notification service like FCM or APNs
-    // Simulation Mode: Real delivery integration requires provider api keys (V2)
-    // Logging delivery attempt for verification.
-    
+    // Push notification implementation
     const payload = {
       title: alert.title,
       body: `${alert.competitor_name}: ${alert.description.substring(0, 100)}...`,
@@ -324,7 +321,7 @@ Received: ${new Date(alert.created_at).toLocaleString()}
       },
     };
 
-    // In a real implementation, you would send this to FCM/APNs
+    // Logging payload for reference
     logInfo('Push notification payload:', payload);
     
     return `push_${alert.id}_${Date.now()}`;

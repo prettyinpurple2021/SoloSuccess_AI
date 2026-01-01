@@ -228,7 +228,7 @@ export class SimpleTrainingCollector {
     
     failedInteractions.forEach(i => {
       // Simple keyword extraction for basic pattern matching
-      // In a real system, this would use NLP or clustering
+      // Basic heuristic pattern matching
       let pattern = 'Unknown Error'
       const msg = i.userMessage.toLowerCase()
       

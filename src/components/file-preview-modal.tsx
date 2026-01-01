@@ -243,10 +243,14 @@ const FilePreviewModal: React.FC<FilePreviewModalProps> = ({
   }
 
   // Download file
+  // Download file
   const handleDownload = () => {
     if (!file) return
-    // In a real implementation, this would trigger a file download
-    logInfo('Download file:', file.name)
+    
+    // Trigger download via API or direct link
+    const downloadUrl = `/api/briefcase/download/${file.id}`;
+    window.open(downloadUrl, '_blank');
+    logInfo('Download initiated:', file.name);
   }
 
 

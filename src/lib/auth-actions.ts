@@ -64,6 +64,7 @@ const RegisterSchema = z.object({
 });
 
 export async function register(prevState: any, formData: FormData) {
+  console.log('Register action triggered');
   const rawData = Object.fromEntries(formData);
   const validatedFields = RegisterSchema.safeParse(rawData);
 

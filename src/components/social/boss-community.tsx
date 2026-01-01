@@ -55,7 +55,7 @@ export function BossCommunity() {
   const [newPostContent, setNewPostContent] = useState("")
   const [showNewPost, setShowNewPost] = useState(false)
 
-  // Community data - this will be connected to real backend
+  // Initial community state
   const [posts, setPosts] = useState<BossPost[]>([
     {
       id: "1",

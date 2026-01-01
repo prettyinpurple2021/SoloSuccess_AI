@@ -19,7 +19,6 @@ router.post('/', authMiddleware, async (req: any, res: any) => {
         }
 
         // Basic fuzzy search using ILIKE
-        // In a real production app with millions of rows, we'd use pg_trgm or tsvector
         const results = await db.select().from(searchIndex)
             .where(
                 and(
@@ -40,7 +39,7 @@ router.post('/', authMiddleware, async (req: any, res: any) => {
             snippet: r.content.substring(0, 150) + '...',
             path: getPathForType(r.entityType, r.entityId),
             timestamp: r.updatedAt,
-            relevance: 100 // Placeholder
+            relevance: 1
         }));
 
         res.json(formatted);

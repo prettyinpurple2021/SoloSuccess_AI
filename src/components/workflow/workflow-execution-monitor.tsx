@@ -71,128 +71,18 @@ interface ExecutionStats {
 }
 
 // Mock execution data (in real implementation, this would come from API)
-const MOCK_EXECUTIONS: WorkflowExecution[] = [
-  {
-    id: 'exec-1',
-    workflowId: 'workflow-1',
-    workflowName: 'Lead Nurturing Automation',
-    status: 'running',
-    startedAt: new Date(Date.now() - 300000), // 5 minutes ago
-    completedAt: null,
-    duration: null,
-    executionTime: 300000,
-    nodeResults: new Map<string, unknown>(),
-    progress: 65,
-    currentStep: 'Sending follow-up email',
-    steps: [
-      { id: 'step-1', name: 'Trigger workflow', status: 'completed', startedAt: new Date(Date.now() - 300000), completedAt: new Date(Date.now() - 295000), duration: 5000, output: { triggered: true } },
-      { id: 'step-2', name: 'Validate lead data', status: 'completed', startedAt: new Date(Date.now() - 295000), completedAt: new Date(Date.now() - 290000), duration: 5000, output: { validated: true } },
-      { id: 'step-3', name: 'Send welcome email', status: 'completed', startedAt: new Date(Date.now() - 290000), completedAt: new Date(Date.now() - 280000), duration: 10000, output: { emailSent: true } },
-      { id: 'step-4', name: 'Send follow-up email', status: 'running', startedAt: new Date(Date.now() - 60000), completedAt: null, duration: null, output: null },
-      { id: 'step-5', name: 'Update CRM', status: 'pending', startedAt: null, completedAt: null, duration: null, output: null },
-      { id: 'step-6', name: 'Schedule next task', status: 'pending', startedAt: null, completedAt: null, duration: null, output: null }
-    ],
-    variables: { leadId: 'lead-123', email: 'john@example.com', source: 'website' },
-    error: null,
-    logs: [
-      { timestamp: new Date(Date.now() - 300000), level: 'info', message: 'Workflow execution started' },
-      { timestamp: new Date(Date.now() - 295000), level: 'info', message: 'Lead data validated successfully' },
-      { timestamp: new Date(Date.now() - 290000), level: 'info', message: 'Welcome email sent to john@example.com' },
-      { timestamp: new Date(Date.now() - 60000), level: 'info', message: 'Sending follow-up email...' }
-    ],
-    metadata: {
-      executedBy: 'user-1',
-      environment: 'production',
-      version: '1.2.0',
-      retryCount: 0,
-      maxRetries: 3
-    }
-  },
-  {
-    id: 'exec-2',
-    workflowId: 'workflow-2',
-    workflowName: 'Customer Onboarding Flow',
-    status: 'completed',
-    startedAt: new Date(Date.now() - 1800000), // 30 minutes ago
-    completedAt: new Date(Date.now() - 600000), // 10 minutes ago
-    duration: 1200000, // 20 minutes
-    executionTime: 1200000,
-    nodeResults: new Map<string, unknown>(),
-    progress: 100,
-    currentStep: null,
-    steps: [
-      { id: 'step-1', name: 'Send welcome email', status: 'completed', startedAt: new Date(Date.now() - 1800000), completedAt: new Date(Date.now() - 1750000), duration: 50000, output: { emailSent: true } },
-      { id: 'step-2', name: 'Create user account', status: 'completed', startedAt: new Date(Date.now() - 1750000), completedAt: new Date(Date.now() - 1700000), duration: 50000, output: { accountCreated: true } },
-      { id: 'step-3', name: 'Setup onboarding tasks', status: 'completed', startedAt: new Date(Date.now() - 1700000), completedAt: new Date(Date.now() - 1600000), duration: 100000, output: { tasksCreated: 5 } },
-      { id: 'step-4', name: 'Send getting started guide', status: 'completed', startedAt: new Date(Date.now() - 1600000), completedAt: new Date(Date.now() - 700000), duration: 900000, output: { guideSent: true } }
-    ],
-    variables: { userId: 'user-456', email: 'sarah@example.com', plan: 'premium' },
-    error: null,
-    logs: [
-      { timestamp: new Date(Date.now() - 1800000), level: 'info', message: 'Customer onboarding started for user-456' },
-      { timestamp: new Date(Date.now() - 1750000), level: 'info', message: 'Welcome email sent successfully' },
-      { timestamp: new Date(Date.now() - 1700000), level: 'info', message: 'User account created' },
-      { timestamp: new Date(Date.now() - 1600000), level: 'info', message: 'Onboarding tasks setup completed' },
-      { timestamp: new Date(Date.now() - 700000), level: 'info', message: 'Getting started guide sent' },
-      { timestamp: new Date(Date.now() - 600000), level: 'success', message: 'Customer onboarding completed successfully' }
-    ],
-    metadata: {
-      executedBy: 'user-1',
-      environment: 'production',
-      version: '1.1.0',
-      retryCount: 0,
-      maxRetries: 3
-    }
-  },
-  {
-    id: 'exec-3',
-    workflowId: 'workflow-3',
-    workflowName: 'Social Media Scheduler',
-    status: 'failed',
-    startedAt: new Date(Date.now() - 3600000), // 1 hour ago
-    completedAt: new Date(Date.now() - 3300000), // 30 minutes ago
-    duration: 300000, // 5 minutes
-    executionTime: 300000,
-    nodeResults: new Map<string, unknown>(),
-    progress: 33,
-    currentStep: null,
-    steps: [
-      { id: 'step-1', name: 'Fetch scheduled posts', status: 'completed', startedAt: new Date(Date.now() - 3600000), completedAt: new Date(Date.now() - 3550000), duration: 50000, output: { postsFound: 3 } },
-      { id: 'step-2', name: 'Validate content', status: 'completed', startedAt: new Date(Date.now() - 3550000), completedAt: new Date(Date.now() - 3500000), duration: 50000, output: { validated: true } },
-      { id: 'step-3', name: 'Post to Twitter', status: 'failed', startedAt: new Date(Date.now() - 3500000), completedAt: new Date(Date.now() - 3450000), duration: 50000, output: null },
-      { id: 'step-4', name: 'Post to LinkedIn', status: 'pending', startedAt: null, completedAt: null, duration: null, output: null },
-      { id: 'step-5', name: 'Post to Facebook', status: 'pending', startedAt: null, completedAt: null, duration: null, output: null }
-    ],
-    variables: { posts: [{ id: 'post-1', content: 'Hello world!', platform: 'twitter' }] },
-    error: { message: 'Twitter API rate limit exceeded', step: 'Post to Twitter', timestamp: new Date(Date.now() - 3450000) },
-    logs: [
-      { timestamp: new Date(Date.now() - 3600000), level: 'info', message: 'Social media posting started' },
-      { timestamp: new Date(Date.now() - 3550000), level: 'info', message: 'Found 3 scheduled posts' },
-      { timestamp: new Date(Date.now() - 3500000), level: 'info', message: 'Content validation completed' },
-      { timestamp: new Date(Date.now() - 3450000), level: 'error', message: 'Twitter API rate limit exceeded' },
-      { timestamp: new Date(Date.now() - 3300000), level: 'error', message: 'Workflow execution failed' }
-    ],
-    metadata: {
-      executedBy: 'user-1',
-      environment: 'production',
-      version: '1.0.0',
-      retryCount: 1,
-      maxRetries: 3
-    }
-  }
-]
 
-// Mock stats data
-const MOCK_STATS: ExecutionStats = {
-  totalExecutions: 1247,
-  successfulExecutions: 1156,
-  failedExecutions: 67,
-  runningExecutions: 3,
-  averageExecutionTime: 180000, // 3 minutes
-  successRate: 92.7,
-  executionsToday: 45,
-  executionsThisWeek: 234,
-  executionsThisMonth: 892
+// Initial stats
+const INITIAL_STATS: ExecutionStats = {
+  totalExecutions: 0,
+  successfulExecutions: 0,
+  failedExecutions: 0,
+  runningExecutions: 0,
+  averageExecutionTime: 0,
+  successRate: 0,
+  executionsToday: 0,
+  executionsThisWeek: 0,
+  executionsThisMonth: 0
 }
 
 // Status colors
@@ -226,25 +116,100 @@ export function WorkflowExecutionMonitor({
   onViewDetails,
   className = ""
 }: WorkflowExecutionMonitorProps) {
-  const [executions, setExecutions] = useState<WorkflowExecution[]>(MOCK_EXECUTIONS)
-  const [stats, setStats] = useState<ExecutionStats>(MOCK_STATS)
+  const [executions, setExecutions] = useState<WorkflowExecution[]>([])
+  const [stats, setStats] = useState<ExecutionStats>(INITIAL_STATS)
   const [selectedExecution, setSelectedExecution] = useState<WorkflowExecution | null>(null)
-  const [filteredExecutions, setFilteredExecutions] = useState<WorkflowExecution[]>(MOCK_EXECUTIONS)
+  const [filteredExecutions, setFilteredExecutions] = useState<WorkflowExecution[]>([])
   const [searchQuery, setSearchQuery] = useState('')
   const [statusFilter, setStatusFilter] = useState<string>('all')
   const [expandedSteps, setExpandedSteps] = useState<Set<string>>(new Set())
   const [activeTab, setActiveTab] = useState<'overview' | 'executions' | 'logs' | 'analytics'>('overview')
   const [autoRefresh, setAutoRefresh] = useState(true)
-  const [loading, setLoading] = useState(false)
+  const [loading, setLoading] = useState(true)
 
   const { toast } = useToast()
   const refreshIntervalRef = useRef<NodeJS.Timeout | null>(null)
+
+  const fetchExecutions = useCallback(async () => {
+    try {
+      const response = await fetch('/api/workflows/executions')
+      const data = await response.json()
+      
+      if (data.success && Array.isArray(data.data)) {
+        const mappedExecutions: WorkflowExecution[] = data.data.map((e: any) => ({
+          id: e.id,
+          workflowId: e.workflow_id,
+          workflowName: e.workflowName,
+          status: e.status,
+          startedAt: new Date(e.started_at),
+          completedAt: e.completed_at ? new Date(e.completed_at) : null,
+          duration: e.duration,
+          executionTime: e.duration || 0,
+          nodeResults: new Map(), // Not fully persisted in this simplified schema yet
+          progress: e.status === 'completed' ? 100 : (e.status === 'failed' ? 100 : 50), // Simplified progress
+          currentStep: e.status === 'running' ? 'Processing...' : null,
+          steps: [], // Schema does not strictly track steps separately yet
+          variables: typeof e.variables === 'string' ? JSON.parse(e.variables) : e.variables,
+          error: e.error,
+          logs: Array.isArray(e.logs) ? e.logs.map((l: any) => ({
+             ...l,
+             timestamp: new Date(l.timestamp || Date.now())
+          })) : [],
+          metadata: {
+             executedBy: 'system',
+             environment: 'production',
+             version: '1.0.0',
+             retryCount: 0,
+             maxRetries: 3
+          }
+        }))
+        setExecutions(mappedExecutions)
+      }
+    } catch (error) {
+       console.error('Failed to fetch executions', error)
+    }
+  }, [])
+
+  const fetchStats = useCallback(async () => {
+    try {
+      const response = await fetch('/api/workflows/stats')
+      const data = await response.json()
+      if (data.success && data.data) {
+        // Map API stats to component stats
+        setStats({
+          totalExecutions: data.data.totalExecutions || 0,
+          successfulExecutions: data.data.executionStats?.successful || 0,
+          failedExecutions: data.data.executionStats?.failed || 0,
+          runningExecutions: data.data.executionStats?.running || 0,
+          averageExecutionTime: data.data.executionStats?.avgDuration || 0,
+          successRate: data.data.executionStats?.successRate || 0,
+          executionsToday: data.data.recentActivity?.today || 0,
+          executionsThisWeek: data.data.recentActivity?.week || 0,
+          executionsThisMonth: data.data.recentActivity?.month || 0
+        })
+      }
+    } catch (error) {
+      console.error('Failed to fetch stats', error)
+    }
+  }, [])
+
+  const refreshAll = useCallback(async () => {
+    setLoading(true)
+    await Promise.all([fetchExecutions(), fetchStats()])
+    setLoading(false)
+  }, [fetchExecutions, fetchStats])
+
+  // Initial load
+  useEffect(() => {
+    refreshAll()
+  }, [refreshAll])
 
   // Auto-refresh executions
   useEffect(() => {
     if (autoRefresh) {
       refreshIntervalRef.current = setInterval(() => {
-        refreshExecutions()
+        fetchExecutions()
+        fetchStats()
       }, 5000) // Refresh every 5 seconds
     } else {
       if (refreshIntervalRef.current) {
@@ -258,11 +223,11 @@ export function WorkflowExecutionMonitor({
         clearInterval(refreshIntervalRef.current)
       }
     }
-  }, [autoRefresh])
+  }, [autoRefresh, fetchExecutions, fetchStats])
 
   // Filter executions
   useEffect(() => {
-    let filtered = executions
+    let filtered = [...executions]
 
     if (searchQuery) {
       const query = searchQuery.toLowerCase()
@@ -282,20 +247,10 @@ export function WorkflowExecutionMonitor({
     setFilteredExecutions(filtered)
   }, [executions, searchQuery, statusFilter])
 
-  // Refresh executions
-  const refreshExecutions = useCallback(async () => {
-    setLoading(true)
-    try {
-      // In real implementation, this would fetch from API
-      logInfo('Refreshing workflow executions')
-      // Simulate API call delay
-      await new Promise(resolve => setTimeout(resolve, 500))
-      setLoading(false)
-    } catch (error) {
-      logError('Failed to refresh executions:', error)
-      setLoading(false)
-    }
-  }, [])
+  // Refresh executions (manual trigger)
+  const refreshExecutions = useCallback(() => {
+    refreshAll()
+  }, [refreshAll])
 
   // Handle stop execution
   const handleStopExecution = useCallback((execId: string | number) => {

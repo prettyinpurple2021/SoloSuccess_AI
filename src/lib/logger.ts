@@ -90,8 +90,14 @@ class Logger {
     // - LogRocket: LogRocket.captureException(entry.error)
     // - Custom API: fetch('/api/logs', { method: 'POST', body: JSON.stringify(entry) })
     try {
-      // In a real implementation, you would send to your logging service here
-      // Log handling ensuring strict type safety and error wrapping
+      // Send to log ingestion endpoint if configured
+      if (process.env.LOG_INGEST_URL) {
+          await fetch(process.env.LOG_INGEST_URL, {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify(entry),
+          });
+      }
     } catch (logError) {
       // Don't let logging errors break the application
       // In production, we avoid console.error - could be sent to error tracking service

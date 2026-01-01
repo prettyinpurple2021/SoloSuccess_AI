@@ -177,6 +177,13 @@ export class WorkflowEngine {
   }
 
   /**
+   * Get all registered node types
+   */
+  public getNodeTypes(): NodeType[] {
+    return Array.from(this.nodeTypes.values())
+  }
+
+  /**
    * Initialize built-in node types
    */
   private initializeNodeTypes(): void {
