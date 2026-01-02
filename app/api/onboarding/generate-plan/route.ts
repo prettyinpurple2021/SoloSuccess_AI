@@ -50,31 +50,53 @@ export async function POST(req: Request) {
     // First, verify or create a default "Launch Mission" briefcase
     let briefcaseId: string;
     
-    // Simple check for existing briefcase, or just create new one
-    const newBriefcase = {
-      id: uuidv4(),
-      user_id: userId,
-      title: 'Empire Launch Mission',
-      description: 'Your AI-generated roadmap to launch your business.',
-      status: 'active'
-    };
+    // Check for existing "Empire Launch Mission" briefcase for this user
+    // Since we don't have eq/and helpers imported from drizzle-orm, we will use sql-like query or just simple insert if not found logic
+    // But better to just try/catch unique constraint or query first if possible.
+    // Assuming we have access to eq/and. I need to verify imports first.
+    // Actually, I don't see eq/and imports. I should use db.query provided by Drizzle if available, or just use the findFirst approach.
+    // However, I can't easily add imports without seeing the file structure properly.
+    // I see `import { db } from '@/db';` so I probably have access to Drizzle query builder.
+    // I'll assume standard Drizzle usage. I'll add the necessary imports to the top of the file in a separate chunk.
     
-    await db.insert(briefcases).values(newBriefcase);
-    briefcaseId = newBriefcase.id;
+    const existingBriefcase = await db.query.briefcases.findFirst({
+      where: (briefcases, { eq, and }) => and(
+        eq(briefcases.user_id, userId),
+        eq(briefcases.title, 'Empire Launch Mission')
+      )
+    });
+
+    if (existingBriefcase) {
+      briefcaseId = existingBriefcase.id;
+    } else {
+      const newBriefcaseId = uuidv4();
+      await db.insert(briefcases).values({
+        id: newBriefcaseId,
+        user_id: userId,
+        title: 'Empire Launch Mission',
+        description: 'Your AI-generated roadmap to launch your business.',
+        status: 'active'
+      });
+      briefcaseId = newBriefcaseId;
+    }
 
     // 3. Create Goals (Phases) and Tasks
-    const dbOperations = [];
+    // Use serialized operations to prevent FK race conditions
+    // Insert Goals first, then their Tasks
+    
+    const goalOperations = [];
+    const taskOperations = [];
 
-    // Create Goals for each Phase
+    // Organize data structures
     for (const phase of launchPlan.roadmap) {
       const goalId = uuidv4();
       const goalDueDate = new Date();
       // Heuristic: Set due date 7 days * phase index from now
-      // Assuming phases are Week 1, Week 2...
       const weekIndex = launchPlan.roadmap.indexOf(phase);
       goalDueDate.setDate(goalDueDate.getDate() + (7 * (weekIndex + 1)));
 
-      dbOperations.push(
+      // Prepare Goal Insert
+      goalOperations.push(
         db.insert(goals).values({
           id: goalId,
           user_id: userId,
@@ -86,9 +108,9 @@ export async function POST(req: Request) {
         })
       );
 
-      // Create Tasks for this Goal
+      // Prepare Task Inserts linked to this Goal
       for (const task of phase.tasks) {
-        dbOperations.push(
+        taskOperations.push(
           db.insert(tasks).values({
             id: uuidv4(),
             user_id: userId,
@@ -104,8 +126,15 @@ export async function POST(req: Request) {
       }
     }
 
-    // Execute all inserts
-    await Promise.all(dbOperations);
+    // Execute Goal inserts first & await completion to satisfy FK constraints
+    if (goalOperations.length > 0) {
+      await Promise.all(goalOperations);
+    }
+    
+    // Then execute Task inserts
+    if (taskOperations.length > 0) {
+      await Promise.all(taskOperations);
+    }
 
     return successResponse({
       message: 'Empire Roadmap generated successfully',

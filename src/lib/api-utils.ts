@@ -46,7 +46,6 @@ export class ApiError extends Error {
 }
 
 export function handleApiError(error: unknown) {
-  logError('API Error caught', error);
   const message = error instanceof Error ? error.message : 'Internal Server Error';
   const statusCode = error instanceof ApiError ? error.statusCode : 500;
   const details = error instanceof ApiError ? error.details : undefined;
@@ -208,8 +207,11 @@ export function generateUUID(): string {
  */
 export function parsePaginationParams(request: NextRequest) {
   const url = new URL(request.url)
-  const page = Math.max(1, parseInt(url.searchParams.get('page') || '1'))
-  const limit = Math.min(100, Math.max(1, parseInt(url.searchParams.get('limit') || '20')))
+  const parsedPage = parseInt(url.searchParams.get('page') || '1')
+  const parsedLimit = parseInt(url.searchParams.get('limit') || '20')
+  
+  const page = Number.isFinite(parsedPage) ? Math.max(1, parsedPage) : 1
+  const limit = Number.isFinite(parsedLimit) ? Math.min(100, Math.max(1, parsedLimit)) : 20
   const offset = (page - 1) * limit
   
   return { page, limit, offset }
@@ -273,8 +275,8 @@ export function withAuth(
  * Whitelist of allowed fields to prevent SQL injection
  */
 const ALLOWED_DOCUMENT_FIELDS = [
-  'id', 'name', 'category', 'tags', 'is_favorite', 
-  'file_data', 'file_size', 'mime_type', 'user_id',
+  'id', 'name', 'description', 'category', 'tags', 'is_favorite', 
+  'file_data', 'file_size', 'file_type', 'mime_type', 'user_id',
   'created_at', 'updated_at'
 ]
 

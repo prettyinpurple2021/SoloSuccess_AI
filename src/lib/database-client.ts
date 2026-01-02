@@ -1,4 +1,5 @@
 import { drizzle } from 'drizzle-orm/neon-http'
+import type { NeonHttpDatabase } from 'drizzle-orm/neon-http'
 import { neon } from '@neondatabase/serverless'
 import * as schema from '@/db/schema'
 import { logger, logError } from './logger'
@@ -80,9 +81,9 @@ export async function checkDatabaseHealth(): Promise<{ healthy: boolean; error?:
 }
 
 // Export db for backward compatibility, but it will only be created when first accessed
-export const db = new Proxy({} as ReturnType<typeof drizzle>, {
+export const db = new Proxy({} as NeonHttpDatabase<typeof schema>, {
   get(target, prop) {
-    return getDb()[prop as keyof ReturnType<typeof drizzle>]
+    return getDb()[prop as keyof NeonHttpDatabase<typeof schema>]
   }
 })
 
