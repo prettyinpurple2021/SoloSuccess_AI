@@ -13,6 +13,7 @@ import { AccessibilityProvider } from "@/components/ui/accessibility"
 import { ChatProvider } from "@/components/providers/chat-provider"
 import { SmartTipManager } from "@/components/ui/smart-tip"
 import { FeedbackWidget } from "@/components/feedback/feedback-widget"
+import { CssScriptCleanup } from "@/components/util/css-script-cleanup"
 import { Analytics } from "@vercel/analytics/next"
 import { SpeedInsights } from "@vercel/speed-insights/next"
 // Removed GoogleAnalytics component usage; using manual GA4 snippet
@@ -154,6 +155,7 @@ export default function RootLayout({
             <ServiceWorkerRegister />
             {!exitIntentDisabled && <ExitIntentSurvey />}
             <SmartTipManager />
+            <CssScriptCleanup />
             <FeedbackWidget />
           </AccessibilityProvider>
         </OfflineProvider>
