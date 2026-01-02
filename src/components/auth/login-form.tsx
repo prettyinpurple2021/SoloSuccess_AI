@@ -57,6 +57,7 @@ export function LoginForm() {
               id="password"
               type="password"
               name="password"
+              autoComplete="current-password"
               required
               minLength={6}
               className="bg-dark-bg/50 border-white/10 text-white focus:border-neon-purple focus:ring-neon-purple/20 transition-all font-mono"
