@@ -31,8 +31,8 @@ const RegisterSchema = z.object({
   path: ["confirmPassword"],
 });
 
-export async function register(prevState: any, formData: FormData) {
-  console.log('Register action (new file) triggered');
+export async function registerUser(prevState: any, formData: FormData) {
+  console.log('RegisterUser action triggered');
   const rawData = Object.fromEntries(formData);
   const validatedFields = RegisterSchema.safeParse(rawData);
 

@@ -2,7 +2,7 @@
 
 import { useActionState } from 'react';
 import { socialLogin } from '@/lib/auth-actions';
-import { register } from '@/lib/actions/register-action';
+import { registerUser } from '@/lib/actions/register-action';
 import { PrimaryButton } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -13,7 +13,7 @@ import Link from 'next/link';
 
 export function RegisterForm() {
   // @ts-ignore
-  const [state, formAction, isPending] = useActionState(register, undefined);
+  const [state, formAction, isPending] = useActionState(registerUser, undefined);
 
   return (
     <div className="relative group max-w-lg mx-auto">

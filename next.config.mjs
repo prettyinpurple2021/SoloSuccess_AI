@@ -24,9 +24,7 @@ const nextConfig = {
   outputFileTracingRoot: process.cwd(),
 
   // Production builds should catch errors
-  eslint: {
-    ignoreDuringBuilds: true,
-  },
+
   typescript: {
     ignoreBuildErrors: true,
   },
