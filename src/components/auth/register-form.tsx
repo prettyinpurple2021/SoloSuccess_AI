@@ -41,6 +41,7 @@ export function RegisterForm() {
       });
 
       if (logIn?.ok && !logIn.error) {
+        setIsPending(false);
         router.push('/dashboard');
         router.refresh();
       } else {

@@ -6,6 +6,7 @@ import { users } from '@/db/schema';
 import bcrypt from 'bcryptjs';
 import { eq } from 'drizzle-orm';
 import { z } from 'zod';
+import { logInfo, logError } from '@/lib/logger';
 
 const RegisterSchema = z.object({
   firstName: z.string().min(2, "First name is too short"),
@@ -32,7 +33,7 @@ const RegisterSchema = z.object({
 });
 
 export async function registerUser(prevState: any, formData: FormData) {
-  console.log('RegisterUser action triggered');
+  logInfo('RegisterUser action triggered');
   const rawData = Object.fromEntries(formData);
   const validatedFields = RegisterSchema.safeParse(rawData);
 
@@ -68,7 +69,10 @@ export async function registerUser(prevState: any, formData: FormData) {
       date_of_birth: new Date(dateOfBirth),
     });
   } catch (error) {
-    console.error('Registration error:', error);
+    logError('Registration error: Failed to create user', error instanceof Error ? error : undefined, { 
+      email,
+      action: 'register_user'
+    });
     return {
       error: 'Database error: Failed to create user.',
     };
