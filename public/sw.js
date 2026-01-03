@@ -60,6 +60,12 @@ self.addEventListener('fetch', (event) => {
     return
   }
 
+  // Skip cross-origin requests (fonts, analytics, external APIs)
+  // Let the browser handle these directly to avoid CSP issues
+  if (url.origin !== self.location.origin) {
+    return
+  }
+
   // Bypass Next.js internal assets and dev hot updates
   if (url.pathname.startsWith('/_next/') || url.pathname.includes('hot-update') || url.pathname.endsWith('.map')) {
     return
