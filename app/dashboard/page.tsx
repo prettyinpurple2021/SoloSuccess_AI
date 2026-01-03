@@ -144,7 +144,7 @@ export default function DashboardPage() {
         window.location.reload()
       } else {
         const errorData = await response.json()
-        logError('Onboarding completion failed:', errorData, undefined)
+        logError('Onboarding completion failed:', undefined, errorData)
         // Still close onboarding to prevent user being stuck
         setShowOnboarding(false)
       }

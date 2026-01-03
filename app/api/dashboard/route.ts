@@ -113,7 +113,7 @@ async function authenticateRequest(request: NextRequest) {
     logError('Dashboard API: No authorization token or session found')
     return { user: null, error: 'No authorization found' }
   } catch (error) {
-    logError('Dashboard API: Authentication error:', undefined, error instanceof Error ? error : undefined)
+    logError('Dashboard API: Authentication error:', error instanceof Error ? error : undefined)
     return { user: null, error: 'Authentication failed' }
   }
 }
@@ -509,12 +509,11 @@ export async function GET(request: NextRequest) {
 
     return NextResponse.json(responseData)
   } catch (error) {
-    logError('Dashboard API error:', undefined, error instanceof Error ? error : undefined)
-    logError('Error details:', {
+    logError('Dashboard API error:', error instanceof Error ? error : undefined, {
       message: error instanceof Error ? error.message : 'Unknown error',
       stack: error instanceof Error ? error.stack : undefined,
       name: error instanceof Error ? error.name : undefined
-    }, undefined)
+    })
     return NextResponse.json(
       { 
         error: 'Internal server error',
