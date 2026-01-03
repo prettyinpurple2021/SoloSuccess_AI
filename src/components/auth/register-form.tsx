@@ -1,6 +1,8 @@
 'use client';
 
-import { useActionState } from 'react';
+import { useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { signIn } from 'next-auth/react';
 import { socialLogin } from '@/lib/auth-actions';
 import { registerUser } from '@/lib/actions/register-action';
 import { PrimaryButton } from '@/components/ui/button';
@@ -12,8 +14,44 @@ import { Checkbox } from '@/components/ui/checkbox';
 import Link from 'next/link';
 
 export function RegisterForm() {
-  // @ts-ignore
-  const [state, formAction, isPending] = useActionState(registerUser, undefined);
+  const router = useRouter();
+  const [error, setError] = useState<string | null>(null);
+  const [isPending, setIsPending] = useState(false);
+
+  async function onSubmit(event: React.FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    setIsPending(true);
+    setError(null);
+
+    const formData = new FormData(event.currentTarget);
+    
+    try {
+      const result = await registerUser(null, formData);
+
+      if (result?.error) {
+        setError(result.error);
+        setIsPending(false);
+        return;
+      }
+
+      const logIn = await signIn('credentials', {
+        email: formData.get('email') as string,
+        password: formData.get('password') as string,
+        redirect: false,
+      });
+
+      if (logIn?.ok && !logIn.error) {
+        router.push('/dashboard');
+        router.refresh();
+      } else {
+        setError('Registration successful, but login failed. Please log in manually.');
+        setIsPending(false);
+      }
+    } catch (err) {
+      setError('An unexpected error occurred.');
+      setIsPending(false);
+    }
+  }
 
   return (
     <div className="relative group max-w-lg mx-auto">
@@ -22,7 +60,7 @@ export function RegisterForm() {
        <div className="relative bg-dark-card/90 backdrop-blur-xl p-8 rounded-2xl border border-neon-purple/30 space-y-6">
 
 
-         <form action={formAction} className="space-y-4">
+         <form onSubmit={onSubmit} className="space-y-4">
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-2">
                 <Label htmlFor="firstName" className="text-pink-400 font-mono uppercase text-xs">First Name</Label>
@@ -64,8 +102,8 @@ export function RegisterForm() {
               </Label>
             </div>
 
-            {state?.error && (
-              <Alert variant="error" description={state.error} />
+            {error && (
+              <Alert variant="error" description={error} />
             )}
 
             <PrimaryButton className="w-full btn-boss bg-gradient-to-r from-pink-600 to-purple-600 hover:from-pink-500 hover:to-purple-500 border-none mt-4" disabled={isPending}>

@@ -74,15 +74,7 @@ export async function registerUser(prevState: any, formData: FormData) {
     };
   }
 
-  try {
-    await signIn('credentials', { email, password, redirectTo: '/dashboard' });
-  } catch (error) {
-    if ((error as any).message === 'NEXT_REDIRECT') {
-      throw error;
-    }
-    console.error('Sign in error during registration:', error);
     return {
-      error: 'Account created, but auto-login failed. Please sign in manually.',
+      success: true,
     };
   }
-}
