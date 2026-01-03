@@ -38,9 +38,9 @@ export const TheSimulator: React.FC = () => {
 
     const TimelineCard = ({ outcome, type }: { outcome: ScenarioOutcome, type: 'likely' | 'best' | 'worst' }) => {
         const colors =
-            type === 'best' ? 'border-emerald-500/50 bg-emerald-950/10 text-emerald-400' :
-                type === 'worst' ? 'border-red-500/50 bg-red-950/10 text-red-400' :
-                    'border-blue-500/50 bg-blue-950/10 text-blue-400';
+            type === 'best' ? 'border-neon-lime/50 bg-neon-lime/10 text-neon-lime' :
+                type === 'worst' ? 'border-neon-magenta/50 bg-neon-magenta/10 text-neon-magenta' :
+                    'border-neon-cyan/50 bg-neon-cyan/10 text-neon-cyan';
 
         const Icon =
             type === 'best' ? ThumbsUp :
@@ -48,23 +48,23 @@ export const TheSimulator: React.FC = () => {
                     Activity;
 
         return (
-            <div className={`border rounded-xl p-6 flex flex-col h-full transition-all hover:bg-zinc-900/80 ${colors}`}>
+            <div className={`border-2 rounded-sm p-6 flex flex-col h-full transition-all hover:bg-dark-hover ${colors}`}>
                 <div className="flex justify-between items-start mb-4">
-                    <div className="flex items-center gap-2 font-bold uppercase tracking-widest text-xs">
+                    <div className="flex items-center gap-2 font-mono font-bold uppercase tracking-widest text-xs">
                         <Icon size={14} /> {type} Case
                     </div>
-                    <div className="text-2xl font-black">{outcome.probability}%</div>
+                    <div className="text-2xl font-mono font-bold">{outcome.probability}%</div>
                 </div>
 
-                <h3 className="text-lg font-bold text-white mb-2">{outcome.title}</h3>
-                <p className="text-sm text-zinc-300 mb-4 flex-1">{outcome.description}</p>
+                <h3 className="font-orbitron text-lg font-bold uppercase tracking-wider text-white mb-2">{outcome.title}</h3>
+                <p className="text-sm text-gray-300 font-mono mb-4 flex-1">{outcome.description}</p>
 
-                <div className="space-y-3 border-t border-white/10 pt-4">
-                    <div className="text-[10px] font-mono uppercase text-zinc-500">Timeline: {outcome.timeline}</div>
+                <div className="space-y-3 border-t-2 border-gray-700 pt-4">
+                    <div className="text-[10px] font-mono uppercase text-gray-500">Timeline: {outcome.timeline}</div>
                     {outcome.keyEvents.map((event, i) => (
                         <div key={i} className="flex gap-3 items-start text-xs">
                             <div className="mt-1 w-1.5 h-1.5 rounded-full bg-current shrink-0 opacity-50"></div>
-                            <span className="text-zinc-300">{event}</span>
+                            <span className="text-gray-300 font-mono">{event}</span>
                         </div>
                     ))}
                 </div>
@@ -75,20 +75,20 @@ export const TheSimulator: React.FC = () => {
     return (
         <div className="min-h-[85vh] flex flex-col animate-in fade-in duration-500">
             {/* Header */}
-            <div className="mb-6 flex flex-col md:flex-row md:items-end justify-between border-b border-zinc-800 pb-6 gap-4 md:gap-0">
+            <div className="mb-6 flex flex-col md:flex-row md:items-end justify-between border-b-2 border-gray-700 pb-6 gap-4 md:gap-0">
                 <div>
-                    <div className="flex items-center gap-2 text-indigo-400 font-mono text-xs font-bold uppercase tracking-widest mb-2">
+                    <div className="flex items-center gap-2 text-neon-purple font-mono text-xs font-bold uppercase tracking-widest mb-2">
                         <GitBranch size={14} /> Predictive Modeling
                     </div>
-                    <h2 className="text-3xl md:text-4xl font-black text-white tracking-tighter">THE SIMULATOR</h2>
-                    <p className="text-zinc-400 mt-2">Analyze potential futures and risk timelines.</p>
+                    <h2 className="font-orbitron text-3xl md:text-4xl font-bold uppercase tracking-wider text-white">THE SIMULATOR</h2>
+                    <p className="text-gray-400 font-mono mt-2">Analyze potential futures and risk timelines.</p>
                 </div>
             </div>
 
             {/* Input */}
             <div className="max-w-3xl mx-auto w-full mb-12">
-                <div className="bg-zinc-900 border border-zinc-800 p-2 rounded-lg flex gap-2 shadow-lg relative group focus-within:border-indigo-500 transition-colors">
-                    <div className="absolute inset-y-0 left-4 flex items-center pointer-events-none text-zinc-500">
+                <div className="bg-dark-card border-2 border-gray-700 p-2 rounded-sm flex gap-2 shadow-[0_0_15px_rgba(179,0,255,0.15)] relative group focus-within:border-neon-purple transition-all">
+                    <div className="absolute inset-y-0 left-4 flex items-center pointer-events-none text-gray-500">
                         <Spline size={20} />
                     </div>
                     <input
@@ -97,13 +97,13 @@ export const TheSimulator: React.FC = () => {
                         onChange={(e) => setScenario(e.target.value)}
                         onKeyDown={(e) => e.key === 'Enter' && handleSimulate()}
                         placeholder="What if... (e.g. 'We lose our biggest client' or 'We pivot to AI')"
-                        className="w-full bg-transparent border-none pl-12 pr-4 py-4 text-lg text-white focus:ring-0 placeholder-zinc-600 font-medium"
+                        className="w-full bg-transparent border-none pl-12 pr-4 py-4 text-lg text-white font-mono focus:ring-0 placeholder-gray-600"
                         disabled={loading}
                     />
                     <button
                         onClick={handleSimulate}
                         disabled={loading || !scenario.trim()}
-                        className="bg-indigo-600 hover:bg-indigo-500 text-white px-8 rounded font-bold text-xs uppercase tracking-widest transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
+                        className="bg-neon-purple hover:bg-neon-purple/80 text-white px-8 rounded-sm font-mono font-bold text-xs uppercase tracking-widest transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2 shadow-[0_0_15px_rgba(179,0,255,0.3)]"
                     >
                         {loading ? <Loader2 size={16} className="animate-spin" /> : 'Simulate'}
                     </button>
@@ -113,15 +113,15 @@ export const TheSimulator: React.FC = () => {
             {/* Results */}
             <div className="flex-1">
                 {!result && !loading && (
-                    <div className="flex flex-col items-center justify-center text-zinc-700 opacity-50 h-64">
+                    <div className="flex flex-col items-center justify-center text-gray-600 opacity-50 h-64">
                         <GitBranch size={64} strokeWidth={1} />
                         <p className="mt-4 font-mono uppercase tracking-widest text-sm">No Active Simulation</p>
                     </div>
                 )}
 
                 {loading && (
-                    <div className="flex flex-col items-center justify-center text-indigo-500 h-64">
-                        <div className="w-16 h-16 border-4 border-indigo-900/30 rounded border-t-indigo-500 animate-spin mb-4"></div>
+                    <div className="flex flex-col items-center justify-center text-neon-purple h-64">
+                        <div className="w-16 h-16 border-4 border-neon-purple/30 rounded border-t-neon-purple animate-spin mb-4"></div>
                         <p className="font-mono uppercase tracking-widest animate-pulse">Calculating Probability Matrices...</p>
                     </div>
                 )}
@@ -136,13 +136,13 @@ export const TheSimulator: React.FC = () => {
                         </div>
 
                         {/* Strategic Advice */}
-                        <div className="bg-zinc-950 border border-zinc-800 rounded-xl p-8 relative overflow-hidden">
-                            <div className="absolute top-0 left-0 w-1 h-full bg-indigo-500"></div>
-                            <h3 className="text-xs font-bold text-indigo-500 uppercase tracking-widest mb-3 flex items-center gap-2">
+                        <div className="bg-dark-bg border-2 border-gray-700 rounded-sm p-8 relative overflow-hidden">
+                            <div className="absolute top-0 left-0 w-1 h-full bg-neon-purple"></div>
+                            <h3 className="text-xs font-mono font-bold text-neon-purple uppercase tracking-widest mb-3 flex items-center gap-2">
                                 <Crosshair size={14} /> Strategic Recommendation
                             </h3>
-                            <p className="text-xl text-zinc-200 leading-relaxed font-medium">
-                                "{result.strategicAdvice}"
+                            <p className="text-xl text-gray-200 font-mono leading-relaxed">
+                                &quot;{result.strategicAdvice}&quot;
                             </p>
                         </div>
                     </div>

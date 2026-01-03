@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Terminal, ArrowRight, Check, Save, SkipForward, Target, Briefcase, User, Building, Zap } from 'lucide-react';
 import { BusinessContext, AgentId } from '../types';
 import { storageService } from '../services/storageService';
+import { logError } from '../lib/logger';
 
 interface SystemBootProps {
     onComplete: () => void;
@@ -21,7 +22,7 @@ export const SystemBoot: React.FC<SystemBootProps> = ({ onComplete }) => {
 
     // Load saved progress from DB on mount
     useEffect(() => {
-        const loadProgress = async () => {
+        const loadProgress = async (): Promise<void> => {
             try {
                 const context = await storageService.getContext();
                 if (context) {
@@ -39,7 +40,7 @@ export const SystemBoot: React.FC<SystemBootProps> = ({ onComplete }) => {
                     }
                 }
             } catch (e) {
-                console.error("Failed to load saved progress", e);
+                logError("Failed to load saved progress", e);
             }
         };
         loadProgress();
@@ -144,7 +145,7 @@ export const SystemBoot: React.FC<SystemBootProps> = ({ onComplete }) => {
     // Render Steps
     if (step === 0) {
         return (
-            <div className="h-screen bg-black text-emerald-500 font-mono p-8 flex flex-col justify-end pb-20">
+            <div className="h-screen bg-dark-bg text-neon-cyan font-mono p-8 flex flex-col justify-end pb-20">
                 {bootLogs.map((log, i) => (
                     <div key={i} className="mb-1 text-sm opacity-80">{log}</div>
                 ))}
@@ -155,36 +156,36 @@ export const SystemBoot: React.FC<SystemBootProps> = ({ onComplete }) => {
 
     if (step === 5) {
         return (
-            <div className="h-screen bg-black flex items-center justify-center">
+            <div className="h-screen bg-dark-bg flex items-center justify-center">
                 <div className="text-center animate-in zoom-in duration-500">
-                    <div className="w-24 h-24 border-4 border-emerald-500 rounded-full flex items-center justify-center mx-auto mb-6 animate-bounce">
-                        <Check size={48} className="text-emerald-500" />
+                    <div className="w-24 h-24 border-4 border-neon-lime rounded-full flex items-center justify-center mx-auto mb-6 animate-bounce shadow-[0_0_30px_rgba(57,255,20,0.4)]">
+                        <Check size={48} className="text-neon-lime" />
                     </div>
-                    <h1 className="text-3xl font-black text-white tracking-tighter mb-2">SYSTEM INITIALIZED</h1>
-                    <p className="text-emerald-500 font-mono">WELCOME TO MISSION CONTROL, {formData.founderName.toUpperCase()}</p>
+                    <h1 className="font-orbitron text-3xl font-bold uppercase tracking-wider text-white mb-2">SYSTEM INITIALIZED</h1>
+                    <p className="text-neon-cyan font-mono">WELCOME TO MISSION CONTROL, {formData.founderName.toUpperCase()}</p>
                 </div>
             </div>
         );
     }
 
     return (
-        <div className="h-screen bg-[#050505] flex items-center justify-center p-4 relative overflow-hidden">
+        <div className="h-screen bg-dark-bg flex items-center justify-center p-4 relative overflow-hidden">
             {/* Background Elements */}
-            <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-emerald-500/5 rounded-full blur-[100px] pointer-events-none" />
-            <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-purple-500/5 rounded-full blur-[100px] pointer-events-none" />
+            <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-neon-cyan/5 rounded-full blur-[100px] pointer-events-none" />
+            <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-neon-purple/5 rounded-full blur-[100px] pointer-events-none" />
 
             <div className="w-full max-w-3xl z-10">
                 {/* Header */}
                 <div className="flex justify-between items-center mb-8">
                     <div className="flex items-center gap-3">
-                        <Terminal className="text-emerald-500" />
-                        <h2 className="text-xl text-white font-bold tracking-widest uppercase">System Configuration</h2>
+                        <Terminal className="text-neon-cyan" />
+                        <h2 className="font-orbitron text-xl text-white font-bold tracking-widest uppercase">System Configuration</h2>
                     </div>
                     <div className="flex gap-4">
-                        <button onClick={handleSaveAndExit} className="text-zinc-500 hover:text-white text-xs font-bold uppercase tracking-wider flex items-center gap-2">
+                        <button onClick={handleSaveAndExit} className="text-gray-500 hover:text-neon-cyan text-xs font-mono font-bold uppercase tracking-wider flex items-center gap-2 transition-colors">
                             <Save size={14} /> Save Progress
                         </button>
-                        <button onClick={handleSkip} className="text-zinc-500 hover:text-white text-xs font-bold uppercase tracking-wider flex items-center gap-2">
+                        <button onClick={handleSkip} className="text-gray-500 hover:text-neon-orange text-xs font-mono font-bold uppercase tracking-wider flex items-center gap-2 transition-colors">
                             <SkipForward size={14} /> Skip Setup
                         </button>
                     </div>
@@ -193,7 +194,7 @@ export const SystemBoot: React.FC<SystemBootProps> = ({ onComplete }) => {
                 {/* Progress Bar */}
                 <div className="flex gap-2 mb-12">
                     {[1, 2, 3, 4].map((s) => (
-                        <div key={s} className={`h-1 flex-1 rounded-full transition-all duration-500 ${step >= s ? 'bg-emerald-500' : 'bg-zinc-800'}`} />
+                        <div key={s} className={`h-1 flex-1 rounded-sm transition-all duration-500 ${step >= s ? 'bg-neon-cyan shadow-[0_0_10px_rgba(11,228,236,0.5)]' : 'bg-gray-700'}`} />
                     ))}
                 </div>
 
@@ -202,28 +203,28 @@ export const SystemBoot: React.FC<SystemBootProps> = ({ onComplete }) => {
                     {step === 1 && (
                         <div className="space-y-8 animate-in slide-in-from-right duration-500">
                             <div className="space-y-2">
-                                <p className="text-emerald-500 font-mono text-sm uppercase tracking-widest">Step 1: Identity Protocol</p>
-                                <h1 className="text-4xl font-black text-white">Who is taking command?</h1>
+                                <p className="text-neon-cyan font-mono text-sm uppercase tracking-widest">Step 1: Identity Protocol</p>
+                                <h1 className="font-orbitron text-4xl font-bold uppercase tracking-wider text-white">Who is taking command?</h1>
                             </div>
                             <div className="space-y-6">
                                 <div className="space-y-2">
-                                    <label className="flex items-center gap-2 text-zinc-400 text-sm font-bold uppercase"><User size={16} /> Founder Name</label>
+                                    <label className="flex items-center gap-2 text-gray-400 text-sm font-mono font-bold uppercase"><User size={16} /> Founder Name</label>
                                     <input
                                         autoFocus
                                         type="text"
                                         value={formData.founderName}
                                         onChange={(e) => setFormData({ ...formData, founderName: e.target.value })}
-                                        className="w-full bg-zinc-900/50 border border-zinc-800 rounded-lg p-4 text-xl text-white focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 transition-all"
+                                        className="w-full bg-dark-card border-2 border-gray-700 rounded-sm p-4 text-xl text-white font-mono focus:border-neon-cyan focus:shadow-[0_0_15px_rgba(11,228,236,0.3)] transition-all"
                                         placeholder="e.g. Sarah Connor"
                                     />
                                 </div>
                                 <div className="space-y-2">
-                                    <label className="flex items-center gap-2 text-zinc-400 text-sm font-bold uppercase"><Building size={16} /> Company Name</label>
+                                    <label className="flex items-center gap-2 text-gray-400 text-sm font-mono font-bold uppercase"><Building size={16} /> Company Name</label>
                                     <input
                                         type="text"
                                         value={formData.companyName}
                                         onChange={(e) => setFormData({ ...formData, companyName: e.target.value })}
-                                        className="w-full bg-zinc-900/50 border border-zinc-800 rounded-lg p-4 text-xl text-white focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 transition-all"
+                                        className="w-full bg-dark-card border-2 border-gray-700 rounded-sm p-4 text-xl text-white font-mono focus:border-neon-cyan focus:shadow-[0_0_15px_rgba(11,228,236,0.3)] transition-all"
                                         placeholder="e.g. Skynet Systems"
                                     />
                                 </div>
@@ -234,28 +235,28 @@ export const SystemBoot: React.FC<SystemBootProps> = ({ onComplete }) => {
                     {step === 2 && (
                         <div className="space-y-8 animate-in slide-in-from-right duration-500">
                             <div className="space-y-2">
-                                <p className="text-emerald-500 font-mono text-sm uppercase tracking-widest">Step 2: Mission Parameters</p>
-                                <h1 className="text-4xl font-black text-white">Define your battlefield.</h1>
+                                <p className="text-neon-cyan font-mono text-sm uppercase tracking-widest">Step 2: Mission Parameters</p>
+                                <h1 className="font-orbitron text-4xl font-bold uppercase tracking-wider text-white">Define your battlefield.</h1>
                             </div>
                             <div className="space-y-6">
                                 <div className="space-y-2">
-                                    <label className="flex items-center gap-2 text-zinc-400 text-sm font-bold uppercase"><Briefcase size={16} /> Industry / Sector</label>
+                                    <label className="flex items-center gap-2 text-gray-400 text-sm font-mono font-bold uppercase"><Briefcase size={16} /> Industry / Sector</label>
                                     <input
                                         autoFocus
                                         type="text"
                                         value={formData.industry}
                                         onChange={(e) => setFormData({ ...formData, industry: e.target.value })}
-                                        className="w-full bg-zinc-900/50 border border-zinc-800 rounded-lg p-4 text-xl text-white focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 transition-all"
+                                        className="w-full bg-dark-card border-2 border-gray-700 rounded-sm p-4 text-xl text-white font-mono focus:border-neon-cyan focus:shadow-[0_0_15px_rgba(11,228,236,0.3)] transition-all"
                                         placeholder="e.g. Artificial Intelligence"
                                     />
                                 </div>
                                 <div className="space-y-2">
-                                    <label className="flex items-center gap-2 text-zinc-400 text-sm font-bold uppercase"><Target size={16} /> Mission Description</label>
+                                    <label className="flex items-center gap-2 text-gray-400 text-sm font-mono font-bold uppercase"><Target size={16} /> Mission Description</label>
                                     <textarea
                                         value={formData.description}
                                         onChange={(e) => setFormData({ ...formData, description: e.target.value })}
                                         rows={3}
-                                        className="w-full bg-zinc-900/50 border border-zinc-800 rounded-lg p-4 text-xl text-white focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 transition-all resize-none"
+                                        className="w-full bg-dark-card border-2 border-gray-700 rounded-sm p-4 text-xl text-white font-mono focus:border-neon-cyan focus:shadow-[0_0_15px_rgba(11,228,236,0.3)] transition-all resize-none"
                                         placeholder="What is your primary objective?"
                                     />
                                 </div>
@@ -266,20 +267,20 @@ export const SystemBoot: React.FC<SystemBootProps> = ({ onComplete }) => {
                     {step === 3 && (
                         <div className="space-y-8 animate-in slide-in-from-right duration-500">
                             <div className="space-y-2">
-                                <p className="text-emerald-500 font-mono text-sm uppercase tracking-widest">Step 3: Tactical Objectives</p>
-                                <h1 className="text-4xl font-black text-white">Set your first 3 targets.</h1>
-                                <p className="text-zinc-400">These will be converted into your initial Task List.</p>
+                                <p className="text-neon-cyan font-mono text-sm uppercase tracking-widest">Step 3: Tactical Objectives</p>
+                                <h1 className="font-orbitron text-4xl font-bold uppercase tracking-wider text-white">Set your first 3 targets.</h1>
+                                <p className="text-gray-400 font-mono">These will be converted into your initial Task List.</p>
                             </div>
                             <div className="space-y-4">
                                 {formData.goals.map((goal, i) => (
                                     <div key={i} className="flex items-center gap-4">
-                                        <div className="w-8 h-8 rounded-full bg-zinc-800 flex items-center justify-center text-zinc-500 font-bold">{i + 1}</div>
+                                        <div className="w-8 h-8 rounded-sm bg-neon-cyan/20 flex items-center justify-center text-neon-cyan font-mono font-bold">{i + 1}</div>
                                         <input
                                             autoFocus={i === 0}
                                             type="text"
                                             value={goal}
                                             onChange={(e) => updateGoal(i, e.target.value)}
-                                            className="flex-1 bg-zinc-900/50 border border-zinc-800 rounded-lg p-4 text-lg text-white focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 transition-all"
+                                            className="flex-1 bg-dark-card border-2 border-gray-700 rounded-sm p-4 text-lg text-white font-mono focus:border-neon-cyan focus:shadow-[0_0_15px_rgba(11,228,236,0.3)] transition-all"
                                             placeholder={`Objective #${i + 1}`}
                                         />
                                     </div>
@@ -291,34 +292,34 @@ export const SystemBoot: React.FC<SystemBootProps> = ({ onComplete }) => {
                     {step === 4 && (
                         <div className="space-y-8 animate-in slide-in-from-right duration-500">
                             <div className="space-y-2">
-                                <p className="text-emerald-500 font-mono text-sm uppercase tracking-widest">Step 4: System Preview</p>
-                                <h1 className="text-4xl font-black text-white">Your arsenal is ready.</h1>
+                                <p className="text-neon-cyan font-mono text-sm uppercase tracking-widest">Step 4: System Preview</p>
+                                <h1 className="font-orbitron text-4xl font-bold uppercase tracking-wider text-white">Your arsenal is ready.</h1>
                             </div>
 
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                <div className="p-4 bg-zinc-900/50 border border-zinc-800 rounded-xl">
-                                    <div className="flex items-center gap-2 mb-2 text-emerald-400 font-bold uppercase text-xs tracking-wider">
+                                <div className="p-4 bg-dark-card border-2 border-gray-700 rounded-sm hover:border-neon-lime/50 transition-colors">
+                                    <div className="flex items-center gap-2 mb-2 text-neon-lime font-mono font-bold uppercase text-xs tracking-wider">
                                         <Zap size={14} /> The War Room
                                     </div>
-                                    <p className="text-sm text-zinc-400">AI-powered strategy sessions to break down your goals into actionable plans.</p>
+                                    <p className="text-sm text-gray-400 font-mono">AI-powered strategy sessions to break down your goals into actionable plans.</p>
                                 </div>
-                                <div className="p-4 bg-zinc-900/50 border border-zinc-800 rounded-xl">
-                                    <div className="flex items-center gap-2 mb-2 text-blue-400 font-bold uppercase text-xs tracking-wider">
+                                <div className="p-4 bg-dark-card border-2 border-gray-700 rounded-sm hover:border-neon-cyan/50 transition-colors">
+                                    <div className="flex items-center gap-2 mb-2 text-neon-cyan font-mono font-bold uppercase text-xs tracking-wider">
                                         <Target size={14} /> Competitor Stalker
                                     </div>
-                                    <p className="text-sm text-zinc-400">Deep-dive analysis of your competition to find gaps and opportunities.</p>
+                                    <p className="text-sm text-gray-400 font-mono">Deep-dive analysis of your competition to find gaps and opportunities.</p>
                                 </div>
-                                <div className="p-4 bg-zinc-900/50 border border-zinc-800 rounded-xl">
-                                    <div className="flex items-center gap-2 mb-2 text-purple-400 font-bold uppercase text-xs tracking-wider">
+                                <div className="p-4 bg-dark-card border-2 border-gray-700 rounded-sm hover:border-neon-purple/50 transition-colors">
+                                    <div className="flex items-center gap-2 mb-2 text-neon-purple font-mono font-bold uppercase text-xs tracking-wider">
                                         <Briefcase size={14} /> The Boardroom
                                     </div>
-                                    <p className="text-sm text-zinc-400">Simulated advisory board of AI experts (CEO, CFO, CMO, CTO) for holistic advice.</p>
+                                    <p className="text-sm text-gray-400 font-mono">Simulated advisory board of AI experts (CEO, CFO, CMO, CTO) for holistic advice.</p>
                                 </div>
-                                <div className="p-4 bg-zinc-900/50 border border-zinc-800 rounded-xl">
-                                    <div className="flex items-center gap-2 mb-2 text-amber-400 font-bold uppercase text-xs tracking-wider">
+                                <div className="p-4 bg-dark-card border-2 border-gray-700 rounded-sm hover:border-neon-orange/50 transition-colors">
+                                    <div className="flex items-center gap-2 mb-2 text-neon-orange font-mono font-bold uppercase text-xs tracking-wider">
                                         <Terminal size={14} /> Universal Search
                                     </div>
-                                    <p className="text-sm text-zinc-400">Instant access to all your tasks, contacts, reports, and system knowledge.</p>
+                                    <p className="text-sm text-gray-400 font-mono">Instant access to all your tasks, contacts, reports, and system knowledge.</p>
                                 </div>
                             </div>
                         </div>
@@ -326,17 +327,17 @@ export const SystemBoot: React.FC<SystemBootProps> = ({ onComplete }) => {
                 </div>
 
                 {/* Navigation */}
-                <div className="flex justify-between items-center mt-12 pt-8 border-t border-zinc-800">
+                <div className="flex justify-between items-center mt-12 pt-8 border-t-2 border-gray-700">
                     <button
                         onClick={handleBack}
                         disabled={step === 1}
-                        className={`text-zinc-400 hover:text-white font-bold uppercase tracking-wider transition-colors ${step === 1 ? 'opacity-0 pointer-events-none' : 'opacity-100'}`}
+                        className={`text-gray-400 hover:text-neon-cyan font-mono font-bold uppercase tracking-wider transition-colors ${step === 1 ? 'opacity-0 pointer-events-none' : 'opacity-100'}`}
                     >
                         Back
                     </button>
                     <button
                         onClick={handleNext}
-                        className="flex items-center gap-2 bg-white text-black px-8 py-4 rounded-lg font-bold hover:bg-emerald-400 transition-colors shadow-lg hover:shadow-emerald-500/20"
+                        className="flex items-center gap-2 border-2 border-neon-cyan bg-neon-cyan/10 text-neon-cyan px-8 py-4 rounded-sm font-mono font-bold uppercase tracking-wider hover:bg-neon-cyan/20 hover:shadow-[0_0_30px_rgba(11,228,236,0.4)] transition-all"
                     >
                         {step === 4 ? 'INITIALIZE SYSTEM' : 'NEXT'} <ArrowRight size={18} />
                     </button>

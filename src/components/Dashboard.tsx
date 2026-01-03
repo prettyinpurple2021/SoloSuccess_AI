@@ -1,11 +1,12 @@
 
 import React, { useState, useEffect } from 'react';
 import { ResponsiveContainer, AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip } from 'recharts';
-import { TrendingUp, Users, ShieldAlert, Activity, ArrowUpRight, Zap, Eye, CheckCircle2, CalendarClock, ArrowRight, FileText, X, Quote, Sparkles, AlertTriangle } from 'lucide-react';
+import { TrendingUp, ShieldAlert, Activity, Zap, Eye, CheckCircle2, FileText, X, Quote, Sparkles, AlertTriangle } from 'lucide-react';
 import { AGENTS } from '../constants';
-import { AgentId, DailyBriefing, Task } from '../types';
+import { AgentId, Task } from '../types';
 import { geminiService } from '../services/geminiService';
 import { storageService } from '../services/storageService';
+import { logError } from '../lib/logger';
 
 interface StatCardProps {
     label: string;
@@ -16,20 +17,20 @@ interface StatCardProps {
 }
 
 const StatCard: React.FC<StatCardProps> = ({ label, value, subValue, icon, color }) => (
-    <div className="glass-card p-4 md:p-6 rounded-xl hover:border-emerald-500/30 transition-all group relative overflow-hidden touch-none">
+    <div className="bg-dark-card border-2 border-gray-700 p-4 md:p-6 rounded-sm hover:border-neon-cyan/50 transition-all group relative overflow-hidden touch-none">
         <div className={`absolute top-0 right-0 p-2 opacity-10 group-hover:opacity-20 transition-opacity ${color} blur-xl`}>
             {icon}
         </div>
         <div className="flex justify-between items-start mb-3 md:mb-4 relative z-10">
-            <div className={`p-1.5 md:p-2 bg-white/5 rounded-lg border border-white/10 ${color} shadow-[0_0_15px_rgba(0,0,0,0.5)]`}>
+            <div className={`p-1.5 md:p-2 bg-dark-bg rounded-sm border-2 border-gray-700 ${color} shadow-[0_0_15px_rgba(0,0,0,0.5)]`}>
                 {icon}
             </div>
         </div>
         <div className="relative z-10">
-            <div className="text-2xl md:text-3xl font-black text-white tracking-tighter mb-1 drop-shadow-md">{value}</div>
+            <div className="font-orbitron text-2xl md:text-3xl font-bold text-white tracking-tighter mb-1 drop-shadow-md">{value}</div>
             <div className="flex items-center justify-between gap-2 flex-wrap">
-                <div className="text-xs text-zinc-400 font-mono uppercase tracking-wide font-bold">{label}</div>
-                {subValue && <div className={`text-[10px] px-2 py-0.5 rounded bg-white/5 border border-white/10 ${color}`}>{subValue}</div>}
+                <div className="text-xs text-gray-400 font-mono uppercase tracking-wide font-bold">{label}</div>
+                {subValue && <div className={`text-[10px] px-2 py-0.5 rounded-sm bg-dark-bg border-2 border-gray-700 font-mono ${color}`}>{subValue}</div>}
             </div>
         </div>
     </div>
@@ -61,19 +62,19 @@ export const Dashboard: React.FC = () => {
                 if (ctx) {
                     setFounderName(ctx.founderName.toUpperCase());
                 }
-            } catch (e) { console.error(e); }
+            } catch (e) { logError("Failed to load context", e); }
 
             // Load Reports
             let reports: any[] = [];
             try {
                 reports = await storageService.getCompetitorReports();
-            } catch (e) { console.error(e); }
+            } catch (e) { logError("Failed to load reports", e); }
 
             // Load Tasks
             let tasks: Task[] = [];
             try {
                 tasks = await storageService.getTasks();
-            } catch (e) { console.error(e); }
+            } catch (e) { logError("Failed to load tasks", e); }
 
             // Calc Stats
             const active = tasks.filter((t) => t.status === 'in-progress').length;
@@ -165,7 +166,7 @@ export const Dashboard: React.FC = () => {
                 if (data) setBriefing(data);
                 setLoadingBriefing(false);
             } catch (e) {
-                console.error(e);
+                logError("Failed to generate briefing", e);
                 setLoadingBriefing(false);
             }
         };
@@ -188,28 +189,28 @@ export const Dashboard: React.FC = () => {
         <div className="space-y-6 md:space-y-8 animate-in fade-in duration-700 relative">
 
             {/* Header */}
-            <div className="flex flex-col md:flex-row justify-between items-start md:items-end border-b border-white/5 pb-4 md:pb-6 gap-3 md:gap-4">
+            <div className="flex flex-col md:flex-row justify-between items-start md:items-end border-b-2 border-gray-700 pb-4 md:pb-6 gap-3 md:gap-4">
                 <div className="w-full md:w-auto">
-                    <div className="flex items-center gap-2 text-emerald-500 font-mono text-xs font-bold uppercase tracking-widest mb-2">
-                        <span className="w-2 h-2 bg-emerald-500 rounded-full animate-pulse shadow-[0_0_10px_#10b981]" />
+                    <div className="flex items-center gap-2 text-neon-lime font-mono text-xs font-bold uppercase tracking-widest mb-2">
+                        <span className="w-2 h-2 bg-neon-lime rounded-full animate-pulse shadow-[0_0_10px_#39ff14]" />
                         <span className="text-[10px] md:text-xs">Live Feed // Connection Established</span>
                     </div>
-                    <h2 className="text-2xl md:text-4xl font-black text-white tracking-tighter drop-shadow-glow">MISSION CONTROL</h2>
-                    <p className="text-sm md:text-base text-zinc-400 mt-1">Welcome back, {founderName}. Systems operational.</p>
+                    <h2 className="font-orbitron text-2xl md:text-4xl font-bold uppercase tracking-wider text-white drop-shadow-glow">MISSION CONTROL</h2>
+                    <p className="text-sm md:text-base text-gray-400 font-mono mt-1">Welcome back, {founderName}. Systems operational.</p>
                 </div>
                 <div className="flex gap-2 w-full md:w-auto">
                     <button
                         onClick={handleGenerateBriefing}
                         disabled={loadingBriefing}
-                        className="flex-1 md:flex-initial px-3 md:px-4 py-2 bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-400 hover:text-emerald-300 rounded border border-emerald-500/20 hover:border-emerald-500/50 flex items-center justify-center gap-2 transition-all disabled:opacity-50 shadow-[0_0_15px_rgba(16,185,129,0.1)] touch-target"
+                        className="flex-1 md:flex-initial px-3 md:px-4 py-2 border-2 border-neon-lime/50 bg-neon-lime/10 hover:bg-neon-lime/20 text-neon-lime rounded-sm flex items-center justify-center gap-2 transition-all disabled:opacity-50 shadow-[0_0_15px_rgba(57,255,20,0.1)] touch-target"
                     >
                         {loadingBriefing ? <Activity className="animate-spin" size={16} /> : <FileText size={16} />}
-                        <span className="text-xs font-bold uppercase tracking-wider">
+                        <span className="text-xs font-mono font-bold uppercase tracking-wider">
                             {loadingBriefing ? 'Compiling...' : 'Morning Brief'}
                         </span>
                     </button>
-                    <div className="hidden md:flex px-4 py-2 bg-white/5 rounded border border-white/10 flex-col items-end">
-                        <span className="text-[10px] text-zinc-500 font-bold uppercase">Current Date</span>
+                    <div className="hidden md:flex px-4 py-2 bg-dark-card rounded-sm border-2 border-gray-700 flex-col items-end">
+                        <span className="text-[10px] text-gray-500 font-mono font-bold uppercase">Current Date</span>
                         <span className="text-xs font-mono text-white">{new Date().toLocaleDateString()}</span>
                     </div>
                 </div>
@@ -217,18 +218,18 @@ export const Dashboard: React.FC = () => {
 
             {/* Daily Intelligence Card */}
             {briefing && (
-                <div className="mb-8 bg-gradient-to-r from-indigo-900/40 to-purple-900/40 border border-indigo-500/30 rounded-xl p-6 backdrop-blur-sm">
+                <div className="mb-8 bg-gradient-to-r from-neon-purple/10 to-neon-cyan/10 border-2 border-neon-purple/30 rounded-sm p-6 backdrop-blur-sm shadow-[0_0_30px_rgba(179,0,255,0.1)]">
                     <div className="flex items-start justify-between">
                         <div>
-                            <h2 className="text-xl font-bold text-white mb-2 flex items-center gap-2">
-                                <Sparkles className="w-5 h-5 text-yellow-400" />
-                                Today's Focus
+                            <h2 className="font-orbitron text-xl font-bold uppercase tracking-wider text-white mb-2 flex items-center gap-2">
+                                <Sparkles className="w-5 h-5 text-neon-orange" />
+                                Today&apos;s Focus
                             </h2>
-                            <p className="text-indigo-200 italic mb-4">"{briefing.motivationalQuote}"</p>
+                            <p className="text-neon-purple/80 italic font-mono mb-4">&quot;{briefing.motivationalQuote}&quot;</p>
                         </div>
                         <button
                             onClick={() => setShowBriefingModal(true)}
-                            className="text-sm text-indigo-300 hover:text-white underline"
+                            className="text-sm font-mono text-neon-cyan hover:text-white underline"
                         >
                             View Full Briefing
                         </button>
@@ -236,11 +237,11 @@ export const Dashboard: React.FC = () => {
 
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div className="space-y-3">
-                            <h3 className="text-sm font-semibold text-indigo-300 uppercase tracking-wider">Priority Actions</h3>
+                            <h3 className="text-sm font-mono font-bold text-neon-cyan uppercase tracking-wider">Priority Actions</h3>
                             <ul className="space-y-2">
                                 {briefing.focusPoints?.slice(0, 3).map((point: string, i: number) => (
-                                    <li key={i} className="flex items-start gap-2 text-gray-300 text-sm">
-                                        <span className="mt-1 w-1.5 h-1.5 rounded-full bg-indigo-500 flex-shrink-0" />
+                                    <li key={i} className="flex items-start gap-2 text-gray-300 text-sm font-mono">
+                                        <span className="mt-1 w-1.5 h-1.5 rounded-full bg-neon-cyan flex-shrink-0" />
                                         {point}
                                     </li>
                                 ))}
@@ -249,10 +250,10 @@ export const Dashboard: React.FC = () => {
 
                         {briefing.threatAlerts?.length > 0 && (
                             <div className="space-y-3">
-                                <h3 className="text-sm font-semibold text-red-400 uppercase tracking-wider">Threat Alerts</h3>
+                                <h3 className="text-sm font-mono font-bold text-neon-magenta uppercase tracking-wider">Threat Alerts</h3>
                                 <ul className="space-y-2">
                                     {briefing.threatAlerts?.slice(0, 2).map((alert: string, i: number) => (
-                                        <li key={i} className="flex items-start gap-2 text-red-200 text-sm bg-red-900/20 p-2 rounded">
+                                        <li key={i} className="flex items-start gap-2 text-neon-magenta/80 text-sm font-mono bg-neon-magenta/10 p-2 rounded-sm border-2 border-neon-magenta/30">
                                             <AlertTriangle className="w-4 h-4 flex-shrink-0 mt-0.5" />
                                             {alert}
                                         </li>
@@ -267,18 +268,18 @@ export const Dashboard: React.FC = () => {
             {/* Briefing Modal Overlay */}
             {showBriefingModal && briefing && (
                 <div className="fixed inset-0 z-50 flex items-center justify-center p-0 md:p-4 bg-black/80 backdrop-blur-sm animate-in fade-in duration-300 safe-top safe-bottom">
-                    <div className="mobile-fullscreen bg-zinc-950 border-0 md:border md:border-zinc-700 w-full rounded-none md:rounded-xl shadow-2xl overflow-hidden flex flex-col">
+                    <div className="mobile-fullscreen bg-dark-bg border-0 md:border-2 md:border-neon-cyan w-full rounded-none md:rounded-sm shadow-[0_0_30px_rgba(11,228,236,0.3)] overflow-hidden flex flex-col">
                         {/* Modal Header */}
-                        <div className="p-4 md:p-6 border-b border-zinc-800 flex justify-between items-center bg-zinc-900 shrink-0">
+                        <div className="p-4 md:p-6 border-b-2 border-gray-700 flex justify-between items-center bg-dark-card shrink-0">
                             <div className="flex-1 min-w-0">
-                                <div className="flex items-center gap-2 text-emerald-500 font-mono text-xs font-bold uppercase tracking-widest mb-1">
+                                <div className="flex items-center gap-2 text-neon-lime font-mono text-xs font-bold uppercase tracking-widest mb-1">
                                     <Zap size={12} fill="currentColor" /> <span className="truncate">Executive Summary</span>
                                 </div>
-                                <h3 className="text-lg md:text-xl font-black text-white truncate">DAILY BRIEFING // {briefing.date}</h3>
+                                <h3 className="font-orbitron text-lg md:text-xl font-bold uppercase tracking-wider text-white truncate">DAILY BRIEFING // {briefing.date}</h3>
                             </div>
                             <button
                                 onClick={() => setShowBriefingModal(false)}
-                                className="ml-4 p-2 text-zinc-500 hover:text-white hover:bg-white/5 rounded-lg transition-all touch-target shrink-0"
+                                className="ml-4 p-2 text-gray-500 hover:text-neon-magenta hover:bg-neon-magenta/10 rounded-sm transition-all touch-target shrink-0"
                                 aria-label="Close briefing"
                             >
                                 <X size={24} />
@@ -290,26 +291,26 @@ export const Dashboard: React.FC = () => {
 
                             {/* Quote */}
                             <div className="flex gap-4 items-start">
-                                <Quote className="text-zinc-600 shrink-0 rotate-180" size={24} />
-                                <p className="text-lg italic text-zinc-300 font-serif leading-relaxed">"{briefing.motivationalQuote}"</p>
+                                <Quote className="text-neon-purple/50 shrink-0 rotate-180" size={24} />
+                                <p className="text-lg italic text-gray-300 font-mono leading-relaxed">&quot;{briefing.motivationalQuote}&quot;</p>
                             </div>
 
                             {/* Summary */}
-                            <div className="bg-zinc-900/50 p-4 rounded border border-zinc-800">
-                                <h4 className="text-xs font-bold text-zinc-500 uppercase tracking-widest mb-2">Situation Report</h4>
-                                <p className="text-zinc-200 leading-relaxed">{briefing.summary}</p>
+                            <div className="bg-dark-card p-4 rounded-sm border-2 border-gray-700">
+                                <h4 className="text-xs font-mono font-bold text-gray-500 uppercase tracking-widest mb-2">Situation Report</h4>
+                                <p className="text-gray-200 font-mono leading-relaxed">{briefing.summary}</p>
                             </div>
 
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                                 {/* Focus Points */}
                                 <div>
-                                    <h4 className="text-xs font-bold text-emerald-500 uppercase tracking-widest mb-3 flex items-center gap-2">
+                                    <h4 className="text-xs font-mono font-bold text-neon-lime uppercase tracking-widest mb-3 flex items-center gap-2">
                                         <CheckCircle2 size={14} /> Primary Objectives
                                     </h4>
                                     <ul className="space-y-3">
                                         {briefing.focusPoints.map((pt: string, i: number) => (
-                                            <li key={i} className="flex items-start gap-2 text-sm text-zinc-300">
-                                                <span className="text-emerald-500/50 mt-1">›</span> {pt}
+                                            <li key={i} className="flex items-start gap-2 text-sm text-gray-300 font-mono">
+                                                <span className="text-neon-lime/50 mt-1">›</span> {pt}
                                             </li>
                                         ))}
                                     </ul>
@@ -317,26 +318,26 @@ export const Dashboard: React.FC = () => {
 
                                 {/* Threats */}
                                 <div>
-                                    <h4 className="text-xs font-bold text-red-500 uppercase tracking-widest mb-3 flex items-center gap-2">
+                                    <h4 className="text-xs font-mono font-bold text-neon-magenta uppercase tracking-widest mb-3 flex items-center gap-2">
                                         <ShieldAlert size={14} /> Threat Matrix
                                     </h4>
                                     {briefing.threatAlerts.length > 0 ? (
                                         <ul className="space-y-3">
                                             {briefing.threatAlerts.map((pt: string, i: number) => (
-                                                <li key={i} className="flex items-start gap-2 text-sm text-zinc-300">
-                                                    <span className="text-red-500/50 mt-1">›</span> {pt}
+                                                <li key={i} className="flex items-start gap-2 text-sm text-gray-300 font-mono">
+                                                    <span className="text-neon-magenta/50 mt-1">›</span> {pt}
                                                 </li>
                                             ))}
                                         </ul>
                                     ) : (
-                                        <p className="text-sm text-zinc-500 italic">No immediate threats detected.</p>
+                                        <p className="text-sm text-gray-500 font-mono italic">No immediate threats detected.</p>
                                     )}
                                 </div>
                             </div>
                         </div>
 
-                        <div className="p-4 border-t border-zinc-800 bg-zinc-900/50 text-center">
-                            <button onClick={() => setShowBriefingModal(false)} className="text-xs font-bold uppercase tracking-widest text-zinc-500 hover:text-white">
+                        <div className="p-4 border-t-2 border-gray-700 bg-dark-card text-center">
+                            <button onClick={() => setShowBriefingModal(false)} className="text-xs font-mono font-bold uppercase tracking-widest text-gray-500 hover:text-neon-cyan transition-colors">
                                 Dismiss Briefing
                             </button>
                         </div>
@@ -350,27 +351,27 @@ export const Dashboard: React.FC = () => {
                     label="Intel Gathered"
                     value={stats.intelCount}
                     subValue="Dossiers"
-                    color="text-blue-400"
+                    color="text-neon-cyan"
                     icon={<Eye size={20} />}
                 />
                 <StatCard
                     label="Active Ops"
                     value={stats.activeTasks}
                     subValue="In Progress"
-                    color="text-amber-400"
+                    color="text-neon-orange"
                     icon={<Activity size={20} />}
                 />
                 <StatCard
                     label="Ops Velocity"
                     value={`${stats.completionRate}%`}
                     subValue="Completion Rate"
-                    color="text-emerald-400"
+                    color="text-neon-lime"
                     icon={<Zap size={20} />}
                 />
                 <StatCard
                     label="System Health"
                     value={`${stats.systemHealth}%`}
-                    color="text-zinc-400"
+                    color="text-neon-purple"
                     icon={<ShieldAlert size={20} />}
                 />
             </div>

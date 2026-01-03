@@ -7,6 +7,7 @@ import { geminiService } from '../services/geminiService';
 import { soundService } from '../services/soundService';
 import { storageService } from '../services/storageService';
 import { addXP, showToast } from '../services/gameService';
+import { logError } from '../lib/logger';
 
 interface AgentChatProps {
     agentId: AgentId;
@@ -47,7 +48,7 @@ export const AgentChat: React.FC<AgentChatProps> = ({ agentId, initialMessage, o
                     resetChat();
                 }
             } catch (e) {
-                console.error("Failed to load chat history", e);
+                logError("Failed to load chat history", e);
                 resetChat();
             }
 

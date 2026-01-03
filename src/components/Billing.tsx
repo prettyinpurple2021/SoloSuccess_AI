@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useUser } from '@stackframe/stack';
 import { CreditCard, TrendingUp, Check, Zap, Crown, Rocket, ExternalLink, AlertCircle } from 'lucide-react';
 import { apiService } from '../services/apiService';
+import { logError } from '../lib/logger';
 
 interface Subscription {
     tier: string;
@@ -78,7 +79,7 @@ export function Billing() {
             setSubscription(subData);
             setUsage(usageData || { aiGenerations: 0, competitorsTracked: 0, businessProfiles: 1 });
         } catch (error) {
-            console.error('Failed to load subscription data:', error);
+            logError('Failed to load subscription data:', error);
         } finally {
             setLoading(false);
         }
@@ -96,7 +97,7 @@ export function Billing() {
                 window.location.href = response.url;
             }
         } catch (error) {
-            console.error('Failed to open billing portal:', error);
+            logError('Failed to open billing portal:', error);
             alert('Failed to open billing management. Please try again.');
         } finally {
             setManagingBilling(false);
@@ -114,7 +115,7 @@ export function Billing() {
                 window.location.href = response.url;
             }
         } catch (error) {
-            console.error('Upgrade failed:', error);
+            logError('Upgrade failed:', error);
             alert('Failed to start upgrade process. Please try again.');
         }
     };

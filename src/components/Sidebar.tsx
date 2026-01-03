@@ -8,6 +8,7 @@ import { AGENTS } from '../constants';
 import { AgentId, BusinessContext } from '../types';
 import { getUserProgress, subscribeToToasts, getXPForLevel } from '../services/gameService';
 import { soundService } from '../services/soundService';
+import { logError } from '../lib/logger';
 
 interface SidebarProps {
     currentView: string;
@@ -83,7 +84,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
                     setIsAdmin(true);
                 }
             } catch (e) {
-                console.error('Failed to check admin status', e);
+                logError('Failed to check admin status', e);
             }
         };
         checkAdmin();
@@ -96,7 +97,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
                     setCompanyName(ctx.companyName.toUpperCase().replace(/\s/g, '_'));
                 }
             } catch (e) {
-                console.error('Failed to parse business context', e);
+                logError('Failed to parse business context', e);
             }
         }
 

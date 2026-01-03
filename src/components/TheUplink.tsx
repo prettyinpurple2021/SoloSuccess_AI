@@ -6,6 +6,7 @@ import { AGENTS, SYSTEM_INSTRUCTIONS } from '../constants';
 import { AgentId } from '../types';
 import { pcmToBase64, base64ToUint8Array, decodeAudioData } from '../utils/audioUtils';
 import { soundService } from '../services/soundService';
+import { logError, logDebug } from '../lib/logger';
 
 const apiKey = process.env.API_KEY || '';
 
@@ -194,7 +195,7 @@ export const TheUplink: React.FC = () => {
                         disconnect();
                     },
                     onerror: (err) => {
-                        console.error("Live API Error", err);
+                        logError("Live API Error", err);
                         disconnect();
                     }
                 }
@@ -204,7 +205,7 @@ export const TheUplink: React.FC = () => {
             setActive(true);
 
         } catch (e) {
-            console.error("Connection failed", e);
+            logError("Connection failed", e);
             disconnect();
             soundService.playError();
         }
@@ -229,7 +230,7 @@ export const TheUplink: React.FC = () => {
         // Close Session
         if (sessionRef.current) {
             sessionRef.current.then((session: any) => {
-                try { session.close(); } catch (e) { console.log("Session already closed"); }
+                try { session.close(); } catch (e) { logDebug("Session already closed"); }
             });
         }
 
@@ -239,22 +240,22 @@ export const TheUplink: React.FC = () => {
     return (
         <div className="min-h-[85vh] flex flex-col animate-in fade-in duration-500 relative overflow-hidden">
             {/* Ambient Background */}
-            <div className={`absolute inset-0 transition-colors duration-1000 ${active ? 'bg-emerald-950/20' : 'bg-transparent'}`}></div>
+            <div className={`absolute inset-0 transition-colors duration-1000 ${active ? 'bg-neon-lime/10' : 'bg-transparent'}`}></div>
             <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20 pointer-events-none"></div>
             {/* Header */}
-            <div className="relative z-10 mb-6 flex flex-col md:flex-row md:items-end justify-between border-b border-zinc-800 pb-6 gap-4 md:gap-0">
+            <div className="relative z-10 mb-6 flex flex-col md:flex-row md:items-end justify-between border-b-2 border-gray-700 pb-6 gap-4 md:gap-0">
                 <div>
-                    <div className="flex items-center gap-2 text-red-500 font-mono text-xs font-bold uppercase tracking-widest mb-2">
+                    <div className="flex items-center gap-2 text-neon-magenta font-mono text-xs font-bold uppercase tracking-widest mb-2">
                         <Activity size={14} className={active ? 'animate-pulse' : ''} /> Secure Voice Line
                     </div>
-                    <h2 className="text-3xl md:text-4xl font-black text-white tracking-tighter">THE UPLINK</h2>
-                    <p className="text-zinc-400 mt-2">Real-time, low-latency audio interface.</p>
+                    <h2 className="font-orbitron text-3xl md:text-4xl font-bold uppercase tracking-wider text-white">THE UPLINK</h2>
+                    <p className="text-gray-400 font-mono mt-2">Real-time, low-latency audio interface.</p>
                 </div>
                 <div className="flex items-center gap-2 w-full md:w-auto">
                     {active ? (
                         <button
                             onClick={disconnect}
-                            className="flex items-center justify-center w-full md:w-auto gap-2 px-6 py-3 bg-red-600 hover:bg-red-500 text-white rounded font-bold text-xs uppercase tracking-widest transition-all shadow-lg shadow-red-900/50 animate-pulse"
+                            className="flex items-center justify-center w-full md:w-auto gap-2 px-6 py-3 bg-neon-magenta hover:bg-neon-magenta/80 text-white rounded-sm font-mono font-bold text-xs uppercase tracking-widest transition-all shadow-[0_0_20px_rgba(255,0,110,0.4)] animate-pulse"
                         >
                             <Power size={16} /> Terminate Link
                         </button>
@@ -263,7 +264,7 @@ export const TheUplink: React.FC = () => {
                             <select
                                 value={selectedAgent}
                                 onChange={(e) => setSelectedAgent(e.target.value as AgentId)}
-                                className="bg-zinc-900 border border-zinc-800 text-white rounded px-4 py-2 text-xs font-bold uppercase tracking-wider focus:border-emerald-500 outline-none w-full md:w-auto"
+                                className="bg-dark-card border-2 border-gray-700 text-white rounded-sm px-4 py-2 text-xs font-mono font-bold uppercase tracking-wider focus:border-neon-lime outline-none w-full md:w-auto"
                             >
                                 {Object.values(AGENTS).map(a => (
                                     <option key={a.id} value={a.id}>{a.name} ({a.title})</option>
@@ -271,7 +272,7 @@ export const TheUplink: React.FC = () => {
                             </select>
                             <button
                                 onClick={connect}
-                                className="flex items-center justify-center w-full md:w-auto gap-2 px-6 py-3 bg-emerald-600 hover:bg-emerald-500 text-white rounded font-bold text-xs uppercase tracking-widest transition-all shadow-lg shadow-emerald-900/20"
+                                className="flex items-center justify-center w-full md:w-auto gap-2 px-6 py-3 bg-neon-lime hover:bg-neon-lime/80 text-dark-bg rounded-sm font-mono font-bold text-xs uppercase tracking-widest transition-all shadow-[0_0_20px_rgba(57,255,20,0.3)]"
                             >
                                 <Radio size={16} /> Initialize Uplink
                             </button>
@@ -286,13 +287,13 @@ export const TheUplink: React.FC = () => {
                 {/* The Orb */}
                 <div className="relative flex items-center justify-center mb-12">
                     {/* Outer Rings */}
-                    <div className={`absolute border border-zinc-800 rounded-full transition-all duration-300 ${active ? 'w-96 h-96 opacity-50' : 'w-64 h-64 opacity-20'}`}></div>
-                    <div className={`absolute border border-zinc-800 rounded-full transition-all duration-500 ${active ? 'w-[500px] h-[500px] opacity-30' : 'w-64 h-64 opacity-10'}`}></div>
+                    <div className={`absolute border-2 border-gray-700 rounded-full transition-all duration-300 ${active ? 'w-96 h-96 opacity-50' : 'w-64 h-64 opacity-20'}`}></div>
+                    <div className={`absolute border-2 border-gray-700 rounded-full transition-all duration-500 ${active ? 'w-[500px] h-[500px] opacity-30' : 'w-64 h-64 opacity-10'}`}></div>
 
                     {/* Core Pulse */}
                     <div
                         className={`relative rounded-full flex items-center justify-center transition-all duration-100 ease-out
-                            ${status === 'speaking' ? 'bg-emerald-500 blur-2xl' : active ? 'bg-emerald-900/50 blur-xl' : 'bg-zinc-800 blur-md'}
+                            ${status === 'speaking' ? 'bg-neon-lime blur-2xl' : active ? 'bg-neon-lime/30 blur-xl' : 'bg-gray-700 blur-md'}
                         `}
                         style={{
                             width: active ? `${150 + volume}px` : '100px',
@@ -304,15 +305,15 @@ export const TheUplink: React.FC = () => {
 
                     {/* Sharp Center */}
                     <div className={`absolute w-32 h-32 rounded-full border-2 flex items-center justify-center transition-all
-                        ${active ? 'border-emerald-500 bg-black' : 'border-zinc-700 bg-zinc-900'}
+                        ${active ? 'border-neon-lime bg-dark-bg shadow-[0_0_30px_rgba(57,255,20,0.3)]' : 'border-gray-700 bg-dark-card'}
                     `}>
-                        {active ? <Volume2 size={48} className="text-emerald-500" /> : <MicOff size={48} className="text-zinc-600" />}
+                        {active ? <Volume2 size={48} className="text-neon-lime" /> : <MicOff size={48} className="text-gray-600" />}
                     </div>
                 </div>
 
                 {/* Status Text */}
                 <div className="text-center space-y-2">
-                    <h3 className={`text-2xl font-black uppercase tracking-tight ${active ? 'text-white' : 'text-zinc-600'}`}>
+                    <h3 className={`font-orbitron text-2xl font-bold uppercase tracking-wider ${active ? 'text-white' : 'text-gray-600'}`}>
                         {status === 'disconnected' && "CHANNEL CLOSED"}
                         {status === 'connecting' && "ESTABLISHING HANDSHAKE..."}
                         {status === 'connected' && "LISTENING..."}
@@ -320,7 +321,7 @@ export const TheUplink: React.FC = () => {
                     </h3>
 
                     {active && (
-                        <p className="text-emerald-500 font-mono text-xs uppercase tracking-widest animate-pulse">
+                        <p className="text-neon-lime font-mono text-xs uppercase tracking-widest animate-pulse">
                             Connected to {AGENTS[selectedAgent].name} // 24kHz Secure
                         </p>
                     )}
@@ -329,8 +330,8 @@ export const TheUplink: React.FC = () => {
             </div>
 
             {/* Footer Hints */}
-            <div className="p-4 border-t border-zinc-800/50 text-center">
-                <p className="text-[10px] text-zinc-600 font-mono uppercase">
+            <div className="p-4 border-t-2 border-gray-700 text-center">
+                <p className="text-[10px] text-gray-500 font-mono uppercase">
                     Usage: Speak clearly. The agent can be interrupted at any time.
                 </p>
             </div>
