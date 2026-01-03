@@ -77,21 +77,21 @@ export function ErrorHandler({
 
   const getErrorIcon = (type: string) => {
     switch (type) {
-      case "error": return <AlertTriangle className="h-5 w-5 text-red-500" />
-      case "warning": return <AlertTriangle className="h-5 w-5 text-yellow-500" />
-      case "info": return <Info className="h-5 w-5 text-blue-500" />
-      case "success": return <CheckCircle className="h-5 w-5 text-green-500" />
-      default: return <AlertTriangle className="h-5 w-5 text-red-500" />
+      case "error": return <AlertTriangle className="h-5 w-5 text-neon-magenta" />
+      case "warning": return <AlertTriangle className="h-5 w-5 text-neon-orange" />
+      case "info": return <Info className="h-5 w-5 text-neon-cyan" />
+      case "success": return <CheckCircle className="h-5 w-5 text-neon-lime" />
+      default: return <AlertTriangle className="h-5 w-5 text-neon-magenta" />
     }
   }
 
   const getErrorColor = (type: string) => {
     switch (type) {
-      case "error": return "border-red-200 bg-red-50"
-      case "warning": return "border-yellow-200 bg-yellow-50"
-      case "info": return "border-blue-200 bg-blue-50"
-      case "success": return "border-green-200 bg-green-50"
-      default: return "border-red-200 bg-red-50"
+      case "error": return "border-neon-magenta bg-neon-magenta/10"
+      case "warning": return "border-neon-orange bg-neon-orange/10"
+      case "info": return "border-neon-cyan bg-neon-cyan/10"
+      case "success": return "border-neon-lime bg-neon-lime/10"
+      default: return "border-neon-magenta bg-neon-magenta/10"
     }
   }
 
@@ -130,13 +130,13 @@ export function ErrorHandler({
     <div className={`space-y-3 ${className}`}>
       {/* Offline Indicator */}
       {showOfflineIndicator && !isOnline && (
-        <Alert className="border-yellow-200 bg-yellow-50">
-          <WifiOff className="h-4 w-4 text-yellow-600" />
-          <AlertDescription className="text-yellow-800">
-            You're currently offline. Some features may be limited. 
+        <Alert className="border-neon-orange bg-neon-orange/10">
+          <WifiOff className="h-4 w-4 text-neon-orange" />
+          <AlertDescription className="text-gray-300">
+            You&apos;re currently offline. Some features may be limited. 
             <Button 
-              variant="link" 
-              className="p-0 h-auto text-yellow-800 underline ml-1"
+              variant="ghost" 
+              className="p-0 h-auto text-neon-orange underline ml-1"
               onClick={() => window.location.reload()}
             >
               Refresh when online
@@ -147,20 +147,20 @@ export function ErrorHandler({
 
       {/* Error Display */}
       {error && (
-        <Card className={`border-2 ${getErrorColor(error.type)}`}>
+        <Card className={`border-2 ${getErrorColor(error.type)} bg-dark-card`}>
           <CardHeader className="pb-3">
             <div className="flex items-start justify-between">
               <div className="flex items-start gap-3">
                 {getErrorIcon(error.type)}
                 <div className="flex-1">
-                  <CardTitle className="text-base font-semibold text-gray-900">
+                  <CardTitle className="text-base font-bold text-white">
                     {error.title}
                   </CardTitle>
                   <div className="flex items-center gap-2 mt-1">
                     <Badge variant="outline" className="text-xs">
                       {error.type.toUpperCase()}
                     </Badge>
-                    <span className="text-xs text-muted-foreground">
+                    <span className="text-xs text-gray-500">
                       {error.timestamp.toLocaleTimeString()}
                     </span>
                   </div>
@@ -171,7 +171,7 @@ export function ErrorHandler({
                   variant="ghost"
                   size="sm"
                   onClick={onDismiss}
-                  className="h-6 w-6 p-0 text-gray-400 hover:text-gray-600"
+                  className="h-6 w-6 p-0 text-gray-500 hover:text-white"
                 >
                   <X className="h-4 w-4" />
                 </Button>
@@ -179,16 +179,16 @@ export function ErrorHandler({
             </div>
           </CardHeader>
           <CardContent className="pt-0">
-            <p className="text-sm text-gray-700 mb-4">
+            <p className="text-sm text-gray-300 mb-4 font-mono">
               {getErrorMessage(error)}
             </p>
 
             {error.details && (
               <details className="mb-4">
-                <summary className="text-xs text-muted-foreground cursor-pointer hover:text-gray-600">
+                <summary className="text-xs text-gray-500 cursor-pointer hover:text-neon-cyan font-mono">
                   Technical Details
                 </summary>
-                <pre className="text-xs text-gray-600 mt-2 p-2 bg-gray-100 rounded overflow-x-auto">
+                <pre className="text-xs text-gray-400 mt-2 p-2 bg-dark-bg border border-gray-700 rounded-sm overflow-x-auto font-mono">
                   {error.details}
                 </pre>
               </details>
@@ -200,7 +200,7 @@ export function ErrorHandler({
                   <Button
                     onClick={handleRetry}
                     disabled={isRetrying}
-                    variant="outline"
+                    variant="cyan"
                     size="sm"
                     className="flex items-center gap-2"
                   >
@@ -214,7 +214,7 @@ export function ErrorHandler({
                 )}
 
                 {error.autoRetry && (
-                  <div className="flex items-center gap-2 text-xs text-muted-foreground">
+                  <div className="flex items-center gap-2 text-xs text-gray-500 font-mono">
                     <Clock className="h-3 w-3" />
                     Auto-retrying in 30s...
                   </div>
@@ -324,14 +324,14 @@ export function ErrorBoundary({ children }: { children: React.ReactNode }) {
     const isNavigationError = errorMessage.toLowerCase().includes('navigation') || errorMessage.toLowerCase().includes('route')
     
     return (
-      <div className="min-h-screen flex items-center justify-center p-4 bg-gradient-to-br from-purple-50 via-white to-pink-50">
-        <Card className="w-full max-w-lg border-2 border-red-200 shadow-lg">
+      <div className="min-h-screen flex items-center justify-center p-4 bg-dark-bg">
+        <Card className="w-full max-w-lg border-2 border-neon-magenta shadow-[0_0_30px_rgba(255,0,110,0.3)]">
           <CardHeader>
-            <CardTitle className="flex items-center gap-2 text-red-800">
+            <CardTitle className="flex items-center gap-2 text-neon-magenta">
               <AlertTriangle className="h-5 w-5" />
-              Something went wrong
+              SYSTEM ERROR
             </CardTitle>
-            <CardDescription className="text-red-600">
+            <CardDescription className="text-gray-400 font-mono">
               {isNetworkError 
                 ? 'Network connection issue detected. Please check your internet connection.'
                 : isNavigationError
@@ -340,12 +340,13 @@ export function ErrorBoundary({ children }: { children: React.ReactNode }) {
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
-            <div className="bg-gray-50 p-4 rounded-md border border-gray-200">
-              <p className="text-xs font-mono text-gray-600 mb-2">Error Details:</p>
-              <p className="text-sm text-gray-700 break-words">{errorMessage}</p>
+            <div className="bg-dark-bg p-4 rounded-sm border border-gray-700">
+              <p className="text-xs font-mono text-gray-500 mb-2">Error Details:</p>
+              <p className="text-sm text-gray-300 break-words font-mono">{errorMessage}</p>
             </div>
             <div className="flex flex-col sm:flex-row gap-2">
               <Button
+                variant="cyan"
                 onClick={() => {
                   try {
                     setHasError(false)
@@ -377,7 +378,7 @@ export function ErrorBoundary({ children }: { children: React.ReactNode }) {
                 Go Home
               </Button>
               <Button
-                variant="outline"
+                variant="ghost"
                 onClick={() => {
                   try {
                     window.open('/contact', '_blank')
@@ -414,8 +415,8 @@ export function LoadingWithError({
     return (
       <div className="flex items-center justify-center p-8">
         <div className="text-center space-y-3">
-          <RefreshCw className="h-8 w-8 animate-spin text-purple-600 mx-auto" />
-          <p className="text-sm text-muted-foreground">Loading...</p>
+          <RefreshCw className="h-8 w-8 animate-spin text-neon-cyan mx-auto" />
+          <p className="text-sm text-gray-500 font-mono">Loading...</p>
         </div>
       </div>
     )
@@ -456,10 +457,10 @@ export function OfflineIndicator() {
 
   return (
     <div className="fixed bottom-4 right-4 z-50">
-      <Alert className="border-yellow-200 bg-yellow-50 shadow-lg">
-        <WifiOff className="h-4 w-4 text-yellow-600" />
-        <AlertDescription className="text-yellow-800">
-          You're offline. Some features may be limited.
+      <Alert className="border-neon-orange bg-dark-card shadow-[0_0_20px_rgba(255,102,0,0.3)]">
+        <WifiOff className="h-4 w-4 text-neon-orange" />
+        <AlertDescription className="text-gray-300 font-mono">
+          You&apos;re offline. Some features may be limited.
         </AlertDescription>
       </Alert>
     </div>

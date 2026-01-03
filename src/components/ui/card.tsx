@@ -1,8 +1,11 @@
-// @ts-nocheck
 import * as React from "react"
 
-import { cn} from "@/lib/utils"
+import { cn } from "@/lib/utils"
 
+/**
+ * Card component following Cyberpunk Design System v3
+ * Uses dark backgrounds, neon borders, and glow effects
+ */
 const Card = React.forwardRef<
   HTMLDivElement,
   React.HTMLAttributes<HTMLDivElement>
@@ -10,7 +13,10 @@ const Card = React.forwardRef<
   <div
     ref={ref}
     className={cn(
-      "relative rounded-xl border-2 border-purple-100 bg-card text-card-foreground shadow-sm transition-all duration-300 hover:shadow-xl hover:-translate-y-1",
+      "relative rounded-sm border-2 border-gray-700 bg-dark-card text-white",
+      "shadow-[0_0_15px_rgba(11,228,236,0.1)]",
+      "transition-all duration-300",
+      "hover:border-neon-cyan hover:shadow-[0_0_20px_rgba(11,228,236,0.3)]",
       className
     )}
     {...props}
@@ -37,7 +43,7 @@ const CardTitle = React.forwardRef<
   <div
     ref={ref}
     className={cn(
-      "text-2xl font-semibold leading-none tracking-tight",
+      "font-orbitron text-xl font-bold uppercase tracking-wider text-white",
       className
     )}
     {...props}
@@ -51,7 +57,7 @@ const CardDescription = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <div
     ref={ref}
-    className={cn("text-sm text-muted-foreground", className)}
+    className={cn("font-mono text-sm text-gray-400", className)}
     {...props}
   />
 ))
@@ -61,7 +67,7 @@ const CardContent = React.forwardRef<
   HTMLDivElement,
   React.HTMLAttributes<HTMLDivElement>
 >(({ className, ...props }, ref) => (
-  <div ref={ref} className={cn("p-6 pt-0", className)} {...props} />
+  <div ref={ref} className={cn("p-6 pt-0 font-mono", className)} {...props} />
 ))
 CardContent.displayName = "CardContent"
 
@@ -71,7 +77,7 @@ const CardFooter = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <div
     ref={ref}
-    className={cn("flex items-center p-6 pt-0", className)}
+    className={cn("flex items-center p-6 pt-0 border-t border-gray-700", className)}
     {...props}
   />
 ))

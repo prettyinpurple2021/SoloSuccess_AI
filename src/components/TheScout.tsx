@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { UserPlus, Users, FileText, CheckCircle2, AlertTriangle, Copy, Check, Loader2, Briefcase, ListTodo, Ear } from 'lucide-react';
 import { geminiService } from '../services/geminiService';
@@ -6,6 +5,11 @@ import { JobDescription, InterviewGuide, SOP } from '../types';
 import { addXP, showToast } from '../services/gameService';
 import { soundService } from '../services/soundService';
 import { storageService } from '../services/storageService';
+
+/**
+ * TheScout component following Cyberpunk Design System v3
+ * Recruit, Vet, and Delegate with military precision
+ */
 
 export const TheScout: React.FC = () => {
     const [activeTab, setActiveTab] = useState<'recruit' | 'vet' | 'delegate'>('recruit');

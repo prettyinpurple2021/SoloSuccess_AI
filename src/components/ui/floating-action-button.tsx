@@ -87,28 +87,28 @@ export default function FloatingActionButton({
       icon: Plus,
       label: "Add Task",
       action: onAddTask,
-      color: "bg-blue-500 hover:bg-blue-600",
+      color: "bg-neon-cyan hover:bg-neon-cyan/80 shadow-[0_0_15px_rgba(11,228,236,0.5)]",
       delay: 0.1
     },
     {
       icon: Target,
       label: "Add Goal",
       action: onAddGoal,
-      color: "bg-purple-500 hover:bg-purple-600",
+      color: "bg-neon-purple hover:bg-neon-purple/80 shadow-[0_0_15px_rgba(179,0,255,0.5)]",
       delay: 0.15
     },
     {
       icon: Mic,
       label: "Voice Task",
       action: onVoiceTask,
-      color: "bg-indigo-500 hover:bg-indigo-600",
+      color: "bg-neon-magenta hover:bg-neon-magenta/80 shadow-[0_0_15px_rgba(255,0,110,0.5)]",
       delay: 0.2
     },
     {
       icon: Calendar,
       label: "Quick Add",
       action: onQuickAdd,
-      color: "bg-green-500 hover:bg-green-600",
+      color: "bg-neon-lime hover:bg-neon-lime/80 shadow-[0_0_15px_rgba(57,255,20,0.5)]",
       delay: 0.25
     }
   ]
@@ -150,8 +150,8 @@ export default function FloatingActionButton({
                     className="flex items-center gap-3"
                   >
                     {/* Label */}
-                    <div className="bg-white/90 backdrop-blur-sm rounded-full px-3 py-2 shadow-lg border">
-                      <span className="text-sm font-medium text-gray-700 whitespace-nowrap">
+                    <div className="bg-dark-card/95 backdrop-blur-sm rounded-sm px-3 py-2 shadow-[0_0_10px_rgba(11,228,236,0.2)] border border-gray-700">
+                      <span className="text-sm font-mono font-medium text-gray-300 whitespace-nowrap">
                         {button.label}
                       </span>
                     </div>
@@ -160,13 +160,13 @@ export default function FloatingActionButton({
                     <Button
                       onClick={handleActionClick(button.action)}
                       className={cn(
-                        "h-12 w-12 rounded-full shadow-lg transition-all duration-200",
-                        "border-2 border-white",
+                        "h-12 w-12 rounded-sm shadow-lg transition-all duration-200",
+                        "border-2 border-dark-bg",
                         "transform hover:scale-110 active:scale-95",
                         button.color
                       )}
                     >
-                      <Icon className="w-5 h-5 text-white" />
+                      <Icon className="w-5 h-5 text-dark-bg" />
                     </Button>
                   </motion.div>
                 )
@@ -184,10 +184,10 @@ export default function FloatingActionButton({
           <Button
             onClick={handleMainButtonClick}
             className={cn(
-              "h-16 w-16 rounded-full shadow-xl transition-all duration-300",
-              "bg-gradient-to-r from-purple-600 to-blue-600",
-              "hover:from-purple-700 hover:to-blue-700",
-              "border-4 border-white",
+              "h-16 w-16 rounded-sm shadow-[0_0_25px_rgba(11,228,236,0.5)] transition-all duration-300",
+              "bg-neon-cyan",
+              "hover:bg-neon-cyan/90 hover:shadow-[0_0_35px_rgba(11,228,236,0.7)]",
+              "border-2 border-dark-bg",
               "transform hover:scale-105 active:scale-95",
               isExpanded && "rotate-45"
             )}
@@ -196,14 +196,14 @@ export default function FloatingActionButton({
               animate={{ rotate: isExpanded ? 45 : 0 }}
               transition={{ duration: 0.2 }}
             >
-              <Plus className="w-7 h-7 text-white" />
+              <Plus className="w-7 h-7 text-dark-bg" />
             </motion.div>
           </Button>
 
           {/* Pulse animation when not expanded */}
           {!isExpanded && (
             <motion.div
-              className="absolute inset-0 rounded-full bg-gradient-to-r from-purple-600 to-blue-600 opacity-30"
+              className="absolute inset-0 rounded-sm bg-neon-cyan opacity-30"
               animate={{
                 scale: [1, 1.3, 1],
               }}
@@ -222,12 +222,12 @@ export default function FloatingActionButton({
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 1 }}
-            className="absolute bottom-6 right-20 bg-white/90 backdrop-blur-sm rounded-lg px-3 py-2 shadow-lg border max-w-[150px]"
+            className="absolute bottom-6 right-20 bg-dark-card/95 backdrop-blur-sm rounded-sm px-3 py-2 shadow-[0_0_10px_rgba(11,228,236,0.2)] border border-gray-700 max-w-[150px]"
           >
-            <div className="text-xs text-gray-700 text-center">
+            <div className="text-xs text-gray-300 text-center font-mono">
               Tap for quick actions
             </div>
-            <div className="absolute top-1/2 -right-1 w-2 h-2 bg-white border-r border-b transform rotate-45 -translate-y-1/2"></div>
+            <div className="absolute top-1/2 -right-1 w-2 h-2 bg-dark-card border-r border-b border-gray-700 transform rotate-45 -translate-y-1/2"></div>
           </motion.div>
         )}
       </div>

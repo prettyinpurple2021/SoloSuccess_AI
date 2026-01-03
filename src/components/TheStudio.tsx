@@ -5,6 +5,11 @@ import { addXP, showToast } from '../services/gameService';
 import { soundService } from '../services/soundService';
 import { CreativeAsset } from '../types';
 
+/**
+ * TheStudio component following Cyberpunk Design System v3
+ * Generative branding and visual asset forge
+ */
+
 const STYLES = [
     { id: 'cyberpunk', label: 'Cyberpunk / High Tech', desc: 'Neon, dark, futuristic, glowing' },
     { id: 'minimal', label: 'Minimalist / SaaS', desc: 'Clean lines, whitespace, flat colors' },

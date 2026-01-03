@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Crown, Briefcase, Loader2, CheckCircle2, TrendingUp, AlertOctagon, FileText } from 'lucide-react';
 import { geminiService } from '../services/geminiService';
@@ -7,6 +6,11 @@ import { AGENTS } from '../constants';
 import { addXP, showToast } from '../services/gameService';
 import { soundService } from '../services/soundService';
 import { storageService } from '../services/storageService';
+
+/**
+ * TheBoardroom component following Cyberpunk Design System v3
+ * Holistic Quarterly Business Review (QBR) and Grading
+ */
 
 export const TheBoardroom: React.FC = () => {
     const [report, setReport] = useState<BoardMeetingReport | null>(null);

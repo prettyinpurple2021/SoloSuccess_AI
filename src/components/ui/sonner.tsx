@@ -1,26 +1,26 @@
 "use client"
 
-import { Toaster as Sonner} from "sonner"
+import { Toaster as Sonner } from "sonner"
 
+/**
+ * Toaster component following Cyberpunk Design System v3
+ */
 type ToasterProps = React.ComponentProps<typeof Sonner>
 
 const Toaster = ({ ...props }: ToasterProps) => {
-  // Theme not available during static generation - use default
-  const theme = "system"
-
   return (
     <Sonner
-      theme={theme as ToasterProps["theme"]}
+      theme="dark"
       className="toaster group"
       toastOptions={{
         classNames: {
           toast:
-            "group toast group-[.toaster]:bg-background group-[.toaster]:text-foreground group-[.toaster]:border-border group-[.toaster]:shadow-lg border-2",
-          description: "group-[.toast]:text-muted-foreground",
+            "group toast group-[.toaster]:bg-dark-card group-[.toaster]:text-white group-[.toaster]:border-2 group-[.toaster]:border-neon-cyan group-[.toaster]:shadow-[0_0_20px_rgba(11,228,236,0.3)] group-[.toaster]:font-mono group-[.toaster]:rounded-sm",
+          description: "group-[.toast]:text-gray-400",
           actionButton:
-            "group-[.toast]:bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 group-[.toast]:text-white",
+            "group-[.toast]:bg-neon-cyan/10 group-[.toast]:border-2 group-[.toast]:border-neon-cyan group-[.toast]:text-neon-cyan group-[.toast]:font-mono group-[.toast]:uppercase group-[.toast]:tracking-wider hover:group-[.toast]:bg-neon-cyan/20",
           cancelButton:
-            "group-[.toast]:bg-muted group-[.toast]:text-muted-foreground",
+            "group-[.toast]:bg-dark-bg group-[.toast]:border-2 group-[.toast]:border-gray-700 group-[.toast]:text-gray-400 group-[.toast]:font-mono",
         },
       }}
       {...props}

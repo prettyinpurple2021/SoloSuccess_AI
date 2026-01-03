@@ -154,7 +154,7 @@ export function RecaptchaButton({
         <motion.div
           initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
-          className="flex items-center space-x-2 text-red-600 text-sm"
+          className="flex items-center space-x-2 text-neon-magenta text-sm font-mono"
         >
           <AlertCircle className="w-4 h-4" />
           <span>{error}</span>
@@ -165,7 +165,7 @@ export function RecaptchaButton({
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          className="flex items-center space-x-2 text-yellow-600 text-sm"
+          className="flex items-center space-x-2 text-neon-orange text-sm font-mono"
         >
           <Shield className="w-4 h-4" />
           <span>Loading security verification...</span>
@@ -175,12 +175,12 @@ export function RecaptchaButton({
   )
 }
 
-// Specialized reCAPTCHA button variants
+// Specialized reCAPTCHA button variants following Cyberpunk Design System v3
 export function RecaptchaSignupButton({ children, ...props }: Omit<RecaptchaButtonProps, 'action'>) {
   return (
     <RecaptchaButton 
       action={RECAPTCHA_ACTIONS.SIGNUP}
-      variant="empowerment"
+      variant="cyan"
       crown
       {...props}
     >
@@ -193,7 +193,7 @@ export function RecaptchaSigninButton({ children, ...props }: Omit<RecaptchaButt
   return (
     <RecaptchaButton 
       action={RECAPTCHA_ACTIONS.SIGNIN}
-      variant="primary"
+      variant="cyan"
       {...props}
     >
       {children}
@@ -205,7 +205,7 @@ export function RecaptchaContactButton({ children, ...props }: Omit<RecaptchaBut
   return (
     <RecaptchaButton 
       action={RECAPTCHA_ACTIONS.CONTACT}
-      variant="accent"
+      variant="purple"
       {...props}
     >
       {children}
@@ -217,7 +217,7 @@ export function RecaptchaDemoButton({ children, ...props }: Omit<RecaptchaButton
   return (
     <RecaptchaButton 
       action={RECAPTCHA_ACTIONS.DEMO}
-      variant="secondary"
+      variant="magenta"
       {...props}
     >
       {children}
@@ -254,7 +254,7 @@ export function RecaptchaForm({
         <motion.div
           initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
-          className="flex items-center space-x-2 text-red-600 text-sm p-3 glass rounded-lg"
+          className="flex items-center space-x-2 text-neon-magenta text-sm font-mono p-3 bg-dark-card border border-neon-magenta rounded-sm"
         >
           <AlertCircle className="w-4 h-4" />
           <span>{error}</span>
@@ -265,7 +265,7 @@ export function RecaptchaForm({
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          className="flex items-center space-x-2 text-yellow-600 text-sm p-3 glass rounded-lg"
+          className="flex items-center space-x-2 text-neon-orange text-sm font-mono p-3 bg-dark-card border border-neon-orange rounded-sm"
         >
           <Shield className="w-4 h-4" />
           <span>Loading security verification...</span>

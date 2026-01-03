@@ -214,12 +214,12 @@ export default function VoiceInput({
 
   if (!isSupported) {
     return (
-      <Card className={cn("border-dashed", className)}>
+      <Card className={cn("border-dashed border-gray-700", className)}>
         <CardContent className="p-6">
           <div className="text-center text-gray-500">
-            <VolumeX className="w-12 h-12 mx-auto mb-4 text-gray-300" />
-            <p className="font-medium">Voice input not supported</p>
-            <p className="text-sm">Your browser doesn't support speech recognition</p>
+            <VolumeX className="w-12 h-12 mx-auto mb-4 text-gray-600" />
+            <p className="font-mono font-medium text-gray-400">Voice input not supported</p>
+            <p className="text-sm font-mono text-gray-500">Your browser doesn&apos;t support speech recognition</p>
           </div>
         </CardContent>
       </Card>
@@ -232,7 +232,7 @@ export default function VoiceInput({
         <div className="flex items-center justify-between">
           <div>
             <CardTitle className="text-lg flex items-center gap-2">
-              <Volume2 className="w-5 h-5 text-purple-600" />
+              <Volume2 className="w-5 h-5 text-neon-cyan" />
               Voice Input
             </CardTitle>
             <CardDescription>
@@ -250,7 +250,7 @@ export default function VoiceInput({
               variant={isListening ? "magenta" : "cyan"}
               className={cn(
                 "text-xs transition-colors",
-                isListening && "bg-magenta text-white animate-pulse"
+                isListening && "animate-pulse"
               )}
             >
               {isListening ? "Recording" : "Ready"}
@@ -261,23 +261,23 @@ export default function VoiceInput({
 
       <CardContent className="space-y-4">
         {/* Current Transcript */}
-        <div className="min-h-[60px] p-3 border rounded-lg bg-gray-50">
-          <div className="text-sm">
+        <div className="min-h-[60px] p-3 border-2 border-gray-700 rounded-sm bg-dark-bg">
+          <div className="text-sm font-mono">
             {transcript && (
-              <span className="text-gray-900 font-medium">{transcript}</span>
+              <span className="text-neon-purple font-medium">{transcript}</span>
             )}
             {interimTranscript && (
               <span className="text-gray-500 italic"> {interimTranscript}</span>
             )}
             {!transcript && !interimTranscript && (
-              <span className="text-gray-400">Your speech will appear here...</span>
+              <span className="text-gray-600">Your speech will appear here...</span>
             )}
           </div>
         </div>
 
         {/* Error Display */}
         {error && (
-          <div className="text-sm text-red-600 bg-red-50 p-2 rounded border border-red-200">
+          <div className="text-sm text-neon-magenta bg-neon-magenta/10 p-2 rounded-sm border border-neon-magenta font-mono">
             {error}
           </div>
         )}
@@ -319,7 +319,7 @@ export default function VoiceInput({
         </div>
 
         {/* Language Info */}
-        <div className="text-xs text-gray-500 flex items-center justify-between">
+        <div className="text-xs text-gray-500 flex items-center justify-between font-mono">
           <span>Language: {language}</span>
           <span>
             {isListening ? "🎤 Listening..." : "Click 'Start Speaking' to begin"}

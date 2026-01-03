@@ -3,8 +3,11 @@
 import * as React from "react"
 import * as AvatarPrimitive from "@radix-ui/react-avatar"
 
-import { cn} from "@/lib/utils"
+import { cn } from "@/lib/utils"
 
+/**
+ * Avatar component following Cyberpunk Design System v3
+ */
 const Avatar = React.forwardRef<
   React.ElementRef<typeof AvatarPrimitive.Root>,
   React.ComponentPropsWithoutRef<typeof AvatarPrimitive.Root>
@@ -12,7 +15,7 @@ const Avatar = React.forwardRef<
   <AvatarPrimitive.Root
     ref={ref}
     className={cn(
-      "relative flex h-10 w-10 shrink-0 overflow-hidden rounded-full",
+      "relative flex h-10 w-10 shrink-0 overflow-hidden rounded-sm border-2 border-neon-cyan shadow-[0_0_10px_rgba(11,228,236,0.3)]",
       className
     )}
     {...props}
@@ -39,7 +42,7 @@ const AvatarFallback = React.forwardRef<
   <AvatarPrimitive.Fallback
     ref={ref}
     className={cn(
-      "flex h-full w-full items-center justify-center rounded-full bg-muted",
+      "flex h-full w-full items-center justify-center bg-dark-card text-neon-cyan font-mono font-bold",
       className
     )}
     {...props}

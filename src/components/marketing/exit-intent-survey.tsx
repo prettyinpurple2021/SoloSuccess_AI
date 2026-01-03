@@ -154,19 +154,66 @@ export default function ExitIntentSurvey() {
   if (!open || submitted || dismissed) return null
 
   return (
-    <div className="fixed inset-0 z-[60] flex items-center justify-center bg-black/30 p-4">
-      <div className="w-full max-w-lg rounded-xl bg-white p-6 shadow-xl border">
-        <h3 className="text-xl font-semibold mb-2">Before you go—mind a 1‑minute survey?</h3>
-        <p className="text-gray-600 mb-4">Help us tailor SoloSuccess AI for you. Totally optional.</p>
-        <div className="grid grid-cols-1 gap-3">
-          <input className="border rounded-lg px-3 py-2 text-[rgb(81,48,171)] bg-white placeholder:text-gray-400" placeholder="Your role (e.g., Solo Founder)" value={role} onChange={(e) => setRole(e.target.value)} />
-          <input className="border rounded-lg px-3 py-2 text-[rgb(81,48,171)] bg-white placeholder:text-gray-400" placeholder="Primary goal (e.g., automate content)" value={goal} onChange={(e) => setGoal(e.target.value)} />
-          <input className="border rounded-lg px-3 py-2 text-[rgb(81,48,171)] bg-white placeholder:text-gray-400" placeholder="Top blocker (e.g., time)" value={blocker} onChange={(e) => setBlocker(e.target.value)} />
-          <input className="border rounded-lg px-3 py-2 text-[rgb(81,48,171)] bg-white placeholder:text-gray-400" placeholder="Email (optional)" type="email" value={email} onChange={(e) => setEmail(e.target.value)} />
+    <div className="fixed inset-0 z-[60] flex items-center justify-center bg-black/70 backdrop-blur-sm p-4">
+      <div className="relative w-full max-w-lg border-2 border-neon-cyan bg-dark-card p-6 shadow-[0_0_30px_rgba(11,228,236,0.3)] rounded-sm overflow-hidden">
+        {/* Scanlines overlay */}
+        <div className="pointer-events-none absolute inset-0 bg-[repeating-linear-gradient(0deg,transparent,transparent_2px,rgba(0,0,0,0.1)_2px,rgba(0,0,0,0.1)_4px)] opacity-20" />
+        
+        {/* Corner accents */}
+        <div className="absolute top-0 left-0 h-4 w-4 border-t-2 border-l-2 border-neon-purple" />
+        <div className="absolute top-0 right-0 h-4 w-4 border-t-2 border-r-2 border-neon-purple" />
+        <div className="absolute bottom-0 left-0 h-4 w-4 border-b-2 border-l-2 border-neon-purple" />
+        <div className="absolute bottom-0 right-0 h-4 w-4 border-b-2 border-r-2 border-neon-purple" />
+        
+        <h3 className="font-orbitron text-xl font-bold uppercase tracking-wider text-neon-cyan mb-2">
+          Before you go—
+        </h3>
+        <p className="font-mono text-gray-300 mb-6">
+          Mind a 1‑minute survey? Help us tailor SoloSuccess AI for you. <span className="text-gray-500">Totally optional.</span>
+        </p>
+        
+        <div className="grid grid-cols-1 gap-4">
+          <input 
+            className="w-full border-2 border-gray-700 bg-dark-bg px-4 py-3 font-mono text-neon-purple placeholder:text-gray-500 focus:border-neon-cyan focus:outline-none focus:shadow-[0_0_10px_rgba(11,228,236,0.3)] transition-all duration-300 rounded-sm" 
+            placeholder="Your role (e.g., Solo Founder)" 
+            value={role} 
+            onChange={(e) => setRole(e.target.value)} 
+          />
+          <input 
+            className="w-full border-2 border-gray-700 bg-dark-bg px-4 py-3 font-mono text-neon-purple placeholder:text-gray-500 focus:border-neon-cyan focus:outline-none focus:shadow-[0_0_10px_rgba(11,228,236,0.3)] transition-all duration-300 rounded-sm" 
+            placeholder="Primary goal (e.g., automate content)" 
+            value={goal} 
+            onChange={(e) => setGoal(e.target.value)} 
+          />
+          <input 
+            className="w-full border-2 border-gray-700 bg-dark-bg px-4 py-3 font-mono text-neon-purple placeholder:text-gray-500 focus:border-neon-cyan focus:outline-none focus:shadow-[0_0_10px_rgba(11,228,236,0.3)] transition-all duration-300 rounded-sm" 
+            placeholder="Top blocker (e.g., time)" 
+            value={blocker} 
+            onChange={(e) => setBlocker(e.target.value)} 
+          />
+          <input 
+            className="w-full border-2 border-gray-700 bg-dark-bg px-4 py-3 font-mono text-neon-purple placeholder:text-gray-500 focus:border-neon-cyan focus:outline-none focus:shadow-[0_0_10px_rgba(11,228,236,0.3)] transition-all duration-300 rounded-sm" 
+            placeholder="Email (optional)" 
+            type="email" 
+            value={email} 
+            onChange={(e) => setEmail(e.target.value)} 
+          />
         </div>
-        <div className="mt-4 flex gap-2 justify-end">
-          <Button variant="outline" onClick={handleSkip}>Skip</Button>
-          <Button onClick={submit} disabled={submitting}>{submitting ? 'Saving…' : 'Submit'}</Button>
+        
+        <div className="mt-6 flex gap-3 justify-end">
+          <button 
+            onClick={handleSkip}
+            className="border-2 border-gray-600 bg-transparent px-5 py-2 font-mono text-sm uppercase tracking-wider text-gray-400 hover:border-neon-magenta hover:text-neon-magenta transition-all duration-300 rounded-sm"
+          >
+            Skip
+          </button>
+          <button 
+            onClick={submit} 
+            disabled={submitting}
+            className="border-2 border-neon-cyan bg-neon-cyan/10 px-5 py-2 font-mono text-sm font-bold uppercase tracking-wider text-neon-cyan hover:bg-neon-cyan/20 hover:shadow-[0_0_20px_rgba(11,228,236,0.4)] disabled:opacity-30 disabled:cursor-not-allowed transition-all duration-300 rounded-sm"
+          >
+            {submitting ? 'Saving…' : 'Submit'}
+          </button>
         </div>
       </div>
     </div>

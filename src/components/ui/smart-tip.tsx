@@ -67,18 +67,18 @@ export function SmartTipPopup({ tip, onDismiss, onAction, position = "top-right"
   }
 
   const categoryColors = {
-    productivity: "from-blue-500 to-indigo-500",
-    ai: "from-purple-500 to-pink-500",
-    goals: "from-green-500 to-teal-500",
-    tasks: "from-orange-500 to-red-500",
-    navigation: "from-gray-500 to-slate-500",
-    features: "from-pink-500 to-rose-500"
+    productivity: "bg-neon-cyan",
+    ai: "bg-neon-purple",
+    goals: "bg-neon-lime",
+    tasks: "bg-neon-orange",
+    navigation: "bg-gray-600",
+    features: "bg-neon-magenta"
   }
 
   const priorityColors = {
-    low: "bg-gray-100 text-gray-600",
-    medium: "bg-yellow-100 text-yellow-700",
-    high: "bg-red-100 text-red-700"
+    low: "border-gray-600 text-gray-400",
+    medium: "border-neon-orange text-neon-orange",
+    high: "border-neon-magenta text-neon-magenta"
   }
 
   return (
@@ -91,11 +91,11 @@ export function SmartTipPopup({ tip, onDismiss, onAction, position = "top-right"
           transition={{ duration: 0.3, type: "spring", bounce: 0.4 }}
           className={`fixed z-50 max-w-sm ${positionClasses[position]}`}
         >
-          <Card className="boss-card border-2 border-purple-200 shadow-2xl">
+          <Card className="border-2 border-neon-cyan shadow-[0_0_20px_rgba(11,228,236,0.3)]">
             <CardContent className="p-4">
               <div className="flex items-start gap-3">
-                <div className={`w-10 h-10 rounded-full bg-gradient-to-r ${categoryColors[tip.category]} flex items-center justify-center flex-shrink-0`}>
-                  <tip.icon className="h-5 w-5 text-white" />
+                <div className={`w-10 h-10 rounded-sm ${categoryColors[tip.category]} flex items-center justify-center flex-shrink-0`}>
+                  <tip.icon className="h-5 w-5 text-dark-bg" />
                 </div>
                 
                 <div className="flex-1 min-w-0">
@@ -103,13 +103,13 @@ export function SmartTipPopup({ tip, onDismiss, onAction, position = "top-right"
                     <Badge variant="outline" className={`text-xs ${priorityColors[tip.priority]}`}>
                       {tip.priority}
                     </Badge>
-                    <Badge variant="outline" className="text-xs">
+                    <Badge variant="cyan" className="text-xs">
                       {tip.category}
                     </Badge>
                   </div>
                   
-                  <h3 className="font-semibold text-sm mb-1">{tip.title}</h3>
-                  <p className="text-xs text-muted-foreground mb-3">{tip.description}</p>
+                  <h3 className="font-mono font-semibold text-sm text-white mb-1">{tip.title}</h3>
+                  <p className="text-xs font-mono text-gray-400 mb-3">{tip.description}</p>
                   
                   {tip.action && (
                     <Button

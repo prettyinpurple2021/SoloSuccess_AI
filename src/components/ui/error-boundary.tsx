@@ -34,19 +34,19 @@ export class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoun
   render() {
     if (this.state.hasError) {
       return (
-        <div className="min-h-screen flex items-center justify-center p-4 bg-gradient-to-br from-purple-50 via-white to-pink-50">
-          <Card className="w-full max-w-lg border-2 border-red-200">
+        <div className="min-h-screen flex items-center justify-center p-4 bg-dark-bg">
+          <Card className="w-full max-w-lg border-2 border-neon-magenta shadow-[0_0_30px_rgba(255,0,110,0.3)]">
             <CardHeader>
-              <div className="flex items-center gap-2 text-red-600 mb-2">
+              <div className="flex items-center gap-2 text-neon-magenta mb-2">
                 <AlertCircle className="h-6 w-6" />
-                <CardTitle className="text-xl">Something went wrong</CardTitle>
+                <CardTitle className="text-neon-magenta">Something went wrong</CardTitle>
               </div>
               <CardDescription>
-                We've encountered an unexpected error. Our team has been notified.
+                We&apos;ve encountered an unexpected error. Our team has been notified.
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <div className="bg-gray-50 p-4 rounded-md border border-gray-200 text-sm text-gray-700 overflow-auto max-h-40">
+              <div className="bg-dark-bg p-4 rounded-sm border-2 border-gray-700 text-sm font-mono text-gray-400 overflow-auto max-h-40">
                 {this.state.error?.message || "Unknown error"}
               </div>
             </CardContent>
@@ -60,6 +60,7 @@ export class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoun
                 Go Home
               </Button>
               <Button 
+                variant="cyan"
                 onClick={() => window.location.reload()}
                 className="flex items-center gap-2"
               >

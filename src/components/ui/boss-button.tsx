@@ -1,13 +1,17 @@
 "use client"
 
-import { motion} from "framer-motion"
-import { ReactNode} from "react"
-import { cn} from "@/lib/utils"
-import { Crown, Sparkles, Zap} from "lucide-react"
+import { motion } from "framer-motion"
+import { ReactNode } from "react"
+import { cn } from "@/lib/utils"
+import { Crown, Sparkles, Zap } from "lucide-react"
 
+/**
+ * BossButton component following Cyberpunk Design System v3
+ * Uses neon colors, dark backgrounds, and glow effects
+ */
 export interface BossButtonProps {
   children: ReactNode
-  variant?: "primary" | "secondary" | "accent" | "empowerment" | "danger" | "success" | "outline"
+  variant?: "cyan" | "magenta" | "lime" | "purple" | "orange" | "outline"
   size?: "sm" | "md" | "lg"
   icon?: ReactNode
   iconPosition?: "left" | "right"
@@ -23,7 +27,7 @@ export interface BossButtonProps {
 
 export function BossButton({
   children,
-  variant = "primary",
+  variant = "cyan",
   size = "md",
   icon,
   iconPosition = "left",
@@ -36,7 +40,7 @@ export function BossButton({
   loading = false,
   fullWidth = false
 }: BossButtonProps) {
-  const baseClasses = "relative overflow-hidden font-bold rounded-xl transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed"
+  const baseClasses = "relative overflow-hidden font-mono font-bold uppercase tracking-wider rounded-sm transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-dark-bg disabled:opacity-50 disabled:cursor-not-allowed"
   
   const sizeClasses = {
     sm: "px-4 py-2 text-sm",
@@ -45,13 +49,12 @@ export function BossButton({
   }
 
   const variantClasses = {
-    primary: "gradient-primary text-white focus:ring-purple-500",
-    secondary: "gradient-secondary text-white focus:ring-pink-500",
-    accent: "gradient-accent text-white focus:ring-cyan-500",
-    empowerment: "gradient-empowerment text-white focus:ring-purple-500",
-    danger: "gradient-danger text-white focus:ring-red-500",
-    success: "gradient-success text-white focus:ring-green-500",
-    outline: "border-2 border-purple-200 bg-white text-purple-700 hover:bg-purple-50 focus:ring-purple-400"
+    cyan: "border-2 border-neon-cyan bg-neon-cyan/10 text-neon-cyan focus:ring-neon-cyan hover:bg-neon-cyan/20 hover:shadow-[0_0_20px_rgba(11,228,236,0.5)]",
+    magenta: "border-2 border-neon-magenta bg-neon-magenta/10 text-neon-magenta focus:ring-neon-magenta hover:bg-neon-magenta/20 hover:shadow-[0_0_20px_rgba(255,0,110,0.5)]",
+    lime: "border-2 border-neon-lime bg-neon-lime/10 text-neon-lime focus:ring-neon-lime hover:bg-neon-lime/20 hover:shadow-[0_0_20px_rgba(57,255,20,0.5)]",
+    purple: "border-2 border-neon-purple bg-neon-purple/10 text-neon-purple focus:ring-neon-purple hover:bg-neon-purple/20 hover:shadow-[0_0_20px_rgba(179,0,255,0.5)]",
+    orange: "border-2 border-neon-orange bg-neon-orange/10 text-neon-orange focus:ring-neon-orange hover:bg-neon-orange/20 hover:shadow-[0_0_20px_rgba(255,102,0,0.5)]",
+    outline: "border-2 border-gray-700 bg-transparent text-gray-300 hover:border-neon-cyan hover:text-neon-cyan focus:ring-neon-cyan"
   }
 
   const widthClass = fullWidth ? "w-full" : ""
@@ -104,16 +107,13 @@ export function BossButton({
       onClick={onClick}
       disabled={disabled || loading}
     >
-      {/* Background gradient */}
-      <div className="absolute inset-0 gradient-empowerment opacity-0 hover:opacity-20 transition-opacity duration-300" />
-      
       {/* Shimmer effect */}
       {shimmer && !disabled && !loading && (
         <motion.div
           variants={shimmerVariants}
           initial="initial"
           animate="animate"
-          className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent"
+          className="absolute inset-0 bg-gradient-to-r from-transparent via-neon-cyan/20 to-transparent"
         />
       )}
       
@@ -123,7 +123,7 @@ export function BossButton({
           variants={glowVariants}
           initial="initial"
           whileHover="hover"
-          className="absolute inset-0 rounded-xl blur-xl gradient-empowerment opacity-0"
+          className="absolute inset-0 rounded-sm blur-xl bg-neon-cyan/30 opacity-0"
         />
       )}
       
@@ -164,7 +164,7 @@ export function BossButton({
               </motion.div>
             )}
             
-            <span className="font-boss">{children}</span>
+            <span>{children}</span>
             
             {icon && iconPosition === "right" && (
               <motion.div
@@ -196,26 +196,26 @@ export function BossButton({
   )
 }
 
-// Specialized button variants
-export function EmpowermentButton({ children, ...props }: Omit<BossButtonProps, "variant">) {
+// Specialized button variants following Cyberpunk Design System v3
+export function CyanButton({ children, ...props }: Omit<BossButtonProps, "variant">) {
   return (
-    <BossButton variant="empowerment" crown shimmer glow {...props}>
+    <BossButton variant="cyan" crown shimmer glow {...props}>
       {children}
     </BossButton>
   )
 }
 
-export function DangerButton({ children, ...props }: Omit<BossButtonProps, "variant">) {
+export function MagentaButton({ children, ...props }: Omit<BossButtonProps, "variant">) {
   return (
-    <BossButton variant="danger" {...props}>
+    <BossButton variant="magenta" {...props}>
       {children}
     </BossButton>
   )
 }
 
-export function SuccessButton({ children, ...props }: Omit<BossButtonProps, "variant">) {
+export function LimeButton({ children, ...props }: Omit<BossButtonProps, "variant">) {
   return (
-    <BossButton variant="success" {...props}>
+    <BossButton variant="lime" {...props}>
       {children}
     </BossButton>
   )
@@ -238,7 +238,7 @@ export function ZapButton({ children, ...props }: Omit<BossButtonProps, "icon">)
   return (
     <BossButton 
       icon={<Zap className="w-4 h-4" />} 
-      variant="empowerment"
+      variant="cyan"
       shimmer 
       glow 
       {...props}

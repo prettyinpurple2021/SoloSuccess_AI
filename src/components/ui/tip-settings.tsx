@@ -73,12 +73,12 @@ export function TipSettings({ open, onClose }: TipSettingsProps) {
   }
 
   const categoryInfo = [
-    { key: 'productivity', label: 'Productivity Tips', icon: Zap, color: 'from-blue-500 to-indigo-500' },
-    { key: 'ai', label: 'AI Assistance', icon: MessageCircle, color: 'from-purple-500 to-pink-500' },
-    { key: 'goals', label: 'Goal Setting', icon: Target, color: 'from-green-500 to-teal-500' },
-    { key: 'tasks', label: 'Task Management', icon: FileText, color: 'from-orange-500 to-red-500' },
-    { key: 'navigation', label: 'Navigation', icon: TrendingUp, color: 'from-gray-500 to-slate-500' },
-    { key: 'features', label: 'Features', icon: Lightbulb, color: 'from-pink-500 to-rose-500' }
+    { key: 'productivity', label: 'Productivity Tips', icon: Zap, color: 'bg-neon-cyan' },
+    { key: 'ai', label: 'AI Assistance', icon: MessageCircle, color: 'bg-neon-purple' },
+    { key: 'goals', label: 'Goal Setting', icon: Target, color: 'bg-neon-lime' },
+    { key: 'tasks', label: 'Task Management', icon: FileText, color: 'bg-neon-orange' },
+    { key: 'navigation', label: 'Navigation', icon: TrendingUp, color: 'bg-gray-600' },
+    { key: 'features', label: 'Features', icon: Lightbulb, color: 'bg-neon-magenta' }
   ]
 
   if (!open) return null
@@ -100,12 +100,12 @@ export function TipSettings({ open, onClose }: TipSettingsProps) {
           className="w-full max-w-2xl max-h-[90vh] overflow-y-auto"
           onClick={(e) => e.stopPropagation()}
         >
-          <Card className="boss-card border-2 border-purple-200 shadow-2xl">
+          <Card className="border-2 border-neon-cyan shadow-[0_0_30px_rgba(11,228,236,0.3)]">
             <CardHeader className="pb-4">
               <div className="flex items-center justify-between">
-                <CardTitle className="boss-heading text-xl flex items-center gap-3">
-                  <div className="w-8 h-8 rounded-full bg-gradient-to-r from-purple-500 to-pink-500 flex items-center justify-center">
-                    <Settings className="h-4 w-4 text-white" />
+                <CardTitle className="flex items-center gap-3">
+                  <div className="w-8 h-8 rounded-sm bg-neon-cyan/20 border border-neon-cyan flex items-center justify-center">
+                    <Settings className="h-4 w-4 text-neon-cyan" />
                   </div>
                   Smart Tip Settings
                 </CardTitle>
@@ -113,7 +113,7 @@ export function TipSettings({ open, onClose }: TipSettingsProps) {
                   variant="ghost"
                   size="sm"
                   onClick={onClose}
-                  className="h-8 w-8 p-0"
+                  className="h-8 w-8 p-0 text-gray-500 hover:text-neon-cyan"
                 >
                   <X className="h-4 w-4" />
                 </Button>
@@ -122,14 +122,14 @@ export function TipSettings({ open, onClose }: TipSettingsProps) {
 
             <CardContent className="space-y-6">
               {/* Main toggle */}
-              <div className="flex items-center justify-between p-4 border-2 border-transparent hover:border-purple-200 rounded-xl transition-all duration-200">
+              <div className="flex items-center justify-between p-4 border-2 border-gray-700 hover:border-neon-cyan rounded-sm transition-all duration-200">
                 <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-full bg-gradient-to-r from-purple-500 to-pink-500 flex items-center justify-center">
-                    <Lightbulb className="h-5 w-5 text-white" />
+                  <div className="w-10 h-10 rounded-sm bg-neon-purple/20 border border-neon-purple flex items-center justify-center">
+                    <Lightbulb className="h-5 w-5 text-neon-purple" />
                   </div>
                   <div>
-                    <h3 className="font-semibold">Enable Smart Tips</h3>
-                    <p className="text-sm text-muted-foreground">
+                    <h3 className="font-mono font-semibold text-white">Enable Smart Tips</h3>
+                    <p className="text-sm font-mono text-gray-400">
                       Get contextual advice when you might need help
                     </p>
                   </div>
@@ -146,7 +146,7 @@ export function TipSettings({ open, onClose }: TipSettingsProps) {
                 <>
                   {/* Frequency setting */}
                   <div className="space-y-3">
-                    <Label className="text-sm font-medium">Tip Frequency</Label>
+                    <Label>Tip Frequency</Label>
                     <Select
                       value={preferences.tipFrequency}
                       onValueChange={(value: "low" | "medium" | "high") =>
@@ -159,19 +159,19 @@ export function TipSettings({ open, onClose }: TipSettingsProps) {
                       <SelectContent>
                         <SelectItem value="low">
                           <div className="flex items-center gap-2">
-                            <Badge variant="outline" className="text-xs">Low</Badge>
+                            <Badge variant="cyan" className="text-xs">Low</Badge>
                             <span>1-2 tips per hour</span>
                           </div>
                         </SelectItem>
                         <SelectItem value="medium">
                           <div className="flex items-center gap-2">
-                            <Badge variant="outline" className="text-xs bg-yellow-100 text-yellow-700">Medium</Badge>
+                            <Badge variant="orange" className="text-xs">Medium</Badge>
                             <span>2-3 tips per hour</span>
                           </div>
                         </SelectItem>
                         <SelectItem value="high">
                           <div className="flex items-center gap-2">
-                            <Badge variant="outline" className="text-xs bg-red-100 text-red-700">High</Badge>
+                            <Badge variant="magenta" className="text-xs">High</Badge>
                             <span>3-5 tips per hour</span>
                           </div>
                         </SelectItem>
@@ -181,20 +181,20 @@ export function TipSettings({ open, onClose }: TipSettingsProps) {
 
                   {/* Category toggles */}
                   <div className="space-y-4">
-                    <Label className="text-sm font-medium">Tip Categories</Label>
+                    <Label>Tip Categories</Label>
                     <div className="grid gap-3">
                       {categoryInfo.map((category) => (
                         <div
                           key={category.key}
-                          className="flex items-center justify-between p-3 border-2 border-transparent hover:border-purple-200 rounded-xl transition-all duration-200"
+                          className="flex items-center justify-between p-3 border-2 border-gray-700 hover:border-neon-cyan rounded-sm transition-all duration-200"
                         >
                           <div className="flex items-center gap-3">
-                            <div className={`w-8 h-8 rounded-full bg-gradient-to-r ${category.color} flex items-center justify-center`}>
-                              <category.icon className="h-4 w-4 text-white" />
+                            <div className={`w-8 h-8 rounded-sm ${category.color} flex items-center justify-center`}>
+                              <category.icon className="h-4 w-4 text-dark-bg" />
                             </div>
                             <div>
-                              <h4 className="font-medium text-sm">{category.label}</h4>
-                              <p className="text-xs text-muted-foreground">
+                              <h4 className="font-mono font-medium text-sm text-white">{category.label}</h4>
+                              <p className="text-xs font-mono text-gray-500">
                                 {category.key === 'productivity' && 'Time management and efficiency tips'}
                                 {category.key === 'ai' && 'AI usage and optimization advice'}
                                 {category.key === 'goals' && 'Goal setting and achievement strategies'}
@@ -216,17 +216,18 @@ export function TipSettings({ open, onClose }: TipSettingsProps) {
               )}
 
               {/* Actions */}
-              <div className="flex items-center justify-between pt-4 border-t">
+              <div className="flex items-center justify-between pt-4 border-t border-gray-700">
                 <Button
                   variant="outline"
                   onClick={handleReset}
-                  className="text-sm"
+                  size="sm"
                 >
                   Reset to Defaults
                 </Button>
                 <Button
                   onClick={onClose}
-                  className="punk-button text-white"
+                  variant="cyan"
+                  size="sm"
                 >
                   Save Settings
                 </Button>
