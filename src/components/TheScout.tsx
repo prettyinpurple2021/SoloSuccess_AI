@@ -89,25 +89,25 @@ export const TheScout: React.FC = () => {
     return (
         <div className="min-h-[85vh] flex flex-col animate-in fade-in duration-500">
             {/* Header */}
-            <div className="mb-6 flex items-end justify-between border-b border-zinc-800 pb-6">
+            <div className="mb-6 flex items-end justify-between border-b border-gray-700 pb-6">
                 <div>
-                    <div className="flex items-center gap-2 text-indigo-400 font-mono text-xs font-bold uppercase tracking-widest mb-2">
+                    <div className="flex items-center gap-2 text-neon-purple font-mono text-xs font-bold uppercase tracking-widest mb-2">
                         <UserPlus size={14} /> Talent Operations
                     </div>
-                    <h2 className="text-4xl font-black text-white tracking-tighter">THE SCOUT</h2>
-                    <p className="text-zinc-400 mt-2">Recruit, Vet, and Delegate with military precision.</p>
+                    <h2 className="font-orbitron text-4xl font-bold uppercase tracking-wider text-white">THE SCOUT</h2>
+                    <p className="font-mono text-gray-400 mt-2">Recruit, Vet, and Delegate with military precision.</p>
                 </div>
             </div>
 
             {/* Tabs */}
-            <div className="flex gap-4 mb-8 border-b border-zinc-800 overflow-x-auto pb-1 scrollbar-hide">
-                <button onClick={() => setActiveTab('recruit')} className={`pb-4 px-4 text-sm font-bold uppercase tracking-wider transition-all border-b-2 whitespace-nowrap ${activeTab === 'recruit' ? 'border-indigo-500 text-indigo-400' : 'border-transparent text-zinc-500 hover:text-zinc-300'}`}>
+            <div className="flex gap-4 mb-8 border-b border-gray-700 overflow-x-auto pb-1 scrollbar-hide">
+                <button onClick={() => setActiveTab('recruit')} className={`pb-4 px-4 text-sm font-mono font-bold uppercase tracking-wider transition-all border-b-2 whitespace-nowrap ${activeTab === 'recruit' ? 'border-neon-purple text-neon-purple' : 'border-transparent text-gray-500 hover:text-gray-300'}`}>
                     <span className="flex items-center gap-2"><Briefcase size={16} /> Recruit</span>
                 </button>
-                <button onClick={() => setActiveTab('vet')} className={`pb-4 px-4 text-sm font-bold uppercase tracking-wider transition-all border-b-2 whitespace-nowrap ${activeTab === 'vet' ? 'border-indigo-500 text-indigo-400' : 'border-transparent text-zinc-500 hover:text-zinc-300'}`}>
+                <button onClick={() => setActiveTab('vet')} className={`pb-4 px-4 text-sm font-mono font-bold uppercase tracking-wider transition-all border-b-2 whitespace-nowrap ${activeTab === 'vet' ? 'border-neon-purple text-neon-purple' : 'border-transparent text-gray-500 hover:text-gray-300'}`}>
                     <span className="flex items-center gap-2"><Ear size={16} /> Vet</span>
                 </button>
-                <button onClick={() => setActiveTab('delegate')} className={`pb-4 px-4 text-sm font-bold uppercase tracking-wider transition-all border-b-2 whitespace-nowrap ${activeTab === 'delegate' ? 'border-indigo-500 text-indigo-400' : 'border-transparent text-zinc-500 hover:text-zinc-300'}`}>
+                <button onClick={() => setActiveTab('delegate')} className={`pb-4 px-4 text-sm font-mono font-bold uppercase tracking-wider transition-all border-b-2 whitespace-nowrap ${activeTab === 'delegate' ? 'border-neon-purple text-neon-purple' : 'border-transparent text-gray-500 hover:text-gray-300'}`}>
                     <span className="flex items-center gap-2"><ListTodo size={16} /> Delegate</span>
                 </button>
             </div>
@@ -115,23 +115,23 @@ export const TheScout: React.FC = () => {
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 h-full">
 
                 {/* Input Column */}
-                <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-6 h-fit">
+                <div className="bg-dark-card border-2 border-gray-700 rounded-sm p-6 h-fit">
                     {activeTab === 'recruit' && (
                         <div className="space-y-4">
-                            <h3 className="text-xs font-bold text-zinc-500 uppercase tracking-widest mb-4">Job Configuration</h3>
+                            <h3 className="text-xs font-orbitron font-bold text-neon-cyan uppercase tracking-widest mb-4">Job Configuration</h3>
                             <div>
-                                <label className="block text-xs text-zinc-400 font-bold mb-1">Role Title</label>
-                                <input type="text" value={roleTitle} onChange={(e) => setRoleTitle(e.target.value)} className="w-full bg-black border border-zinc-700 rounded p-3 text-white focus:border-indigo-500" placeholder="e.g. Social Media Manager" />
+                                <label className="block text-xs font-mono text-gray-400 font-bold mb-1">Role Title</label>
+                                <input type="text" value={roleTitle} onChange={(e) => setRoleTitle(e.target.value)} className="w-full bg-dark-bg border-2 border-gray-700 rounded-sm p-3 font-mono text-white placeholder:text-gray-500 focus:border-neon-purple focus:outline-none focus:shadow-[0_0_10px_rgba(179,0,255,0.3)]" placeholder="e.g. Social Media Manager" />
                             </div>
                             <div>
-                                <label className="block text-xs text-zinc-400 font-bold mb-1">Type</label>
-                                <select value={employmentType} onChange={(e) => setEmploymentType(e.target.value)} className="w-full bg-black border border-zinc-700 rounded p-3 text-white focus:border-indigo-500">
+                                <label className="block text-xs font-mono text-gray-400 font-bold mb-1">Type</label>
+                                <select value={employmentType} onChange={(e) => setEmploymentType(e.target.value)} className="w-full bg-dark-bg border-2 border-gray-700 rounded-sm p-3 font-mono text-white focus:border-neon-purple focus:outline-none focus:shadow-[0_0_10px_rgba(179,0,255,0.3)]">
                                     <option>Freelance / Contract</option>
                                     <option>Full-Time Employee</option>
                                     <option>Part-Time</option>
                                 </select>
                             </div>
-                            <button onClick={handleRecruit} disabled={loading || !roleTitle.trim()} className="w-full py-3 bg-indigo-600 hover:bg-indigo-500 text-white rounded font-bold uppercase tracking-widest transition-all disabled:opacity-50 mt-4">
+                            <button onClick={handleRecruit} disabled={loading || !roleTitle.trim()} className="w-full py-3 border-2 border-neon-purple bg-neon-purple/10 text-neon-purple hover:bg-neon-purple/20 hover:shadow-[0_0_15px_rgba(179,0,255,0.5)] rounded-sm font-mono font-bold uppercase tracking-widest transition-all disabled:opacity-30 disabled:cursor-not-allowed mt-4">
                                 {loading ? <Loader2 size={16} className="animate-spin mx-auto" /> : 'Generate JD'}
                             </button>
                         </div>
@@ -139,16 +139,16 @@ export const TheScout: React.FC = () => {
 
                     {activeTab === 'vet' && (
                         <div className="space-y-4">
-                            <h3 className="text-xs font-bold text-zinc-500 uppercase tracking-widest mb-4">Interview Setup</h3>
+                            <h3 className="text-xs font-orbitron font-bold text-neon-orange uppercase tracking-widest mb-4">Interview Setup</h3>
                             <div>
-                                <label className="block text-xs text-zinc-400 font-bold mb-1">Role</label>
-                                <input type="text" value={vetRole} onChange={(e) => setVetRole(e.target.value)} className="w-full bg-black border border-zinc-700 rounded p-3 text-white focus:border-indigo-500" placeholder="e.g. React Developer" />
+                                <label className="block text-xs font-mono text-gray-400 font-bold mb-1">Role</label>
+                                <input type="text" value={vetRole} onChange={(e) => setVetRole(e.target.value)} className="w-full bg-dark-bg border-2 border-gray-700 rounded-sm p-3 font-mono text-white placeholder:text-gray-500 focus:border-neon-purple focus:outline-none focus:shadow-[0_0_10px_rgba(179,0,255,0.3)]" placeholder="e.g. React Developer" />
                             </div>
                             <div>
-                                <label className="block text-xs text-zinc-400 font-bold mb-1">Primary Focus</label>
-                                <input type="text" value={vetFocus} onChange={(e) => setVetFocus(e.target.value)} className="w-full bg-black border border-zinc-700 rounded p-3 text-white focus:border-indigo-500" placeholder="e.g. Speed, Attention to Detail, Culture Fit" />
+                                <label className="block text-xs font-mono text-gray-400 font-bold mb-1">Primary Focus</label>
+                                <input type="text" value={vetFocus} onChange={(e) => setVetFocus(e.target.value)} className="w-full bg-dark-bg border-2 border-gray-700 rounded-sm p-3 font-mono text-white placeholder:text-gray-500 focus:border-neon-purple focus:outline-none focus:shadow-[0_0_10px_rgba(179,0,255,0.3)]" placeholder="e.g. Speed, Attention to Detail, Culture Fit" />
                             </div>
-                            <button onClick={handleVet} disabled={loading || !vetRole.trim()} className="w-full py-3 bg-indigo-600 hover:bg-indigo-500 text-white rounded font-bold uppercase tracking-widest transition-all disabled:opacity-50 mt-4">
+                            <button onClick={handleVet} disabled={loading || !vetRole.trim()} className="w-full py-3 border-2 border-neon-purple bg-neon-purple/10 text-neon-purple hover:bg-neon-purple/20 hover:shadow-[0_0_15px_rgba(179,0,255,0.5)] rounded-sm font-mono font-bold uppercase tracking-widest transition-all disabled:opacity-30 disabled:cursor-not-allowed mt-4">
                                 {loading ? <Loader2 size={16} className="animate-spin mx-auto" /> : 'Compile Questions'}
                             </button>
                         </div>
@@ -156,12 +156,12 @@ export const TheScout: React.FC = () => {
 
                     {activeTab === 'delegate' && (
                         <div className="space-y-4">
-                            <h3 className="text-xs font-bold text-zinc-500 uppercase tracking-widest mb-4">SOP Builder</h3>
+                            <h3 className="text-xs font-orbitron font-bold text-neon-lime uppercase tracking-widest mb-4">SOP Builder</h3>
                             <div>
-                                <label className="block text-xs text-zinc-400 font-bold mb-1">Task Name</label>
-                                <input type="text" value={taskName} onChange={(e) => setTaskName(e.target.value)} className="w-full bg-black border border-zinc-700 rounded p-3 text-white focus:border-indigo-500" placeholder="e.g. Weekly Newsletter Formatting" />
+                                <label className="block text-xs font-mono text-gray-400 font-bold mb-1">Task Name</label>
+                                <input type="text" value={taskName} onChange={(e) => setTaskName(e.target.value)} className="w-full bg-dark-bg border-2 border-gray-700 rounded-sm p-3 font-mono text-white placeholder:text-gray-500 focus:border-neon-purple focus:outline-none focus:shadow-[0_0_10px_rgba(179,0,255,0.3)]" placeholder="e.g. Weekly Newsletter Formatting" />
                             </div>
-                            <button onClick={handleDelegate} disabled={loading || !taskName.trim()} className="w-full py-3 bg-indigo-600 hover:bg-indigo-500 text-white rounded font-bold uppercase tracking-widest transition-all disabled:opacity-50 mt-4">
+                            <button onClick={handleDelegate} disabled={loading || !taskName.trim()} className="w-full py-3 border-2 border-neon-purple bg-neon-purple/10 text-neon-purple hover:bg-neon-purple/20 hover:shadow-[0_0_15px_rgba(179,0,255,0.5)] rounded-sm font-mono font-bold uppercase tracking-widest transition-all disabled:opacity-30 disabled:cursor-not-allowed mt-4">
                                 {loading ? <Loader2 size={16} className="animate-spin mx-auto" /> : 'Codify Process'}
                             </button>
                         </div>
@@ -169,16 +169,16 @@ export const TheScout: React.FC = () => {
                 </div>
 
                 {/* Output Column */}
-                <div className="lg:col-span-2 bg-zinc-950 border border-zinc-800 rounded-xl p-8 min-h-[500px] relative overflow-y-auto custom-scrollbar">
+                <div className="lg:col-span-2 bg-dark-bg border-2 border-gray-700 rounded-sm p-8 min-h-[500px] relative overflow-y-auto custom-scrollbar">
                     {!jd && !guide && !sop && !loading && (
-                        <div className="h-full flex flex-col items-center justify-center text-zinc-600 opacity-50">
+                        <div className="h-full flex flex-col items-center justify-center text-gray-600 opacity-50">
                             <Users size={64} strokeWidth={1} />
                             <p className="mt-4 font-mono uppercase tracking-widest text-sm">Awaiting Personnel Directives</p>
                         </div>
                     )}
 
                     {loading && (
-                        <div className="h-full flex flex-col items-center justify-center text-indigo-500">
+                        <div className="h-full flex flex-col items-center justify-center text-neon-purple">
                             <Loader2 size={48} className="animate-spin mb-4" />
                             <p className="font-mono uppercase tracking-widest animate-pulse">Consulting HR Matrix...</p>
                         </div>
@@ -186,38 +186,38 @@ export const TheScout: React.FC = () => {
 
                     {activeTab === 'recruit' && jd && (
                         <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
-                            <div className="flex justify-between items-start border-b border-zinc-800 pb-4">
+                            <div className="flex justify-between items-start border-b border-gray-700 pb-4">
                                 <div>
-                                    <h2 className="text-2xl font-bold text-white">{jd.roleTitle}</h2>
-                                    <p className="text-indigo-400 italic text-lg mt-2">"{jd.hook}"</p>
+                                    <h2 className="font-orbitron text-2xl font-bold text-white">{jd.roleTitle}</h2>
+                                    <p className="font-mono text-neon-purple italic text-lg mt-2">"{jd.hook}"</p>
                                 </div>
-                                <button onClick={() => copyToClipboard(JSON.stringify(jd, null, 2))} className="text-zinc-500 hover:text-white"><Copy size={16} /></button>
+                                <button onClick={() => copyToClipboard(JSON.stringify(jd, null, 2))} className="text-gray-500 hover:text-neon-cyan transition-colors"><Copy size={16} /></button>
                             </div>
 
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                                 <div>
-                                    <h4 className="text-xs font-bold text-zinc-500 uppercase tracking-widest mb-3">Responsibilities</h4>
+                                    <h4 className="text-xs font-orbitron font-bold text-neon-cyan uppercase tracking-widest mb-3">Responsibilities</h4>
                                     <ul className="space-y-2">
                                         {jd.responsibilities.map((item, i) => (
-                                            <li key={i} className="flex items-start gap-2 text-sm text-zinc-300"><span className="text-indigo-500">›</span> {item}</li>
+                                            <li key={i} className="flex items-start gap-2 text-sm font-mono text-gray-300"><span className="text-neon-cyan">›</span> {item}</li>
                                         ))}
                                     </ul>
                                 </div>
                                 <div>
-                                    <h4 className="text-xs font-bold text-zinc-500 uppercase tracking-widest mb-3">Requirements</h4>
+                                    <h4 className="text-xs font-orbitron font-bold text-neon-orange uppercase tracking-widest mb-3">Requirements</h4>
                                     <ul className="space-y-2">
                                         {jd.requirements.map((item, i) => (
-                                            <li key={i} className="flex items-start gap-2 text-sm text-zinc-300"><span className="text-indigo-500">•</span> {item}</li>
+                                            <li key={i} className="flex items-start gap-2 text-sm font-mono text-gray-300"><span className="text-neon-orange">•</span> {item}</li>
                                         ))}
                                     </ul>
                                 </div>
                             </div>
 
-                            <div className="bg-indigo-900/10 border border-indigo-500/20 p-4 rounded-lg">
-                                <h4 className="text-xs font-bold text-indigo-400 uppercase tracking-widest mb-3">The Perks (Why Us?)</h4>
+                            <div className="bg-neon-purple/10 border-2 border-neon-purple/20 p-4 rounded-sm">
+                                <h4 className="text-xs font-orbitron font-bold text-neon-purple uppercase tracking-widest mb-3">The Perks (Why Us?)</h4>
                                 <ul className="space-y-2">
                                     {jd.perks.map((item, i) => (
-                                        <li key={i} className="flex items-start gap-2 text-sm text-zinc-300"><CheckCircle2 size={14} className="text-indigo-500 mt-0.5" /> {item}</li>
+                                        <li key={i} className="flex items-start gap-2 text-sm font-mono text-gray-300"><CheckCircle2 size={14} className="text-neon-lime mt-0.5" /> {item}</li>
                                     ))}
                                 </ul>
                             </div>
@@ -226,22 +226,22 @@ export const TheScout: React.FC = () => {
 
                     {activeTab === 'vet' && guide && (
                         <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
-                            <h2 className="text-2xl font-bold text-white border-b border-zinc-800 pb-4">Interview Protocol: {guide.roleTitle}</h2>
+                            <h2 className="font-orbitron text-2xl font-bold text-white border-b border-gray-700 pb-4">Interview Protocol: {guide.roleTitle}</h2>
                             <div className="space-y-6">
                                 {guide.questions.map((q, i) => (
-                                    <div key={i} className="bg-zinc-900 border border-zinc-800 p-4 rounded-lg">
+                                    <div key={i} className="bg-dark-card border-2 border-gray-700 p-4 rounded-sm">
                                         <div className="flex items-start gap-3 mb-3">
-                                            <span className="bg-indigo-600 text-white w-6 h-6 flex items-center justify-center rounded font-bold text-xs shrink-0">{i + 1}</span>
-                                            <p className="text-white font-medium">{q.question}</p>
+                                            <span className="bg-neon-purple text-dark-bg w-6 h-6 flex items-center justify-center rounded-sm font-mono font-bold text-xs shrink-0">{i + 1}</span>
+                                            <p className="text-white font-mono font-medium">{q.question}</p>
                                         </div>
                                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm pl-9">
-                                            <div className="text-emerald-400">
-                                                <span className="font-bold text-xs uppercase block mb-1 text-emerald-600">Green Flag</span>
-                                                {q.whatToLookFor}
+                                            <div className="text-neon-lime">
+                                                <span className="font-orbitron font-bold text-xs uppercase block mb-1 text-neon-lime">Green Flag</span>
+                                                <span className="font-mono text-gray-300">{q.whatToLookFor}</span>
                                             </div>
-                                            <div className="text-red-400">
-                                                <span className="font-bold text-xs uppercase block mb-1 text-red-600">Red Flag</span>
-                                                {q.redFlag}
+                                            <div className="text-neon-magenta">
+                                                <span className="font-orbitron font-bold text-xs uppercase block mb-1 text-neon-magenta">Red Flag</span>
+                                                <span className="font-mono text-gray-300">{q.redFlag}</span>
                                             </div>
                                         </div>
                                     </div>
@@ -252,31 +252,31 @@ export const TheScout: React.FC = () => {
 
                     {activeTab === 'delegate' && sop && (
                         <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
-                            <div className="border-b border-zinc-800 pb-4">
-                                <h2 className="text-2xl font-bold text-white">{sop.taskName}</h2>
-                                <p className="text-zinc-400 text-sm mt-1">Goal: {sop.goal}</p>
+                            <div className="border-b border-gray-700 pb-4">
+                                <h2 className="font-orbitron text-2xl font-bold text-white">{sop.taskName}</h2>
+                                <p className="font-mono text-gray-400 text-sm mt-1">Goal: {sop.goal}</p>
                             </div>
 
                             <div className="space-y-4">
                                 {sop.steps.map((step, i) => (
                                     <div key={i} className="flex gap-4">
                                         <div className="flex flex-col items-center">
-                                            <div className="w-8 h-8 rounded-full bg-zinc-800 border border-zinc-700 flex items-center justify-center font-bold text-zinc-400">{step.step}</div>
-                                            {i < sop.steps.length - 1 && <div className="w-0.5 flex-1 bg-zinc-800 my-2"></div>}
+                                            <div className="w-8 h-8 rounded-sm bg-dark-card border-2 border-gray-700 flex items-center justify-center font-mono font-bold text-neon-cyan">{step.step}</div>
+                                            {i < sop.steps.length - 1 && <div className="w-0.5 flex-1 bg-gray-700 my-2"></div>}
                                         </div>
                                         <div className="pb-4">
-                                            <h4 className="text-white font-bold mb-1">{step.action}</h4>
-                                            <p className="text-sm text-zinc-400 leading-relaxed">{step.details}</p>
+                                            <h4 className="font-orbitron text-white font-bold mb-1">{step.action}</h4>
+                                            <p className="text-sm font-mono text-gray-400 leading-relaxed">{step.details}</p>
                                         </div>
                                     </div>
                                 ))}
                             </div>
 
-                            <div className="bg-emerald-900/10 border border-emerald-500/20 p-4 rounded-lg flex items-start gap-3">
-                                <CheckCircle2 className="text-emerald-500 mt-0.5" size={18} />
+                            <div className="bg-neon-lime/10 border-2 border-neon-lime/20 p-4 rounded-sm flex items-start gap-3">
+                                <CheckCircle2 className="text-neon-lime mt-0.5" size={18} />
                                 <div>
-                                    <h4 className="text-xs font-bold text-emerald-500 uppercase tracking-widest mb-1">Definition of Done</h4>
-                                    <p className="text-sm text-zinc-300">{sop.successCriteria}</p>
+                                    <h4 className="text-xs font-orbitron font-bold text-neon-lime uppercase tracking-widest mb-1">Definition of Done</h4>
+                                    <p className="text-sm font-mono text-gray-300">{sop.successCriteria}</p>
                                 </div>
                             </div>
                         </div>

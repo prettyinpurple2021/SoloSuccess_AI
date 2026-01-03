@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Megaphone, Repeat, Twitter, Linkedin, Video, Mail, Copy, Check, Loader2, FileText, Map, Lightbulb, Target, Hash } from 'lucide-react';
 import { geminiService } from '../services/geminiService';
@@ -6,6 +5,11 @@ import { ContentAmplification, SocialStrategy } from '../types';
 import { addXP, showToast } from '../services/gameService';
 import { soundService } from '../services/soundService';
 import { storageService } from '../services/storageService';
+
+/**
+ * TheAmplifier component following Cyberpunk Design System v3
+ * Content distribution and social media command center
+ */
 
 export const TheAmplifier: React.FC = () => {
     const [mode, setMode] = useState<'multiplier' | 'strategy'>('multiplier');
@@ -87,26 +91,26 @@ export const TheAmplifier: React.FC = () => {
     return (
         <div className="min-h-[85vh] flex flex-col animate-in fade-in duration-500">
             {/* Header */}
-            <div className="mb-6 flex items-end justify-between border-b border-zinc-800 pb-6">
+            <div className="mb-6 flex items-end justify-between border-b border-gray-700 pb-6">
                 <div>
-                    <div className="flex items-center gap-2 text-pink-500 font-mono text-xs font-bold uppercase tracking-widest mb-2">
+                    <div className="flex items-center gap-2 text-neon-magenta font-mono text-xs font-bold uppercase tracking-widest mb-2">
                         <Megaphone size={14} /> Viral Engineering
                     </div>
-                    <h2 className="text-4xl font-black text-white tracking-tighter">THE AMPLIFIER</h2>
-                    <p className="text-zinc-400 mt-2">Content distribution and social media command center.</p>
+                    <h2 className="font-orbitron text-4xl font-bold uppercase tracking-wider text-white">THE AMPLIFIER</h2>
+                    <p className="font-mono text-gray-400 mt-2">Content distribution and social media command center.</p>
                 </div>
 
                 {/* Mode Switcher */}
-                <div className="bg-zinc-900 p-1 rounded-lg border border-zinc-800 flex">
+                <div className="bg-dark-card p-1 rounded-sm border-2 border-gray-700 flex">
                     <button
                         onClick={() => setMode('multiplier')}
-                        className={`px-4 py-2 rounded text-xs font-bold uppercase tracking-wider transition-all ${mode === 'multiplier' ? 'bg-pink-600 text-white shadow-lg' : 'text-zinc-500 hover:text-white'}`}
+                        className={`px-4 py-2 rounded-sm text-xs font-mono font-bold uppercase tracking-wider transition-all ${mode === 'multiplier' ? 'bg-neon-magenta text-dark-bg shadow-[0_0_10px_rgba(255,0,110,0.5)]' : 'text-gray-500 hover:text-white'}`}
                     >
                         Multiplier
                     </button>
                     <button
                         onClick={() => setMode('strategy')}
-                        className={`px-4 py-2 rounded text-xs font-bold uppercase tracking-wider transition-all ${mode === 'strategy' ? 'bg-pink-600 text-white shadow-lg' : 'text-zinc-500 hover:text-white'}`}
+                        className={`px-4 py-2 rounded-sm text-xs font-mono font-bold uppercase tracking-wider transition-all ${mode === 'strategy' ? 'bg-neon-magenta text-dark-bg shadow-[0_0_10px_rgba(255,0,110,0.5)]' : 'text-gray-500 hover:text-white'}`}
                     >
                         Strategy Engine
                     </button>

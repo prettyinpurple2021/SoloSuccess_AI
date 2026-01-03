@@ -6,6 +6,11 @@ import { addXP, showToast } from '../services/gameService';
 import { soundService } from '../services/soundService';
 import { storageService } from '../services/storageService';
 
+/**
+ * TheArchitect component following Cyberpunk Design System v3
+ * Transform ideas into technical requirements and PRDs
+ */
+
 export const TheArchitect: React.FC = () => {
     const [idea, setIdea] = useState('');
     const [specs, setSpecs] = useState<ProductSpec[]>([]);
@@ -101,13 +106,13 @@ export const TheArchitect: React.FC = () => {
     return (
         <div className="min-h-[85vh] flex flex-col animate-in fade-in duration-500">
             {/* Header */}
-            <div className="mb-6 flex items-end justify-between border-b border-zinc-800 pb-6">
+            <div className="mb-6 flex items-end justify-between border-b border-gray-700 pb-6">
                 <div>
-                    <div className="flex items-center gap-2 text-blue-300 font-mono text-xs font-bold uppercase tracking-widest mb-2">
+                    <div className="flex items-center gap-2 text-neon-cyan font-mono text-xs font-bold uppercase tracking-widest mb-2">
                         <Box size={14} /> Product Specification
                     </div>
-                    <h2 className="text-4xl font-black text-white tracking-tighter">THE ARCHITECT</h2>
-                    <p className="text-zinc-400 mt-2">Transform ideas into technical requirements and PRDs.</p>
+                    <h2 className="font-orbitron text-4xl font-bold uppercase tracking-wider text-white">THE ARCHITECT</h2>
+                    <p className="font-mono text-gray-400 mt-2">Transform ideas into technical requirements and PRDs.</p>
                 </div>
             </div>
 

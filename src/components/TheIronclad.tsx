@@ -1,10 +1,14 @@
-
 import React, { useState } from 'react';
 import { Scale, FileText, ShieldAlert, CheckCircle2, PenTool, AlertTriangle, Loader2, Copy, Check, Hand } from 'lucide-react';
 import { geminiService } from '../services/geminiService';
 import { LegalDocType, LegalAnalysis } from '../types';
 import { addXP, showToast } from '../services/gameService';
 import { soundService } from '../services/soundService';
+
+/**
+ * TheIronclad component following Cyberpunk Design System v3
+ * Automated legal counsel provided by Lumi
+ */
 
 export const TheIronclad: React.FC = () => {
     const [activeTab, setActiveTab] = useState<'draft' | 'review'>('draft');
@@ -109,27 +113,27 @@ export const TheIronclad: React.FC = () => {
     return (
         <div className="min-h-[85vh] flex flex-col animate-in fade-in duration-500">
             {/* Header */}
-            <div className="mb-6 flex items-end justify-between border-b border-zinc-800 pb-6">
+            <div className="mb-6 flex items-end justify-between border-b border-gray-700 pb-6">
                 <div>
-                    <div className="flex items-center gap-2 text-violet-400 font-mono text-xs font-bold uppercase tracking-widest mb-2">
+                    <div className="flex items-center gap-2 text-neon-purple font-mono text-xs font-bold uppercase tracking-widest mb-2">
                         <Scale size={14} /> Legal & Compliance
                     </div>
-                    <h2 className="text-4xl font-black text-white tracking-tighter">THE IRONCLAD</h2>
-                    <p className="text-zinc-400 mt-2">Automated legal counsel provided by <span className="text-violet-400 font-bold">Lumi</span>.</p>
+                    <h2 className="font-orbitron text-4xl font-bold uppercase tracking-wider text-white">THE IRONCLAD</h2>
+                    <p className="font-mono text-gray-400 mt-2">Automated legal counsel provided by <span className="text-neon-purple font-bold">Lumi</span>.</p>
                 </div>
             </div>
 
             {/* Tabs */}
-            <div className="flex gap-4 mb-8 border-b border-zinc-800 overflow-x-auto pb-1 scrollbar-hide">
+            <div className="flex gap-4 mb-8 border-b border-gray-700 overflow-x-auto pb-1 scrollbar-hide">
                 <button
                     onClick={() => setActiveTab('draft')}
-                    className={`pb-4 px-4 text-sm font-bold uppercase tracking-wider transition-all border-b-2 whitespace-nowrap ${activeTab === 'draft' ? 'border-violet-500 text-violet-400' : 'border-transparent text-zinc-500 hover:text-zinc-300'}`}
+                    className={`pb-4 px-4 text-sm font-mono font-bold uppercase tracking-wider transition-all border-b-2 whitespace-nowrap ${activeTab === 'draft' ? 'border-neon-purple text-neon-purple' : 'border-transparent text-gray-500 hover:text-gray-300'}`}
                 >
                     <span className="flex items-center gap-2"><PenTool size={16} /> Drafter</span>
                 </button>
                 <button
                     onClick={() => setActiveTab('review')}
-                    className={`pb-4 px-4 text-sm font-bold uppercase tracking-wider transition-all border-b-2 whitespace-nowrap ${activeTab === 'review' ? 'border-violet-500 text-violet-400' : 'border-transparent text-zinc-500 hover:text-zinc-300'}`}
+                    className={`pb-4 px-4 text-sm font-mono font-bold uppercase tracking-wider transition-all border-b-2 whitespace-nowrap ${activeTab === 'review' ? 'border-neon-purple text-neon-purple' : 'border-transparent text-gray-500 hover:text-gray-300'}`}
                 >
                     <span className="flex items-center gap-2"><ShieldAlert size={16} /> Loophole Scanner</span>
                 </button>
