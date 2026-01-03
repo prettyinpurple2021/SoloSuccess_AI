@@ -509,7 +509,8 @@ export async function GET(request: NextRequest) {
 
     return NextResponse.json(responseData)
   } catch (error) {
-    logError('Dashboard API error:', error instanceof Error ? error : undefined, {
+    logError('Dashboard API error:', error instanceof Error ? error : undefined)
+    logError('Error details:', {
       message: error instanceof Error ? error.message : 'Unknown error',
       stack: error instanceof Error ? error.stack : undefined,
       name: error instanceof Error ? error.name : undefined

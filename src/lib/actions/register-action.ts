@@ -69,10 +69,10 @@ export async function registerUser(prevState: any, formData: FormData) {
       date_of_birth: new Date(dateOfBirth),
     });
   } catch (error) {
-    logError('Registration error: Failed to create user', error instanceof Error ? error : undefined, { 
+    logError('Registration error: Failed to create user', { 
       email,
       action: 'register_user'
-    });
+    }, error instanceof Error ? error : undefined);
     return {
       error: 'Database error: Failed to create user.',
     };
