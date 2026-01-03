@@ -19,10 +19,10 @@ function getSql() {
 // Force dynamic rendering
 export const dynamic = 'force-dynamic'
 
-// JWT authentication helper
+// Authentication helper - supports both JWT tokens and Better Auth sessions
 async function authenticateRequest(request: NextRequest) {
   try {
-    // Get token from Authorization header or cookie
+    // Try JWT token first (from Authorization header or auth_token cookie)
     const authHeader = request.headers.get('authorization')
     const cookieToken = request.cookies.get('auth_token')?.value
     
@@ -34,38 +34,86 @@ async function authenticateRequest(request: NextRequest) {
       token = cookieToken
     }
     
-    if (!token) {
-      logError('Dashboard API: No authorization token found')
-      return { user: null, error: 'No authorization found' }
+    // If we have a JWT token, verify it
+    if (token) {
+      if (!process.env.JWT_SECRET) {
+        logError('Dashboard API: JWT_SECRET is not set')
+        return { user: null, error: 'JWT secret not configured' }
+      }
+      
+      try {
+        const secret = new TextEncoder().encode(process.env.JWT_SECRET!)
+        const { payload: decoded } = await jose.jwtVerify(token, secret)
+        logInfo('Dashboard API: JWT token verified successfully', { userId: decoded.userId })
+        
+        return { 
+          user: {
+            id: decoded.userId as string,
+            email: decoded.email as string,
+            full_name: (decoded.full_name as string) || null,
+            avatar_url: null,
+            subscription_tier: 'free',
+            level: 1,
+            total_points: 0,
+            current_streak: 0,
+            wellness_score: 50,
+            focus_minutes: 0,
+            onboarding_completed: false
+          }, 
+          error: null 
+        }
+      } catch (jwtError) {
+        // JWT verification failed, try Better Auth session
+        logInfo('Dashboard API: JWT verification failed, trying Better Auth session')
+      }
     }
     
-    if (!process.env.JWT_SECRET) {
-      logError('Dashboard API: JWT_SECRET is not set')
-      return { user: null, error: 'JWT secret not configured' }
+    // Try Better Auth session (check for NextAuth session cookie)
+    const nextAuthSessionCookie = request.cookies.get('authjs.session-token')?.value || 
+                                   request.cookies.get('__Secure-authjs.session-token')?.value
+    
+    if (nextAuthSessionCookie) {
+      // For Better Auth, we need to get user from database using session
+      // Since we're in Edge runtime, we'll fetch user from the session API
+      try {
+        const sessionResponse = await fetch(`${request.nextUrl.origin}/api/auth/session`, {
+          headers: {
+            'Cookie': request.headers.get('cookie') || '',
+          },
+        })
+        
+        if (sessionResponse.ok) {
+          const sessionData = await sessionResponse.json()
+          if (sessionData?.user?.id) {
+            logInfo('Dashboard API: Better Auth session verified successfully', { userId: sessionData.user.id })
+            return {
+              user: {
+                id: sessionData.user.id,
+                email: sessionData.user.email || '',
+                full_name: sessionData.user.full_name || sessionData.user.name || null,
+                avatar_url: sessionData.user.avatar_url || sessionData.user.image || null,
+                subscription_tier: sessionData.user.subscription_tier || 'free',
+                level: 1,
+                total_points: 0,
+                current_streak: 0,
+                wellness_score: 50,
+                focus_minutes: 0,
+                onboarding_completed: sessionData.user.onboarding_completed || false
+              },
+              error: null
+            }
+          }
+        }
+      } catch (sessionError) {
+        logInfo('Dashboard API: Better Auth session check failed', { error: sessionError })
+      }
     }
     
-    const secret = new TextEncoder().encode(process.env.JWT_SECRET!)
-    const { payload: decoded } = await jose.jwtVerify(token, secret)
-    logInfo('Dashboard API: JWT token verified successfully', { userId: decoded.userId })
-    
-    return { 
-      user: {
-        id: decoded.userId,
-        email: decoded.email,
-        full_name: decoded.full_name || null,
-        avatar_url: null,
-        subscription_tier: 'free',
-        level: 1,
-        total_points: 0,
-        current_streak: 0,
-        wellness_score: 50,
-        focus_minutes: 0,
-        onboarding_completed: false
-      }, 
-      error: null 
-    }
+    // No valid authentication found
+    logError('Dashboard API: No authorization token or session found')
+    return { user: null, error: 'No authorization found' }
   } catch (error) {
-    logError('Dashboard API: Authentication error:', error as any)
+    logError('Dashboard API: Authentication error:', undefined, error instanceof Error ? error : undefined)
     return { user: null, error: 'Authentication failed' }
   }
 }
@@ -461,12 +509,12 @@ export async function GET(request: NextRequest) {
 
     return NextResponse.json(responseData)
   } catch (error) {
-    logError('Dashboard API error:', error as any)
+    logError('Dashboard API error:', undefined, error instanceof Error ? error : undefined)
     logError('Error details:', {
       message: error instanceof Error ? error.message : 'Unknown error',
       stack: error instanceof Error ? error.stack : undefined,
       name: error instanceof Error ? error.name : undefined
-    })
+    }, undefined)
     return NextResponse.json(
       { 
         error: 'Internal server error',

@@ -144,12 +144,12 @@ export default function DashboardPage() {
         window.location.reload()
       } else {
         const errorData = await response.json()
-        logError('Onboarding completion failed:', errorData)
+        logError('Onboarding completion failed:', errorData, undefined)
         // Still close onboarding to prevent user being stuck
         setShowOnboarding(false)
       }
     } catch (error) {
-      logError('Error saving onboarding data:', error)
+      logError('Error saving onboarding data:', undefined, error instanceof Error ? error : undefined)
       track('error_occurred', {
         error: 'onboarding_completion_failed',
         details: error instanceof Error ? error.message : 'Unknown error'

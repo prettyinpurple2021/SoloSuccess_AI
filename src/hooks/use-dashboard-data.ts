@@ -125,11 +125,47 @@ export function useDashboardData() {
       
       if (!response.ok) {
         if (response.status === 401) {
-          // Token expired or invalid
+          // Token expired or invalid - check if we have a Better Auth session
           localStorage.removeItem('authToken')
+          
+          // Check for Better Auth session before redirecting
+          try {
+            const sessionResponse = await fetch('/api/auth/session', {
+              credentials: 'include',
+              cache: 'no-cache',
+            })
+            
+            if (sessionResponse.ok) {
+              const sessionData = await sessionResponse.json()
+              if (sessionData?.user) {
+                // We have a Better Auth session, retry the dashboard request
+                // The cookies should be sent automatically
+                const retryResponse = await fetch('/api/dashboard', {
+                  method: 'GET',
+                  headers: {
+                    'Content-Type': 'application/json',
+                  },
+                  credentials: 'include',
+                  cache: 'no-cache',
+                })
+                
+                if (retryResponse.ok) {
+                  const retryData = await retryResponse.json()
+                  setData(retryData)
+                  setLastUpdated(new Date())
+                  return
+                }
+              }
+            }
+          } catch (sessionError) {
+            // Session check failed, proceed with redirect
+            logError('Session check failed:', undefined, sessionError instanceof Error ? sessionError : undefined)
+          }
+          
+          // No valid session found, redirect to login
           setError('Authentication expired. Please sign in again.')
           // Only redirect if we're not already on the login page
-          if (window.location.pathname !== '/login') {
+          if (window.location.pathname !== '/login' && window.location.pathname !== '/signup') {
             window.location.href = '/login'
           }
           return
@@ -141,7 +177,7 @@ export function useDashboardData() {
       setData(dashboardData)
       setLastUpdated(new Date())
     } catch (err) {
-      logError('Error fetching dashboard data:', err)
+      logError('Error fetching dashboard data:', undefined, err instanceof Error ? err : undefined)
       setError(err instanceof Error ? err.message : 'Failed to fetch dashboard data')
     } finally {
       setLoading(false)
