@@ -494,31 +494,7 @@ export default function TemplatesDashboard() {
                           <DialogHeader>
                             <DialogTitle className="text-white font-orbitron">Edit Template</DialogTitle>
                           </DialogHeader>
-                          <div className="space-y-4">
-                            <div className="space-y-2">
-                              <label className="text-sm text-neon-cyan font-mono uppercase">Title</label>
-                              <Input
-                                defaultValue={template.title}
-                                onChange={(e) => template.title = e.target.value} // Note: This is a quick hack for the dialog, ideally use state
-                                className="bg-dark-bg border-neon-cyan/30 text-white focus:border-neon-cyan rounded-none font-mono"
-                              />
-                            </div>
-                            <div className="space-y-2">
-                              <label className="text-sm text-neon-cyan font-mono uppercase">Description</label>
-                              <Input
-                                defaultValue={template.description}
-                                onChange={(e) => template.description = e.target.value}
-                                className="bg-dark-bg border-neon-cyan/30 text-white focus:border-neon-cyan rounded-none font-mono"
-                              />
-                            </div>
-                            <CyberButton
-                              onClick={() => handleEditTemplate(template.id, { title: template.title, description: template.description })}
-                              className="w-full bg-neon-purple hover:bg-neon-purple/90 text-white"
-                              variant="purple"
-                            >
-                              Save Changes
-                            </CyberButton>
-                          </div>
+                          <EditTemplateForm template={template} onSave={handleEditTemplate} />
                         </DialogContent>
                       </Dialog>
 
@@ -555,6 +531,39 @@ export default function TemplatesDashboard() {
           </div>
         )}
       </div>
+    </div>
+  )
+}
+
+function EditTemplateForm({ template, onSave }: { template: any, onSave: (id: string, data: any) => void }) {
+  const [title, setTitle] = useState(template.title)
+  const [description, setDescription] = useState(template.description)
+
+  return (
+    <div className="space-y-4">
+      <div className="space-y-2">
+        <label className="text-sm text-neon-cyan font-mono uppercase">Title</label>
+        <Input
+          value={title}
+          onChange={(e) => setTitle(e.target.value)}
+          className="bg-dark-bg border-neon-cyan/30 text-white focus:border-neon-cyan rounded-none font-mono"
+        />
+      </div>
+      <div className="space-y-2">
+        <label className="text-sm text-neon-cyan font-mono uppercase">Description</label>
+        <Input
+          value={description}
+          onChange={(e) => setDescription(e.target.value)}
+          className="bg-dark-bg border-neon-cyan/30 text-white focus:border-neon-cyan rounded-none font-mono"
+        />
+      </div>
+      <CyberButton
+        onClick={() => onSave(template.id, { title, description })}
+        className="w-full bg-neon-purple hover:bg-neon-purple/90 text-white"
+        variant="purple"
+      >
+        Save Changes
+      </CyberButton>
     </div>
   )
 }

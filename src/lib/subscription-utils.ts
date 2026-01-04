@@ -14,6 +14,8 @@ export interface SubscriptionInfo {
     hasAPIAccess: boolean
     hasCustomBranding: boolean
   }
+  usage_percentage?: number
+  current_period_end?: string
 }
 
 /**
@@ -21,10 +23,10 @@ export interface SubscriptionInfo {
  */
 export async function getUserSubscription(userId: string): Promise<SubscriptionInfo> {
   try {
-    const result = await getSql().query(
-      'SELECT subscription_tier, subscription_status FROM users WHERE id = $1',
-      [userId]
-    )
+    const sql = getSql();
+    const result = await sql`
+      SELECT subscription_tier, subscription_status FROM users WHERE id = ${userId}
+    ` as any[];
 
     if (result.length === 0) {
       throw new Error('User not found')

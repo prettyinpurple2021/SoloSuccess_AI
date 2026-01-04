@@ -7,6 +7,7 @@ import React, { useState, useEffect } from "react"
 import { HudBorder } from "@/components/cyber/HudBorder"
 import { CyberButton } from "@/components/cyber/CyberButton"
 import { Badge} from "@/components/ui/badge"
+import { AgentAvatar } from "@/components/agents/AgentAvatar"
 import { Textarea} from "@/components/ui/textarea"
 import { ScrollArea} from "@/components/ui/scroll-area"
 import { 
@@ -440,12 +441,11 @@ export default function AgentsPage() {
                       }`}
                     >
                       <div className="flex items-center gap-3">
-                        <div 
-                          className="w-10 h-10 rounded-none border border-current flex items-center justify-center text-white font-bold agent-avatar"
-                          style={{ color: agent.accent_color, borderColor: agent.accent_color }}
-                        >
-                          {agent.display_name.charAt(0)}
-                        </div>
+                        <AgentAvatar 
+                          displayName={agent.display_name}
+                          accentColor={agent.accent_color}
+                          size="md"
+                        />
                         <div className="flex-1 min-w-0">
                           <h3 className="font-semibold text-sm text-white font-orbitron">{agent.display_name}</h3>
                           <p className="text-xs text-gray-400 truncate font-mono">{agent.description}</p>
@@ -479,12 +479,11 @@ export default function AgentsPage() {
                   <div className="p-6 border-b border-neon-cyan/30">
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-3">
-                        <div 
-                          className="w-10 h-10 rounded-none border border-current flex items-center justify-center text-white font-bold agent-avatar"
-                          style={{ color: selectedAgent.accent_color, borderColor: selectedAgent.accent_color }}
-                        >
-                          {selectedAgent.display_name.charAt(0)}
-                        </div>
+                        <AgentAvatar 
+                          displayName={selectedAgent.display_name}
+                          accentColor={selectedAgent.accent_color}
+                          size="md"
+                        />
                         <div>
                           <h2 className="text-xl font-orbitron font-bold text-white flex items-center gap-2">
                             {selectedAgent.display_name}
@@ -516,11 +515,13 @@ export default function AgentsPage() {
                     <ScrollArea className="h-[calc(100vh-400px)] p-4">
                       {messages.length === 0 ? (
                         <div className="text-center py-12">
-                          <div 
-                            className="w-16 h-16 rounded-none border-2 border-current flex items-center justify-center text-white text-2xl font-bold mx-auto mb-4 agent-avatar"
-                            style={{ color: selectedAgent.accent_color, borderColor: selectedAgent.accent_color }}
-                          >
-                            {selectedAgent.display_name.charAt(0)}
+                          <div className="flex justify-center mb-4">
+                            <AgentAvatar 
+                              displayName={selectedAgent.display_name}
+                              accentColor={selectedAgent.accent_color}
+                              size="xl"
+                              className="w-16 h-16 text-2xl"
+                            />
                           </div>
                           <h3 className="text-lg font-orbitron font-bold text-white mb-2">Chat with {selectedAgent.display_name}</h3>
                           <p className="text-gray-400 mb-4 font-mono">{selectedAgent.personality}</p>

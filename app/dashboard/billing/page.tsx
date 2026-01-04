@@ -30,13 +30,14 @@ import { NeuralNetworkCanvas } from '@/components/cyber/NeuralNetworkCanvas'
 import { HudBorder } from "@/components/cyber/HudBorder"
 import { CyberButton } from "@/components/cyber/CyberButton"
 import { Badge } from "@/components/ui/badge"
+import { SubscriptionInfo } from "@/lib/subscription-utils"
 import Link from 'next/link'
 
 export default function BillingPage() {
   const { user, loading } = useAuth()
   const { toast } = useToast()
   const [isLoading, setIsLoading] = useState(false)
-  const [subscription, setSubscription] = useState<any>(null)
+  const [subscription, setSubscription] = useState<SubscriptionInfo | null>(null)
 
   useEffect(() => {
     const fetchSubscription = async () => {
@@ -169,7 +170,11 @@ export default function BillingPage() {
                 <div className="flex items-center gap-4">
                   <div className="text-right mr-4">
                     <p className="text-sm text-gray-400 mb-1 font-mono">Current Usage</p>
-                    <p className="text-xl font-bold text-white font-orbitron">85%</p>
+                    <p className="text-xl font-bold text-white font-orbitron">
+                      {subscription?.usage_percentage !== undefined 
+                        ? `${Math.round(subscription.usage_percentage)}%` 
+                        : '—'}
+                    </p>
                   </div>
                   <CyberButton size="lg" onClick={() => handleUpgrade('dominator')} variant="purple">
                     Upgrade Plan

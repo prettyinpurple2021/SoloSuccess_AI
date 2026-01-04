@@ -29,6 +29,7 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 import { HudBorder } from "@/components/cyber/HudBorder"
+import { useToast } from "@/hooks/use-toast"
 
 interface Document {
   id: string
@@ -64,6 +65,7 @@ interface Folder {
 }
 
 export default function BriefcasePage() {
+  const { toast } = useToast()
   const [documents, setDocuments] = useState<Document[]>([])
   const [folders, setFolders] = useState<Folder[]>([])
   const [loading, setLoading] = useState(true)
@@ -95,6 +97,36 @@ export default function BriefcasePage() {
     loadDocuments()
     loadFolders()
   }, [])
+
+  const handleShare = (doc: any) => {
+    if (typeof navigator !== 'undefined' && navigator.share) {
+      navigator.share({
+        title: doc.name,
+        text: `Check out this file: ${doc.name}`,
+        url: window.location.href,
+      }).catch((error) => console.log('Error sharing', error));
+    } else {
+      navigator.clipboard.writeText(window.location.href)
+      toast({
+        title: "Link Copied",
+        description: "Link copied to clipboard",
+        className: "bg-dark-card border-neon-cyan text-white"
+      })
+    }
+  }
+
+  const handleToggleFavorite = (doc: any) => {
+    // Optimistic update logic
+    const newStatus = !doc.isFavorite
+    // Update local state for immediate feedback
+    setDocuments(prev => prev.map(d => d.id === doc.id ? { ...d, isFavorite: newStatus } : d))
+    
+    toast({
+      title: newStatus ? "Added to Favorites" : "Removed from Favorites",
+      description: `${doc.name} has been ${newStatus ? 'added to' : 'removed from'} your favorites.`,
+      className: "bg-dark-card border-neon-cyan text-white"
+    })
+  }
 
   const loadDocuments = async () => {
     try {
@@ -344,7 +376,7 @@ export default function BriefcasePage() {
         </select>
         <div className="flex items-center gap-2">
           <CyberButton
-            variant={viewMode === 'grid' ? 'purple' : 'gray'}
+            variant={viewMode === 'grid' ? 'purple' : 'ghost'}
             size="sm"
             onClick={() => setViewMode('grid')}
             className={viewMode === 'grid' ? 'bg-neon-purple text-white border-neon-purple' : 'border-neon-cyan/30 text-white hover:bg-neon-cyan/10 hover:text-neon-cyan'}
@@ -352,7 +384,7 @@ export default function BriefcasePage() {
             <Grid3X3 className="w-4 h-4" />
           </CyberButton>
           <CyberButton
-            variant={viewMode === 'list' ? 'purple' : 'gray'}
+            variant={viewMode === 'list' ? 'purple' : 'ghost'}
             size="sm"
             onClick={() => setViewMode('list')}
             className={viewMode === 'list' ? 'bg-neon-purple text-white border-neon-purple' : 'border-neon-cyan/30 text-white hover:bg-neon-cyan/10 hover:text-neon-cyan'}
@@ -435,12 +467,12 @@ export default function BriefcasePage() {
                               <Download className="w-4 h-4 mr-2" />
                               Download
                             </DropdownMenuItem>
-                            <DropdownMenuItem className="text-white hover:bg-neon-cyan/10 focus:bg-neon-cyan/10 cursor-pointer font-mono">
+                            <DropdownMenuItem onClick={() => handleShare(doc)} className="text-white hover:bg-neon-cyan/10 focus:bg-neon-cyan/10 cursor-pointer font-mono">
                               <Share className="w-4 h-4 mr-2" />
                               Share
                             </DropdownMenuItem>
                             <DropdownMenuSeparator className="bg-neon-cyan/30" />
-                            <DropdownMenuItem className="text-white hover:bg-neon-cyan/10 focus:bg-neon-cyan/10 cursor-pointer font-mono">
+                            <DropdownMenuItem onClick={() => handleToggleFavorite(doc)} className="text-white hover:bg-neon-cyan/10 focus:bg-neon-cyan/10 cursor-pointer font-mono">
                               <Star className="w-4 h-4 mr-2" />
                               {doc.isFavorite ? 'Remove from Favorites' : 'Add to Favorites'}
                             </DropdownMenuItem>
