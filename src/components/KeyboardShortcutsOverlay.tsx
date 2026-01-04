@@ -39,21 +39,21 @@ export const KeyboardShortcutsOverlay: React.FC<KeyboardShortcutsOverlayProps> =
 
     return (
         <div className="fixed inset-0 bg-black/80 backdrop-blur-md z-50 flex items-center justify-center p-4 animate-in fade-in duration-200">
-            <div className="bg-zinc-900 border border-zinc-800 rounded-2xl max-w-2xl w-full max-h-[90vh] overflow-hidden shadow-2xl animate-in zoom-in-95 duration-200">
+            <div className="bg-dark-card border-2 border-neon-cyan/50 rounded-sm max-w-2xl w-full max-h-[90vh] overflow-hidden shadow-[0_0_30px_rgba(11,228,236,0.3)] animate-in zoom-in-95 duration-200">
                 {/* Header */}
-                <div className="p-6 border-b border-zinc-800 flex items-center justify-between bg-gradient-to-r from-indigo-500/10 to-purple-500/10">
+                <div className="p-6 border-b-2 border-gray-700 flex items-center justify-between bg-gradient-to-r from-neon-purple/10 to-neon-cyan/10">
                     <div className="flex items-center gap-3">
-                        <div className="w-10 h-10 bg-indigo-500/20 rounded-lg flex items-center justify-center">
-                            <HelpCircle className="text-indigo-400" size={20} />
+                        <div className="w-10 h-10 bg-neon-purple/20 rounded-sm flex items-center justify-center">
+                            <HelpCircle className="text-neon-purple" size={20} />
                         </div>
                         <div>
-                            <h2 className="text-xl font-black text-white tracking-tight uppercase">Keyboard Shortcuts</h2>
-                            <p className="text-xs text-zinc-500 font-mono">Productivity at your fingertips</p>
+                            <h2 className="font-orbitron text-xl font-bold uppercase tracking-wider text-white">Keyboard Shortcuts</h2>
+                            <p className="text-xs text-gray-500 font-mono">Productivity at your fingertips</p>
                         </div>
                     </div>
                     <button
                         onClick={onClose}
-                        className="p-2 rounded-lg hover:bg-zinc-800 text-zinc-400 hover:text-white transition-all"
+                        className="p-2 rounded-sm hover:bg-neon-magenta/10 text-gray-400 hover:text-neon-magenta transition-all"
                     >
                         <X size={20} />
                     </button>
@@ -63,18 +63,18 @@ export const KeyboardShortcutsOverlay: React.FC<KeyboardShortcutsOverlayProps> =
                 <div className="p-6 space-y-8 overflow-y-auto max-h-[calc(90vh-100px)] custom-scrollbar">
                     {shortcuts.map((section, idx) => (
                         <div key={idx}>
-                            <h3 className="text-xs font-bold text-indigo-400 uppercase tracking-widest mb-4">{section.category}</h3>
+                            <h3 className="text-xs font-mono font-bold text-neon-cyan uppercase tracking-widest mb-4">{section.category}</h3>
                             <div className="space-y-3">
                                 {section.items.map((shortcut, itemIdx) => (
-                                    <div key={itemIdx} className="flex items-center justify-between p-3 bg-zinc-900/50 border border-zinc-800 rounded-lg hover:border-zinc-700 transition-colors">
-                                        <span className="text-sm text-zinc-300">{shortcut.description}</span>
+                                    <div key={itemIdx} className="flex items-center justify-between p-3 bg-dark-bg border-2 border-gray-700 rounded-sm hover:border-neon-cyan/30 transition-colors">
+                                        <span className="text-sm text-gray-300 font-mono">{shortcut.description}</span>
                                         <div className="flex items-center gap-1">
                                             {shortcut.keys.map((key, keyIdx) => (
                                                 <React.Fragment key={keyIdx}>
-                                                    <kbd className="px-2 py-1 bg-zinc-800 border border-zinc-700 rounded text-xs font-mono text-white shadow-sm min-w-[28px] text-center">
+                                                    <kbd className="px-2 py-1 bg-dark-card border-2 border-gray-700 rounded-sm text-xs font-mono text-neon-cyan shadow-sm min-w-[28px] text-center">
                                                         {key === "Cmd" ? <Command size={12} className="inline" /> : key}
                                                     </kbd>
-                                                    {keyIdx < shortcut.keys.length - 1 && <span className="text-zinc-600">+</span>}
+                                                    {keyIdx < shortcut.keys.length - 1 && <span className="text-gray-600">+</span>}
                                                 </React.Fragment>
                                             ))}
                                         </div>
@@ -86,9 +86,9 @@ export const KeyboardShortcutsOverlay: React.FC<KeyboardShortcutsOverlayProps> =
                 </div>
 
                 {/* Footer */}
-                <div className="p-4 border-t border-zinc-800 bg-zinc-950 text-center">
-                    <p className="text-xs text-zinc-500 font-mono">
-                        Press <kbd className="px-2 py-0.5 bg-zinc-800 border border-zinc-700 rounded text-xs mx-1">Esc</kbd> to close
+                <div className="p-4 border-t-2 border-gray-700 bg-dark-bg text-center">
+                    <p className="text-xs text-gray-500 font-mono">
+                        Press <kbd className="px-2 py-0.5 bg-dark-card border-2 border-gray-700 rounded-sm text-xs text-neon-cyan mx-1">Esc</kbd> to close
                     </p>
                 </div>
             </div>

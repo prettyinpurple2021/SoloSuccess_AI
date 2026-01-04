@@ -174,27 +174,27 @@ export const CommandPalette: React.FC<CommandPaletteProps> = ({ isOpen, setIsOpe
         <div className="fixed inset-0 z-50 flex items-start md:items-start justify-center pt-4 md:pt-[20vh] px-2 md:px-4">
             {/* Backdrop */}
             <div
-                className="absolute inset-0 bg-black/60 backdrop-blur-sm transition-opacity"
+                className="absolute inset-0 bg-black/70 backdrop-blur-sm transition-opacity"
                 onClick={() => setIsOpen(false)}
             />
 
             {/* Modal */}
-            <div className="w-full max-w-2xl bg-zinc-950 border border-zinc-800 rounded-xl shadow-2xl overflow-hidden relative animate-in fade-in zoom-in-95 duration-200 flex flex-col h-[80vh] md:h-auto md:max-h-[60vh]">
+            <div className="w-full max-w-2xl bg-dark-card border-2 border-neon-cyan/50 rounded-sm shadow-[0_0_30px_rgba(11,228,236,0.3)] overflow-hidden relative animate-in fade-in zoom-in-95 duration-200 flex flex-col h-[80vh] md:h-auto md:max-h-[60vh]">
                 {/* Decorative Top Border */}
-                <div className="h-1 w-full bg-gradient-to-r from-emerald-500 via-cyan-500 to-purple-500"></div>
+                <div className="h-1 w-full bg-gradient-to-r from-neon-lime via-neon-cyan to-neon-purple"></div>
 
                 {/* Search Input */}
-                <div className="flex items-center px-4 py-4 border-b border-zinc-800">
-                    <Command className="text-zinc-500 mr-3" size={20} />
+                <div className="flex items-center px-4 py-4 border-b-2 border-gray-700">
+                    <Command className="text-neon-cyan mr-3" size={20} />
                     <input
                         ref={inputRef}
                         type="text"
                         placeholder="Type a command or search..."
-                        className="flex-1 bg-transparent border-none text-lg text-white placeholder-zinc-600 focus:ring-0 font-mono"
+                        className="flex-1 bg-transparent border-none text-lg text-white placeholder-gray-600 focus:ring-0 font-mono"
                         value={query}
                         onChange={(e) => { setQuery(e.target.value); setSelectedIndex(0); }}
                     />
-                    <div className="hidden md:flex items-center gap-1 text-xs text-zinc-500 font-mono bg-zinc-900 px-2 py-1 rounded">
+                    <div className="hidden md:flex items-center gap-1 text-xs text-gray-500 font-mono bg-dark-bg px-2 py-1 rounded-sm">
                         <span>ESC</span> to close
                     </div>
                 </div>
@@ -202,7 +202,7 @@ export const CommandPalette: React.FC<CommandPaletteProps> = ({ isOpen, setIsOpe
                 {/* Results List */}
                 <div ref={listRef} className="overflow-y-auto custom-scrollbar p-2">
                     {filteredCommands.length === 0 ? (
-                        <div className="py-12 text-center text-zinc-500 font-mono text-sm uppercase tracking-widest">
+                        <div className="py-12 text-center text-gray-500 font-mono text-sm uppercase tracking-widest">
                             No matching protocols found.
                         </div>
                     ) : (
@@ -211,22 +211,22 @@ export const CommandPalette: React.FC<CommandPaletteProps> = ({ isOpen, setIsOpe
                                 key={cmd.id}
                                 onClick={cmd.action}
                                 onMouseEnter={() => setSelectedIndex(index)}
-                                className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-all text-left group mb-1
-                                    ${index === selectedIndex ? 'bg-zinc-900 text-white' : 'text-zinc-400 hover:bg-zinc-900/50'}
+                                className={`w-full flex items-center gap-3 px-4 py-3 rounded-sm transition-all text-left group mb-1
+                                    ${index === selectedIndex ? 'bg-neon-cyan/10 text-white border-l-2 border-neon-cyan' : 'text-gray-400 hover:bg-dark-hover'}
                                 `}
                             >
-                                <div className={`p-2 rounded-md transition-colors ${index === selectedIndex ? 'bg-zinc-800 text-emerald-500' : 'bg-zinc-900 text-zinc-500'}`}>
+                                <div className={`p-2 rounded-sm transition-colors ${index === selectedIndex ? 'bg-dark-bg text-neon-cyan' : 'bg-dark-bg text-gray-500'}`}>
                                     {cmd.icon}
                                 </div>
 
                                 <div className="flex-1">
-                                    <span className={`text-sm font-medium ${cmd.colorClass || ''} ${index === selectedIndex ? 'text-white' : ''}`}>
+                                    <span className={`text-sm font-mono font-medium ${cmd.colorClass || ''} ${index === selectedIndex ? 'text-white' : ''}`}>
                                         {cmd.label}
                                     </span>
                                 </div>
 
                                 {index === selectedIndex && (
-                                    <CornerDownLeft size={16} className="text-zinc-500 animate-pulse" />
+                                    <CornerDownLeft size={16} className="text-neon-cyan animate-pulse" />
                                 )}
                             </button>
                         ))
@@ -234,12 +234,12 @@ export const CommandPalette: React.FC<CommandPaletteProps> = ({ isOpen, setIsOpe
                 </div>
 
                 {/* Footer */}
-                <div className="bg-zinc-900/50 border-t border-zinc-800 px-4 py-2 flex items-center justify-between text-[10px] text-zinc-500 font-mono uppercase tracking-wider">
+                <div className="bg-dark-bg border-t-2 border-gray-700 px-4 py-2 flex items-center justify-between text-[10px] text-gray-500 font-mono uppercase tracking-wider">
                     <div className="flex gap-4">
-                        <span><strong className="text-zinc-400">↑↓</strong> Navigate</span>
-                        <span><strong className="text-zinc-400">↵</strong> Execute</span>
+                        <span><strong className="text-neon-cyan">↑↓</strong> Navigate</span>
+                        <span><strong className="text-neon-cyan">↵</strong> Execute</span>
                     </div>
-                    <div>
+                    <div className="text-neon-purple">
                         Neural_Link v2.0
                     </div>
                 </div>
