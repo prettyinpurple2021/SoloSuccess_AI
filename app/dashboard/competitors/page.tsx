@@ -8,8 +8,9 @@ import { motion, easeOut } from "framer-motion"
 import {
   Search, Filter, Plus, Eye, AlertTriangle, TrendingUp, Users, Globe, Shield, Target, Zap, MoreVertical, RefreshCw, Download, Settings, Activity, BarChart3, Map, Clock, Radar, Grid3X3, Layers, Crosshair
 } from "lucide-react"
+import Link from 'next/link'
 import { HudBorder } from "@/components/cyber/HudBorder"
-import { PrimaryButton } from "@/components/ui/button"
+import { CyberButton } from "@/components/cyber/CyberButton"
 import { Input } from "@/components/ui/input"
 import { Badge } from "@/components/ui/badge"
 import {
@@ -251,22 +252,22 @@ export default function CompetitorDashboardPage() {
 
   const getThreatLevelColor = (level: string) => {
     switch (level) {
-      case 'critical': return 'bg-red-500'
-      case 'high': return 'bg-orange-500'
-      case 'medium': return 'bg-yellow-500'
-      case 'low': return 'bg-green-500'
-      default: return 'bg-gray-500'
+      case 'critical': return 'bg-neon-magenta'
+      case 'high': return 'bg-neon-orange'
+      case 'medium': return 'bg-neon-yellow' // Assuming neon-yellow exists, if not fallback to orange or custom
+      case 'low': return 'bg-neon-lime'
+      default: return 'bg-gray-600'
     }
   }
 
   const getThreatLevelBadge = (level: string) => {
     const colors = {
-      critical: 'bg-red-100 text-red-800 border-red-200',
-      high: 'bg-orange-100 text-orange-800 border-orange-200',
-      medium: 'bg-yellow-100 text-yellow-800 border-yellow-200',
-      low: 'bg-green-100 text-green-800 border-green-200'
+      critical: 'bg-neon-magenta/20 text-neon-magenta border-neon-magenta/50 rounded-none',
+      high: 'bg-neon-orange/20 text-neon-orange border-neon-orange/50 rounded-none',
+      medium: 'bg-neon-yellow/20 text-neon-yellow border-neon-yellow/50 rounded-none',
+      low: 'bg-neon-lime/20 text-neon-lime border-neon-lime/50 rounded-none'
     }
-    return colors[level as keyof typeof colors] || 'bg-gray-100 text-gray-800 border-gray-200'
+    return colors[level as keyof typeof colors] || 'bg-dark-card text-gray-400 border-gray-600 rounded-none'
   }
 
   const getActivityIcon = (type: string) => {
@@ -286,11 +287,11 @@ export default function CompetitorDashboardPage() {
 
   const getActivityColor = (importance: string) => {
     switch (importance) {
-      case 'critical': return 'text-red-500 bg-red-50'
-      case 'high': return 'text-orange-500 bg-orange-50'
-      case 'medium': return 'text-yellow-500 bg-yellow-50'
-      case 'low': return 'text-green-500 bg-green-50'
-      default: return 'text-gray-500 bg-gray-50'
+      case 'critical': return 'text-neon-magenta bg-neon-magenta/10 rounded-none'
+      case 'high': return 'text-neon-orange bg-neon-orange/10 rounded-none'
+      case 'medium': return 'text-neon-yellow bg-neon-yellow/10 rounded-none'
+      case 'low': return 'text-neon-lime bg-neon-lime/10 rounded-none'
+      default: return 'text-gray-400 bg-dark-card rounded-none'
     }
   }
 
@@ -333,7 +334,7 @@ export default function CompetitorDashboardPage() {
         <div className="absolute inset-0 bg-[url('/grid.svg')] bg-center opacity-20 pointer-events-none" />
         <div className="flex items-center justify-center min-h-[60vh] relative z-10">
           <Loading
-            variant="boss"
+            variant="flicker"
             size="lg"
             text="Loading competitor intelligence..."
           />
@@ -360,20 +361,20 @@ export default function CompetitorDashboardPage() {
                   <TerminalIcon className="w-8 h-8 text-neon-magenta" />
                 </div>
                 <div>
-                  <h1 className="text-5xl font-sci font-black tracking-tighter text-white uppercase italic">
+                  <h1 className="text-5xl font-orbitron font-black tracking-tighter text-white uppercase italic">
                     Intel<span className="text-neon-magenta">Feed</span>
                   </h1>
                   <div className="flex items-center gap-2">
                     <div className="w-2 h-2 bg-neon-magenta animate-pulse rounded-none" />
-                    <p className="text-magenta-200 font-tech uppercase text-xs tracking-[0.2em] font-bold">Competitive Surveillance Engine // v4.1.0</p>
+                    <p className="text-magenta-200 font-mono uppercase text-xs tracking-[0.2em] font-bold">Competitive Surveillance Engine // v4.1.0</p>
                   </div>
                 </div>
               </div>
             </div>
           </div>
           <div className="flex items-center gap-3">
-            <PrimaryButton
-              variant="outline"
+            <CyberButton
+              variant="secondary"
               size="sm"
               className="border-neon-cyan/30 text-neon-cyan hover:bg-neon-cyan/10"
               onClick={handleRefresh}
@@ -381,12 +382,12 @@ export default function CompetitorDashboardPage() {
             >
               <RefreshCw className={`w-4 h-4 mr-2 ${refreshing ? 'animate-spin' : ''}`} />
               Refresh
-            </PrimaryButton>
+            </CyberButton>
             <Link href="/dashboard/competitors/add">
-              <PrimaryButton size="sm" className="bg-neon-purple hover:bg-neon-purple/90">
+              <CyberButton size="sm" className="bg-neon-purple hover:bg-neon-purple/90">
                 <Plus className="w-4 h-4 mr-2" />
                 Add Competitor
-              </PrimaryButton>
+              </CyberButton>
             </Link>
           </div>
         </motion.div>
@@ -396,68 +397,68 @@ export default function CompetitorDashboardPage() {
           <motion.div variants={itemVariants} className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-6 gap-6">
             <HudBorder variant="hover" className="p-6">
               <div className="flex items-center justify-between mb-4">
-                <div className="w-12 h-12 bg-gradient-to-br from-neon-cyan to-neon-purple rounded-lg flex items-center justify-center shadow-[0_0_15px_rgba(11,228,236,0.3)]">
+                <div className="w-12 h-12 bg-gradient-to-br from-neon-cyan to-neon-purple rounded-none flex items-center justify-center shadow-[0_0_15px_rgba(11,228,236,0.3)]">
                   <Users className="w-6 h-6 text-white" />
                 </div>
-                <span className="text-sm font-tech text-neon-lime">+12%</span>
+                <span className="text-sm font-mono text-neon-lime">+12%</span>
               </div>
-              <h3 className="text-2xl font-sci font-bold text-white mb-1">{stats.total_competitors}</h3>
-              <p className="text-sm text-gray-400 font-tech">Total Competitors</p>
+              <h3 className="text-2xl font-orbitron font-bold text-white mb-1">{stats.total_competitors}</h3>
+              <p className="text-sm text-gray-400 font-mono">Total Competitors</p>
             </HudBorder>
 
             <HudBorder variant="hover" className="p-6">
               <div className="flex items-center justify-between mb-4">
-                <div className="w-12 h-12 bg-gradient-to-br from-neon-cyan to-neon-purple rounded-lg flex items-center justify-center shadow-[0_0_15px_rgba(11,228,236,0.3)]">
+                <div className="w-12 h-12 bg-gradient-to-br from-neon-cyan to-neon-purple rounded-none flex items-center justify-center shadow-[0_0_15px_rgba(11,228,236,0.3)]">
                   <Eye className="w-6 h-6 text-white" />
                 </div>
-                <span className="text-sm font-tech text-neon-lime">+8%</span>
+                <span className="text-sm font-mono text-neon-lime">+8%</span>
               </div>
-              <h3 className="text-2xl font-sci font-bold text-white mb-1">{stats.active_monitoring}</h3>
-              <p className="text-sm text-gray-400 font-tech">Active Monitoring</p>
+              <h3 className="text-2xl font-orbitron font-bold text-white mb-1">{stats.active_monitoring}</h3>
+              <p className="text-sm text-gray-400 font-mono">Active Monitoring</p>
             </HudBorder>
 
             <HudBorder variant="hover" className="p-6">
               <div className="flex items-center justify-between mb-4">
-                <div className="w-12 h-12 bg-gradient-to-br from-neon-magenta to-neon-purple rounded-lg flex items-center justify-center shadow-[0_0_15px_rgba(255,0,110,0.3)]">
+                <div className="w-12 h-12 bg-gradient-to-br from-neon-magenta to-neon-purple rounded-none flex items-center justify-center shadow-[0_0_15px_rgba(255,0,110,0.3)]">
                   <AlertTriangle className="w-6 h-6 text-white" />
                 </div>
-                <span className="text-sm font-tech text-neon-magenta">+2</span>
+                <span className="text-sm font-mono text-neon-magenta">+2</span>
               </div>
-              <h3 className="text-2xl font-sci font-bold text-white mb-1">{stats.critical_threats}</h3>
-              <p className="text-sm text-gray-400 font-tech">Critical Threats</p>
+              <h3 className="text-2xl font-orbitron font-bold text-white mb-1">{stats.critical_threats}</h3>
+              <p className="text-sm text-gray-400 font-mono">Critical Threats</p>
             </HudBorder>
 
             <HudBorder variant="hover" className="p-6">
               <div className="flex items-center justify-between mb-4">
-                <div className="w-12 h-12 bg-gradient-to-br from-neon-cyan to-neon-purple rounded-lg flex items-center justify-center shadow-[0_0_15px_rgba(11,228,236,0.3)]">
+                <div className="w-12 h-12 bg-gradient-to-br from-neon-cyan to-neon-purple rounded-none flex items-center justify-center shadow-[0_0_15px_rgba(11,228,236,0.3)]">
                   <Shield className="w-6 h-6 text-white" />
                 </div>
-                <span className="text-sm font-tech text-neon-lime">+15</span>
+                <span className="text-sm font-mono text-neon-lime">+15</span>
               </div>
-              <h3 className="text-2xl font-sci font-bold text-white mb-1">{stats.recent_alerts}</h3>
-              <p className="text-sm text-gray-400 font-tech">Recent Alerts</p>
+              <h3 className="text-2xl font-orbitron font-bold text-white mb-1">{stats.recent_alerts}</h3>
+              <p className="text-sm text-gray-400 font-mono">Recent Alerts</p>
             </HudBorder>
 
             <HudBorder variant="hover" className="p-6">
               <div className="flex items-center justify-between mb-4">
-                <div className="w-12 h-12 bg-gradient-to-br from-neon-cyan to-neon-purple rounded-lg flex items-center justify-center shadow-[0_0_15px_rgba(11,228,236,0.3)]">
+                <div className="w-12 h-12 bg-gradient-to-br from-neon-cyan to-neon-purple rounded-none flex items-center justify-center shadow-[0_0_15px_rgba(11,228,236,0.3)]">
                   <Globe className="w-6 h-6 text-white" />
                 </div>
-                <span className="text-sm font-tech text-neon-lime">+25</span>
+                <span className="text-sm font-mono text-neon-lime">+25</span>
               </div>
-              <h3 className="text-2xl font-sci font-bold text-white mb-1">{stats.intelligence_collected}</h3>
-              <p className="text-sm text-gray-400 font-tech">Intelligence Collected</p>
+              <h3 className="text-2xl font-orbitron font-bold text-white mb-1">{stats.intelligence_collected}</h3>
+              <p className="text-sm text-gray-400 font-mono">Intelligence Collected</p>
             </HudBorder>
 
             <HudBorder variant="hover" className="p-6">
               <div className="flex items-center justify-between mb-4">
-                <div className="w-12 h-12 bg-gradient-to-br from-neon-cyan to-neon-purple rounded-lg flex items-center justify-center shadow-[0_0_15px_rgba(11,228,236,0.3)]">
+                <div className="w-12 h-12 bg-gradient-to-br from-neon-cyan to-neon-purple rounded-none flex items-center justify-center shadow-[0_0_15px_rgba(11,228,236,0.3)]">
                   <Target className="w-6 h-6 text-white" />
                 </div>
-                <span className="text-sm font-tech text-neon-lime">+18</span>
+                <span className="text-sm font-mono text-neon-lime">+18</span>
               </div>
-              <h3 className="text-2xl font-sci font-bold text-white mb-1">{stats.opportunities_identified}</h3>
-              <p className="text-sm text-gray-400 font-tech">Opportunities</p>
+              <h3 className="text-2xl font-orbitron font-bold text-white mb-1">{stats.opportunities_identified}</h3>
+              <p className="text-sm text-gray-400 font-mono">Opportunities</p>
             </HudBorder>
           </motion.div>
         )}
@@ -518,14 +519,14 @@ export default function CompetitorDashboardPage() {
                   </SelectContent>
                 </Select>
 
-                <PrimaryButton
-                  variant="outline"
+                <CyberButton
+                  variant="secondary"
                   size="sm"
                   className="border-neon-cyan/30 text-neon-cyan hover:bg-neon-cyan/10"
                 >
                   <Download className="w-4 h-4 mr-2" />
                   Export
-                </PrimaryButton>
+                </CyberButton>
               </div>
             </div>
           </HudBorder>
@@ -578,29 +579,30 @@ export default function CompetitorDashboardPage() {
                             <div className="flex-1">
                               <div className="flex items-center space-x-2 mb-2">
                                 <div
-                                  className={`w-3 h-3 rounded-full ${
+                                  className={`w-3 h-3 rounded-none ${
                                     competitor.threat_level === 'critical' ? 'bg-neon-magenta' :
                                     competitor.threat_level === 'high' ? 'bg-neon-orange' :
                                     competitor.threat_level === 'medium' ? 'bg-neon-orange' :
                                     'bg-neon-lime'
                                   }`}
                                 />
-                                <h3 className="font-sci font-bold text-lg text-transparent bg-clip-text bg-gradient-to-r from-neon-purple to-neon-magenta">
+                                <h3 className="font-orbitron font-bold text-lg text-transparent bg-clip-text bg-gradient-to-r from-neon-purple to-neon-magenta">
                                   {competitor.name}
                                 </h3>
                               </div>
                               {competitor.domain && (
-                                <p className="text-sm text-gray-400 mb-1 font-tech">
+                                <p className="text-sm text-gray-400 mb-1 font-mono">
                                   {competitor.domain}
                                 </p>
                               )}
                               <Badge
-                                className={`text-xs font-tech ${
-                                  competitor.threat_level === 'critical' ? 'bg-neon-magenta/10 text-neon-magenta border-neon-magenta/30' :
-                                  competitor.threat_level === 'high' ? 'bg-neon-orange/10 text-neon-orange border-neon-orange/30' :
-                                  competitor.threat_level === 'medium' ? 'bg-neon-orange/10 text-neon-orange border-neon-orange/30' :
-                                  'bg-neon-lime/10 text-neon-lime border-neon-lime/30'
-                                }`}
+                                className="text-xs font-mono"
+                                variant={
+                                  competitor.threat_level === 'critical' ? 'magenta' :
+                                  competitor.threat_level === 'high' ? 'orange' :
+                                  competitor.threat_level === 'medium' ? 'orange' :
+                                  'lime'
+                                }
                               >
                                 {competitor.threat_level.toUpperCase()} THREAT
                               </Badge>
@@ -608,9 +610,9 @@ export default function CompetitorDashboardPage() {
 
                             <DropdownMenu>
                               <DropdownMenuTrigger asChild>
-                                <PrimaryButton variant="outline" size="sm" className="border-neon-cyan/30 text-neon-cyan hover:bg-neon-cyan/10">
+                                <CyberButton variant="outline" size="sm" className="border-neon-cyan/30 text-neon-cyan hover:bg-neon-cyan/10">
                                   <MoreVertical className="w-4 h-4" />
-                                </PrimaryButton>
+                                </CyberButton>
                               </DropdownMenuTrigger>
                               <DropdownMenuContent align="end" className="bg-dark-card border-neon-cyan/30">
                                 <DropdownMenuItem asChild className="text-white hover:bg-dark-bg">
@@ -637,7 +639,7 @@ export default function CompetitorDashboardPage() {
 
                           {/* Description */}
                           {competitor.description && (
-                            <p className="text-sm text-gray-400 line-clamp-2 font-tech">
+                            <p className="text-sm text-gray-400 line-clamp-2 font-mono">
                               {competitor.description}
                             </p>
                           )}
@@ -645,25 +647,22 @@ export default function CompetitorDashboardPage() {
                           {/* Metrics */}
                           <div className="grid grid-cols-2 gap-4 text-sm">
                             <div>
-                              <p className="text-gray-500 font-tech">Industry</p>
-                              <p className="font-medium text-white font-sci">{competitor.industry || 'Unknown'}</p>
+                              <p className="text-gray-500 font-mono">Industry</p>
+                              <p className="font-medium text-white font-orbitron">{competitor.industry || 'Unknown'}</p>
                             </div>
                             <div>
-                              <p className="text-gray-500 font-tech">Employees</p>
-                              <p className="font-medium text-white font-sci">{competitor.employee_count || 'Unknown'}</p>
+                              <p className="text-gray-500 font-mono">Employees</p>
+                              <p className="font-medium text-white font-orbitron">{competitor.employee_count || 'Unknown'}</p>
                             </div>
                             <div>
-                              <p className="text-gray-500 font-tech">Funding</p>
-                              <p className="font-medium text-white font-sci">{competitor.funding_stage || 'Unknown'}</p>
+                              <p className="text-gray-500 font-mono">Funding</p>
+                              <p className="font-medium text-white font-orbitron">{competitor.funding_stage || 'Unknown'}</p>
                             </div>
                             <div>
-                              <p className="text-gray-500 font-tech">Status</p>
+                              <p className="text-gray-500 font-mono">Status</p>
                               <Badge
-                                className={`text-xs ${
-                                  competitor.monitoring_status === 'active' 
-                                    ? 'bg-neon-cyan/10 text-neon-cyan border-neon-cyan/30' 
-                                    : 'bg-white/5 text-gray-400 border-white/10'
-                                } font-tech`}
+                                variant={competitor.monitoring_status === 'active' ? 'cyan' : 'purple'}
+                                className="text-xs font-mono"
                               >
                                 {competitor.monitoring_status}
                               </Badge>
@@ -675,20 +674,20 @@ export default function CompetitorDashboardPage() {
                             <div className="flex items-center space-x-4 text-sm">
                               <div className="flex items-center space-x-1">
                                 <TrendingUp className="w-4 h-4 text-neon-cyan" />
-                                <span className="text-gray-400 font-tech">{competitor.recent_activity_count} activities</span>
+                                <span className="text-gray-400 font-mono">{competitor.recent_activity_count} activities</span>
                               </div>
                               {competitor.alert_count > 0 && (
                                 <div className="flex items-center space-x-1">
                                   <AlertTriangle className="w-4 h-4 text-neon-orange" />
-                                  <span className="text-gray-400 font-tech">{competitor.alert_count} alerts</span>
+                                  <span className="text-gray-400 font-mono">{competitor.alert_count} alerts</span>
                                 </div>
                               )}
                             </div>
 
                             <Link href={`/dashboard/competitors/${competitor.id}`}>
-                              <PrimaryButton size="sm" className="bg-neon-purple hover:bg-neon-purple/90">
+                              <CyberButton size="sm" className="bg-neon-purple hover:bg-neon-purple/90">
                                 View Details
-                              </PrimaryButton>
+                              </CyberButton>
                             </Link>
                           </div>
                         </div>
@@ -709,17 +708,17 @@ export default function CompetitorDashboardPage() {
                         repeat: Infinity,
                         ease: "easeInOut"
                       }}
-                      className="mx-auto w-20 h-20 bg-gradient-to-br from-neon-magenta to-neon-purple rounded-full flex items-center justify-center mb-6 shadow-[0_0_20px_rgba(255,0,110,0.4)]"
+                      className="mx-auto w-20 h-20 bg-gradient-to-br from-neon-magenta to-neon-purple rounded-none flex items-center justify-center mb-6 shadow-[0_0_20px_rgba(255,0,110,0.4)]"
                     >
                       <Eye className="w-10 h-10 text-white" />
                     </motion.div>
-                    <h2 className="text-2xl font-sci font-bold text-transparent bg-clip-text bg-gradient-to-r from-neon-purple to-neon-magenta mb-4">
+                    <h2 className="text-2xl font-orbitron font-bold text-transparent bg-clip-text bg-gradient-to-r from-neon-purple to-neon-magenta mb-4">
                       {searchQuery || threatFilter !== "all" || industryFilter !== "all"
                         ? "No competitors match your filters"
                         : "No competitors added yet"
                       }
                     </h2>
-                    <p className="text-gray-400 mb-6 font-tech">
+                    <p className="text-gray-400 mb-6 font-mono">
                       {searchQuery || threatFilter !== "all" || industryFilter !== "all"
                         ? "Try adjusting your search criteria or filters"
                         : "Start building your competitive intelligence by adding your first competitor"
@@ -727,13 +726,13 @@ export default function CompetitorDashboardPage() {
                     </p>
                     <div className="space-y-3">
                       <Link href="/dashboard/competitors/add">
-                        <PrimaryButton className="bg-neon-purple hover:bg-neon-purple/90">
+                        <CyberButton className="bg-neon-purple hover:bg-neon-purple/90">
                           <Plus className="w-4 h-4 mr-2" />
                           Add First Competitor
-                        </PrimaryButton>
+                        </CyberButton>
                       </Link>
                       {(searchQuery || threatFilter !== "all" || industryFilter !== "all") && (
-                        <PrimaryButton
+                        <CyberButton
                           variant="outline"
                           className="border-neon-cyan/30 text-neon-cyan hover:bg-neon-cyan/10"
                           onClick={() => {
@@ -743,7 +742,7 @@ export default function CompetitorDashboardPage() {
                           }}
                         >
                           Clear Filters
-                        </PrimaryButton>
+                        </CyberButton>
                       )}
                     </div>
                   </div>
@@ -758,7 +757,7 @@ export default function CompetitorDashboardPage() {
                 <div className="lg:col-span-2">
                   <HudBorder variant="hover" className="p-6">
                     <div className="flex items-center justify-between mb-6">
-                      <h2 className="text-2xl font-sci font-bold text-transparent bg-clip-text bg-gradient-to-r from-neon-purple to-neon-magenta flex items-center space-x-2">
+                      <h2 className="text-2xl font-orbitron font-bold text-transparent bg-clip-text bg-gradient-to-r from-neon-purple to-neon-magenta flex items-center space-x-2">
                         <Activity className="w-6 h-6" />
                         <span>Live Intelligence Feed</span>
                       </h2>
@@ -774,7 +773,7 @@ export default function CompetitorDashboardPage() {
                             <SelectItem value="30d" className="text-white">Last Month</SelectItem>
                           </SelectContent>
                         </Select>
-                        <PrimaryButton
+                        <CyberButton
                           variant="outline"
                           size="sm"
                           className="border-neon-cyan/30 text-neon-cyan hover:bg-neon-cyan/10"
@@ -783,7 +782,7 @@ export default function CompetitorDashboardPage() {
                         >
                           <RefreshCw className={`w-4 h-4 mr-2 ${refreshing ? 'animate-spin' : ''}`} />
                           Refresh
-                        </PrimaryButton>
+                        </CyberButton>
                       </div>
                     </div>
 
@@ -795,9 +794,9 @@ export default function CompetitorDashboardPage() {
                             initial={{ opacity: 0, x: -20 }}
                             animate={{ opacity: 1, x: 0 }}
                             transition={{ delay: _index * 0.05 }}
-                            className="flex items-start space-x-4 p-4 bg-dark-bg/50 rounded-xl border border-neon-cyan/20 hover:border-neon-cyan/50 transition-all"
+                            className="flex items-start space-x-4 p-4 bg-dark-bg/50 rounded-none border border-neon-cyan/20 hover:border-neon-cyan/50 transition-all"
                           >
-                            <div className={`w-10 h-10 rounded-full flex items-center justify-center ${
+                            <div className={`w-10 h-10 rounded-none flex items-center justify-center ${
                               activity.importance === 'critical' ? 'bg-neon-magenta/20 text-neon-magenta' :
                               activity.importance === 'high' ? 'bg-neon-orange/20 text-neon-orange' :
                               activity.importance === 'medium' ? 'bg-neon-orange/20 text-neon-orange' :
@@ -807,30 +806,31 @@ export default function CompetitorDashboardPage() {
                             </div>
                             <div className="flex-1 min-w-0">
                               <div className="flex items-center justify-between mb-1">
-                                <h3 className="font-semibold text-sm truncate text-white font-sci">
+                                <h3 className="font-semibold text-sm truncate text-white font-orbitron">
                                   {activity.competitorName}
                                 </h3>
-                                <span className="text-xs text-gray-500 font-tech">
+                                <span className="text-xs text-gray-500 font-mono">
                                   {formatTimeAgo(activity.timestamp)}
                                 </span>
                               </div>
-                              <p className="font-medium text-sm mb-1 text-white font-sci">{activity.title}</p>
-                              <p className="text-xs text-gray-400 line-clamp-2 mb-2 font-tech">
+                              <p className="font-medium text-sm mb-1 text-white font-orbitron">{activity.title}</p>
+                              <p className="text-xs text-gray-400 line-clamp-2 mb-2 font-mono">
                                 {activity.description}
                               </p>
                               <div className="flex items-center justify-between">
                                 <Badge
-                                  className={`text-xs font-tech ${
-                                    activity.importance === 'critical' ? 'bg-neon-magenta/10 text-neon-magenta border-neon-magenta/30' :
-                                    activity.importance === 'high' ? 'bg-neon-orange/10 text-neon-orange border-neon-orange/30' :
-                                    activity.importance === 'medium' ? 'bg-neon-orange/10 text-neon-orange border-neon-orange/30' :
-                                    'bg-neon-lime/10 text-neon-lime border-neon-lime/30'
-                                  }`}
+                                  className="text-xs font-mono"
+                                  variant={
+                                    activity.importance === 'critical' ? 'magenta' :
+                                    activity.importance === 'high' ? 'orange' :
+                                    activity.importance === 'medium' ? 'orange' :
+                                    'lime'
+                                  }
                                 >
                                   {activity.importance.toUpperCase()}
                                 </Badge>
                                 {activity.agentAnalysis && (
-                                  <div className="flex items-center space-x-1 text-xs text-neon-cyan font-tech">
+                                  <div className="flex items-center space-x-1 text-xs text-neon-cyan font-mono">
                                     <Zap className="w-3 h-3" />
                                     <span>Analyzed by {activity.agentAnalysis.agentName}</span>
                                   </div>
@@ -842,7 +842,7 @@ export default function CompetitorDashboardPage() {
                       ) : (
                         <div className="text-center py-8">
                           <Activity className="w-12 h-12 text-gray-500 mx-auto mb-4" />
-                          <p className="text-gray-400 font-tech">No recent activity</p>
+                          <p className="text-gray-400 font-mono">No recent activity</p>
                         </div>
                       )}
                     </div>
@@ -852,29 +852,29 @@ export default function CompetitorDashboardPage() {
                 {/* Activity Summary */}
                 <div className="space-y-6">
                   <HudBorder variant="hover" className="p-6 border-neon-lime/30">
-                    <h3 className="font-sci font-bold text-lg mb-4 text-white">Activity Summary</h3>
+                    <h3 className="font-orbitron font-bold text-lg mb-4 text-white">Activity Summary</h3>
                     <div className="space-y-4">
                       <div className="flex items-center justify-between">
-                        <span className="text-sm text-gray-400 font-tech">Website Changes</span>
-                        <Badge className="bg-neon-cyan/10 text-neon-cyan border-neon-cyan/30">
+                        <span className="text-sm text-gray-400 font-mono">Website Changes</span>
+                        <Badge variant="cyan">
                           {realtimeActivities.filter(a => a.type === 'website_change').length}
                         </Badge>
                       </div>
                       <div className="flex items-center justify-between">
-                        <span className="text-sm text-gray-400 font-tech">Social Posts</span>
-                        <Badge className="bg-neon-cyan/10 text-neon-cyan border-neon-cyan/30">
+                        <span className="text-sm text-gray-400 font-mono">Social Posts</span>
+                        <Badge variant="cyan">
                           {realtimeActivities.filter(a => a.type === 'social_post').length}
                         </Badge>
                       </div>
                       <div className="flex items-center justify-between">
-                        <span className="text-sm text-gray-400 font-tech">News Mentions</span>
-                        <Badge className="bg-neon-cyan/10 text-neon-cyan border-neon-cyan/30">
+                        <span className="text-sm text-gray-400 font-mono">News Mentions</span>
+                        <Badge variant="cyan">
                           {realtimeActivities.filter(a => a.type === 'news_mention').length}
                         </Badge>
                       </div>
                       <div className="flex items-center justify-between">
-                        <span className="text-sm text-gray-400 font-tech">Job Postings</span>
-                        <Badge className="bg-neon-cyan/10 text-neon-cyan border-neon-cyan/30">
+                        <span className="text-sm text-gray-400 font-mono">Job Postings</span>
+                        <Badge variant="cyan">
                           {realtimeActivities.filter(a => a.type === 'job_posting').length}
                         </Badge>
                       </div>
@@ -882,19 +882,19 @@ export default function CompetitorDashboardPage() {
                   </HudBorder>
 
                   <HudBorder variant="hover" className="p-6 border-neon-orange/30">
-                    <h3 className="font-sci font-bold text-lg mb-4 text-white">Critical Alerts</h3>
+                    <h3 className="font-orbitron font-bold text-lg mb-4 text-white">Critical Alerts</h3>
                     <div className="space-y-3">
                       {realtimeActivities
                         .filter(a => a.importance === 'critical')
                         .slice(0, 3)
                         .map((activity, _index) => (
-                          <div key={activity.id} className="p-3 bg-neon-magenta/10 rounded-lg border border-neon-magenta/30">
-                            <p className="font-medium text-sm text-white font-sci">{activity.competitorName}</p>
-                            <p className="text-xs text-gray-400 font-tech">{activity.title}</p>
+                          <div key={activity.id} className="p-3 bg-neon-magenta/10 rounded-none border border-neon-magenta/30">
+                            <p className="font-medium text-sm text-white font-orbitron">{activity.competitorName}</p>
+                            <p className="text-xs text-gray-400 font-mono">{activity.title}</p>
                           </div>
                         ))}
                       {realtimeActivities.filter(a => a.importance === 'critical').length === 0 && (
-                        <p className="text-sm text-gray-400 font-tech">No critical alerts</p>
+                        <p className="text-sm text-gray-400 font-mono">No critical alerts</p>
                       )}
                     </div>
                   </HudBorder>
@@ -906,23 +906,23 @@ export default function CompetitorDashboardPage() {
             <TabsContent value="threat-matrix" className="space-y-6">
               <HudBorder variant="hover" className="p-6">
                 <div className="flex items-center justify-between mb-6">
-                  <h2 className="text-2xl font-sci font-bold text-transparent bg-clip-text bg-gradient-to-r from-neon-purple to-neon-magenta flex items-center space-x-2">
+                  <h2 className="text-2xl font-orbitron font-bold text-transparent bg-clip-text bg-gradient-to-r from-neon-purple to-neon-magenta flex items-center space-x-2">
                     <Radar className="w-6 h-6" />
                     <span>Competitive Threat Matrix</span>
                   </h2>
-                  <PrimaryButton
+                  <CyberButton
                     variant="outline"
                     size="sm"
                     className="border-neon-cyan/30 text-neon-cyan hover:bg-neon-cyan/10"
                   >
                     <Download className="w-4 h-4 mr-2" />
                     Export Matrix
-                  </PrimaryButton>
+                  </CyberButton>
                 </div>
 
                 <div className="relative">
                   {/* Matrix Chart */}
-                  <div className="relative w-full h-96 bg-dark-bg/50 rounded-xl border-2 border-dashed border-neon-cyan/30">
+                  <div className="relative w-full h-96 bg-dark-bg/50 rounded-none border-2 border-dashed border-neon-cyan/30">
                     {/* Axis Labels */}
                     <div className="absolute -left-16 top-1/2 transform -translate-y-1/2 -rotate-90">
                       <span className="text-sm font-medium text-gray-600 dark:text-gray-400">
@@ -956,7 +956,7 @@ export default function CompetitorDashboardPage() {
                         initial={{ opacity: 0, scale: 0 }}
                         animate={{ opacity: 1, scale: 1 }}
                         transition={{ delay: index * 0.1 }}
-                        className={`absolute w-4 h-4 rounded-full cursor-pointer transform -translate-x-1/2 -translate-y-1/2 ${getThreatLevelColor(competitor.threatLevel)} hover:scale-150 transition-transform`}
+                        className={`absolute w-4 h-4 rounded-none cursor-pointer transform -translate-x-1/2 -translate-y-1/2 ${getThreatLevelColor(competitor.threatLevel)} hover:scale-150 transition-transform`}
                         style={{
                           left: `${(competitor.marketOverlap / 100) * 80 + 10}%`,
                           top: `${100 - ((competitor.competitiveStrength / 100) * 80 + 10)}%`
@@ -970,7 +970,7 @@ export default function CompetitorDashboardPage() {
                   <div className="mt-6 grid grid-cols-2 lg:grid-cols-4 gap-4">
                     {threatMatrix.map((competitor) => (
                       <div key={competitor.competitorId} className="flex items-center space-x-2">
-                        <div className={`w-3 h-3 rounded-full ${getThreatLevelColor(competitor.threatLevel)}`} />
+                        <div className={`w-3 h-3 rounded-none ${getThreatLevelColor(competitor.threatLevel)}`} />
                         <span className="text-sm font-medium truncate">{competitor.name}</span>
                       </div>
                     ))}
@@ -983,33 +983,33 @@ export default function CompetitorDashboardPage() {
             <TabsContent value="positioning" className="space-y-6">
               <HudBorder variant="hover" className="p-6">
                 <div className="flex items-center justify-between mb-6">
-                  <h2 className="text-2xl font-sci font-bold text-transparent bg-clip-text bg-gradient-to-r from-neon-purple to-neon-magenta flex items-center space-x-2">
+                  <h2 className="text-2xl font-orbitron font-bold text-transparent bg-clip-text bg-gradient-to-r from-neon-purple to-neon-magenta flex items-center space-x-2">
                     <Map className="w-6 h-6" />
                     <span>Market Positioning Map</span>
                   </h2>
                   <div className="flex items-center gap-2">
-                    <PrimaryButton
+                    <CyberButton
                       variant="outline"
                       size="sm"
                       className="border-neon-cyan/30 text-neon-cyan hover:bg-neon-cyan/10"
                     >
                       <Layers className="w-4 h-4 mr-2" />
                       Toggle View
-                    </PrimaryButton>
-                    <PrimaryButton
+                    </CyberButton>
+                    <CyberButton
                       variant="outline"
                       size="sm"
                       className="border-neon-cyan/30 text-neon-cyan hover:bg-neon-cyan/10"
                     >
                       <Download className="w-4 h-4 mr-2" />
                       Export Map
-                    </PrimaryButton>
+                    </CyberButton>
                   </div>
                 </div>
 
                 <div className="relative">
                   {/* Positioning Chart */}
-                  <div className="relative w-full h-96 bg-dark-bg/50 rounded-xl border-2 border-dashed border-neon-purple/30">
+                  <div className="relative w-full h-96 bg-dark-bg/50 rounded-none border-2 border-dashed border-neon-purple/30">
                     {/* Axis Labels */}
                     <div className="absolute -left-16 top-1/2 transform -translate-y-1/2 -rotate-90">
                       <span className="text-sm font-medium text-gray-600 dark:text-gray-400">
@@ -1033,12 +1033,12 @@ export default function CompetitorDashboardPage() {
                         initial={{ opacity: 0, scale: 0 }}
                         animate={{ opacity: 1, scale: 1 }}
                         transition={{ delay: index * 0.1 }}
-                        className={`absolute rounded-full cursor-pointer transform -translate-x-1/2 -translate-y-1/2 ${
+                        className={`absolute rounded-none cursor-pointer transform -translate-x-1/2 -translate-y-1/2 ${
                           competitor.threatLevel === 'critical' ? 'bg-neon-magenta' :
                           competitor.threatLevel === 'high' ? 'bg-neon-orange' :
                           competitor.threatLevel === 'medium' ? 'bg-neon-orange' :
                           'bg-neon-lime'
-                        } hover:scale-110 transition-transform flex items-center justify-center text-white text-xs font-bold font-sci`}
+                        } hover:scale-110 transition-transform flex items-center justify-center text-white text-xs font-bold font-orbitron`}
                         style={{
                           left: `${(competitor.marketShare / 50) * 80 + 10}%`,
                           top: `${50 - (competitor.growthRate / 40) * 40}%`,
@@ -1055,14 +1055,14 @@ export default function CompetitorDashboardPage() {
                   {/* Market Insights */}
                   <div className="mt-6 grid grid-cols-1 lg:grid-cols-3 gap-4">
                     <HudBorder variant="hover" className="p-4 border-neon-lime/30">
-                      <h3 className="font-sci font-bold mb-2 text-white">Market Leaders</h3>
+                      <h3 className="font-orbitron font-bold mb-2 text-white">Market Leaders</h3>
                       <div className="space-y-2">
                         {marketPositioning
                           .sort((a, b) => b.marketShare - a.marketShare)
                           .slice(0, 3)
                           .map((competitor) => (
                             <div key={competitor.competitorId} className="flex items-center justify-between">
-                              <span className="text-sm text-gray-300 font-tech">{competitor.name}</span>
+                              <span className="text-sm text-gray-300 font-mono">{competitor.name}</span>
                               <span className="text-xs font-medium text-neon-lime">{competitor.marketShare.toFixed(1)}%</span>
                             </div>
                           ))}
@@ -1070,14 +1070,14 @@ export default function CompetitorDashboardPage() {
                     </HudBorder>
 
                     <HudBorder variant="hover" className="p-4 border-neon-orange/30">
-                      <h3 className="font-sci font-bold mb-2 text-white">Fast Growers</h3>
+                      <h3 className="font-orbitron font-bold mb-2 text-white">Fast Growers</h3>
                       <div className="space-y-2">
                         {marketPositioning
                           .sort((a, b) => b.growthRate - a.growthRate)
                           .slice(0, 3)
                           .map((competitor) => (
                             <div key={competitor.competitorId} className="flex items-center justify-between">
-                              <span className="text-sm text-gray-300 font-tech">{competitor.name}</span>
+                              <span className="text-sm text-gray-300 font-mono">{competitor.name}</span>
                               <span className="text-xs font-medium text-neon-orange">+{competitor.growthRate.toFixed(1)}%</span>
                             </div>
                           ))}
@@ -1085,15 +1085,23 @@ export default function CompetitorDashboardPage() {
                     </HudBorder>
 
                     <HudBorder variant="hover" className="p-4 border-neon-magenta/30">
-                      <h3 className="font-sci font-bold mb-2 text-white">Critical Threats</h3>
+                      <h3 className="font-orbitron font-bold mb-2 text-white">Critical Threats</h3>
                       <div className="space-y-2">
                         {marketPositioning
                           .filter(c => c.threatLevel === 'critical' || c.threatLevel === 'high')
                           .slice(0, 3)
                           .map((competitor) => (
                             <div key={competitor.competitorId} className="flex items-center justify-between">
-                              <span className="text-sm text-gray-300 font-tech">{competitor.name}</span>
-                              <Badge variant="outline" className={getThreatLevelBadge(competitor.threatLevel)}>
+                              <span className="text-sm text-gray-300 font-mono">{competitor.name}</span>
+                              <Badge 
+                                variant="cyan" 
+                                className={`
+                                  ${competitor.threatLevel === 'critical' ? 'text-neon-magenta border-neon-magenta' : 
+                                    competitor.threatLevel === 'high' ? 'text-neon-orange border-neon-orange' : 
+                                    competitor.threatLevel === 'medium' ? 'text-neon-orange border-neon-orange' : 
+                                    'text-neon-lime border-neon-lime'} 
+                                `} 
+                              >
                                 {competitor.threatLevel}
                               </Badge>
                             </div>
@@ -1109,7 +1117,7 @@ export default function CompetitorDashboardPage() {
             <TabsContent value="timeline" className="space-y-6">
               <HudBorder variant="hover" className="p-6">
                 <div className="flex items-center justify-between mb-6">
-                  <h2 className="text-2xl font-sci font-bold text-transparent bg-clip-text bg-gradient-to-r from-neon-purple to-neon-magenta flex items-center space-x-2">
+                  <h2 className="text-2xl font-orbitron font-bold text-transparent bg-clip-text bg-gradient-to-r from-neon-purple to-neon-magenta flex items-center space-x-2">
                     <Clock className="w-6 h-6" />
                     <span>Intelligence Timeline</span>
                   </h2>
@@ -1125,14 +1133,14 @@ export default function CompetitorDashboardPage() {
                         <SelectItem value="90d" className="text-white">Last Quarter</SelectItem>
                       </SelectContent>
                     </Select>
-                    <PrimaryButton
+                    <CyberButton
                       variant="outline"
                       size="sm"
                       className="border-neon-cyan/30 text-neon-cyan hover:bg-neon-cyan/10"
                     >
                       <Download className="w-4 h-4 mr-2" />
                       Export Timeline
-                    </PrimaryButton>
+                    </CyberButton>
                   </div>
                 </div>
 
@@ -1154,7 +1162,7 @@ export default function CompetitorDashboardPage() {
                           )}
 
                           {/* Activity Icon */}
-                          <div className={`w-10 h-10 rounded-full flex items-center justify-center ${
+                          <div className={`w-10 h-10 rounded-none flex items-center justify-center ${
                             activity.importance === 'critical' ? 'bg-neon-magenta/20 text-neon-magenta' :
                             activity.importance === 'high' ? 'bg-neon-orange/20 text-neon-orange' :
                             activity.importance === 'medium' ? 'bg-neon-orange/20 text-neon-orange' :
@@ -1167,23 +1175,25 @@ export default function CompetitorDashboardPage() {
                           <div className="flex-1 min-w-0">
                             <HudBorder variant="hover" className="p-4">
                               <div className="flex items-center justify-between mb-2">
-                                <h3 className="font-sci font-bold text-transparent bg-clip-text bg-gradient-to-r from-neon-purple to-neon-magenta">{activity.competitorName}</h3>
+                                <h3 className="font-orbitron font-bold text-transparent bg-clip-text bg-gradient-to-r from-neon-purple to-neon-magenta">{activity.competitorName}</h3>
                                 <div className="flex items-center space-x-2">
-                                  <Badge className={`text-xs font-tech ${
-                                    activity.importance === 'critical' ? 'bg-neon-magenta/10 text-neon-magenta border-neon-magenta/30' :
-                                    activity.importance === 'high' ? 'bg-neon-orange/10 text-neon-orange border-neon-orange/30' :
-                                    activity.importance === 'medium' ? 'bg-neon-orange/10 text-neon-orange border-neon-orange/30' :
-                                    'bg-neon-lime/10 text-neon-lime border-neon-lime/30'
-                                  }`}>
+                                  <Badge className="text-xs font-mono"
+                                    variant={
+                                      activity.importance === 'critical' ? 'magenta' :
+                                      activity.importance === 'high' ? 'orange' :
+                                      activity.importance === 'medium' ? 'orange' :
+                                      'lime'
+                                    }
+                                  >
                                     {activity.importance}
                                   </Badge>
-                                  <span className="text-xs text-gray-500 font-tech">
+                                  <span className="text-xs text-gray-500 font-mono">
                                     {formatTimeAgo(activity.timestamp)}
                                   </span>
                                 </div>
                               </div>
-                              <h4 className="font-semibold mb-1 text-white font-sci">{activity.title}</h4>
-                              <p className="text-sm text-gray-400 mb-3 font-tech">
+                              <h4 className="font-semibold mb-1 text-white font-orbitron">{activity.title}</h4>
+                              <p className="text-sm text-gray-400 mb-3 font-mono">
                                 {activity.description}
                               </p>
 
@@ -1191,16 +1201,16 @@ export default function CompetitorDashboardPage() {
                                 <div className="border-t border-neon-cyan/20 pt-3">
                                   <div className="flex items-center space-x-2 mb-2">
                                     <Zap className="w-4 h-4 text-neon-cyan" />
-                                    <span className="text-sm font-medium text-neon-cyan font-tech">
+                                    <span className="text-sm font-medium text-neon-cyan font-mono">
                                       AI Analysis by {activity.agentAnalysis.agentName}
                                     </span>
                                   </div>
                                   {activity.agentAnalysis.insights.length > 0 && (
                                     <div className="mb-2">
-                                      <p className="text-xs font-medium text-gray-400 mb-1 font-tech">
+                                      <p className="text-xs font-medium text-gray-400 mb-1 font-mono">
                                         Key Insights:
                                       </p>
-                                      <ul className="text-xs text-gray-400 space-y-1 font-tech">
+                                      <ul className="text-xs text-gray-400 space-y-1 font-mono">
                                         {activity.agentAnalysis.insights.slice(0, 2).map((insight, i) => (
                                           <li key={i} className="flex items-start space-x-1">
                                             <span className="text-neon-cyan">•</span>
@@ -1212,10 +1222,10 @@ export default function CompetitorDashboardPage() {
                                   )}
                                   {activity.agentAnalysis.recommendations.length > 0 && (
                                     <div>
-                                      <p className="text-xs font-medium text-gray-400 mb-1 font-tech">
+                                      <p className="text-xs font-medium text-gray-400 mb-1 font-mono">
                                         Recommendations:
                                       </p>
-                                      <ul className="text-xs text-gray-400 space-y-1 font-tech">
+                                      <ul className="text-xs text-gray-400 space-y-1 font-mono">
                                         {activity.agentAnalysis.recommendations.slice(0, 2).map((rec, i) => (
                                           <li key={i} className="flex items-start space-x-1">
                                             <span className="text-neon-lime">•</span>
@@ -1234,7 +1244,7 @@ export default function CompetitorDashboardPage() {
                     ) : (
                       <div className="text-center py-12">
                         <Clock className="w-12 h-12 text-gray-500 mx-auto mb-4" />
-                        <p className="text-gray-400 font-tech">No intelligence activities in the selected timeframe</p>
+                        <p className="text-gray-400 font-mono">No intelligence activities in the selected timeframe</p>
                       </div>
                     )}
                   </div>

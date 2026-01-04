@@ -5,7 +5,7 @@ import { ButtonHTMLAttributes, ReactNode } from 'react'
 
 interface CyberButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   children: ReactNode
-  variant?: 'primary' | 'secondary' | 'ghost'
+  variant?: 'primary' | 'secondary' | 'ghost' | 'cyan' | 'neon' | 'purple' | 'magenta' | 'orange' | 'destructive' | 'outline'
   size?: 'sm' | 'md' | 'lg'
 }
 
@@ -22,6 +22,13 @@ export function CyberButton({
     primary: 'bg-neon-magenta text-black shadow-[0_0_15px_rgba(255,0,110,0.4)] hover:shadow-[0_0_30px_rgba(255,0,110,0.6)] hover:-skew-x-6',
     secondary: 'border-2 border-neon-cyan text-neon-cyan hover:bg-neon-cyan/10 hover:shadow-[0_0_20px_rgba(11,228,236,0.3)]',
     ghost: 'border border-neon-purple/40 text-white hover:bg-neon-purple/20 hover:border-neon-purple',
+    cyan: 'bg-neon-cyan text-black shadow-[0_0_15px_rgba(6,182,212,0.4)] hover:shadow-[0_0_30px_rgba(6,182,212,0.6)]',
+    neon: 'bg-neon-lime text-black shadow-[0_0_15px_rgba(132,204,22,0.4)] hover:shadow-[0_0_30px_rgba(132,204,22,0.6)]',
+    purple: 'bg-neon-purple text-white shadow-[0_0_15px_rgba(168,85,247,0.4)] hover:shadow-[0_0_30px_rgba(168,85,247,0.6)]',
+    magenta: 'bg-neon-magenta text-black shadow-[0_0_15px_rgba(255,0,110,0.4)] hover:shadow-[0_0_30px_rgba(255,0,110,0.6)]',
+    orange: 'bg-neon-orange text-black shadow-[0_0_15px_rgba(249,115,22,0.4)] hover:shadow-[0_0_30px_rgba(249,115,22,0.6)]',
+    destructive: 'bg-red-600 text-white shadow-[0_0_15px_rgba(220,38,38,0.4)] hover:bg-red-700',
+    outline: 'border border-neon-cyan text-neon-cyan hover:bg-neon-cyan/10',
   }
   
   const sizes = {

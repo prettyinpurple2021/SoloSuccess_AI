@@ -2,6 +2,7 @@
 
 export const dynamic = 'force-dynamic'
 import { logError, logInfo } from '@/lib/logger'
+import { Badge } from '@/components/ui/badge'
 import { useState, useEffect, useMemo, useCallback, ReactNode } from "react"
 import { useDashboardData } from "@/hooks/use-dashboard-data"
 import { useAuth } from "@/hooks/use-auth"
@@ -36,25 +37,6 @@ import { UIOverlayLines } from "@/components/cyber/UIOverlayLines"
 
 // Note: Metadata cannot be exported from client components
 // SEO metadata is handled in the layout.tsx file
-
-type BadgeVariant = 'cyan' | 'purple' | 'muted' | 'danger' | 'success' | 'warning'
-
-function Badge({ children, variant = 'muted' }: { children: ReactNode; variant?: BadgeVariant }) {
-  const styles: Record<BadgeVariant, string> = {
-    cyan: 'border-neon-cyan/60 bg-neon-cyan/10 text-neon-cyan',
-    purple: 'border-neon-purple/60 bg-neon-purple/10 text-neon-purple',
-    muted: 'border-white/10 bg-white/5 text-gray-300',
-    danger: 'border-neon-magenta/50 bg-neon-magenta/10 text-neon-magenta',
-    success: 'border-neon-lime/50 bg-neon-lime/10 text-neon-lime',
-    warning: 'border-neon-orange/50 bg-neon-orange/10 text-neon-orange',
-  }
-
-  return (
-    <span className={`px-3 py-1 rounded-full text-[11px] font-tech tracking-[0.18em] uppercase border ${styles[variant]}`}>
-      {children}
-    </span>
-  )
-}
 
 export default function DashboardPage() {
   const { user, loading: authLoading } = useAuth()
@@ -158,7 +140,6 @@ export default function DashboardPage() {
   }, [track])
 
   const handleOnboardingSkip = () => {
-    logInfo('Dashboard - Onboarding skip called')
     setShowOnboarding(false)
   }
 
@@ -228,13 +209,13 @@ export default function DashboardPage() {
 
         <div className="relative z-10 flex items-center justify-center min-h-[60vh] px-6">
           <HudBorder className="max-w-md w-full p-8 text-center">
-            <div className="w-16 h-16 bg-gradient-to-br from-neon-cyan to-neon-purple rounded-lg flex items-center justify-center mx-auto mb-4 shadow-[0_0_20px_rgba(11,228,236,0.4)]">
+            <div className="w-16 h-16 bg-gradient-to-br from-neon-cyan to-neon-purple rounded-none flex items-center justify-center mx-auto mb-4 shadow-[0_0_20px_rgba(11,228,236,0.4)]">
               <Shield className="w-8 h-8 text-black animate-pulse" />
             </div>
-            <h2 className="text-xl font-sci font-bold text-white mb-2">
+            <h2 className="text-xl font-orbitron font-bold text-white mb-2">
               Loading Command Center...
             </h2>
-            <p className="text-gray-400 font-tech">
+            <p className="text-gray-400 font-mono">
               Preparing your dashboard
             </p>
           </HudBorder>
@@ -257,13 +238,13 @@ export default function DashboardPage() {
 
         <div className="relative z-10 flex items-center justify-center min-h-[60vh] p-4">
           <HudBorder className="max-w-md w-full p-8 text-center">
-            <div className="w-16 h-16 bg-gradient-to-br from-rose-500 to-rose-600 rounded-lg flex items-center justify-center mx-auto mb-4">
+            <div className="w-16 h-16 bg-gradient-to-br from-rose-500 to-rose-600 rounded-none flex items-center justify-center mx-auto mb-4">
               <Flame className="w-8 h-8 text-white" />
             </div>
-            <h2 className="text-2xl font-sci font-bold text-white mb-2">
+            <h2 className="text-2xl font-orbitron font-bold text-white mb-2">
               Mission Critical Error
             </h2>
-            <p className="text-gray-400 mb-6 font-tech">{error}</p>
+            <p className="text-gray-400 mb-6 font-mono">{error}</p>
             <CyberButton
               onClick={() => window.location.reload()}
               variant="primary"
@@ -292,13 +273,13 @@ export default function DashboardPage() {
 
         <div className="relative z-10 flex items-center justify-center min-h-[60vh] p-4">
           <HudBorder className="max-w-md w-full p-8 text-center">
-            <div className="w-16 h-16 bg-gradient-to-br from-neon-cyan to-neon-purple rounded-lg flex items-center justify-center mx-auto mb-4 shadow-[0_0_20px_rgba(11,228,236,0.4)]">
+            <div className="w-16 h-16 bg-gradient-to-br from-neon-cyan to-neon-purple rounded-none flex items-center justify-center mx-auto mb-4 shadow-[0_0_20px_rgba(11,228,236,0.4)]">
               <Sparkles className="w-8 h-8 text-black" />
             </div>
-            <h2 className="text-2xl font-sci font-bold text-white mb-2">
+            <h2 className="text-2xl font-orbitron font-bold text-white mb-2">
               Welcome to SoloSuccess AI
             </h2>
-            <p className="text-gray-400 mb-6 font-tech">Initialize your first mission to unlock insights.</p>
+            <p className="text-gray-400 mb-6 font-mono">Initialize your first mission to unlock insights.</p>
             <div className="space-y-3">
               <Link href="/dashboard/slaylist">
                 <CyberButton
@@ -399,23 +380,23 @@ export default function DashboardPage() {
                 repeat: Infinity,
                 ease: "easeInOut"
               }}
-              className="w-14 h-14 rounded-xl border border-neon-cyan/50 bg-neon-cyan/10 flex items-center justify-center shadow-[0_0_20px_rgba(11,228,236,0.4)]"
+              className="w-14 h-14 rounded-none border border-neon-cyan/50 bg-neon-cyan/10 flex items-center justify-center shadow-[0_0_20px_rgba(11,228,236,0.4)]"
             >
               <Crown className="w-7 h-7 text-neon-cyan" />
             </motion.div>
             <div>
-              <p className="text-xs font-tech uppercase tracking-[0.2em] text-neon-cyan">Command Center</p>
-              <h1 className="text-3xl md:text-4xl font-sci font-bold text-white">
+              <p className="text-xs font-mono uppercase tracking-[0.2em] text-neon-cyan">Command Center</p>
+              <h1 className="text-3xl md:text-4xl font-orbitron font-bold text-white">
                 Welcome back, {data.user.full_name || data.user.email.split('@')[0]}!
               </h1>
-              <p className="text-sm text-gray-400 font-tech">
+              <p className="text-sm text-gray-400 font-mono">
                 Systems stable. Here is your live productivity intel.
               </p>
             </div>
           </div>
           <div className="flex flex-wrap gap-2">
-            <Badge variant="cyan">Level {data.user.level}</Badge>
-            <Badge variant="purple">{data.user.total_points} pts</Badge>
+            <Badge variant="cyan" className="rounded-none">Level {data.user.level}</Badge>
+            <Badge variant="purple" className="rounded-none">{data.user.total_points} pts</Badge>
           </div>
         </motion.div>
 
@@ -425,54 +406,54 @@ export default function DashboardPage() {
           <motion.div variants={itemVariants} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             <HudBorder variant="hover" className="p-6 h-full">
               <div className="flex items-center justify-between mb-4">
-                <div className="w-12 h-12 bg-gradient-to-br from-neon-cyan to-neon-purple rounded-lg flex items-center justify-center shadow-[0_0_20px_rgba(11,228,236,0.4)]">
+                <div className="w-12 h-12 bg-gradient-to-br from-neon-cyan to-neon-purple rounded-none flex items-center justify-center shadow-[0_0_20px_rgba(11,228,236,0.4)]">
                   <CheckCircle className="w-6 h-6 text-black" />
                 </div>
-                <Badge variant="cyan">+15%</Badge>
+                <Badge variant="cyan" className="rounded-none">+15%</Badge>
               </div>
-              <h3 className="text-2xl font-sci font-bold mb-1">
+              <h3 className="text-2xl font-orbitron font-bold mb-1">
                 {todaysStats.tasks_completed}/{todaysStats.total_tasks}
               </h3>
-              <p className="text-gray-400 text-sm font-tech">Tasks Completed</p>
+              <p className="text-gray-400 text-sm font-mono">Tasks Completed</p>
             </HudBorder>
 
             <HudBorder variant="hover" className="p-6 h-full">
               <div className="flex items-center justify-between mb-4">
-                <div className="w-12 h-12 bg-gradient-to-br from-neon-cyan to-neon-purple rounded-lg flex items-center justify-center shadow-[0_0_20px_rgba(11,228,236,0.4)]">
+                <div className="w-12 h-12 bg-gradient-to-br from-neon-cyan to-neon-purple rounded-none flex items-center justify-center shadow-[0_0_20px_rgba(11,228,236,0.4)]">
                   <Clock className="w-6 h-6 text-black" />
                 </div>
-                <Badge variant="cyan">+8%</Badge>
+                <Badge variant="cyan" className="rounded-none">+8%</Badge>
               </div>
-              <h3 className="text-2xl font-sci font-bold mb-1">
+              <h3 className="text-2xl font-orbitron font-bold mb-1">
                 {todaysStats.focus_minutes}m
               </h3>
-              <p className="text-gray-400 text-sm font-tech">Focus Time</p>
+              <p className="text-gray-400 text-sm font-mono">Focus Time</p>
             </HudBorder>
 
             <HudBorder variant="hover" className="p-6 h-full">
               <div className="flex items-center justify-between mb-4">
-                <div className="w-12 h-12 bg-gradient-to-br from-neon-cyan to-neon-purple rounded-lg flex items-center justify-center shadow-[0_0_20px_rgba(11,228,236,0.4)]">
+                <div className="w-12 h-12 bg-gradient-to-br from-neon-cyan to-neon-purple rounded-none flex items-center justify-center shadow-[0_0_20px_rgba(11,228,236,0.4)]">
                   <MessageCircle className="w-6 h-6 text-black" />
                 </div>
-                <Badge variant="cyan">+12%</Badge>
+                <Badge variant="cyan" className="rounded-none">+12%</Badge>
               </div>
-              <h3 className="text-2xl font-sci font-bold mb-1">
+              <h3 className="text-2xl font-orbitron font-bold mb-1">
                 {todaysStats.ai_interactions}
               </h3>
-              <p className="text-gray-400 text-sm font-tech">AI Interactions</p>
+              <p className="text-gray-400 text-sm font-mono">AI Interactions</p>
             </HudBorder>
 
             <HudBorder variant="hover" className="p-6 h-full">
               <div className="flex items-center justify-between mb-4">
-                <div className="w-12 h-12 bg-gradient-to-br from-neon-cyan to-neon-purple rounded-lg flex items-center justify-center shadow-[0_0_20px_rgba(11,228,236,0.4)]">
+                <div className="w-12 h-12 bg-gradient-to-br from-neon-cyan to-neon-purple rounded-none flex items-center justify-center shadow-[0_0_20px_rgba(11,228,236,0.4)]">
                   <BarChart3 className="w-6 h-6 text-black" />
                 </div>
-                <Badge variant="cyan">+5%</Badge>
+                <Badge variant="cyan" className="rounded-none">+5%</Badge>
               </div>
-              <h3 className="text-2xl font-sci font-bold mb-1">
+              <h3 className="text-2xl font-orbitron font-bold mb-1">
                 {todaysStats.productivity_score}%
               </h3>
-              <p className="text-gray-400 text-sm font-tech">Productivity Score</p>
+              <p className="text-gray-400 text-sm font-mono">Productivity Score</p>
             </HudBorder>
           </motion.div>
         </section>
@@ -485,7 +466,7 @@ export default function DashboardPage() {
             <motion.div variants={itemVariants}>
               <HudBorder variant="hover" className="p-6 h-full">
                 <div className="flex items-center justify-between mb-6">
-                  <h2 className="text-2xl font-sci font-bold flex items-center space-x-2">
+                  <h2 className="text-2xl font-orbitron font-bold flex items-center space-x-2">
                     <Target className="w-6 h-6 text-neon-cyan" />
                     <span>Today's Missions</span>
                   </h2>
@@ -502,18 +483,18 @@ export default function DashboardPage() {
                         initial={{ opacity: 0, x: -20 }}
                         animate={{ opacity: 1, x: 0 }}
                         transition={{ delay: index * 0.1 }}
-                        className="flex items-center justify-between p-4 bg-white/5 border border-neon-cyan/10 rounded-lg hover:border-neon-cyan/50 transition-all"
+                        className="flex items-center justify-between p-4 bg-dark-card border border-neon-cyan/20 rounded-none hover:border-neon-cyan/50 transition-all"
                       >
                         <div className="flex items-center space-x-3">
                           <motion.div
                             whileHover={{ scale: 1.15 }}
-                            className={`w-3 h-3 rounded-full ${task.status === 'completed' ? 'bg-neon-cyan' : 'bg-neon-purple/60'}`}
+                            className={`w-3 h-3 rounded-none ${task.status === 'completed' ? 'bg-neon-cyan' : 'bg-neon-purple/60'}`}
                             aria-hidden="true"
                           />
                           <div>
-                            <p className="font-medium text-white">{task.title}</p>
+                            <p className="font-medium text-white font-mono">{task.title}</p>
                             {task.goal && (
-                              <p className="text-sm text-gray-400">
+                              <p className="text-sm text-gray-400 font-mono">
                                 Goal: {task.goal.title}
                               </p>
                             )}
@@ -521,7 +502,8 @@ export default function DashboardPage() {
                         </div>
                         <div className="flex items-center space-x-2">
                           <Badge
-                            variant={task.priority === 'high' ? 'danger' : task.priority === 'medium' ? 'warning' : 'success'}
+                            variant={task.priority === 'high' ? 'magenta' : task.priority === 'medium' ? 'orange' : 'lime'}
+                            className="rounded-none font-mono"
                           >
                             {task.priority}
                           </Badge>
@@ -534,7 +516,7 @@ export default function DashboardPage() {
                   ) : (
                     <div className="text-center py-8">
                       <Target className="w-12 h-12 text-gray-500 mx-auto mb-4" />
-                      <p className="text-gray-400 mb-4">No missions for today</p>
+                      <p className="text-gray-400 mb-4 font-mono">No missions for today</p>
                       <CyberButton
                         variant="primary"
                         size="sm"
@@ -555,7 +537,7 @@ export default function DashboardPage() {
             <motion.div variants={itemVariants}>
               <HudBorder variant="hover" className="p-6 h-full">
                 <div className="flex items-center justify-between mb-6">
-                  <h2 className="text-2xl font-sci font-bold flex items-center space-x-2">
+                  <h2 className="text-2xl font-orbitron font-bold flex items-center space-x-2">
                     <Trophy className="w-6 h-6 text-neon-cyan" />
                     <span>Active Objectives</span>
                   </h2>
@@ -572,22 +554,22 @@ export default function DashboardPage() {
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ delay: index * 0.1 }}
-                        className="p-4 bg-white/5 border border-neon-cyan/10 rounded-lg"
+                        className="p-4 bg-dark-card border border-neon-cyan/20 rounded-none"
                       >
                         <div className="flex items-center justify-between mb-2">
-                          <h3 className="font-semibold text-white">{goal.title}</h3>
-                          <Badge variant="purple">
+                          <h3 className="font-semibold text-white font-orbitron">{goal.title}</h3>
+                          <Badge variant="purple" className="rounded-none font-mono">
                             {goal.progress_percentage}%
                           </Badge>
                         </div>
-                        <div className="w-full bg-white/10 rounded-full h-2 mb-2">
+                        <div className="w-full bg-dark-bg border border-neon-cyan/10 rounded-none h-2 mb-2">
                           <div
-                            className="bg-gradient-to-r from-neon-cyan to-neon-purple h-2 rounded-full transition-all duration-300"
+                            className="bg-gradient-to-r from-neon-cyan to-neon-purple h-full rounded-none transition-all duration-300"
                             style={{ width: `${goal.progress_percentage}%` }}
                           />
                         </div>
                         {goal.target_date && (
-                          <p className="text-xs text-gray-400">
+                          <p className="text-xs text-gray-400 font-mono">
                             Due: {new Date(goal.target_date).toLocaleDateString()}
                           </p>
                         )}
@@ -620,7 +602,7 @@ export default function DashboardPage() {
             <motion.div variants={itemVariants}>
               <HudBorder variant="hover" className="p-6 h-full">
                 <div className="flex items-center justify-between mb-6">
-                  <h2 className="text-2xl font-sci font-bold flex items-center space-x-2">
+                  <h2 className="text-2xl font-orbitron font-bold flex items-center space-x-2">
                     <MessageCircle className="w-6 h-6 text-neon-cyan" />
                     <span>Recent Intel</span>
                   </h2>
@@ -637,17 +619,17 @@ export default function DashboardPage() {
                         initial={{ opacity: 0, x: -20 }}
                         animate={{ opacity: 1, x: 0 }}
                         transition={{ delay: index * 0.1 }}
-                        className="flex items-center space-x-3 p-3 bg-white/5 border border-neon-cyan/10 rounded-lg hover:border-neon-cyan/50 transition-all cursor-pointer"
+                        className="flex items-center space-x-3 p-3 bg-dark-card border border-neon-cyan/20 rounded-none hover:border-neon-cyan/50 transition-all cursor-pointer"
                       >
                         <div
-                          className="w-10 h-10 rounded-lg flex items-center justify-center text-white font-bold"
+                          className="w-10 h-10 rounded-none flex items-center justify-center text-white font-bold"
                           style={{ backgroundColor: conversation.agent.accent_color }}
                         >
                           {conversation.agent.display_name.charAt(0)}
                         </div>
                         <div className="flex-1">
-                          <p className="font-medium text-white">{conversation.agent.display_name}</p>
-                          <p className="text-sm text-gray-400">
+                          <p className="font-medium text-white font-orbitron">{conversation.agent.display_name}</p>
+                          <p className="text-sm text-gray-400 font-mono">
                             {new Date(conversation.last_message_at).toLocaleDateString()}
                           </p>
                         </div>
@@ -674,7 +656,7 @@ export default function DashboardPage() {
             <motion.div variants={itemVariants}>
               <HudBorder variant="hover" className="p-6 h-full">
                 <div className="flex items-center justify-between mb-6">
-                  <h2 className="text-2xl font-sci font-bold flex items-center space-x-2">
+                  <h2 className="text-2xl font-orbitron font-bold flex items-center space-x-2">
                     <Sparkles className="w-6 h-6 text-neon-cyan" />
                     <span>AI Intelligence</span>
                   </h2>
@@ -691,10 +673,10 @@ export default function DashboardPage() {
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ delay: index * 0.1 }}
-                        className="p-4 bg-white/5 border border-neon-cyan/10 rounded-lg"
+                        className="p-4 bg-dark-card border border-neon-cyan/20 rounded-none"
                       >
-                        <h3 className="font-semibold text-white mb-2">{insight.title}</h3>
-                        <p className="text-sm text-gray-400 mb-3">
+                        <h3 className="font-semibold text-white mb-2 font-orbitron">{insight.title}</h3>
+                        <p className="text-sm text-gray-400 mb-3 font-mono">
                           {insight.description}
                         </p>
                         <CyberButton size="sm" variant="secondary">
@@ -723,7 +705,7 @@ export default function DashboardPage() {
           <motion.div variants={itemVariants}>
             <HudBorder variant="hover" className="p-6 h-full">
               <div className="flex items-center justify-between mb-6">
-                <h2 className="text-2xl font-sci font-bold flex items-center space-x-2">
+                <h2 className="text-2xl font-orbitron font-bold flex items-center space-x-2">
                   <Briefcase className="w-6 h-6 text-neon-cyan" />
                   <span>Mission Briefcases</span>
                 </h2>
@@ -742,23 +724,24 @@ export default function DashboardPage() {
                       initial={{ opacity: 0, x: -20 }}
                       animate={{ opacity: 1, x: 0 }}
                       transition={{ delay: index * 0.1 }}
-                      className="flex items-center space-x-3 p-3 bg-white/5 border border-neon-cyan/10 rounded-lg hover:border-neon-cyan/50 transition-all cursor-pointer"
+                      className="flex items-center space-x-3 p-3 bg-dark-card border border-neon-cyan/20 rounded-none hover:border-neon-cyan/50 transition-all cursor-pointer"
                     >
-                      <div className="w-10 h-10 bg-gradient-to-r from-neon-cyan to-neon-purple rounded-lg flex items-center justify-center shadow-[0_0_20px_rgba(11,228,236,0.4)]">
+                      <div className="w-10 h-10 bg-gradient-to-r from-neon-cyan to-neon-purple rounded-none flex items-center justify-center shadow-[0_0_20px_rgba(11,228,236,0.4)]">
                         <Briefcase className="w-5 h-5 text-black" />
                       </div>
                       <div className="flex-1">
-                        <p className="font-medium text-white">{briefcase.title}</p>
-                        <p className="text-sm text-gray-400">
+                        <p className="font-medium text-white font-orbitron">{briefcase.title}</p>
+                        <p className="text-sm text-gray-400 font-mono">
                           {briefcase.goal_count} objectives • {briefcase.task_count} missions
                         </p>
-                        <p className="text-xs text-gray-500">
+                        <p className="text-xs text-gray-500 font-mono">
                           Updated {new Date(briefcase.updated_at).toLocaleDateString()}
                         </p>
                       </div>
-                      <div className="flex items-center space-x-2">
+                        <div className="flex items-center space-x-2">
                         <Badge
-                          variant={briefcase.status === 'active' ? 'success' : briefcase.status === 'completed' ? 'cyan' : 'muted'}
+                          variant={briefcase.status === 'active' ? 'lime' : briefcase.status === 'completed' ? 'cyan' : 'purple'}
+                          className="rounded-none font-mono"
                         >
                           {briefcase.status}
                         </Badge>

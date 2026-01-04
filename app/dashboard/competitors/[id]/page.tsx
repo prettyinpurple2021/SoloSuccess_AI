@@ -1,4 +1,4 @@
-// @ts-nocheck
+
 'use client'
 
 import { logger, logError, logWarn, logInfo, logDebug, logApi, logDb, logAuth } from '@/lib/logger'
@@ -8,8 +8,8 @@ import Link from 'next/link'
 import { motion } from 'framer-motion'
 import { ArrowLeft, RefreshCw, Settings, Clock, ExternalLink, Brain, Crosshair, Plus, AlertTriangle } from 'lucide-react'
 
-import { BossButton } from '@/components/ui/boss-button'
-import { Card } from '@/components/ui/card'
+import { CyberButton } from '@/components/cyber/CyberButton'
+import { HudBorder } from '@/components/cyber/HudBorder'
 import { Badge } from '@/components/ui/badge'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 
@@ -155,11 +155,11 @@ export default function CompetitorDetailPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen gradient-background p-6">
+      <div className="min-h-screen bg-dark-bg p-6">
         <div className="flex items-center justify-center min-h-[60vh]">
           <div className="text-center">
-            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500 mx-auto mb-4"></div>
-            <p className="text-gray-600 dark:text-gray-400">Loading competitor data...</p>
+            <div className="w-12 h-12 border-4 border-neon-cyan border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+            <p className="text-gray-400 font-mono">Loading competitor data...</p>
           </div>
         </div>
       </div>
@@ -168,14 +168,14 @@ export default function CompetitorDetailPage() {
 
   if (!competitor) {
     return (
-      <div className="min-h-screen gradient-background p-6">
+      <div className="min-h-screen bg-dark-bg p-6">
         <div className="flex items-center justify-center min-h-[60vh]">
           <div className="text-center">
-            <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">Competitor Not Found</h2>
-            <p className="text-gray-600 dark:text-gray-400 mb-6">The competitor you're looking for doesn't exist.</p>
-            <BossButton onClick={() => router.push('/dashboard/competitors')}>
+            <h2 className="text-2xl font-bold font-orbitron text-white mb-4">Competitor Not Found</h2>
+            <p className="text-gray-400 mb-6 font-mono">The competitor you're looking for doesn't exist.</p>
+            <CyberButton onClick={() => router.push('/dashboard/competitors')}>
               Back to Competitors
-            </BossButton>
+            </CyberButton>
           </div>
         </div>
       </div>
@@ -183,7 +183,7 @@ export default function CompetitorDetailPage() {
   }
 
   return (
-    <div className="min-h-screen gradient-background p-6">
+    <div className="min-h-screen bg-dark-bg p-6">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -194,18 +194,18 @@ export default function CompetitorDetailPage() {
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-4">
             <Link href="/dashboard/competitors">
-              <BossButton variant="outline" size="sm">
+              <CyberButton variant="ghost" size="sm" className='text-neon-cyan hover:bg-neon-cyan/10'>
                 <ArrowLeft className="w-4 h-4 mr-2" />
                 Back to Competitors
-              </BossButton>
+              </CyberButton>
             </Link>
             <div>
-              <h1 className="text-3xl font-bold text-gradient">{competitor?.name}</h1>
-              <p className="text-gray-600 dark:text-gray-400">{competitor?.domain}</p>
+              <h1 className="text-3xl font-bold font-orbitron text-white">{competitor?.name}</h1>
+              <p className="text-gray-400 font-mono">{competitor?.domain}</p>
             </div>
           </div>
           <div className="flex items-center space-x-3">
-            <BossButton
+            <CyberButton
               variant="secondary"
               size="sm"
               onClick={handleRefresh}
@@ -217,11 +217,11 @@ export default function CompetitorDetailPage() {
                 <RefreshCw className="w-4 h-4 mr-2" />
               )}
               Refresh
-            </BossButton>
-            <BossButton variant="secondary" size="sm">
+            </CyberButton>
+            <CyberButton variant="secondary" size="sm">
               <Settings className="w-4 h-4 mr-2" />
               Settings
-            </BossButton>
+            </CyberButton>
           </div>
         </div>
 
@@ -238,57 +238,60 @@ export default function CompetitorDetailPage() {
           <TabsContent value="overview" className="space-y-6">
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
               {/* Company Info */}
-              <Card className="lg:col-span-2">
-                <h3 className="text-xl font-bold text-gradient mb-4">Company Overview</h3>
+              <HudBorder className="lg:col-span-2 p-6">
+                <h3 className="text-xl font-bold font-orbitron text-white mb-4">Company Overview</h3>
                 <div className="space-y-4">
                   <div>
-                    <h4 className="font-semibold text-gray-900 dark:text-white">Description</h4>
-                    <p className="text-gray-600 dark:text-gray-400">{competitor?.description}</p>
+                    <h4 className="font-semibold text-white font-mono">Description</h4>
+                    <p className="text-gray-400 font-mono">{competitor?.description}</p>
                   </div>
                   <div className="grid grid-cols-2 gap-4">
                     <div>
-                      <h4 className="font-semibold text-gray-900 dark:text-white">Industry</h4>
-                      <p className="text-gray-600 dark:text-gray-400">{competitor?.industry}</p>
+                      <h4 className="font-semibold text-white font-mono">Industry</h4>
+                      <p className="text-gray-400 font-mono">{competitor?.industry}</p>
                     </div>
                     <div>
-                      <h4 className="font-semibold text-gray-900 dark:text-white">Founded</h4>
-                      <p className="text-gray-600 dark:text-gray-400">{competitor?.foundedYear}</p>
+                      <h4 className="font-semibold text-white font-mono">Founded</h4>
+                      <p className="text-gray-400 font-mono">{competitor?.foundedYear}</p>
                     </div>
                   </div>
                 </div>
-              </Card>
+              </HudBorder>
 
               {/* Threat Level */}
-              <Card>
-                <h3 className="text-xl font-bold text-gradient mb-4">Threat Assessment</h3>
+              <HudBorder className="p-6">
+                <h3 className="text-xl font-bold font-orbitron text-white mb-4">Threat Assessment</h3>
                 <div className="text-center">
-                  <div className={`inline-flex items-center px-4 py-2 rounded-full text-sm font-semibold mb-2 ${
-                    competitor?.threatLevel === 'high' ? 'bg-red-100 text-red-800' :
-                    competitor?.threatLevel === 'medium' ? 'bg-yellow-100 text-yellow-800' :
-                    'bg-green-100 text-green-800'
-                  }`}>
+                  <Badge
+                    variant={
+                        competitor?.threatLevel === 'high' ? 'magenta' :
+                        competitor?.threatLevel === 'medium' ? 'orange' :
+                        'lime'
+                    }
+                    className="mb-2"
+                  >
                     {competitor?.threatLevel?.toUpperCase()} THREAT
-                  </div>
-                  <p className="text-sm text-gray-600 dark:text-gray-400">
+                  </Badge>
+                  <p className="text-sm text-gray-400 font-mono">
                     {competitor?.threatLevel === 'high' ? 'Immediate attention required' :
                      competitor?.threatLevel === 'medium' ? 'Monitor closely' :
                      'Low priority monitoring'}
                   </p>
                 </div>
-              </Card>
+              </HudBorder>
             </div>
           </TabsContent>
 
           <TabsContent value="activity" className="space-y-6">
-            <Card>
+            <HudBorder className="p-6">
               <div className="flex items-center justify-between mb-6">
-                <h3 className="text-xl font-bold text-gradient">Activity Timeline</h3>
+                <h3 className="text-xl font-bold font-orbitron text-white">Activity Timeline</h3>
                 <div className="flex items-center gap-3">
                   <select
                     value={activityFilter}
                     onChange={(e) => setActivityFilter(e.target.value)}
                     aria-label="Filter activities by type"
-                    className="px-3 py-1 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-800 text-sm"
+                    className="px-3 py-1 border border-neon-cyan/30 rounded-md bg-dark-bg text-white text-sm focus:border-neon-cyan"
                   >
                     <option value="all">All Activities</option>
                     <option value="website_change">Website Changes</option>
@@ -303,19 +306,19 @@ export default function CompetitorDetailPage() {
                 {filteredActivities.map((activity) => (
                   <div
                     key={activity.id}
-                    className="flex items-start space-x-4 p-4 glass rounded-lg border-l-4 border-blue-500"
+                    className="flex items-start space-x-4 p-4 bg-white/5 rounded-lg border-l-4 border-neon-cyan"
                   >
                     <div className="flex-shrink-0">
-                      <div className="w-2 h-2 bg-blue-500 rounded-full mt-2"></div>
+                      <div className="w-2 h-2 bg-neon-cyan rounded-full mt-2"></div>
                     </div>
                     <div className="flex-1">
                       <div className="flex items-center justify-between">
-                        <h4 className="font-semibold">{activity.title}</h4>
-                        <Badge variant="outline" className="text-xs">
+                        <h4 className="font-semibold text-white font-mono">{activity.title}</h4>
+                        <Badge variant="outline" className="text-xs text-neon-cyan border-neon-cyan">
                           {activity.type.replace('_', ' ').toUpperCase()}
                         </Badge>
                       </div>
-                      <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
+                      <p className="text-sm text-gray-400 mt-1 font-mono">
                         {activity.description}
                       </p>
                       <div className="flex items-center space-x-4 mt-2 text-xs text-gray-500">
@@ -332,21 +335,21 @@ export default function CompetitorDetailPage() {
                   </div>
                 ))}
               </div>
-            </Card>
+            </HudBorder>
           </TabsContent>
 
           <TabsContent value="insights" className="space-y-6">
-            <Card>
+            <HudBorder className="p-6">
               <div className="flex items-center justify-between mb-6">
-                <h3 className="text-xl font-bold text-gradient flex items-center">
-                  <Brain className="w-6 h-6 mr-2" />
+                <h3 className="text-xl font-bold font-orbitron text-white flex items-center">
+                  <Brain className="w-6 h-6 mr-2 text-neon-purple" />
                   AI Insights & Analysis
                 </h3>
                 <select
                   value={insightFilter}
                   onChange={(e) => setInsightFilter(e.target.value)}
                   aria-label="Filter insights by type"
-                  className="px-3 py-1 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-800 text-sm"
+                  className="px-3 py-1 border border-neon-cyan/30 rounded-md bg-dark-bg text-white text-sm focus:border-neon-cyan"
                 >
                   <option value="all">All Insights</option>
                   <option value="threat">Threat Analysis</option>
@@ -359,189 +362,193 @@ export default function CompetitorDetailPage() {
                 {filteredInsights.map((insight) => (
                   <div
                     key={insight.id}
-                    className={`p-4 glass rounded-lg border-l-4 ${
-                      insight.type === 'threat' ? 'border-red-500' :
-                      insight.type === 'opportunity' ? 'border-green-500' :
-                      'border-blue-500'
+                    className={`p-4 bg-white/5 rounded-lg border-l-4 ${
+                      insight.type === 'threat' ? 'border-neon-magenta' :
+                      insight.type === 'opportunity' ? 'border-neon-lime' :
+                      'border-neon-cyan'
                     }`}
                   >
                     <div className="flex items-start justify-between mb-2">
-                      <h4 className="font-semibold">{insight.title}</h4>
+                      <h4 className="font-semibold text-white font-mono">{insight.title}</h4>
                       <Badge
-                        variant="outline"
-                        className={`text-xs ${
-                          insight.type === 'threat' ? 'bg-red-100 text-red-800 border-red-200' :
-                          insight.type === 'opportunity' ? 'bg-green-100 text-green-800 border-green-200' :
-                          'bg-blue-100 text-blue-800 border-blue-200'
-                        }`}
+                        variant={
+                          insight.type === 'threat' ? 'magenta' :
+                          insight.type === 'opportunity' ? 'lime' :
+                          'cyan'
+                        }
+                        className="text-xs"
                       >
                         {insight.type.toUpperCase()}
                       </Badge>
                     </div>
-                    <p className="text-sm text-gray-600 dark:text-gray-400 mb-3">
+                    <p className="text-sm text-gray-400 mb-3 font-mono">
                       {insight.description}
                     </p>
-                    <div className="flex items-center justify-between pt-3 border-t border-gray-200 dark:border-gray-700">
+                    <div className="flex items-center justify-between pt-3 border-t border-white/10">
                       <div className="flex items-center space-x-2">
                         <Badge
-                          variant="outline"
-                          className={`text-xs ${
-                            insight.confidence === 'high' ? 'bg-green-100 text-green-800 border-green-200' :
-                            insight.confidence === 'medium' ? 'bg-yellow-100 text-yellow-800 border-yellow-200' :
-                            'bg-red-100 text-red-800 border-red-200'
-                          }`}
+                          variant={
+                            insight.confidence === 'high' ? 'lime' :
+                            insight.confidence === 'medium' ? 'orange' :
+                            'magenta'
+                          }
+                          className="text-xs"
                         >
                           {insight.confidence.toUpperCase()} CONFIDENCE
                         </Badge>
                       </div>
-                      <span className="text-xs text-gray-500">
+                      <span className="text-xs text-gray-500 font-mono">
                         {new Date(insight.timestamp).toLocaleDateString()}
                       </span>
                     </div>
                   </div>
                 ))}
               </div>
-            </Card>
+            </HudBorder>
           </TabsContent>
 
           <TabsContent value="threat" className="space-y-6">
-            <Card>
+            <HudBorder className="p-6">
               <div className="flex items-center justify-between mb-6">
-                <h3 className="text-xl font-bold text-gradient flex items-center">
-                  <Crosshair className="w-6 h-6 mr-2" />
+                <h3 className="text-xl font-bold font-orbitron text-white flex items-center">
+                  <Crosshair className="w-6 h-6 mr-2 text-neon-magenta" />
                   Threat Assessment
                 </h3>
-                <BossButton variant="secondary" size="sm">
+                <CyberButton variant="secondary" size="sm">
                   <RefreshCw className="w-4 h-4 mr-2" />
                   Update Analysis
-                </BossButton>
+                </CyberButton>
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div className="p-4 glass rounded-lg">
-                  <h4 className="font-semibold mb-3">Competitive Threats</h4>
+                <div className="p-4 bg-white/5 rounded-lg border border-neon-cyan/20">
+                  <h4 className="font-semibold text-white font-mono mb-3">Competitive Threats</h4>
                   <div className="space-y-3">
-                    <div className="flex items-center justify-between p-3 bg-red-50 dark:bg-red-900/20 rounded-lg">
-                      <span className="text-sm">Market Share Growth</span>
-                      <Badge variant="destructive">High Risk</Badge>
+                    <div className="flex items-center justify-between p-3 bg-neon-magenta/10 rounded-lg border border-neon-magenta/20">
+                      <span className="text-sm text-white font-mono">Market Share Growth</span>
+                      <Badge variant="magenta">High Risk</Badge>
                     </div>
-                    <div className="flex items-center justify-between p-3 bg-yellow-50 dark:bg-yellow-900/20 rounded-lg">
-                      <span className="text-sm">Pricing Pressure</span>
-                      <Badge variant="secondary">Medium Risk</Badge>
+                    <div className="flex items-center justify-between p-3 bg-neon-orange/10 rounded-lg border border-neon-orange/20">
+                      <span className="text-sm text-white font-mono">Pricing Pressure</span>
+                      <Badge variant="orange">Medium Risk</Badge>
                     </div>
-                    <div className="flex items-center justify-between p-3 bg-green-50 dark:bg-green-900/20 rounded-lg">
-                      <span className="text-sm">Talent Acquisition</span>
-                      <Badge variant="outline">Low Risk</Badge>
+                    <div className="flex items-center justify-between p-3 bg-neon-lime/10 rounded-lg border border-neon-lime/20">
+                      <span className="text-sm text-white font-mono">Talent Acquisition</span>
+                      <Badge variant="lime">Low Risk</Badge>
                     </div>
                   </div>
                 </div>
 
-                <div className="p-4 glass rounded-lg">
-                  <h4 className="font-semibold mb-3">Defensive Strategies</h4>
+                <div className="p-4 bg-white/5 rounded-lg border border-neon-cyan/20">
+                  <h4 className="font-semibold text-white font-mono mb-3">Defensive Strategies</h4>
                   <div className="space-y-3">
-                    <div className="p-3 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
-                      <h5 className="font-medium text-sm">Strengthen Brand Positioning</h5>
-                      <p className="text-xs text-gray-600 dark:text-gray-400 mt-1">
+                    <div className="p-3 bg-neon-cyan/10 rounded-lg border border-neon-cyan/20">
+                      <h5 className="font-medium text-sm text-white font-mono">Strengthen Brand Positioning</h5>
+                      <p className="text-xs text-gray-400 mt-1 font-mono">
                         Focus on unique value proposition
                       </p>
                     </div>
-                    <div className="p-3 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
-                      <h5 className="font-medium text-sm">Customer Retention Program</h5>
-                      <p className="text-xs text-gray-600 dark:text-gray-400 mt-1">
+                    <div className="p-3 bg-neon-cyan/10 rounded-lg border border-neon-cyan/20">
+                      <h5 className="font-medium text-sm text-white font-mono">Customer Retention Program</h5>
+                      <p className="text-xs text-gray-400 mt-1 font-mono">
                         Implement loyalty rewards and better support
                       </p>
                     </div>
                   </div>
                 </div>
               </div>
-            </Card>
+            </HudBorder>
           </TabsContent>
 
           <TabsContent value="actions" className="space-y-6">
-            <Card>
+            <HudBorder className="p-6">
               <div className="flex items-center justify-between mb-6">
-                <h3 className="text-xl font-bold text-gradient">Action Plan</h3>
-                <BossButton variant="secondary" size="sm">
+                <h3 className="text-xl font-bold font-orbitron text-white">Action Plan</h3>
+                <CyberButton variant="secondary" size="sm">
                   <Plus className="w-4 h-4 mr-2" />
                   Add Action
-                </BossButton>
+                </CyberButton>
               </div>
 
               <div className="space-y-4">
-                <div className="p-4 glass rounded-lg border-l-4 border-blue-500">
+                <div className="p-4 bg-white/5 rounded-lg border-l-4 border-neon-cyan">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center space-x-4">
-                      <span className="text-sm font-medium text-blue-600">
+                      <span className="text-sm font-medium text-neon-cyan font-mono">
                         Lexi
                       </span>
                       <div>
-                        <h4 className="font-semibold">Monitor competitor activity</h4>
-                        <p className="text-sm text-gray-600 dark:text-gray-400">
+                        <h4 className="font-semibold text-white font-mono">Monitor competitor activity</h4>
+                        <p className="text-sm text-gray-400 font-mono">
                           Track their latest product releases and marketing campaigns
                         </p>
                       </div>
                     </div>
                     <div className="flex items-center space-x-2">
-                      <Badge variant="outline">monitoring</Badge>
-                      <BossButton variant="secondary" size="sm">
+                      <Badge variant="outline" className="text-neon-cyan border-neon-cyan">monitoring</Badge>
+                      <CyberButton variant="secondary" size="sm">
                         Start Action
-                      </BossButton>
+                      </CyberButton>
                     </div>
                   </div>
                 </div>
               </div>
-            </Card>
+            </HudBorder>
           </TabsContent>
 
           <TabsContent value="alerts" className="space-y-6">
-            <Card>
+            <HudBorder className="p-6">
               <div className="flex items-center justify-between mb-6">
-                <h3 className="text-xl font-bold text-gradient">Active Alerts</h3>
-                <BossButton variant="secondary" size="sm">
+                <h3 className="text-xl font-bold font-orbitron text-white">Active Alerts</h3>
+                <CyberButton variant="secondary" size="sm">
                   Mark All Read
-                </BossButton>
+                </CyberButton>
               </div>
 
               <div className="space-y-4">
                 {alerts.map((alert) => (
                   <div
                     key={alert.id}
-                    className={`p-4 glass rounded-lg border-l-4 ${alert.severity === 'critical' ? 'border-red-500' :
-                      alert.severity === 'urgent' ? 'border-orange-500' :
-                        alert.severity === 'warning' ? 'border-yellow-500' :
-                          'border-blue-500'
+                    className={`p-4 bg-white/5 rounded-lg border-l-4 ${alert.severity === 'critical' ? 'border-neon-magenta' :
+                      alert.severity === 'urgent' ? 'border-neon-orange' :
+                        alert.severity === 'warning' ? 'border-neon-orange' :
+                          'border-neon-cyan'
                       } ${!alert.isRead ? 'bg-opacity-50' : ''}`}
                   >
                     <div className="flex items-start justify-between">
                       <div className="flex-1">
                         <div className="flex items-center space-x-2 mb-2">
-                          <h4 className="font-semibold">{alert.title}</h4>
+                          <h4 className="font-semibold text-white font-mono">{alert.title}</h4>
                           <Badge
-                            variant="outline"
-                            className={getSeverityColor(alert.severity)}
+                            variant={
+                                alert.severity === 'critical' ? 'magenta' :
+                                alert.severity === 'urgent' ? 'orange' :
+                                alert.severity === 'warning' ? 'orange' :
+                                'cyan'
+                            }
                           >
                             {alert.severity.toUpperCase()}
                           </Badge>
                           {!alert.isRead && (
-                            <div className="w-2 h-2 bg-blue-500 rounded-full" />
+                            <div className="w-2 h-2 bg-neon-cyan rounded-full" />
                           )}
                         </div>
-                        <p className="text-sm text-gray-600 dark:text-gray-400 mb-2">
+                        <p className="text-sm text-gray-400 mb-2 font-mono">
                           {alert.description}
                         </p>
-                        <div className="flex items-center space-x-2 text-xs text-gray-500">
+                        <div className="flex items-center space-x-2 text-xs text-gray-500 font-mono">
                           <Clock className="w-3 h-3" />
                           <span>{new Date(alert.timestamp).toLocaleString()}</span>
                         </div>
                       </div>
-                      <BossButton variant="secondary" size="sm">
+                      <CyberButton variant="secondary" size="sm">
                         View Details
-                      </BossButton>
+                      </CyberButton>
                     </div>
                   </div>
                 ))}
               </div>
-            </Card>
+            </HudBorder>
           </TabsContent>
         </Tabs>
       </motion.div>

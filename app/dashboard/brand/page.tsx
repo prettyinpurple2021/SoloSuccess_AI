@@ -5,17 +5,20 @@ export const dynamic = 'force-dynamic'
 import { logError, logInfo } from '@/lib/logger'
 import React, { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
-import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
-import { Textarea } from '@/components/ui/textarea'
-import { Badge } from '@/components/ui/badge'
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
-import { Progress } from '@/components/ui/progress'
-import { Button } from '@/components/ui/button'
+import { HudBorder } from '@/components/cyber/HudBorder'
+import { CyberButton } from '@/components/cyber/CyberButton'
 import { toast } from 'sonner'
-
+import {
+  Tabs, TabsContent, TabsList, TabsTrigger,
+} from "@/components/ui/tabs"
+import { Label } from "@/components/ui/label"
+import { Input } from "@/components/ui/input"
+import { Textarea } from "@/components/ui/textarea"
+import {
+  Select, SelectContent, SelectItem, SelectTrigger, SelectValue,
+} from "@/components/ui/select"
+import { Badge } from "@/components/ui/badge"
+import { Progress } from "@/components/ui/progress"
 import {
   Palette, 
   Type, 
@@ -418,19 +421,20 @@ export default function BrandStudioPage() {
                 <Wand2 className="w-6 h-6 text-white" />
               </motion.div>
               <div>
-                <h1 className="text-4xl font-bold text-gradient">Brand Studio</h1>
-                <p className="text-lg text-purple-200">
+                <h1 className="text-4xl font-bold font-orbitron text-white">Brand Studio</h1>
+                <p className="text-lg text-gray-400 font-mono">
                   AI-powered brand identity creation and management
                 </p>
               </div>
             </div>
           </div>
           <div className="flex items-center gap-3">
-            <Button
+            <CyberButton
               variant="outline"
               size="sm"
               onClick={analyzeBrand}
               disabled={analyzing}
+              className="border-neon-cyan/30 text-neon-cyan hover:bg-neon-cyan/10"
             >
               {analyzing ? (
                 <Loader2 className="w-4 h-4 mr-2 animate-spin" />
@@ -438,8 +442,8 @@ export default function BrandStudioPage() {
                 <Brain className="w-4 h-4 mr-2" />
               )}
               Analyze Brand
-            </Button>
-            <Button onClick={saveBrandSettings} disabled={saving}>
+            </CyberButton>
+            <CyberButton onClick={saveBrandSettings} disabled={saving} variant="purple">
               {saving ? (
                 <>
                   <Loader2 className="w-4 h-4 mr-2 animate-spin" />
@@ -451,33 +455,33 @@ export default function BrandStudioPage() {
                   Save Brand
                 </>
               )}
-            </Button>
+            </CyberButton>
           </div>
         </motion.div>
 
         <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
-          <TabsList className="grid w-full grid-cols-6 bg-purple-900/50 border border-purple-700">
-            <TabsTrigger value="overview" className="data-[state=active]:bg-cyan-500 data-[state=active]:text-white">
+          <TabsList className="grid w-full grid-cols-6 bg-dark-card border border-neon-purple/30 rounded-none">
+            <TabsTrigger value="overview" className="data-[state=active]:bg-neon-purple/20 data-[state=active]:text-white font-mono rounded-none">
               <Crown className="w-4 h-4 mr-2" />
               Overview
             </TabsTrigger>
-            <TabsTrigger value="identity" className="data-[state=active]:bg-cyan-500 data-[state=active]:text-white">
+            <TabsTrigger value="identity" className="data-[state=active]:bg-neon-purple/20 data-[state=active]:text-white font-mono rounded-none">
               <Target className="w-4 h-4 mr-2" />
               Identity
             </TabsTrigger>
-            <TabsTrigger value="visuals" className="data-[state=active]:bg-cyan-500 data-[state=active]:text-white">
+            <TabsTrigger value="visuals" className="data-[state=active]:bg-neon-purple/20 data-[state=active]:text-white font-mono rounded-none">
               <Palette className="w-4 h-4 mr-2" />
               Visuals
             </TabsTrigger>
-            <TabsTrigger value="logo" className="data-[state=active]:bg-cyan-500 data-[state=active]:text-white">
+            <TabsTrigger value="logo" className="data-[state=active]:bg-neon-purple/20 data-[state=active]:text-white font-mono rounded-none">
               <ImageIcon className="w-4 h-4 mr-2" />
               Logo
             </TabsTrigger>
-            <TabsTrigger value="guidelines" className="data-[state=active]:bg-cyan-500 data-[state=active]:text-white">
+            <TabsTrigger value="guidelines" className="data-[state=active]:bg-neon-purple/20 data-[state=active]:text-white font-mono rounded-none">
               <FileText className="w-4 h-4 mr-2" />
               Guidelines
             </TabsTrigger>
-            <TabsTrigger value="analytics" className="data-[state=active]:bg-cyan-500 data-[state=active]:text-white">
+            <TabsTrigger value="analytics" className="data-[state=active]:bg-neon-purple/20 data-[state=active]:text-white font-mono rounded-none">
               <TrendingUp className="w-4 h-4 mr-2" />
               Analytics
             </TabsTrigger>
@@ -485,58 +489,58 @@ export default function BrandStudioPage() {
 
           <TabsContent value="overview" className="space-y-6">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-              <Card>
-                <CardHeader>
-                  <CardTitle className="flex items-center gap-2 text-white">
-                    <Crown className="w-5 h-5 text-yellow-300" />
+              <HudBorder className="bg-dark-card border-neon-purple/30">
+                <div className="p-6 pb-2">
+                  <h3 className="text-xl font-orbitron font-bold text-white flex items-center gap-2">
+                    <Crown className="w-5 h-5 text-neon-purple" />
                     Brand Overview
-                  </CardTitle>
-                  <CardDescription className="text-purple-200">
+                  </h3>
+                  <p className="text-gray-400 font-mono text-sm mt-1">
                     Define your brand&apos;s core identity and values
-                  </CardDescription>
-                </CardHeader>
-                <CardContent className="space-y-4">
+                  </p>
+                </div>
+                <div className="p-6 pt-2 space-y-4">
                   <div>
-                    <Label htmlFor="companyName" className="text-purple-200">Company Name</Label>
+                    <Label htmlFor="companyName" className="text-neon-cyan font-mono">Company Name</Label>
                     <Input
                       id="companyName"
                       value={brandSettings.companyName}
                       onChange={(e) => updateBrandSettings({ companyName: e.target.value })}
                       placeholder="Enter your company name"
-                      className="bg-white/5 border-purple-700 text-white placeholder:text-purple-300"
+                      className="bg-dark-bg border-neon-purple/30 text-white placeholder:text-gray-500 font-mono rounded-none focus:border-neon-purple"
                     />
                   </div>
                   <div>
-                    <Label htmlFor="tagline" className="text-purple-200">Tagline</Label>
+                    <Label htmlFor="tagline" className="text-neon-cyan font-mono">Tagline</Label>
                     <Input
                       id="tagline"
                       value={brandSettings.tagline}
                       onChange={(e) => updateBrandSettings({ tagline: e.target.value })}
                       placeholder="Your brand's tagline"
-                      className="bg-white/5 border-purple-700 text-white placeholder:text-purple-300"
+                      className="bg-dark-bg border-neon-purple/30 text-white placeholder:text-gray-500 font-mono rounded-none focus:border-neon-purple"
                     />
                   </div>
                   <div>
-                    <Label htmlFor="description" className="text-purple-200">Brand Description</Label>
+                    <Label htmlFor="description" className="text-neon-cyan font-mono">Brand Description</Label>
                     <Textarea
                       id="description"
                       value={brandSettings.description}
                       onChange={(e) => updateBrandSettings({ description: e.target.value })}
                       placeholder="Describe your brand, what you do, and what makes you unique"
                       rows={4}
-                      className="bg-white/5 border-purple-700 text-white placeholder:text-purple-300"
+                      className="bg-dark-bg border-neon-purple/30 text-white placeholder:text-gray-500 font-mono rounded-none focus:border-neon-purple"
                     />
                   </div>
                   <div>
-                    <Label htmlFor="industry" className="text-purple-200">Industry</Label>
+                    <Label htmlFor="industry" className="text-neon-cyan font-mono">Industry</Label>
                     <Select
                       value={brandSettings.industry}
                       onValueChange={(value) => updateBrandSettings({ industry: value })}
                     >
-                      <SelectTrigger className="bg-white/5 border-purple-700 text-white">
+                      <SelectTrigger className="bg-dark-bg border-neon-purple/30 text-white font-mono rounded-none">
                         <SelectValue placeholder="Select your industry" />
                       </SelectTrigger>
-                      <SelectContent className="bg-purple-900 text-white border-purple-700">
+                      <SelectContent className="bg-dark-card border-neon-purple/30 text-white font-mono rounded-none">
                         {INDUSTRY_OPTIONS.map(industry => (
                           <SelectItem key={industry} value={industry}>{industry}</SelectItem>
                         ))}
@@ -544,127 +548,128 @@ export default function BrandStudioPage() {
                     </Select>
                   </div>
                   <div>
-                    <Label htmlFor="targetAudience" className="text-purple-200">Target Audience</Label>
+                    <Label htmlFor="targetAudience" className="text-neon-cyan font-mono">Target Audience</Label>
                     <Textarea
                       id="targetAudience"
                       value={brandSettings.targetAudience}
                       onChange={(e) => updateBrandSettings({ targetAudience: e.target.value })}
                       placeholder="Describe your ideal customers"
                       rows={3}
-                      className="bg-white/5 border-purple-700 text-white placeholder:text-purple-300"
+                      className="bg-dark-bg border-neon-purple/30 text-white placeholder:text-gray-500 font-mono rounded-none focus:border-neon-purple"
                     />
                   </div>
-                </CardContent>
-              </Card>
+                </div>
+              </HudBorder>
 
-              <Card>
-                <CardHeader>
-                  <CardTitle className="flex items-center gap-2 text-white">
-                    <Lightbulb className="w-5 h-5 text-yellow-300" />
+              <HudBorder className="bg-dark-card border-neon-purple/30">
+                <div className="p-6 pb-2">
+                  <h3 className="text-xl font-orbitron font-bold text-white flex items-center gap-2">
+                    <Lightbulb className="w-5 h-5 text-neon-purple" />
                     Brand Personality
-                  </CardTitle>
-                  <CardDescription className="text-purple-200">
+                  </h3>
+                  <p className="text-gray-400 font-mono text-sm mt-1">
                     Select traits that describe your brand&apos;s personality
-                  </CardDescription>
-                </CardHeader>
-                <CardContent>
+                  </p>
+                </div>
+                <div className="p-6 pt-2">
                   <div className="flex flex-wrap gap-2">
                     {PERSONALITY_TRAITS.map(trait => (
-                      <Badge
+                      <CyberButton
                         key={trait}
+                        size="sm"
                         variant={brandSettings.brandPersonality.includes(trait) ? "cyan" : "outline"}
-                        className={`cursor-pointer transition-all ${
+                        className={`transition-all ${
                           brandSettings.brandPersonality.includes(trait)
-                            ? 'bg-gradient-to-r from-cyan-500 to-purple-500 text-white border-0'
-                            : 'bg-white/5 text-purple-200 border-purple-700 hover:bg-white/10'
+                            ? ''
+                            : 'text-gray-400 border-white/10 hover:border-neon-cyan/50 hover:text-white'
                         }`}
                         onClick={() => togglePersonalityTrait(trait)}
                       >
                         {trait}
-                      </Badge>
+                      </CyberButton>
                     ))}
                   </div>
-                </CardContent>
-              </Card>
+                </div>
+              </HudBorder>
             </div>
           </TabsContent>
 
           <TabsContent value="guidelines" className="space-y-6">
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2 text-white">
-                  <FileText className="w-5 h-5 text-cyan-300" />
+            <HudBorder className="bg-dark-card border-neon-purple/30">
+              <div className="p-6 pb-2">
+                <h3 className="text-xl font-orbitron font-bold text-white flex items-center gap-2">
+                  <FileText className="w-5 h-5 text-neon-cyan" />
                   Brand Guidelines
-                </CardTitle>
-                <CardDescription className="text-purple-200">
+                </h3>
+                <p className="text-gray-400 font-mono text-sm mt-1">
                   AI-generated brand guidelines and usage rules
-                </CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-6">
+                </p>
+              </div>
+              <div className="p-6 pt-2 space-y-6">
                 {brandSettings.brandGuidelines && (
                   <div className="space-y-4">
                     <div>
-                      <h3 className="text-lg font-semibold text-white mb-2">Logo Usage Rules</h3>
-                      <div className="bg-white/5 rounded-lg p-4 space-y-2">
+                      <h3 className="text-lg font-semibold text-white mb-2 font-orbitron">Logo Usage Rules</h3>
+                      <div className="bg-dark-bg/50 border border-white/10 rounded-none p-4 space-y-2">
                         {brandSettings.brandGuidelines.logoUsage.map((rule, index) => (
-                          <p key={index} className="text-purple-200 text-sm">• {rule}</p>
+                          <p key={index} className="text-gray-300 text-sm font-mono">• {rule}</p>
                         ))}
                       </div>
                     </div>
                     <div>
-                      <h3 className="text-lg font-semibold text-white mb-2">Color Usage Rules</h3>
-                      <div className="bg-white/5 rounded-lg p-4 space-y-2">
+                      <h3 className="text-lg font-semibold text-white mb-2 font-orbitron">Color Usage Rules</h3>
+                      <div className="bg-dark-bg/50 border border-white/10 rounded-none p-4 space-y-2">
                         {brandSettings.brandGuidelines.colorUsage.map((rule, index) => (
-                          <p key={index} className="text-purple-200 text-sm">• {rule}</p>
+                          <p key={index} className="text-gray-300 text-sm font-mono">• {rule}</p>
                         ))}
                       </div>
                     </div>
                   </div>
                 )}
-                <Button onClick={generateBrandGuidelines}>
+                <CyberButton onClick={generateBrandGuidelines} variant="purple">
                   <Wand2 className="w-4 h-4 mr-2" />
                   Generate Brand Guidelines
-                </Button>
-              </CardContent>
-            </Card>
+                </CyberButton>
+              </div>
+            </HudBorder>
           </TabsContent>
 
           <TabsContent value="analytics" className="space-y-6">
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2 text-white">
-                  <TrendingUp className="w-5 h-5 text-green-300" />
+            <HudBorder className="bg-dark-card border-neon-purple/30">
+              <div className="p-6 pb-2">
+                <h3 className="text-xl font-orbitron font-bold text-white flex items-center gap-2">
+                  <TrendingUp className="w-5 h-5 text-neon-lime" />
                   Brand Analytics
-                </CardTitle>
-                <CardDescription className="text-purple-200">
+                </h3>
+                <p className="text-gray-400 font-mono text-sm mt-1">
                   AI-powered brand analysis and insights
-                </CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-6">
+                </p>
+              </div>
+              <div className="p-6 pt-2 space-y-6">
                 {brandAnalysis && (
                   <div className="space-y-4">
                     <div className="flex items-center justify-between">
-                      <span className="text-purple-200">Brand Completeness</span>
-                      <span className="text-white font-medium">{brandAnalysis.completeness}%</span>
+                      <span className="text-gray-400 font-mono">Brand Completeness</span>
+                      <span className="text-white font-medium font-mono">{brandAnalysis.completeness}%</span>
                     </div>
                     <Progress value={brandAnalysis.completeness} className="h-3" />
                     
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                       <div>
-                        <h3 className="text-lg font-semibold text-white mb-2">Strengths</h3>
-                        <div className="bg-white/5 rounded-lg p-4 space-y-2">
+                        <h3 className="text-lg font-semibold text-white mb-2 font-orbitron">Strengths</h3>
+                        <div className="bg-dark-bg/50 border border-white/10 rounded-none p-4 space-y-2">
                           {brandAnalysis.strengths.map((strength, index) => (
-                            <p key={index} className="text-green-300 text-sm flex items-center gap-2">
+                            <p key={index} className="text-neon-lime text-sm flex items-center gap-2 font-mono">
                               <CheckCircle className="w-4 h-4" /> {strength}
                             </p>
                           ))}
                         </div>
                       </div>
                       <div>
-                        <h3 className="text-lg font-semibold text-white mb-2">Improvements</h3>
-                        <div className="bg-white/5 rounded-lg p-4 space-y-2">
+                        <h3 className="text-lg font-semibold text-white mb-2 font-orbitron">Improvements</h3>
+                        <div className="bg-dark-bg/50 border border-white/10 rounded-none p-4 space-y-2">
                           {brandAnalysis.improvements.map((improvement, index) => (
-                            <p key={index} className="text-yellow-300 text-sm flex items-center gap-2">
+                            <p key={index} className="text-neon-magenta text-sm flex items-center gap-2 font-mono">
                               <AlertCircle className="w-4 h-4" /> {improvement}
                             </p>
                           ))}
@@ -673,40 +678,40 @@ export default function BrandStudioPage() {
                     </div>
                   </div>
                 )}
-                <Button onClick={analyzeBrand} disabled={analyzing}>
+                <CyberButton onClick={analyzeBrand} disabled={analyzing} variant="outline" className="text-neon-cyan border-neon-cyan/30 hover:bg-neon-cyan/10">
                   {analyzing ? (
                     <Loader2 className="w-4 h-4 mr-2 animate-spin" />
                   ) : (
                     <Brain className="w-4 h-4 mr-2" />
                   )}
                   Analyze Brand
-                </Button>
-              </CardContent>
-            </Card>
+                </CyberButton>
+              </div>
+            </HudBorder>
           </TabsContent>
 
         <TabsContent value="identity" className="space-y-6">
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <Type className="w-5 h-5" />
+          <HudBorder className="bg-dark-card border-neon-purple/30">
+            <div className="p-6 pb-2">
+              <h3 className="text-xl font-orbitron font-bold text-white flex items-center gap-2">
+                <Type className="w-5 h-5 text-neon-purple" />
                 Typography
-              </CardTitle>
-              <CardDescription>
+              </h3>
+              <p className="text-gray-400 font-mono text-sm mt-1">
                 Choose fonts that represent your brand
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-4">
+              </p>
+            </div>
+            <div className="p-6 pt-2 space-y-4">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
-                  <Label htmlFor="primaryFont">Primary Font</Label>
+                  <Label htmlFor="primaryFont" className="text-neon-cyan font-mono">Primary Font</Label>
                   <select
                     id="primaryFont"
                     value={brandSettings.typography.primary}
                     onChange={(e) => updateBrandSettings({ 
                       typography: { ...brandSettings.typography, primary: e.target.value }
                     })}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md"
+                    className="w-full px-3 py-2 bg-dark-bg border border-neon-purple/30 rounded-none text-white focus:outline-none focus:border-neon-purple font-mono"
                     aria-label="Select primary font"
                   >
                     <option value="Inter">Inter</option>
@@ -718,14 +723,14 @@ export default function BrandStudioPage() {
                   </select>
                 </div>
                 <div>
-                  <Label htmlFor="secondaryFont">Secondary Font</Label>
+                  <Label htmlFor="secondaryFont" className="text-neon-cyan font-mono">Secondary Font</Label>
                   <select
                     id="secondaryFont"
                     value={brandSettings.typography.secondary}
                     onChange={(e) => updateBrandSettings({ 
                       typography: { ...brandSettings.typography, secondary: e.target.value }
                     })}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md"
+                    className="w-full px-3 py-2 bg-dark-bg border border-neon-purple/30 rounded-none text-white focus:outline-none focus:border-neon-purple font-mono"
                     aria-label="Select secondary font"
                   >
                     <option value="Inter">Inter</option>
@@ -737,55 +742,55 @@ export default function BrandStudioPage() {
                   </select>
                 </div>
               </div>
-            </CardContent>
-          </Card>
+            </div>
+          </HudBorder>
         </TabsContent>
 
         <TabsContent value="visuals" className="space-y-6">
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <Palette className="w-5 h-5" />
+          <HudBorder className="bg-dark-card border-neon-purple/30">
+            <div className="p-6 pb-2">
+              <h3 className="text-xl font-orbitron font-bold text-white flex items-center gap-2">
+                <Palette className="w-5 h-5 text-neon-magenta" />
                 Color Palette
-              </CardTitle>
-              <CardDescription>
+              </h3>
+              <p className="text-gray-400 font-mono text-sm mt-1">
                 Choose a color scheme that reflects your brand
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-6">
+              </p>
+            </div>
+            <div className="p-6 pt-2 space-y-6">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 {COLOR_PALETTES.map((palette, index) => (
                   <div
                     key={index}
-                    className={`border-2 rounded-lg p-4 cursor-pointer transition-all ${
+                    className={`border-2 rounded-none p-4 cursor-pointer transition-all ${
                       brandSettings.colorPalette.name === palette.name || 
                       (brandSettings.colorPalette.primary === palette.primary && 
                        brandSettings.colorPalette.secondary === palette.secondary)
-                        ? 'border-blue-500 bg-blue-50' 
-                        : 'border-gray-200 hover:border-gray-300'
+                        ? 'border-neon-cyan bg-neon-cyan/10' 
+                        : 'border-white/10 hover:border-neon-purple/50 bg-dark-bg/50'
                     }`}
                     onClick={() => selectColorPalette(palette)}
                   >
-                    <h3 className="font-medium mb-3">{palette.name}</h3>
+                    <h3 className="font-medium mb-3 font-orbitron text-white">{palette.name}</h3>
                     <div className="flex gap-2">
                       <div 
-                        className="w-8 h-8 rounded-full border"
-                        style={{ backgroundColor: `var(--bg-color-${Math.random().toString(36).substr(2, 9)})`}}
+                        className="w-8 h-8 rounded-none border border-white/20"
+                        style={{ backgroundColor: palette.primary }}
                         title="Primary"
                       ></div>
                       <div 
-                        className="w-8 h-8 rounded-full border"
-                        style={{ backgroundColor: `var(--bg-color-${Math.random().toString(36).substr(2, 9)})`}}
+                        className="w-8 h-8 rounded-none border border-white/20"
+                        style={{ backgroundColor: palette.secondary }}
                         title="Secondary"
                       ></div>
                       <div 
-                        className="w-8 h-8 rounded-full border"
-                        style={{ backgroundColor: `var(--bg-color-${Math.random().toString(36).substr(2, 9)})`}}
+                        className="w-8 h-8 rounded-none border border-white/20"
+                        style={{ backgroundColor: palette.accent }}
                         title="Accent"
                       ></div>
                       <div 
-                        className="w-8 h-8 rounded-full border"
-                        style={{ backgroundColor: `var(--bg-color-${Math.random().toString(36).substr(2, 9)})`}}
+                        className="w-8 h-8 rounded-none border border-white/20"
+                        style={{ backgroundColor: palette.neutral }}
                         title="Neutral"
                       ></div>
                     </div>
@@ -794,66 +799,66 @@ export default function BrandStudioPage() {
               </div>
 
               <div>
-                <h3 className="font-medium mb-3">Current Color Palette</h3>
+                <h3 className="font-medium mb-3 font-orbitron text-white">Current Color Palette</h3>
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                   <div>
-                    <Label>Primary</Label>
+                    <Label className="text-neon-cyan font-mono">Primary</Label>
                     <div className="flex items-center gap-2 mt-1">
                       <div 
-                        className="w-6 h-6 rounded border"
-                        style={{ backgroundColor: `var(--bg-color-${Math.random().toString(36).substr(2, 9)})`}}
+                        className="w-6 h-6 rounded-none border border-white/20"
+                        style={{ backgroundColor: brandSettings.colorPalette.primary }}
                       ></div>
-                      <span className="text-sm font-mono">{brandSettings.colorPalette.primary}</span>
+                      <span className="text-sm font-mono text-gray-300">{brandSettings.colorPalette.primary}</span>
                     </div>
                   </div>
                   <div>
-                    <Label>Secondary</Label>
+                    <Label className="text-neon-cyan font-mono">Secondary</Label>
                     <div className="flex items-center gap-2 mt-1">
                       <div 
-                        className="w-6 h-6 rounded border"
-                        style={{ backgroundColor: `var(--bg-color-${Math.random().toString(36).substr(2, 9)})`}}
+                        className="w-6 h-6 rounded-none border border-white/20"
+                        style={{ backgroundColor: brandSettings.colorPalette.secondary }}
                       ></div>
-                      <span className="text-sm font-mono">{brandSettings.colorPalette.secondary}</span>
+                      <span className="text-sm font-mono text-gray-300">{brandSettings.colorPalette.secondary}</span>
                     </div>
                   </div>
                   <div>
-                    <Label>Accent</Label>
+                    <Label className="text-neon-cyan font-mono">Accent</Label>
                     <div className="flex items-center gap-2 mt-1">
                       <div 
-                        className="w-6 h-6 rounded border"
-                        style={{ backgroundColor: `var(--bg-color-${Math.random().toString(36).substr(2, 9)})`}}
+                        className="w-6 h-6 rounded-none border border-white/20"
+                        style={{ backgroundColor: brandSettings.colorPalette.accent }}
                       ></div>
-                      <span className="text-sm font-mono">{brandSettings.colorPalette.accent}</span>
+                      <span className="text-sm font-mono text-gray-300">{brandSettings.colorPalette.accent}</span>
                     </div>
                   </div>
                   <div>
-                    <Label>Neutral</Label>
+                    <Label className="text-neon-cyan font-mono">Neutral</Label>
                     <div className="flex items-center gap-2 mt-1">
                       <div 
-                        className="w-6 h-6 rounded border"
-                        style={{ backgroundColor: `var(--bg-color-${Math.random().toString(36).substr(2, 9)})`}}
+                        className="w-6 h-6 rounded-none border border-white/20"
+                        style={{ backgroundColor: brandSettings.colorPalette.neutral }}
                       ></div>
-                      <span className="text-sm font-mono">{brandSettings.colorPalette.neutral}</span>
+                      <span className="text-sm font-mono text-gray-300">{brandSettings.colorPalette.neutral}</span>
                     </div>
                   </div>
                 </div>
               </div>
-            </CardContent>
-          </Card>
+            </div>
+          </HudBorder>
         </TabsContent>
 
           <TabsContent value="logo" className="space-y-6">
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2 text-white">
-                  <ImageIcon className="w-5 h-5 text-pink-300" />
+            <HudBorder className="bg-dark-card border-neon-purple/30">
+              <div className="p-6 pb-2">
+                <h3 className="text-xl font-orbitron font-bold text-white flex items-center gap-2">
+                  <ImageIcon className="w-5 h-5 text-neon-pink" />
                   Logo Generation
-                </CardTitle>
-                <CardDescription className="text-purple-200">
+                </h3>
+                <p className="text-gray-400 font-mono text-sm mt-1">
                   Generate professional logo variants with AI
-                </CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-6">
+                </p>
+              </div>
+              <div className="p-6 pt-2 space-y-6">
                 {logoVariants.length > 0 ? (
                   <div className="space-y-6">
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -863,14 +868,14 @@ export default function BrandStudioPage() {
                           initial={{ opacity: 0, scale: 0.9 }}
                           animate={{ opacity: 1, scale: 1 }}
                           transition={{ duration: 0.3 }}
-                          className={`relative border-2 rounded-lg p-4 cursor-pointer transition-all ${
+                          className={`relative border-2 p-4 cursor-pointer transition-all rounded-none ${
                             selectedLogoVariant === variant.id
-                              ? 'border-cyan-400 bg-cyan-400/10'
-                              : 'border-purple-700 bg-white/5 hover:border-purple-500'
+                              ? 'border-neon-cyan bg-neon-cyan/10'
+                              : 'border-white/10 bg-dark-bg/50 hover:border-neon-purple/50'
                           }`}
                           onClick={() => selectLogoVariant(variant.id)}
                         >
-                          <div className="flex items-center justify-center h-32 bg-white/5 rounded-lg mb-3">
+                          <div className="flex items-center justify-center h-32 bg-dark-bg/50 rounded-none border border-white/5 mb-3">
                             <img 
                               src={variant.url} 
                               alt={`Logo variant ${variant.id}`}
@@ -878,12 +883,12 @@ export default function BrandStudioPage() {
                             />
                           </div>
                           <div className="space-y-2">
-                            <h4 className="font-medium text-white">{variant.style}</h4>
-                            <p className="text-sm text-purple-200">{variant.description}</p>
+                            <h4 className="font-medium text-white font-orbitron">{variant.style}</h4>
+                            <p className="text-sm text-gray-400 font-mono">{variant.description}</p>
                             {selectedLogoVariant === variant.id && (
-                              <div className="flex items-center gap-2 text-cyan-400">
+                              <div className="flex items-center gap-2 text-neon-cyan">
                                 <CheckCircle className="w-4 h-4" />
-                                <span className="text-sm">Selected</span>
+                                <span className="text-sm font-mono">Selected</span>
                               </div>
                             )}
                           </div>
@@ -891,7 +896,7 @@ export default function BrandStudioPage() {
                       ))}
                     </div>
                     <div className="flex items-center gap-3">
-                      <Button onClick={generateLogo} disabled={generatingLogo}>
+                      <CyberButton onClick={generateLogo} disabled={generatingLogo} variant="purple">
                         {generatingLogo ? (
                           <>
                             <Loader2 className="w-4 h-4 mr-2 animate-spin" />
@@ -903,28 +908,29 @@ export default function BrandStudioPage() {
                             Generate New Variants
                           </>
                         )}
-                      </Button>
-                      <Button variant="outline">
+                      </CyberButton>
+                      <CyberButton variant="outline" className="text-neon-cyan border-neon-cyan/30 hover:bg-neon-cyan/10">
                         <Download className="w-4 h-4 mr-2" />
                         Download Selected
-                      </Button>
+                      </CyberButton>
                     </div>
                   </div>
                 ) : (
                   <div className="text-center space-y-6">
-                    <div className="flex items-center justify-center w-32 h-32 mx-auto bg-white/5 rounded-lg">
-                      <ImageIcon className="w-16 h-16 text-purple-400" />
+                    <div className="flex items-center justify-center w-32 h-32 mx-auto bg-dark-bg/50 rounded-none border border-neon-purple/30">
+                      <ImageIcon className="w-16 h-16 text-neon-purple/50" />
                     </div>
                     <div>
-                      <h3 className="text-xl font-medium text-white">No logo generated yet</h3>
-                      <p className="text-purple-200">
+                      <h3 className="text-xl font-medium text-white font-orbitron">No logo generated yet</h3>
+                      <p className="text-gray-400 font-mono">
                         Generate professional logo variants based on your brand settings
                       </p>
                     </div>
-                    <Button 
+                    <CyberButton 
                       onClick={generateLogo} 
                       disabled={generatingLogo || !brandSettings.companyName}
                       size="lg"
+                      variant="purple"
                     >
                       {generatingLogo ? (
                         <>
@@ -937,17 +943,17 @@ export default function BrandStudioPage() {
                           Generate Logo Variants
                         </>
                       )}
-                    </Button>
+                    </CyberButton>
                     {!brandSettings.companyName && (
-                      <div className="flex items-center justify-center gap-2 text-yellow-400">
+                      <div className="flex items-center justify-center gap-2 text-neon-yellow">
                         <AlertCircle className="w-4 h-4" />
-                        <span className="text-sm">Please fill in your company name first</span>
+                        <span className="text-sm font-mono">Please fill in your company name first</span>
                       </div>
                     )}
                   </div>
                 )}
-              </CardContent>
-            </Card>
+              </div>
+            </HudBorder>
           </TabsContent>
         </Tabs>
       </motion.div>

@@ -5,7 +5,7 @@ import { logger, logError, logWarn, logInfo, logDebug, logApi, logDb, logAuth } 
 import { useState, useEffect } from "react"
 import { motion, easeOut } from "framer-motion"
 import { HudBorder } from "@/components/cyber/HudBorder"
-import { PrimaryButton } from "@/components/ui/button"
+import { CyberButton } from "@/components/cyber/CyberButton"
 import { Badge } from "@/components/ui/badge"
 import { Progress } from "@/components/ui/progress"
 import { Input } from "@/components/ui/input"
@@ -356,7 +356,7 @@ export default function SlaylistPage() {
             transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
             className="w-16 h-16 border-t-2 border-r-2 border-neon-cyan rounded-full shadow-[0_0_15px_rgba(11,228,236,0.4)]"
           />
-          <p className="font-sci font-bold text-neon-cyan animate-pulse uppercase tracking-[0.2em]">Initializing System Data...</p>
+          <p className="font-orbitron font-bold text-neon-cyan animate-pulse uppercase tracking-[0.2em]">Initializing System Data...</p>
         </div>
       </div>
     )
@@ -383,19 +383,19 @@ export default function SlaylistPage() {
                 <Target className="w-8 h-8 text-neon-purple" />
               </div>
               <div>
-                <h1 className="text-5xl font-sci font-black tracking-tighter text-white uppercase italic">
+                <h1 className="text-5xl font-orbitron font-black tracking-tighter text-white uppercase italic">
                   Slay<span className="text-neon-cyan">List</span>
                 </h1>
                 <div className="flex items-center gap-2">
                   <div className="w-2 h-2 bg-neon-lime animate-pulse rounded-none" />
-                  <p className="text-blue-200 font-tech uppercase text-xs tracking-[0.2em] font-bold">Strategic Objective Management System // v2.4.0</p>
+                  <p className="text-gray-400 font-mono uppercase text-xs tracking-[0.2em] font-bold">Strategic Objective Management System // v2.4.0</p>
                 </div>
               </div>
             </div>
           </div>
 
           <div className="flex flex-wrap items-center gap-3">
-            <PrimaryButton
+            <CyberButton
               variant="purple"
               onClick={() => setShowVoiceTaskDialog(true)}
               className="group relative overflow-hidden"
@@ -403,36 +403,36 @@ export default function SlaylistPage() {
               <div className="absolute inset-0 bg-white/10 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-500" />
               <Mic className="w-4 h-4 mr-2" />
               Voice Command
-            </PrimaryButton>
+            </CyberButton>
 
             <Dialog open={showGoalDialog} onOpenChange={setShowGoalDialog}>
               <DialogTrigger asChild>
-                <PrimaryButton variant="cyan">
+                <CyberButton variant="cyan">
                   <Plus className="w-4 h-4 mr-2" />
                   New Objective
-                </PrimaryButton>
+                </CyberButton>
               </DialogTrigger>
               <DialogContent className="bg-dark-card border-neon-cyan/50 text-white rounded-none">
                 <DialogHeader>
-                  <DialogTitle className="font-sci text-2xl text-neon-cyan uppercase">Define Alpha Goal</DialogTitle>
-                  <DialogDescription className="text-gray-400 font-tech">Establish a high-level strategic target for your empire.</DialogDescription>
+                  <DialogTitle className="font-orbitron text-2xl text-neon-cyan uppercase">Define Alpha Goal</DialogTitle>
+                  <DialogDescription className="text-gray-400 font-mono">Establish a high-level strategic target for your empire.</DialogDescription>
                 </DialogHeader>
                 <div className="space-y-6 pt-4">
                   <div className="space-y-2">
-                    <Label htmlFor="goal-title" className="font-sci text-xs uppercase text-neon-purple">Identifier</Label>
+                    <Label htmlFor="goal-title" className="font-orbitron text-xs uppercase text-neon-purple">Identifier</Label>
                     <Input
                       id="goal-title"
-                      className="bg-black/50 border-neon-purple/30 text-white focus:border-neon-purple rounded-none"
+                      className="bg-black/50 border-neon-purple/30 text-white focus:border-neon-purple rounded-none font-mono"
                       value={goalForm.title}
                       onChange={(e) => setGoalForm({ ...goalForm, title: e.target.value })}
                       placeholder="e.g. Market Dominance Phase I"
                     />
                   </div>
                   <div className="space-y-2">
-                    <Label htmlFor="goal-description" className="font-sci text-xs uppercase text-neon-purple">Mission Parameters</Label>
+                    <Label htmlFor="goal-description" className="font-orbitron text-xs uppercase text-neon-purple">Mission Parameters</Label>
                     <Textarea
                       id="goal-description"
-                      className="bg-black/50 border-neon-purple/30 text-white focus:border-neon-purple rounded-none"
+                      className="bg-black/50 border-neon-purple/30 text-white focus:border-neon-purple rounded-none font-mono"
                       value={goalForm.description}
                       onChange={(e) => setGoalForm({ ...goalForm, description: e.target.value })}
                       placeholder="Define completion criteria..."
@@ -440,12 +440,12 @@ export default function SlaylistPage() {
                   </div>
                   <div className="grid grid-cols-2 gap-4">
                     <div className="space-y-2">
-                      <Label className="font-sci text-xs uppercase text-neon-purple">Threat Priority</Label>
+                      <Label className="font-orbitron text-xs uppercase text-neon-purple">Threat Priority</Label>
                       <Select value={goalForm.priority} onValueChange={(value) => setGoalForm({ ...goalForm, priority: value })}>
-                        <SelectTrigger className="bg-black/50 border-neon-purple/30 rounded-none">
+                        <SelectTrigger className="bg-black/50 border-neon-purple/30 rounded-none font-mono">
                           <SelectValue />
                         </SelectTrigger>
-                        <SelectContent className="bg-dark-card border-neon-purple/30 text-white">
+                        <SelectContent className="bg-dark-card border-neon-purple/30 text-white font-mono">
                           <SelectItem value="low">Low</SelectItem>
                           <SelectItem value="medium">Medium</SelectItem>
                           <SelectItem value="high">Critical</SelectItem>
@@ -453,12 +453,12 @@ export default function SlaylistPage() {
                       </Select>
                     </div>
                     <div className="space-y-2">
-                      <Label className="font-sci text-xs uppercase text-neon-purple">Classification</Label>
+                      <Label className="font-orbitron text-xs uppercase text-neon-purple">Classification</Label>
                       <Select value={goalForm.category} onValueChange={(value) => setGoalForm({ ...goalForm, category: value })}>
-                        <SelectTrigger className="bg-black/50 border-neon-purple/30 rounded-none">
+                        <SelectTrigger className="bg-black/50 border-neon-purple/30 rounded-none font-mono">
                           <SelectValue />
                         </SelectTrigger>
-                        <SelectContent className="bg-dark-card border-neon-purple/30 text-white">
+                        <SelectContent className="bg-dark-card border-neon-purple/30 text-white font-mono">
                           <SelectItem value="general">Standard</SelectItem>
                           <SelectItem value="business">Empire</SelectItem>
                           <SelectItem value="personal">Bio-Sync</SelectItem>
@@ -468,60 +468,60 @@ export default function SlaylistPage() {
                     </div>
                   </div>
                   <div className="space-y-2">
-                    <Label htmlFor="goal-date" className="font-sci text-xs uppercase text-neon-purple">Termination Date</Label>
+                    <Label htmlFor="goal-date" className="font-orbitron text-xs uppercase text-neon-purple">Termination Date</Label>
                     <Input
                       id="goal-date"
                       type="date"
-                      className="bg-black/50 border-neon-purple/30 text-white focus:border-neon-purple rounded-none"
+                      className="bg-black/50 border-neon-purple/30 text-white focus:border-neon-purple rounded-none font-mono"
                       value={goalForm.target_date}
                       onChange={(e) => setGoalForm({ ...goalForm, target_date: e.target.value })}
                     />
                   </div>
-                  <PrimaryButton onClick={createGoal} variant="purple" className="w-full">Initialize Objective</PrimaryButton>
+                  <CyberButton onClick={createGoal} variant="purple" className="w-full">Initialize Objective</CyberButton>
                 </div>
               </DialogContent>
             </Dialog>
 
             <Dialog open={showTaskDialog} onOpenChange={setShowTaskDialog}>
               <DialogTrigger asChild>
-                <PrimaryButton variant="magenta" className="border-neon-magenta text-neon-magenta hover:bg-neon-magenta/10">
+                <CyberButton variant="magenta" className="border-neon-magenta text-neon-magenta hover:bg-neon-magenta/10">
                   <Plus className="w-4 h-4 mr-2" />
                   New Tactical
-                </PrimaryButton>
+                </CyberButton>
               </DialogTrigger>
               <DialogContent className="bg-dark-card border-neon-magenta/50 text-white rounded-none">
                 <DialogHeader>
-                  <DialogTitle className="font-sci text-2xl text-neon-magenta uppercase">Deploy Tactical Item</DialogTitle>
-                  <DialogDescription className="text-gray-400 font-tech">Define actionable procedures for immediate execution.</DialogDescription>
+                  <DialogTitle className="font-orbitron text-2xl text-neon-magenta uppercase">Deploy Tactical Item</DialogTitle>
+                  <DialogDescription className="text-gray-400 font-mono">Define actionable procedures for immediate execution.</DialogDescription>
                 </DialogHeader>
                 <div className="space-y-6 pt-4">
                   <div className="space-y-2">
-                    <Label htmlFor="task-title" className="font-sci text-xs uppercase text-neon-magenta">Task Vector</Label>
+                    <Label htmlFor="task-title" className="font-orbitron text-xs uppercase text-neon-magenta">Task Vector</Label>
                     <Input
                       id="task-title"
-                      className="bg-black/50 border-neon-magenta/30 text-white rounded-none"
+                      className="bg-black/50 border-neon-magenta/30 text-white rounded-none font-mono"
                       value={taskForm.title}
                       onChange={(e) => setTaskForm({ ...taskForm, title: e.target.value })}
                       placeholder="e.g. Exploit Competitor Weakness"
                     />
                   </div>
                   <div className="space-y-2">
-                    <Label className="font-sci text-xs uppercase text-neon-magenta">Execution Detail</Label>
+                    <Label className="font-orbitron text-xs uppercase text-neon-magenta">Execution Detail</Label>
                     <Textarea
                       id="task-description"
-                      className="bg-black/50 border-neon-magenta/30 text-white rounded-none"
+                      className="bg-black/50 border-neon-magenta/30 text-white rounded-none font-mono"
                       value={taskForm.description}
                       onChange={(e) => setTaskForm({ ...taskForm, description: e.target.value })}
                     />
                   </div>
                   <div className="grid grid-cols-2 gap-4">
                     <div className="space-y-2">
-                      <Label className="font-sci text-xs uppercase text-neon-magenta">Priority</Label>
+                      <Label className="font-orbitron text-xs uppercase text-neon-magenta">Priority</Label>
                       <Select value={taskForm.priority} onValueChange={(value) => setTaskForm({ ...taskForm, priority: value })}>
-                        <SelectTrigger className="bg-black/50 border-neon-magenta/30 rounded-none">
+                        <SelectTrigger className="bg-black/50 border-neon-magenta/30 rounded-none font-mono">
                           <SelectValue />
                         </SelectTrigger>
-                        <SelectContent className="bg-dark-card border-neon-magenta/30 text-white">
+                        <SelectContent className="bg-dark-card border-neon-magenta/30 text-white font-mono">
                           <SelectItem value="low">Delta</SelectItem>
                           <SelectItem value="medium">Gamma</SelectItem>
                           <SelectItem value="high">Beta</SelectItem>
@@ -530,12 +530,12 @@ export default function SlaylistPage() {
                       </Select>
                     </div>
                     <div className="space-y-2">
-                      <Label className="font-sci text-xs uppercase text-neon-magenta">Parent Objective</Label>
+                      <Label className="font-orbitron text-xs uppercase text-neon-magenta">Parent Objective</Label>
                       <Select value={taskForm.goal_id} onValueChange={(value) => setTaskForm({ ...taskForm, goal_id: value })}>
-                        <SelectTrigger className="bg-black/50 border-neon-magenta/30 rounded-none">
+                        <SelectTrigger className="bg-black/50 border-neon-magenta/30 rounded-none font-mono">
                           <SelectValue placeholder="Select linkage" />
                         </SelectTrigger>
-                        <SelectContent className="bg-dark-card border-neon-magenta/30 text-white">
+                        <SelectContent className="bg-dark-card border-neon-magenta/30 text-white font-mono">
                           {goals.map((goal) => (
                             <SelectItem key={goal.id} value={goal.id}>{goal.title}</SelectItem>
                           ))}
@@ -545,25 +545,25 @@ export default function SlaylistPage() {
                   </div>
                   <div className="grid grid-cols-2 gap-4">
                     <div className="space-y-2">
-                      <Label className="font-sci text-xs uppercase text-neon-magenta">Due Time</Label>
+                      <Label className="font-orbitron text-xs uppercase text-neon-magenta">Due Time</Label>
                       <Input
                         type="date"
-                        className="bg-black/50 border-neon-magenta/30 rounded-none"
+                        className="bg-black/50 border-neon-magenta/30 rounded-none font-mono"
                         value={taskForm.due_date}
                         onChange={(e) => setTaskForm({ ...taskForm, due_date: e.target.value })}
                       />
                     </div>
                     <div className="space-y-2">
-                      <Label className="font-sci text-xs uppercase text-neon-magenta">Est. Runtime (m)</Label>
+                      <Label className="font-orbitron text-xs uppercase text-neon-magenta">Est. Runtime (m)</Label>
                       <Input
                         type="number"
-                        className="bg-black/50 border-neon-magenta/30 rounded-none"
+                        className="bg-black/50 border-neon-magenta/30 rounded-none font-mono"
                         value={taskForm.estimated_minutes}
                         onChange={(e) => setTaskForm({ ...taskForm, estimated_minutes: parseInt(e.target.value) })}
                       />
                     </div>
                   </div>
-                  <PrimaryButton onClick={createTask} variant="magenta" className="w-full">Execute Deployment</PrimaryButton>
+                  <CyberButton onClick={createTask} variant="magenta" className="w-full">Execute Deployment</CyberButton>
                 </div>
               </DialogContent>
             </Dialog>
@@ -581,8 +581,8 @@ export default function SlaylistPage() {
             <HudBorder key={i} variant="hover" className="group">
               <div className="flex items-center justify-between p-4">
                 <div className="space-y-1">
-                  <p className="text-[10px] font-tech font-bold text-gray-400 uppercase tracking-widest">{stat.label}</p>
-                  <p className={`text-4xl font-sci font-black ${stat.color} tracking-tight`}>{stat.val}</p>
+                  <p className="text-[10px] font-mono font-bold text-gray-400 uppercase tracking-widest">{stat.label}</p>
+                  <p className={`text-4xl font-orbitron font-black ${stat.color} tracking-tight`}>{stat.val}</p>
                 </div>
                 <div className={`p-3 ${stat.bg} border border-white/5 rounded-none group-hover:scale-110 transition-transform`}>
                   <stat.icon className={`w-6 h-6 ${stat.color}`} />
@@ -593,8 +593,8 @@ export default function SlaylistPage() {
             <HudBorder key={i} variant="hover" className="group border-neon-orange/20">
               <div className="flex items-center justify-between p-4">
                 <div className="space-y-1">
-                  <p className="text-[10px] font-tech font-bold text-gray-400 uppercase tracking-widest">{stat.label}</p>
-                  <p className={`text-2xl font-sci font-black ${stat.color} tracking-tight`}>{stat.val}</p>
+                  <p className="text-[10px] font-mono font-bold text-gray-400 uppercase tracking-widest">{stat.label}</p>
+                  <p className={`text-2xl font-orbitron font-black ${stat.color} tracking-tight`}>{stat.val}</p>
                 </div>
                 <div className={`p-3 ${stat.bg} border border-white/5 rounded-none group-hover:animate-pulse`}>
                   <stat.icon className={`w-6 h-6 ${stat.color}`} />
@@ -627,17 +627,17 @@ export default function SlaylistPage() {
           {/* Objectives Column (Left) */}
           <motion.div variants={itemVariants} className="lg:col-span-2 space-y-4">
             <div className="flex items-center justify-between px-2">
-              <h2 className="font-sci font-bold text-xl uppercase tracking-wider text-neon-purple flex items-center gap-2">
+              <h2 className="font-orbitron font-bold text-xl uppercase tracking-wider text-neon-purple flex items-center gap-2">
                 <Shield className="w-5 h-5" /> High-Level Goals
               </h2>
-              <Badge className="bg-neon-purple/10 text-neon-purple border-neon-purple/30 rounded-none font-tech">{goals.length}</Badge>
+              <Badge className="bg-neon-purple/10 text-neon-purple border-neon-purple/30 rounded-none font-mono">{goals.length}</Badge>
             </div>
 
             <div className="space-y-4 max-h-[800px] overflow-y-auto pr-2 custom-scrollbar">
               {goals.length === 0 ? (
                 <HudBorder className="p-12 text-center bg-white/5 opacity-50">
                    <Target className="w-16 h-16 mx-auto mb-4 text-gray-600" />
-                   <p className="font-tech text-gray-400">NO ACTIVE OBJECTIVES LOGGED</p>
+                   <p className="font-mono text-gray-400">NO ACTIVE OBJECTIVES LOGGED</p>
                 </HudBorder>
               ) : (
                 goals.map((goal) => (
@@ -646,21 +646,21 @@ export default function SlaylistPage() {
                     <div className="p-5 space-y-4">
                       <div className="flex justify-between items-start">
                         <div className="space-y-1">
-                          <h3 className="font-sci font-bold text-lg text-white uppercase tracking-tight group-hover:text-neon-purple transition-colors">{goal.title}</h3>
-                          <p className="text-sm text-gray-400 font-tech line-clamp-2">{goal.description}</p>
+                          <h3 className="font-orbitron font-bold text-lg text-white uppercase tracking-tight group-hover:text-neon-purple transition-colors">{goal.title}</h3>
+                          <p className="text-sm text-gray-400 font-mono line-clamp-2">{goal.description}</p>
                         </div>
                         <Badge className={getPriorityColor(goal.priority)}>{goal.priority.toUpperCase()}</Badge>
                       </div>
 
                       <div className="space-y-2">
-                        <div className="flex justify-between text-[10px] font-tech font-bold uppercase tracking-widest">
+                        <div className="flex justify-between text-[10px] font-mono font-bold uppercase tracking-widest">
                           <span className="text-gray-500">Sync Progress</span>
                           <span className="text-neon-cyan">{goal.progress_percentage}%</span>
                         </div>
                         <Progress value={goal.progress_percentage} className="h-1 bg-white/5 rounded-none" />
                       </div>
 
-                      <div className="flex items-center gap-6 pt-2 border-t border-white/5 text-[10px] font-tech text-gray-500 uppercase tracking-widest font-bold">
+                      <div className="flex items-center gap-6 pt-2 border-t border-white/5 text-[10px] font-mono text-gray-500 uppercase tracking-widest font-bold">
                         <div className="flex items-center gap-1.5">
                           <Calendar className="w-3 h-3 text-neon-cyan" />
                           {goal.target_date ? new Date(goal.target_date).toLocaleDateString() : 'NO-DEADLINE'}
@@ -680,12 +680,12 @@ export default function SlaylistPage() {
           {/* Tactical List (Right) */}
           <motion.div variants={itemVariants} className="lg:col-span-3 space-y-4">
             <div className="flex items-center justify-between px-2">
-              <h2 className="font-sci font-bold text-xl uppercase tracking-wider text-neon-cyan flex items-center gap-2">
+              <h2 className="font-orbitron font-bold text-xl uppercase tracking-wider text-neon-cyan flex items-center gap-2">
                 <Zap className="w-5 h-5 animate-pulse" /> Active Tacticals
               </h2>
               <div className="flex items-center gap-2">
-                 <Badge className="bg-neon-cyan/10 text-neon-cyan border-neon-cyan/30 rounded-none font-tech">{tasks.filter(t => t.status !== 'completed').length} PENDING</Badge>
-                 <Badge className="bg-white/5 text-gray-500 border-white/10 rounded-none font-tech">{tasks.filter(t => t.status === 'completed').length} ARCHIVED</Badge>
+                 <Badge className="bg-neon-cyan/10 text-neon-cyan border-neon-cyan/30 rounded-none font-mono">{tasks.filter(t => t.status !== 'completed').length} PENDING</Badge>
+                 <Badge className="bg-white/5 text-gray-500 border-white/10 rounded-none font-mono">{tasks.filter(t => t.status === 'completed').length} ARCHIVED</Badge>
               </div>
             </div>
 
@@ -693,7 +693,7 @@ export default function SlaylistPage() {
               {tasks.length === 0 ? (
                 <HudBorder className="p-12 text-center bg-white/5 opacity-50">
                    <Activity className="w-16 h-16 mx-auto mb-4 text-gray-600" />
-                   <p className="font-tech text-gray-400">NO TACTICAL DEPLOYMENTS PENDING</p>
+                   <p className="font-mono text-gray-400">NO TACTICAL DEPLOYMENTS PENDING</p>
                 </HudBorder>
               ) : (
                 tasks.map((task) => (
@@ -711,10 +711,10 @@ export default function SlaylistPage() {
                       </div>
 
                       <div className="flex-1 space-y-1">
-                        <h4 className={`font-sci font-bold text-white uppercase tracking-tight group-hover:text-neon-cyan transition-colors ${task.status === 'completed' ? 'line-through decoration-neon-cyan/50 text-gray-500' : ''}`}>
+                        <h4 className={`font-orbitron font-bold text-white uppercase tracking-tight group-hover:text-neon-cyan transition-colors ${task.status === 'completed' ? 'line-through decoration-neon-cyan/50 text-gray-500' : ''}`}>
                           {task.title}
                         </h4>
-                        <div className="flex items-center gap-4 text-[10px] font-tech text-gray-400 uppercase tracking-widest font-bold">
+                        <div className="flex items-center gap-4 text-[10px] font-mono text-gray-400 uppercase tracking-widest font-bold">
                            <span className="flex items-center gap-1.5">
                              <Clock className="w-3 h-3 text-neon-magenta" /> {task.estimated_minutes}M Runtime
                            </span>
@@ -725,10 +725,10 @@ export default function SlaylistPage() {
                       </div>
 
                       <div className="flex flex-col items-end gap-2">
-                        <Badge className={`text-[9px] font-tech font-bold uppercase tracking-tighter ${getPriorityColor(task.priority)}`}>
+                        <Badge className={`text-[9px] font-mono font-bold uppercase tracking-tighter ${getPriorityColor(task.priority)}`}>
                           {task.priority}
                         </Badge>
-                        <Badge className={`text-[9px] font-tech font-bold uppercase tracking-tighter ${getStatusColor(task.status)}`}>
+                        <Badge className={`text-[9px] font-mono font-bold uppercase tracking-tighter ${getStatusColor(task.status)}`}>
                           {task.status.replace('_', ' ')}
                         </Badge>
                       </div>

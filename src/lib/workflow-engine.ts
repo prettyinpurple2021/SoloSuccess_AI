@@ -271,7 +271,7 @@ export class WorkflowEngine {
         logInfo('Sending email', { to: configTyped.to, subject: configTyped.subject })
         // In production, integrate with Resend or similar
         // Actions are simulated in this mode but logged for audit trail purposes
-        console.log(`[WorkflowEngine] Executing action: ${action.type}`);
+        logInfo('[WorkflowEngine] Executing action: send_email', { to: configTyped.to });
         return { sent: true, messageId: crypto.randomUUID(), timestamp: new Date().toISOString() }
       }
     })
@@ -864,9 +864,7 @@ export class WorkflowEngine {
   /**
    * Get available node types
    */
-  getNodeTypes(): NodeType[] {
-    return Array.from(this.nodeTypes.values())
-  }
+
 
   /**
    * Get node type by ID

@@ -11,7 +11,7 @@ async function testAgentInteraction() {
     // Create a session
     console.log('Creating session...')
     const session = await hub.initiateCollaboration({
-        userId: 1,
+        userId: '1',
         requestType: 'project',
         projectName: 'Test Project Alpha',
         initialMessage: 'We need to create a marketing plan for a new AI coffee machine.',

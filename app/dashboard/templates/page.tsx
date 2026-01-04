@@ -3,7 +3,7 @@
 export const dynamic = 'force-dynamic'
 
 import React, { useState, useEffect } from 'react'
-import { Button } from "@/components/ui/button"
+import { CyberButton } from "@/components/cyber/CyberButton"
 import { Input } from "@/components/ui/input"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
@@ -294,15 +294,15 @@ export default function TemplatesDashboard() {
         <div className="mb-8">
           <div className="flex items-center justify-between mb-4">
             <div>
-              <h1 className="text-4xl font-sci font-bold text-white mb-2">
+              <h1 className="text-4xl font-orbitron font-bold text-white mb-2">
                 TEMPLATE LIBRARY 📚
               </h1>
-              <p className="text-lg text-gray-400 font-tech">
+              <p className="text-lg text-gray-400 font-mono">
                 Professional templates to accelerate your business growth
               </p>
             </div>
             <div className="flex items-center gap-2">
-              <span className="px-3 py-1 rounded-full text-sm border border-neon-purple/30 text-neon-purple bg-neon-purple/10 font-tech">
+              <span className="px-3 py-1 text-sm border border-neon-purple/30 text-neon-purple bg-neon-purple/10 font-mono rounded-none">
                 {userTier.charAt(0).toUpperCase() + userTier.slice(1)} Plan
               </span>
             </div>
@@ -316,16 +316,16 @@ export default function TemplatesDashboard() {
                 placeholder="Search templates..."
                 value={searchQuery}
                 onChange={(e: any) => setSearchQuery(e.target.value)}
-                className="pl-10 bg-dark-card border-neon-cyan/30 text-white placeholder:text-gray-500 focus:border-neon-cyan"
+                className="pl-10 bg-dark-card border-neon-cyan/30 text-white placeholder:text-gray-500 focus:border-neon-cyan rounded-none font-mono"
               />
             </div>
             <Select value={selectedCategory} onValueChange={setSelectedCategory}>
-              <SelectTrigger className="w-full md:w-48 bg-dark-card border-neon-cyan/30 text-white">
+              <SelectTrigger className="w-full md:w-48 bg-dark-card border-neon-cyan/30 text-white rounded-none font-mono focus:ring-neon-cyan/50">
                 <SelectValue placeholder="Category" />
               </SelectTrigger>
-              <SelectContent className="bg-dark-card border-neon-cyan/30">
+              <SelectContent className="bg-dark-card border-neon-cyan/30 rounded-none">
                 {categories.map(category => (
-                  <SelectItem key={category.id} value={category.id} className="text-white hover:bg-dark-bg">
+                  <SelectItem key={category.id} value={category.id} className="text-white hover:bg-neon-cyan/10 focus:bg-neon-cyan/10 cursor-pointer font-mono">
                     <div className="flex items-center gap-2">
                       <category.icon className="h-4 w-4" />
                       {category.label}
@@ -335,12 +335,12 @@ export default function TemplatesDashboard() {
               </SelectContent>
             </Select>
             <Select value={selectedTier} onValueChange={setSelectedTier}>
-              <SelectTrigger className="w-full md:w-48 bg-dark-card border-neon-cyan/30 text-white">
+              <SelectTrigger className="w-full md:w-48 bg-dark-card border-neon-cyan/30 text-white rounded-none font-mono focus:ring-neon-cyan/50">
                 <SelectValue placeholder="Tier" />
               </SelectTrigger>
-              <SelectContent className="bg-dark-card border-neon-cyan/30">
+              <SelectContent className="bg-dark-card border-neon-cyan/30 rounded-none">
                 {tiers.map(tier => (
-                  <SelectItem key={tier.id} value={tier.id} className="text-white hover:bg-dark-bg">
+                  <SelectItem key={tier.id} value={tier.id} className="text-white hover:bg-neon-cyan/10 focus:bg-neon-cyan/10 cursor-pointer font-mono">
                     <div className="flex items-center gap-2">
                       {tier.id !== "all" && getTierIcon(tier.id)}
                       {tier.label}
@@ -364,25 +364,25 @@ export default function TemplatesDashboard() {
                   <div className="flex items-start justify-between mb-2">
                     <div className="flex items-center gap-2">
                       {getTierIcon(template.tier)}
-                      <span className={`px-2 py-1 rounded-full text-xs font-tech ${template.difficulty === "beginner" ? "bg-neon-lime/20 text-neon-lime" :
-                        template.difficulty === "intermediate" ? "bg-neon-orange/20 text-neon-orange" :
-                          "bg-neon-magenta/20 text-neon-magenta"
+                      <span className={`px-2 py-1 text-xs font-mono rounded-none border ${template.difficulty === "beginner" ? "bg-neon-lime/10 text-neon-lime border-neon-lime/30" :
+                        template.difficulty === "intermediate" ? "bg-neon-orange/10 text-neon-orange border-neon-orange/30" :
+                          "bg-neon-magenta/10 text-neon-magenta border-neon-magenta/30"
                         }`}>
                         {template.difficulty}
                       </span>
                     </div>
                     <div className="flex items-center gap-1">
-                      {template.isNew && <span className="px-2 py-1 rounded-full text-xs border border-neon-purple/30 text-neon-purple font-tech">New</span>}
-                      {template.isPopular && <span className="px-2 py-1 rounded-full text-xs border border-neon-purple/30 text-neon-purple font-tech">Popular</span>}
-                      {template.isPremium && <span className="px-2 py-1 rounded-full text-xs border border-neon-purple/30 text-neon-purple font-tech">Premium</span>}
+                      {template.isNew && <span className="px-2 py-1 text-xs border border-neon-purple/30 text-neon-purple font-mono rounded-none bg-neon-purple/10">New</span>}
+                      {template.isPopular && <span className="px-2 py-1 text-xs border border-neon-cyan/30 text-neon-cyan font-mono rounded-none bg-neon-cyan/10">Popular</span>}
+                      {template.isPremium && <span className="px-2 py-1 text-xs border border-neon-magenta/30 text-neon-magenta font-mono rounded-none bg-neon-magenta/10">Premium</span>}
                     </div>
                   </div>
-                  <h3 className="text-lg font-sci font-bold text-white">{template.title}</h3>
-                  <p className="text-sm text-gray-400 font-tech">
+                  <h3 className="text-lg font-orbitron font-bold text-white">{template.title}</h3>
+                  <p className="text-sm text-gray-400 font-mono line-clamp-2">
                     {template.description}
                   </p>
 
-                  <div className="flex items-center gap-4 text-xs text-gray-400 font-tech">
+                  <div className="flex items-center gap-4 text-xs text-gray-400 font-mono">
                     <div className="flex items-center gap-1">
                       <Clock className="h-3 w-3" />
                       {template.estimatedTime}
@@ -399,12 +399,12 @@ export default function TemplatesDashboard() {
 
                   <div className="flex flex-wrap gap-1">
                     {template.tags.slice(0, 3).map((tag: string) => (
-                      <span key={tag} className="px-2 py-1 rounded-full text-xs bg-neon-cyan/10 text-neon-cyan border border-neon-cyan/30 font-tech">
+                      <span key={tag} className="px-2 py-1 text-xs bg-neon-cyan/5 text-neon-cyan border border-neon-cyan/20 font-mono rounded-none">
                         {tag}
                       </span>
                     ))}
                     {template.tags.length > 3 && (
-                      <span className="px-2 py-1 rounded-full text-xs bg-neon-cyan/10 text-neon-cyan border border-neon-cyan/30 font-tech">
+                      <span className="px-2 py-1 text-xs bg-neon-cyan/5 text-neon-cyan border border-neon-cyan/20 font-mono rounded-none">
                         +{template.tags.length - 3}
                       </span>
                     )}
@@ -413,35 +413,36 @@ export default function TemplatesDashboard() {
                   <div className="flex gap-2 pt-2">
                     <Dialog>
                       <DialogTrigger asChild>
-                        <Button variant="outline" size="sm" className="flex-1 border-neon-cyan/30 text-neon-cyan hover:bg-neon-cyan/10">
+                        <CyberButton variant="ghost" size="sm" className="flex-1 border-neon-cyan/30 text-neon-cyan hover:bg-neon-cyan/10">
                           <Eye className="h-4 w-4 mr-2" />
                           Preview
-                        </Button>
+                        </CyberButton>
                       </DialogTrigger>
-                      <DialogContent className="max-w-2xl bg-dark-card border-neon-cyan/30">
+                      <DialogContent className="max-w-2xl bg-dark-card border-neon-cyan/30 rounded-none">
                         <DialogHeader>
-                          <DialogTitle className="text-white font-sci">{template.title}</DialogTitle>
-                          <DialogDescription className="text-gray-400 font-tech">
+                          <DialogTitle className="text-white font-orbitron">{template.title}</DialogTitle>
+                          <DialogDescription className="text-gray-400 font-mono">
                             {template.description}
                           </DialogDescription>
                         </DialogHeader>
                         <div className="space-y-4">
-                          <div className="p-4 bg-dark-bg/50 rounded-lg border border-neon-cyan/20">
-                            <h4 className="font-medium mb-2 text-white font-sci">Template Preview:</h4>
-                            <p className="text-sm text-gray-400 font-tech">
+                          <div className="p-4 bg-dark-bg/50 border border-neon-cyan/20 rounded-none">
+                            <h4 className="font-medium mb-2 text-white font-orbitron">Template Preview:</h4>
+                            <p className="text-sm text-gray-400 font-mono space-y-2 whitespace-pre-wrap">
                               {template.preview}
                             </p>
                           </div>
                           <div className="flex items-center justify-between">
-                            <div className="flex items-center gap-4 text-sm text-gray-400 font-tech">
+                            <div className="flex items-center gap-4 text-sm text-gray-400 font-mono">
                               <span>⏱️ {template.estimatedTime}</span>
                               <span>👥 {template.usageCount.toLocaleString()} uses</span>
                               <span>⭐ {template.rating}</span>
                             </div>
-                            <Button
+                            <CyberButton
                               onClick={() => handleUseTemplate(template)}
                               disabled={!hasAccess || isSaving}
-                              className="bg-gradient-to-r from-neon-purple to-neon-magenta text-white hover:opacity-90"
+                              variant="purple"
+                              className="bg-gradient-to-r from-neon-purple to-neon-magenta text-white hover:opacity-90 border-none"
                             >
                               {isUsed ? (
                                 <>
@@ -454,17 +455,18 @@ export default function TemplatesDashboard() {
                                   Add to Workspace
                                 </>
                               )}
-                            </Button>
+                            </CyberButton>
                           </div>
                         </div>
                       </DialogContent>
                     </Dialog>
 
-                    <Button
+                    <CyberButton
                       onClick={() => handleUseTemplate(template)}
                       disabled={!hasAccess || isSaving}
                       size="sm"
-                      className="flex-1 bg-gradient-to-r from-neon-purple to-neon-magenta text-white hover:opacity-90"
+                      variant="purple"
+                      className="flex-1 bg-gradient-to-r from-neon-purple to-neon-magenta text-white hover:opacity-90 border-none"
                     >
                       {isUsed ? (
                         <>
@@ -477,49 +479,50 @@ export default function TemplatesDashboard() {
                           Add
                         </>
                       )}
-                    </Button>
+                    </CyberButton>
                   </div>
 
                   {template.user_id === user?.id && (
                     <div className="flex gap-2 pt-2 border-t border-neon-cyan/20 mt-2">
                       <Dialog>
                         <DialogTrigger asChild>
-                          <Button variant="outline" size="sm" className="flex-1 border-neon-cyan/30 text-neon-cyan hover:bg-neon-cyan/10">
+                          <CyberButton variant="ghost" size="sm" className="flex-1 border-neon-cyan/30 text-neon-cyan hover:bg-neon-cyan/10">
                             Edit
-                          </Button>
+                          </CyberButton>
                         </DialogTrigger>
-                        <DialogContent className="bg-dark-card border-neon-cyan/30">
+                        <DialogContent className="bg-dark-card border-neon-cyan/30 rounded-none">
                           <DialogHeader>
-                            <DialogTitle className="text-white font-sci">Edit Template</DialogTitle>
+                            <DialogTitle className="text-white font-orbitron">Edit Template</DialogTitle>
                           </DialogHeader>
                           <div className="space-y-4">
                             <div className="space-y-2">
-                              <label className="text-sm text-neon-cyan font-tech uppercase">Title</label>
+                              <label className="text-sm text-neon-cyan font-mono uppercase">Title</label>
                               <Input
                                 defaultValue={template.title}
                                 onChange={(e) => template.title = e.target.value} // Note: This is a quick hack for the dialog, ideally use state
-                                className="bg-dark-bg border-neon-cyan/30 text-white focus:border-neon-cyan"
+                                className="bg-dark-bg border-neon-cyan/30 text-white focus:border-neon-cyan rounded-none font-mono"
                               />
                             </div>
                             <div className="space-y-2">
-                              <label className="text-sm text-neon-cyan font-tech uppercase">Description</label>
+                              <label className="text-sm text-neon-cyan font-mono uppercase">Description</label>
                               <Input
                                 defaultValue={template.description}
                                 onChange={(e) => template.description = e.target.value}
-                                className="bg-dark-bg border-neon-cyan/30 text-white focus:border-neon-cyan"
+                                className="bg-dark-bg border-neon-cyan/30 text-white focus:border-neon-cyan rounded-none font-mono"
                               />
                             </div>
-                            <Button
+                            <CyberButton
                               onClick={() => handleEditTemplate(template.id, { title: template.title, description: template.description })}
                               className="w-full bg-neon-purple hover:bg-neon-purple/90 text-white"
+                              variant="purple"
                             >
                               Save Changes
-                            </Button>
+                            </CyberButton>
                           </div>
                         </DialogContent>
                       </Dialog>
 
-                      <Button
+                      <CyberButton
                         variant="destructive"
                         size="sm"
                         className="flex-1 bg-neon-magenta hover:bg-neon-magenta/90"
@@ -527,12 +530,12 @@ export default function TemplatesDashboard() {
                       >
                         <Trash2 className="h-4 w-4 mr-2" />
                         Delete
-                      </Button>
+                      </CyberButton>
                     </div>
                   )}
 
                   {!hasAccess && (
-                    <div className="text-xs text-gray-400 text-center pt-2 font-tech">
+                    <div className="text-xs text-gray-400 text-center pt-2 font-mono">
                       Upgrade to {template.tier} plan to access this template
                     </div>
                   )}
@@ -545,8 +548,8 @@ export default function TemplatesDashboard() {
         {filteredTemplates.length === 0 && (
           <div className="text-center py-12">
             <FileText className="h-12 w-12 text-gray-500 mx-auto mb-4" />
-            <h3 className="text-lg font-sci font-bold mb-2 text-white">No templates found</h3>
-            <p className="text-gray-400 font-tech">
+            <h3 className="text-lg font-orbitron font-bold mb-2 text-white">No templates found</h3>
+            <p className="text-gray-400 font-mono">
               Try adjusting your search or filter criteria
             </p>
           </div>

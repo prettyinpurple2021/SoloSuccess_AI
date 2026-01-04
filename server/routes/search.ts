@@ -1,4 +1,4 @@
-import { Router } from 'express';
+import { Router, Request, Response } from 'express';
 import { db } from '../db';
 import { searchIndex } from '../db/schema';
 import { eq, and, or, ilike, desc } from 'drizzle-orm';
@@ -7,8 +7,10 @@ import { SearchIndexer } from '../utils/searchIndexer';
 
 const router = Router();
 
+
+
 // Search
-router.post('/', authMiddleware, async (req: any, res: any) => {
+router.post('/', authMiddleware, async (req: Request, res: Response) => {
     try {
         const userId = (req as AuthRequest).userId!;
         const { q, filters } = req.query; // q can be in query or body, let's check both
@@ -50,7 +52,7 @@ router.post('/', authMiddleware, async (req: any, res: any) => {
 });
 
 // Manual Index (for testing or manual triggers)
-router.post('/index', authMiddleware, async (req: any, res: any) => {
+router.post('/index', authMiddleware, async (req: Request, res: Response) => {
     try {
         const userId = (req as AuthRequest).userId!;
         const { type, id, title, content, tags } = req.body;
@@ -62,7 +64,7 @@ router.post('/index', authMiddleware, async (req: any, res: any) => {
     }
 });
 
-router.delete('/index', authMiddleware, async (req: any, res: any) => {
+router.delete('/index', authMiddleware, async (req: Request, res: Response) => {
     try {
         const userId = (req as AuthRequest).userId!;
         const { type, id } = req.body;

@@ -2,7 +2,7 @@
 
 import { logError } from '@/lib/logger'
 import React, { useState, useEffect } from 'react'
-import { Button } from '@/components/ui/button'
+import { CyberButton } from '@/components/cyber/CyberButton'
 import { Input } from '@/components/ui/input'
 import { Badge } from '@/components/ui/badge'
 import { 
@@ -248,25 +248,25 @@ export default function BriefcasePage() {
             <TerminalIcon className="w-8 h-8 text-neon-purple" />
           </div>
           <div>
-            <h1 className="text-5xl font-sci font-black tracking-tighter text-white uppercase italic">
+            <h1 className="text-5xl font-orbitron font-black tracking-tighter text-white uppercase italic">
               Brief<span className="text-neon-purple">Case</span>
             </h1>
             <div className="flex items-center gap-2">
               <div className="w-2 h-2 bg-neon-purple animate-pulse rounded-none" />
-              <p className="text-purple-200 font-tech uppercase text-xs tracking-[0.2em] font-bold">Secure Asset Repository System // v1.0.4</p>
+              <p className="text-purple-200 font-mono uppercase text-xs tracking-[0.2em] font-bold">Secure Asset Repository System // v1.0.4</p>
             </div>
           </div>
         </div>
         <div className="flex items-center gap-3">
-          <Button onClick={handleCreateFolder} variant="purple" className="border-neon-purple/30 text-neon-purple hover:bg-neon-purple/10">
+          <CyberButton onClick={handleCreateFolder} variant="purple" className="border-neon-purple/30 text-neon-purple hover:bg-neon-purple/10">
             <FolderPlus className="w-4 h-4 mr-2" />
             New Folder
-          </Button>
+          </CyberButton>
           <label className="cursor-pointer">
-            <Button variant="purple" className="bg-gradient-to-r from-neon-purple to-neon-magenta text-white hover:opacity-90">
+            <CyberButton variant="purple" className="bg-gradient-to-r from-neon-purple to-neon-magenta text-white hover:opacity-90">
               <Upload className="w-4 h-4 mr-2" />
               Upload Files
-            </Button>
+            </CyberButton>
             <input
               type="file"
               multiple
@@ -282,8 +282,8 @@ export default function BriefcasePage() {
         <HudBorder variant="hover" className="p-4">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm text-gray-400 font-tech">Total Files</p>
-              <p className="text-2xl font-sci font-bold text-white">{documents.length}</p>
+              <p className="text-sm text-gray-400 font-mono">Total Files</p>
+              <p className="text-2xl font-orbitron font-bold text-white">{documents.length}</p>
             </div>
             <File className="w-8 h-8 text-neon-purple" />
           </div>
@@ -291,8 +291,8 @@ export default function BriefcasePage() {
         <HudBorder variant="hover" className="p-4">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm text-gray-400 font-tech">Folders</p>
-              <p className="text-2xl font-sci font-bold text-white">{folders.length}</p>
+              <p className="text-sm text-gray-400 font-mono">Folders</p>
+              <p className="text-2xl font-orbitron font-bold text-white">{folders.length}</p>
             </div>
             <FolderPlus className="w-8 h-8 text-neon-purple" />
           </div>
@@ -300,8 +300,8 @@ export default function BriefcasePage() {
         <HudBorder variant="hover" className="p-4">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm text-gray-400 font-tech">Storage Used</p>
-              <p className="text-2xl font-sci font-bold text-white">
+              <p className="text-sm text-gray-400 font-mono">Storage Used</p>
+              <p className="text-2xl font-orbitron font-bold text-white">
                 {formatFileSize(documents.reduce((total, doc) => total + doc.size, 0))}
               </p>
             </div>
@@ -311,8 +311,8 @@ export default function BriefcasePage() {
         <HudBorder variant="hover" className="p-4">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm text-gray-400 font-tech">Favorites</p>
-              <p className="text-2xl font-sci font-bold text-white">{documents.filter(doc => doc.isFavorite).length}</p>
+              <p className="text-sm text-gray-400 font-mono">Favorites</p>
+              <p className="text-2xl font-orbitron font-bold text-white">{documents.filter(doc => doc.isFavorite).length}</p>
             </div>
             <Star className="w-8 h-8 text-neon-orange" />
           </div>
@@ -327,13 +327,13 @@ export default function BriefcasePage() {
             placeholder="Search documents..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="pl-10 bg-dark-card border-neon-cyan/30 text-white placeholder:text-gray-500 focus:border-neon-cyan"
+            className="pl-10 bg-dark-card border-neon-cyan/30 text-white placeholder:text-gray-500 focus:border-neon-cyan rounded-none font-mono"
           />
         </div>
         <select
           value={selectedCategory}
           onChange={(e) => setSelectedCategory(e.target.value)}
-          className="px-3 py-2 border border-neon-cyan/30 rounded-md bg-dark-card text-white"
+          className="px-3 py-2 border border-neon-cyan/30 bg-dark-card text-white rounded-none font-mono focus:outline-none focus:border-neon-cyan"
           aria-label="Filter by category"
         >
           {categories.map(category => (
@@ -343,41 +343,41 @@ export default function BriefcasePage() {
           ))}
         </select>
         <div className="flex items-center gap-2">
-          <Button
-            variant={viewMode === 'grid' ? 'purple' : 'cyan'}
+          <CyberButton
+            variant={viewMode === 'grid' ? 'purple' : 'gray'}
             size="sm"
             onClick={() => setViewMode('grid')}
-            className={viewMode === 'grid' ? 'bg-neon-purple text-white' : 'border-neon-cyan/30 text-white hover:bg-neon-cyan/10'}
+            className={viewMode === 'grid' ? 'bg-neon-purple text-white border-neon-purple' : 'border-neon-cyan/30 text-white hover:bg-neon-cyan/10 hover:text-neon-cyan'}
           >
             <Grid3X3 className="w-4 h-4" />
-          </Button>
-          <Button
-            variant={viewMode === 'list' ? 'purple' : 'cyan'}
+          </CyberButton>
+          <CyberButton
+            variant={viewMode === 'list' ? 'purple' : 'gray'}
             size="sm"
             onClick={() => setViewMode('list')}
-            className={viewMode === 'list' ? 'bg-neon-purple text-white' : 'border-neon-cyan/30 text-white hover:bg-neon-cyan/10'}
+            className={viewMode === 'list' ? 'bg-neon-purple text-white border-neon-purple' : 'border-neon-cyan/30 text-white hover:bg-neon-cyan/10 hover:text-neon-cyan'}
           >
             <List className="w-4 h-4" />
-          </Button>
+          </CyberButton>
         </div>
       </div>
 
       {/* Folders */}
       {folders.length > 0 && (
         <div>
-          <h2 className="text-xl font-sci font-bold text-white mb-4">FOLDERS</h2>
+          <h2 className="text-xl font-orbitron font-bold text-white mb-4">FOLDERS</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
             {folders.map(folder => (
               <HudBorder key={folder.id} variant="hover" className="cursor-pointer p-4">
                 <div className="flex items-center gap-3">
                   <div 
-                    className={`w-10 h-10 rounded-lg flex items-center justify-center text-white ${getFolderColorClass(folder.color)}`}
+                    className={`w-10 h-10 rounded-none flex items-center justify-center text-white ${getFolderColorClass(folder.color)}`}
                   >
                     <FolderPlus className="w-5 h-5" />
                   </div>
                   <div className="flex-1">
-                    <h3 className="font-medium text-white font-sci">{folder.name}</h3>
-                    <p className="text-sm text-gray-400 font-tech">{folder.fileCount} files</p>
+                    <h3 className="font-medium text-white font-orbitron">{folder.name}</h3>
+                    <p className="text-sm text-gray-400 font-mono">{folder.fileCount} files</p>
                   </div>
                 </div>
               </HudBorder>
@@ -388,12 +388,12 @@ export default function BriefcasePage() {
 
       {/* Documents */}
       <div>
-        <h2 className="text-xl font-sci font-bold text-white mb-4">DOCUMENTS</h2>
+        <h2 className="text-xl font-orbitron font-bold text-white mb-4">DOCUMENTS</h2>
         {filteredDocuments.length === 0 ? (
           <HudBorder className="p-12 text-center">
             <File className="w-12 h-12 text-gray-500 mx-auto mb-4" />
-            <h3 className="text-lg font-sci font-bold text-white mb-2">No documents found</h3>
-            <p className="text-gray-400 mb-4 font-tech">
+            <h3 className="text-lg font-orbitron font-bold text-white mb-2">No documents found</h3>
+            <p className="text-gray-400 mb-4 font-mono">
               {searchTerm || selectedCategory !== 'all' 
                 ? 'Try adjusting your search or filter criteria'
                 : 'Upload your first document to get started'
@@ -401,10 +401,10 @@ export default function BriefcasePage() {
             </p>
             {!searchTerm && selectedCategory === 'all' && (
               <label className="cursor-pointer">
-                <Button variant="purple" className="bg-gradient-to-r from-neon-purple to-neon-magenta text-white hover:opacity-90">
+                <CyberButton variant="purple" className="bg-gradient-to-r from-neon-purple to-neon-magenta text-white hover:opacity-90">
                   <Upload className="w-4 h-4 mr-2" />
                   Upload Files
-                </Button>
+                </CyberButton>
                 <input
                   type="file"
                   multiple
@@ -426,21 +426,21 @@ export default function BriefcasePage() {
                         {getFileIcon(doc.fileType)}
                         <DropdownMenu>
                           <DropdownMenuTrigger asChild>
-                            <Button variant="cyan" size="sm" className="text-white hover:bg-dark-bg">
+                            <CyberButton variant="ghost" size="sm" className="text-white hover:bg-dark-bg border-none h-8 w-8 p-0">
                               <MoreVertical className="w-4 h-4" />
-                            </Button>
+                            </CyberButton>
                           </DropdownMenuTrigger>
-                          <DropdownMenuContent className="bg-dark-card border-neon-cyan/30">
-                            <DropdownMenuItem onClick={() => window.open(`/api/briefcase/files/${doc.id}/download`, '_blank')} className="text-white hover:bg-dark-bg">
+                          <DropdownMenuContent className="bg-dark-card border-neon-cyan/30 rounded-none">
+                            <DropdownMenuItem onClick={() => window.open(`/api/briefcase/files/${doc.id}/download`, '_blank')} className="text-white hover:bg-neon-cyan/10 focus:bg-neon-cyan/10 cursor-pointer font-mono">
                               <Download className="w-4 h-4 mr-2" />
                               Download
                             </DropdownMenuItem>
-                            <DropdownMenuItem className="text-white hover:bg-dark-bg">
+                            <DropdownMenuItem className="text-white hover:bg-neon-cyan/10 focus:bg-neon-cyan/10 cursor-pointer font-mono">
                               <Share className="w-4 h-4 mr-2" />
                               Share
                             </DropdownMenuItem>
                             <DropdownMenuSeparator className="bg-neon-cyan/30" />
-                            <DropdownMenuItem className="text-white hover:bg-dark-bg">
+                            <DropdownMenuItem className="text-white hover:bg-neon-cyan/10 focus:bg-neon-cyan/10 cursor-pointer font-mono">
                               <Star className="w-4 h-4 mr-2" />
                               {doc.isFavorite ? 'Remove from Favorites' : 'Add to Favorites'}
                             </DropdownMenuItem>
@@ -448,12 +448,12 @@ export default function BriefcasePage() {
                         </DropdownMenu>
                       </div>
                       <div>
-                        <h3 className="font-medium text-sm truncate text-white font-sci" title={doc.name}>
+                        <h3 className="font-medium text-sm truncate text-white font-orbitron" title={doc.name}>
                           {doc.name}
                         </h3>
-                        <p className="text-xs text-gray-400 font-tech">{formatFileSize(doc.size)}</p>
+                        <p className="text-xs text-gray-400 font-mono">{formatFileSize(doc.size)}</p>
                         <div className="flex items-center gap-2 mt-2">
-                          <Badge className="text-xs bg-neon-cyan/10 text-neon-cyan border-neon-cyan/30">
+                          <Badge className="text-xs bg-neon-cyan/10 text-neon-cyan border-neon-cyan/30 rounded-none font-mono">
                             {doc.category}
                           </Badge>
                           {doc.isFavorite && (
@@ -466,33 +466,33 @@ export default function BriefcasePage() {
                     <div className="flex items-center gap-4">
                       {getFileIcon(doc.fileType)}
                       <div className="flex-1">
-                        <h3 className="font-medium text-white font-sci">{doc.name}</h3>
-                        <p className="text-sm text-gray-400 font-tech">
+                        <h3 className="font-medium text-white font-orbitron">{doc.name}</h3>
+                        <p className="text-sm text-gray-400 font-mono">
                           {formatFileSize(doc.size)} • {doc.category}
                         </p>
                       </div>
                       <div className="flex items-center gap-2">
-                        <Badge className="bg-neon-cyan/10 text-neon-cyan border-neon-cyan/30">{doc.fileType.toUpperCase()}</Badge>
+                        <Badge className="bg-neon-cyan/10 text-neon-cyan border-neon-cyan/30 rounded-none font-mono">{doc.fileType.toUpperCase()}</Badge>
                         {doc.isFavorite && (
                           <Star className="w-4 h-4 text-neon-orange fill-current" />
                         )}
                         <DropdownMenu>
                           <DropdownMenuTrigger asChild>
-                            <Button variant="cyan" size="sm" className="text-white hover:bg-dark-bg">
+                            <CyberButton variant="ghost" size="sm" className="text-white hover:bg-dark-bg border-none h-8 w-8 p-0">
                               <MoreVertical className="w-4 h-4" />
-                            </Button>
+                            </CyberButton>
                           </DropdownMenuTrigger>
-                          <DropdownMenuContent className="bg-dark-card border-neon-cyan/30">
-                            <DropdownMenuItem onClick={() => window.open(`/api/briefcase/files/${doc.id}/download`, '_blank')} className="text-white hover:bg-dark-bg">
+                          <DropdownMenuContent className="bg-dark-card border-neon-cyan/30 rounded-none">
+                            <DropdownMenuItem onClick={() => window.open(`/api/briefcase/files/${doc.id}/download`, '_blank')} className="text-white hover:bg-neon-cyan/10 focus:bg-neon-cyan/10 cursor-pointer font-mono">
                               <Download className="w-4 h-4 mr-2" />
                               Download
                             </DropdownMenuItem>
-                            <DropdownMenuItem className="text-white hover:bg-dark-bg">
+                            <DropdownMenuItem className="text-white hover:bg-neon-cyan/10 focus:bg-neon-cyan/10 cursor-pointer font-mono">
                               <Share className="w-4 h-4 mr-2" />
                               Share
                             </DropdownMenuItem>
                             <DropdownMenuSeparator className="bg-neon-cyan/30" />
-                            <DropdownMenuItem className="text-white hover:bg-dark-bg">
+                            <DropdownMenuItem className="text-white hover:bg-neon-cyan/10 focus:bg-neon-cyan/10 cursor-pointer font-mono">
                               <Star className="w-4 h-4 mr-2" />
                               {doc.isFavorite ? 'Remove from Favorites' : 'Add to Favorites'}
                             </DropdownMenuItem>

@@ -8,7 +8,7 @@ import {
   BarChart3, PieChart, LineChart, TrendingUp, Activity, Target, Users, DollarSign, Clock, Zap, Sparkles, Download, RefreshCw, Settings, Eye, Filter, Maximize2, Crown, Shield, Trophy, Star, ArrowRight, ArrowUp, ArrowDown, Calendar, TrendingDown
 } from 'lucide-react'
 import { HudBorder } from '@/components/cyber/HudBorder'
-import { PrimaryButton } from '@/components/ui/button'
+import { CyberButton } from '@/components/cyber/CyberButton'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { Progress } from '@/components/ui/progress'
 import { ScrollArea } from '@/components/ui/scroll-area'
@@ -91,22 +91,22 @@ export default function AnalyticsPage() {
             <div className="flex items-center justify-between h-20">
               <Link href="/dashboard" className="flex items-center gap-3">
                 <motion.div
-                  className="w-12 h-12 rounded-xl bg-gradient-to-br from-neon-purple to-neon-magenta flex items-center justify-center shadow-[0_0_20px_rgba(179,0,255,0.4)]"
+                  className="w-12 h-12 rounded-none bg-gradient-to-br from-neon-purple to-neon-magenta flex items-center justify-center shadow-[0_0_20px_rgba(179,0,255,0.4)]"
                   whileHover={{ scale: 1.05 }}
                 >
                   <Crown className="w-6 h-6 text-white" />
                 </motion.div>
-                <span className="font-sci text-xl font-bold text-white">SOLOSUCCESS AI</span>
+                <span className="font-orbitron text-xl font-bold text-white">SOLOSUCCESS AI</span>
               </Link>
 
               <div className="flex items-center gap-4">
-                <PrimaryButton variant="outline" size="sm" onClick={handleRefresh} disabled={isLoading} className="border-neon-cyan/30 text-neon-cyan hover:bg-neon-cyan/10">
+                <CyberButton variant="ghost" size="sm" onClick={handleRefresh} disabled={isLoading} className="border-neon-cyan/30 text-neon-cyan hover:bg-neon-cyan/10">
                   <RefreshCw className={`w-4 h-4 mr-2 ${isLoading ? 'animate-spin' : ''}`} />
                   Refresh
-                </PrimaryButton>
-                <PrimaryButton size="sm" className="bg-neon-purple hover:bg-neon-purple/90">
+                </CyberButton>
+                <CyberButton size="sm" className="bg-neon-purple hover:bg-neon-purple/90">
                   Export Report
-                </PrimaryButton>
+                </CyberButton>
               </div>
             </div>
           </div>
@@ -124,16 +124,16 @@ export default function AnalyticsPage() {
               <div className="flex items-center justify-between mb-8">
                 <div>
                   <div className="flex items-center gap-2 mb-4">
-                    <span className="text-neon-purple font-tech text-sm uppercase tracking-wider">
+                    <span className="text-neon-purple font-mono text-sm uppercase tracking-wider">
                       Intelligence Center
                     </span>
                   </div>
 
-                  <h1 className="font-sci text-5xl font-bold text-white mb-4">
+                  <h1 className="font-orbitron text-5xl font-bold text-white mb-4">
                     ANALYTICS <span className="text-transparent bg-clip-text bg-gradient-to-r from-neon-purple to-neon-magenta">DASHBOARD</span>
                   </h1>
 
-                  <p className="text-xl text-gray-400 max-w-2xl font-tech">
+                  <p className="text-xl text-gray-400 max-w-2xl font-mono">
                     Monitor your business performance with advanced intelligence and insights.
                     Track every metric that matters for growth.
                   </p>
@@ -143,7 +143,7 @@ export default function AnalyticsPage() {
                   <select
                     value={selectedPeriod}
                     onChange={(e) => setSelectedPeriod(e.target.value)}
-                    className="bg-dark-card border-neon-purple/30 text-white rounded-lg px-4 py-2 focus:border-neon-purple focus:outline-none font-tech"
+                    className="bg-dark-card border-neon-purple/30 text-white rounded-none px-4 py-2 focus:border-neon-purple focus:outline-none font-mono"
                   >
                     <option value="24h">Last 24 Hours</option>
                     <option value="7d">Last 7 Days</option>
@@ -164,9 +164,9 @@ export default function AnalyticsPage() {
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.6, delay: index * 0.1 }}
                   >
-                    <HudBorder variant="hover" className="h-full p-8">
+                      <HudBorder variant="hover" className="h-full p-8">
                       <div className="flex items-center justify-between mb-6">
-                        <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-neon-purple to-neon-magenta flex items-center justify-center shadow-[0_0_20px_rgba(179,0,255,0.4)]">
+                        <div className="w-12 h-12 rounded-none bg-gradient-to-br from-neon-purple to-neon-magenta flex items-center justify-center shadow-[0_0_20px_rgba(179,0,255,0.4)]">
                           <metric.icon className="w-6 h-6 text-white" />
                         </div>
                         <div className="flex items-center gap-2">
@@ -175,17 +175,17 @@ export default function AnalyticsPage() {
                           ) : (
                             <ArrowDown className="w-4 h-4 text-neon-magenta" />
                           )}
-                          <span className={`text-sm font-tech ${metric.trend === 'up' ? 'text-neon-lime' : 'text-neon-magenta'}`}>
+                          <span className={`text-sm font-mono ${metric.trend === 'up' ? 'text-neon-lime' : 'text-neon-magenta'}`}>
                             {metric.change}
                           </span>
                         </div>
                       </div>
 
-                      <h3 className="font-sci text-3xl font-bold text-white mb-2">
+                      <h3 className="font-orbitron text-3xl font-bold text-white mb-2">
                         {metric.value}
                       </h3>
 
-                      <p className="text-gray-400 text-sm uppercase tracking-wider font-tech">
+                      <p className="text-gray-400 text-sm uppercase tracking-wider font-mono">
                         {metric.title}
                       </p>
                     </HudBorder>
@@ -197,20 +197,20 @@ export default function AnalyticsPage() {
             {/* Analytics Tabs */}
             <div className="max-w-7xl mx-auto">
               <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-8">
-                <TabsList className="bg-dark-card border border-neon-purple/30">
-                  <TabsTrigger value="overview" className="data-[state=active]:bg-neon-purple/20 data-[state=active]:text-white font-tech">
+                <TabsList className="bg-dark-card border border-neon-purple/30 rounded-none">
+                  <TabsTrigger value="overview" className="data-[state=active]:bg-neon-purple/20 data-[state=active]:text-white font-mono rounded-none">
                     <BarChart3 className="w-4 h-4 mr-2" />
                     Overview
                   </TabsTrigger>
-                  <TabsTrigger value="revenue" className="data-[state=active]:bg-neon-purple/20 data-[state=active]:text-white font-tech">
+                  <TabsTrigger value="revenue" className="data-[state=active]:bg-neon-purple/20 data-[state=active]:text-white font-mono rounded-none">
                     <DollarSign className="w-4 h-4 mr-2" />
                     Revenue
                   </TabsTrigger>
-                  <TabsTrigger value="users" className="data-[state=active]:bg-neon-purple/20 data-[state=active]:text-white font-tech">
+                  <TabsTrigger value="users" className="data-[state=active]:bg-neon-purple/20 data-[state=active]:text-white font-mono rounded-none">
                     <Users className="w-4 h-4 mr-2" />
                     Users
                   </TabsTrigger>
-                  <TabsTrigger value="performance" className="data-[state=active]:bg-neon-purple/20 data-[state=active]:text-white font-tech">
+                  <TabsTrigger value="performance" className="data-[state=active]:bg-neon-purple/20 data-[state=active]:text-white font-mono rounded-none">
                     <Activity className="w-4 h-4 mr-2" />
                     Performance
                   </TabsTrigger>
@@ -221,44 +221,44 @@ export default function AnalyticsPage() {
                     {/* Revenue Chart */}
                     <HudBorder variant="hover" className="p-8">
                       <div className="flex items-center justify-between mb-6">
-                        <h3 className="font-sci text-2xl font-bold text-white">Revenue Trends</h3>
-                        <PrimaryButton variant="outline" size="sm" className="border-neon-cyan/30 text-neon-cyan hover:bg-neon-cyan/10">
+                        <h3 className="font-orbitron text-2xl font-bold text-white">Revenue Trends</h3>
+                        <CyberButton variant="ghost" size="sm" className="border-neon-cyan/30 text-neon-cyan hover:bg-neon-cyan/10">
                           <Download className="w-4 h-4 mr-2" />
                           Export
-                        </PrimaryButton>
+                        </CyberButton>
                       </div>
 
-                      <div className="h-64 flex items-center justify-center bg-dark-bg/50 rounded-lg border border-neon-purple/20">
+                      <div className="h-64 flex items-center justify-center bg-dark-bg/50 rounded-none border border-neon-purple/20">
                         <div className="text-center">
                           <BarChart3 className="w-16 h-16 text-neon-purple mx-auto mb-4" />
-                          <p className="text-gray-400 font-tech">Revenue chart visualization</p>
+                          <p className="text-gray-400 font-mono">Revenue chart visualization</p>
                         </div>
                       </div>
                     </HudBorder>
 
                     {/* Top Pages */}
                     <HudBorder variant="hover" className="p-8">
-                      <h3 className="font-sci text-2xl font-bold text-white mb-6">Top Performing Pages</h3>
+                      <h3 className="font-orbitron text-2xl font-bold text-white mb-6">Top Performing Pages</h3>
 
                       <div className="space-y-4">
                         {analyticsData.topPages.map((page: any, index: number) => (
                           <div key={index} className="flex items-center justify-between">
                             <div className="flex items-center gap-3">
-                              <div className="w-8 h-8 rounded-lg bg-neon-purple/20 flex items-center justify-center">
+                              <div className="w-8 h-8 rounded-none bg-neon-purple/20 flex items-center justify-center">
                                 <span className="text-neon-purple font-bold text-sm">{index + 1}</span>
                               </div>
-                              <span className="text-white font-medium font-sci">{page.page}</span>
+                              <span className="text-white font-medium font-orbitron">{page.page}</span>
                             </div>
 
                             <div className="flex items-center gap-4">
-                              <span className="text-gray-400 font-tech">{page.views} views</span>
+                              <span className="text-gray-400 font-mono">{page.views} views</span>
                               <div className="flex items-center gap-1">
                                 {page.growth > 0 ? (
                                   <ArrowUp className="w-3 h-3 text-neon-lime" />
                                 ) : (
                                   <ArrowDown className="w-3 h-3 text-neon-magenta" />
                                 )}
-                                <span className={`text-sm font-tech ${page.growth > 0 ? 'text-neon-lime' : 'text-neon-magenta'}`}>
+                                <span className={`text-sm font-mono ${page.growth > 0 ? 'text-neon-lime' : 'text-neon-magenta'}`}>
                                   {page.growth}%
                                 </span>
                               </div>
@@ -271,7 +271,7 @@ export default function AnalyticsPage() {
 
                   {/* Recent Activity */}
                   <HudBorder variant="hover" className="p-8">
-                    <h3 className="font-sci text-2xl font-bold text-white mb-6">Recent Activity</h3>
+                    <h3 className="font-orbitron text-2xl font-bold text-white mb-6">Recent Activity</h3>
 
                     <div className="space-y-4">
                       {analyticsData.recentActivity.map((activity: any, index: number) => (
@@ -280,18 +280,18 @@ export default function AnalyticsPage() {
                           initial={{ opacity: 0, x: -20 }}
                           animate={{ opacity: 1, x: 0 }}
                           transition={{ duration: 0.6, delay: index * 0.1 }}
-                          className="flex items-center gap-4 p-4 bg-dark-bg/50 rounded-lg border border-neon-cyan/20"
+                          className="flex items-center gap-4 p-4 bg-dark-bg/50 rounded-none border border-neon-cyan/20"
                         >
-                          <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-neon-purple to-neon-magenta flex items-center justify-center shadow-[0_0_15px_rgba(179,0,255,0.3)]">
+                          <div className="w-10 h-10 rounded-none bg-gradient-to-br from-neon-purple to-neon-magenta flex items-center justify-center shadow-[0_0_15px_rgba(179,0,255,0.3)]">
                             <Activity className="w-5 h-5 text-white" />
                           </div>
 
                           <div className="flex-1">
-                            <p className="text-white font-medium font-sci">{activity.action}</p>
-                            <p className="text-gray-400 text-sm font-tech">{activity.time}</p>
+                            <p className="text-white font-medium font-orbitron">{activity.action}</p>
+                            <p className="text-gray-400 text-sm font-mono">{activity.time}</p>
                           </div>
 
-                          <div className="px-3 py-1 bg-neon-purple/20 text-neon-purple text-xs rounded-full uppercase tracking-wider font-tech">
+                          <div className="px-3 py-1 bg-neon-purple/20 text-neon-purple text-xs rounded-none uppercase tracking-wider font-mono">
                             {activity.type}
                           </div>
                         </motion.div>
@@ -302,11 +302,11 @@ export default function AnalyticsPage() {
 
                 <TabsContent value="revenue" className="space-y-8">
                   <HudBorder variant="hover" className="p-8">
-                    <h3 className="font-sci text-2xl font-bold text-white mb-6">Revenue Analysis</h3>
-                    <div className="h-64 flex items-center justify-center bg-dark-bg/50 rounded-lg border border-neon-purple/20">
+                    <h3 className="font-orbitron text-2xl font-bold text-white mb-6">Revenue Analysis</h3>
+                    <div className="h-64 flex items-center justify-center bg-dark-bg/50 rounded-none border border-neon-purple/20">
                       <div className="text-center">
                         <DollarSign className="w-16 h-16 text-neon-purple mx-auto mb-4" />
-                        <p className="text-gray-400 font-tech">Revenue analytics visualization</p>
+                        <p className="text-gray-400 font-mono">Revenue analytics visualization</p>
                       </div>
                     </div>
                   </HudBorder>
@@ -314,11 +314,11 @@ export default function AnalyticsPage() {
 
                 <TabsContent value="users" className="space-y-8">
                   <HudBorder variant="hover" className="p-8">
-                    <h3 className="font-sci text-2xl font-bold text-white mb-6">User Analytics</h3>
-                    <div className="h-64 flex items-center justify-center bg-dark-bg/50 rounded-lg border border-neon-purple/20">
+                    <h3 className="font-orbitron text-2xl font-bold text-white mb-6">User Analytics</h3>
+                    <div className="h-64 flex items-center justify-center bg-dark-bg/50 rounded-none border border-neon-purple/20">
                       <div className="text-center">
                         <Users className="w-16 h-16 text-neon-purple mx-auto mb-4" />
-                        <p className="text-gray-400 font-tech">User analytics visualization</p>
+                        <p className="text-gray-400 font-mono">User analytics visualization</p>
                       </div>
                     </div>
                   </HudBorder>
@@ -326,11 +326,11 @@ export default function AnalyticsPage() {
 
                 <TabsContent value="performance" className="space-y-8">
                   <HudBorder variant="hover" className="p-8">
-                    <h3 className="font-sci text-2xl font-bold text-white mb-6">Performance Metrics</h3>
-                    <div className="h-64 flex items-center justify-center bg-dark-bg/50 rounded-lg border border-neon-purple/20">
+                    <h3 className="font-orbitron text-2xl font-bold text-white mb-6">Performance Metrics</h3>
+                    <div className="h-64 flex items-center justify-center bg-dark-bg/50 rounded-none border border-neon-purple/20">
                       <div className="text-center">
                         <Activity className="w-16 h-16 text-neon-purple mx-auto mb-4" />
-                        <p className="text-gray-400 font-tech">Performance metrics visualization</p>
+                        <p className="text-gray-400 font-mono">Performance metrics visualization</p>
                       </div>
                     </div>
                   </HudBorder>

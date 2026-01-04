@@ -357,7 +357,7 @@ export function BossCommunity() {
                             VERIFIED
                           </Badge>
                         )}
-                        <Badge variant="outline" className="text-xs">
+                        <Badge variant="cyan" className="text-xs">
                           Level {post.author.level}
                         </Badge>
                       </div>
@@ -393,7 +393,7 @@ export function BossCommunity() {
                     {post.tags.length > 0 && (
                       <div className="flex flex-wrap gap-2">
                         {post.tags.map((tag, index) => (
-                          <Badge key={index} variant="outline" className="text-xs">
+                          <Badge key={index} variant="cyan" className="text-xs">
                             #{tag}
                           </Badge>
                         ))}
@@ -448,7 +448,7 @@ export function BossCommunity() {
                         <Badge className={`text-xs px-2 py-1 ${getDifficultyColor(challenge.difficulty)}`}>
                           {challenge.difficulty.toUpperCase()}
                         </Badge>
-                        <Badge variant="outline" className="text-xs">
+                        <Badge variant="cyan" className="text-xs">
                           {challenge.category}
                         </Badge>
                       </div>

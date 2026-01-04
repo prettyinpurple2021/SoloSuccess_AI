@@ -296,7 +296,7 @@ const FilePreviewModal: React.FC<FilePreviewModalProps> = ({
     }
   }, [touchStart, imageZoom, previewState.previewType])
 
-  const handleTouchEnd = useCallback((e: TouchEvent<HTMLDivElement>) => {
+  const handleTouchEnd = useCallback(async (e: TouchEvent<HTMLDivElement>) => {
     if (!touchStart || previewState.previewType !== 'image') return
     
     if (e.touches.length === 0) {
@@ -513,9 +513,9 @@ const FilePreviewModal: React.FC<FilePreviewModalProps> = ({
               <DialogTitle className="text-sm sm:text-lg truncate pr-2">{file.name}</DialogTitle>
               <div className="flex items-center space-x-2 sm:space-x-4 text-xs sm:text-sm text-gray-600 mt-1">
                 <span>{formatFileSize(file.size)}</span>
-                <Badge variant="secondary" className="text-xs">{file.category}</Badge>
+                <Badge variant="purple" className="text-xs">{file.category}</Badge>
                 {previewState.previewType && (
-                  <Badge variant="outline" className="text-xs hidden sm:inline-flex">{previewState.previewType}</Badge>
+                  <Badge variant="cyan" className="text-xs hidden sm:inline-flex">{previewState.previewType}</Badge>
                 )}
               </div>
             </div>
@@ -630,7 +630,7 @@ const FilePreviewModal: React.FC<FilePreviewModalProps> = ({
                 <span className="text-gray-600 text-xs">Tags:</span>
                 <div className="flex flex-wrap gap-1 mt-1">
                   {file.tags.slice(0, 6).map((tag, index) => (
-                    <Badge key={index} variant="outline" className="text-xs px-1.5 py-0.5">
+                    <Badge key={index} variant="cyan" className="text-xs px-1.5 py-0.5">
                       {tag}
                     </Badge>
                   ))}

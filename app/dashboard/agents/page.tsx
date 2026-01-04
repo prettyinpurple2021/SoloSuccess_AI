@@ -4,8 +4,8 @@
 export const dynamic = 'force-dynamic'
 import { logger, logError, logWarn, logInfo, logDebug, logApi, logDb, logAuth } from '@/lib/logger'
 import React, { useState, useEffect } from "react"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle} from "@/components/ui/card"
-import { Button} from "@/components/ui/button"
+import { HudBorder } from "@/components/cyber/HudBorder"
+import { CyberButton } from "@/components/cyber/CyberButton"
 import { Badge} from "@/components/ui/badge"
 import { Textarea} from "@/components/ui/textarea"
 import { ScrollArea} from "@/components/ui/scroll-area"
@@ -405,8 +405,8 @@ export default function AgentsPage() {
         {/* Header */}
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-3xl font-sci font-bold text-white">AI SQUAD</h1>
-            <p className="text-gray-400 font-tech">Chat with your specialized AI agents to optimize your operations</p>
+            <h1 className="text-3xl font-orbitron font-bold text-white">AI SQUAD</h1>
+            <p className="text-gray-400 font-mono">Chat with your specialized AI agents to optimize your operations</p>
           </div>
           <Badge className="bg-neon-purple/20 text-neon-purple border-neon-purple/50">
             <Bot className="w-3 h-3 mr-1" />
@@ -417,13 +417,13 @@ export default function AgentsPage() {
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-6 h-[calc(100vh-200px)]">
           {/* Agent Selection */}
           <div className="lg:col-span-1">
-            <div className="h-full bg-dark-card border border-neon-purple/30 rounded-lg p-6">
+            <HudBorder className="h-full bg-dark-card border-neon-purple/30 p-6">
               <div className="mb-6">
-                <h2 className="text-xl font-sci font-bold text-white flex items-center gap-2 mb-2">
+                <h2 className="text-xl font-orbitron font-bold text-white flex items-center gap-2 mb-2">
                   <Users className="w-5 h-5 text-neon-purple" />
                   YOUR AI SQUAD
                 </h2>
-                <p className="text-sm text-gray-400 font-tech">
+                <p className="text-sm text-gray-400 font-mono">
                   Choose your AI agent to chat with
                 </p>
               </div>
@@ -433,7 +433,7 @@ export default function AgentsPage() {
                     <div
                       key={agent.id}
                       onClick={() => startNewConversation(agent)}
-                      className={`p-4 border rounded-lg cursor-pointer transition-all hover:shadow-[0_0_15px_rgba(179,0,255,0.3)] ${
+                      className={`p-4 border rounded-none cursor-pointer transition-all hover:bg-neon-purple/5 hover:border-neon-purple/50 ${
                         selectedAgent?.id === agent.id 
                           ? 'border-neon-purple/50 bg-neon-purple/10' 
                           : 'border-white/10 hover:border-neon-purple/30 bg-dark-bg/50'
@@ -441,24 +441,24 @@ export default function AgentsPage() {
                     >
                       <div className="flex items-center gap-3">
                         <div 
-                          className="w-10 h-10 rounded-full flex items-center justify-center text-white font-bold agent-avatar"
-                          data-agent-color={agent.accent_color}
+                          className="w-10 h-10 rounded-none border border-current flex items-center justify-center text-white font-bold agent-avatar"
+                          style={{ color: agent.accent_color, borderColor: agent.accent_color }}
                         >
                           {agent.display_name.charAt(0)}
                         </div>
                         <div className="flex-1 min-w-0">
-                          <h3 className="font-semibold text-sm text-white">{agent.display_name}</h3>
-                          <p className="text-xs text-gray-400 truncate font-tech">{agent.description}</p>
+                          <h3 className="font-semibold text-sm text-white font-orbitron">{agent.display_name}</h3>
+                          <p className="text-xs text-gray-400 truncate font-mono">{agent.description}</p>
                         </div>
                       </div>
                       <div className="mt-2 flex flex-wrap gap-1">
                         {agent.capabilities.slice(0, 2).map((capability, index) => (
-                          <Badge key={index} className="text-xs bg-neon-cyan/10 text-neon-cyan border-neon-cyan/30">
+                          <Badge key={index} className="text-xs bg-neon-cyan/10 text-neon-cyan border-neon-cyan/30 font-mono rounded-none">
                             {capability}
                           </Badge>
                         ))}
                         {agent.capabilities.length > 2 && (
-                          <Badge className="text-xs bg-white/5 text-gray-400 border-white/10">
+                          <Badge className="text-xs bg-white/5 text-gray-400 border-white/10 font-mono rounded-none">
                             +{agent.capabilities.length - 2} more
                           </Badge>
                         )}
@@ -467,12 +467,12 @@ export default function AgentsPage() {
                   ))}
                 </div>
               </ScrollArea>
-            </div>
+            </HudBorder>
           </div>
 
           {/* Chat Interface */}
           <div className="lg:col-span-3">
-            <div className="h-full flex flex-col bg-dark-card border border-neon-cyan/30 rounded-lg">
+            <HudBorder className="h-full flex flex-col bg-dark-card border-neon-cyan/30">
               {selectedAgent ? (
                 <>
                   {/* Chat Header */}
@@ -480,24 +480,24 @@ export default function AgentsPage() {
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-3">
                         <div 
-                          className="w-10 h-10 rounded-full flex items-center justify-center text-white font-bold agent-avatar"
-                          data-agent-color={selectedAgent.accent_color}
+                          className="w-10 h-10 rounded-none border border-current flex items-center justify-center text-white font-bold agent-avatar"
+                          style={{ color: selectedAgent.accent_color, borderColor: selectedAgent.accent_color }}
                         >
                           {selectedAgent.display_name.charAt(0)}
                         </div>
                         <div>
-                          <h2 className="text-xl font-sci font-bold text-white flex items-center gap-2">
+                          <h2 className="text-xl font-orbitron font-bold text-white flex items-center gap-2">
                             {selectedAgent.display_name}
                             <Sparkles className="w-4 h-4 text-neon-purple" />
                           </h2>
-                          <p className="text-sm text-gray-400 font-tech">{selectedAgent.description}</p>
+                          <p className="text-sm text-gray-400 font-mono">{selectedAgent.description}</p>
                         </div>
                       </div>
                       
                       {/* Conversation Actions */}
                       {messages.length > 0 && (
                         <div className="flex items-center gap-2">
-                          <Button
+                          <CyberButton
                             size="sm"
                             variant="cyan"
                             onClick={handleSaveConversation}
@@ -505,7 +505,7 @@ export default function AgentsPage() {
                           >
                             <Briefcase className="w-4 h-4" />
                             Save Conversation
-                          </Button>
+                          </CyberButton>
                         </div>
                       )}
                     </div>
@@ -517,16 +517,16 @@ export default function AgentsPage() {
                       {messages.length === 0 ? (
                         <div className="text-center py-12">
                           <div 
-                            className="w-16 h-16 rounded-full flex items-center justify-center text-white text-2xl font-bold mx-auto mb-4 agent-avatar"
-                            data-agent-color={selectedAgent.accent_color}
+                            className="w-16 h-16 rounded-none border-2 border-current flex items-center justify-center text-white text-2xl font-bold mx-auto mb-4 agent-avatar"
+                            style={{ color: selectedAgent.accent_color, borderColor: selectedAgent.accent_color }}
                           >
                             {selectedAgent.display_name.charAt(0)}
                           </div>
-                          <h3 className="text-lg font-sci font-bold text-white mb-2">Chat with {selectedAgent.display_name}</h3>
-                          <p className="text-gray-400 mb-4 font-tech">{selectedAgent.personality}</p>
+                          <h3 className="text-lg font-orbitron font-bold text-white mb-2">Chat with {selectedAgent.display_name}</h3>
+                          <p className="text-gray-400 mb-4 font-mono">{selectedAgent.personality}</p>
                           <div className="flex flex-wrap gap-2 justify-center">
                             {selectedAgent.capabilities.map((capability, index) => (
-                              <Badge key={index} className="bg-neon-cyan/10 text-neon-cyan border-neon-cyan/30">
+                              <Badge key={index} className="bg-neon-cyan/10 text-neon-cyan border-neon-cyan/30 font-mono rounded-none">
                                 {capability}
                               </Badge>
                             ))}
@@ -542,41 +542,41 @@ export default function AgentsPage() {
                               className={`flex ${message.role === 'user' ? 'justify-end' : 'justify-start'} group`}
                             >
                               <div
-                                className={`max-w-[80%] p-3 rounded-lg relative ${
+                                className={`max-w-[80%] p-3 rounded-none border ${
                                   message.role === 'user'
-                                    ? 'bg-neon-purple text-white'
-                                    : 'bg-dark-bg/50 text-gray-300 hover:bg-dark-bg border border-neon-cyan/20'
+                                    ? 'bg-neon-purple/20 border-neon-purple/50 text-white'
+                                    : 'bg-dark-bg/50 text-gray-300 hover:bg-dark-bg border-neon-cyan/20'
                                 }`}
                               >
-                                <p className="text-sm font-tech">{message.content}</p>
+                                <p className="text-sm font-mono">{message.content}</p>
                                 <p className={`text-xs mt-1 ${
                                   message.role === 'user' ? 'text-neon-purple/70' : 'text-gray-500'
-                                } font-tech`}>
+                                } font-mono`}>
                                   {formatTime(message.timestamp)}
                                 </p>
                                 
                                 {/* Message Actions - Only show for assistant messages */}
                                 {message.role === 'assistant' && (
                                   <div className="absolute -right-2 top-0 opacity-0 group-hover:opacity-100 transition-opacity">
-                                    <div className="flex flex-col gap-1 bg-dark-card rounded-lg shadow-lg border border-neon-cyan/30 p-1">
-                                      <Button
+                                    <div className="flex flex-col gap-1 bg-dark-card rounded-none shadow-lg border border-neon-cyan/30 p-1">
+                                      <CyberButton
                                         size="sm"
-                                        variant="purple"
+                                        variant="ghost"
                                         onClick={() => handleSaveMessage(message)}
-                                        className="w-8 h-8 p-0 hover:bg-neon-purple/20 border-transparent"
+                                        className="w-8 h-8 p-0 hover:bg-neon-purple/20 border-transparent text-neon-purple"
                                         title="Save to Briefcase"
                                       >
-                                        <Briefcase className="w-3 h-3 text-neon-purple" />
-                                      </Button>
-                                      <Button
+                                        <Briefcase className="w-3 h-3" />
+                                      </CyberButton>
+                                      <CyberButton
                                         size="sm"
-                                        variant="cyan"
+                                        variant="ghost"
                                         onClick={() => copyToClipboard(message.content)}
-                                        className="w-8 h-8 p-0 hover:bg-neon-cyan/20 border-transparent"
+                                        className="w-8 h-8 p-0 hover:bg-neon-cyan/20 border-transparent text-neon-cyan"
                                         title="Copy to Clipboard"
                                       >
-                                        <Copy className="w-3 h-3 text-neon-cyan" />
-                                      </Button>
+                                        <Copy className="w-3 h-3" />
+                                      </CyberButton>
                                     </div>
                                   </div>
                                 )}
@@ -585,10 +585,10 @@ export default function AgentsPage() {
                           ))}
                           {isLoading && (
                             <div className="flex justify-start">
-                              <div className="bg-dark-bg/50 p-3 rounded-lg border border-neon-purple/30">
+                              <div className="bg-dark-bg/50 p-3 rounded-none border border-neon-purple/30">
                                 <div className="flex items-center gap-2">
                                   <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-neon-purple"></div>
-                                  <span className="text-sm text-gray-400 font-tech">Thinking...</span>
+                                  <span className="text-sm text-gray-400 font-mono">Thinking...</span>
                                 </div>
                               </div>
                             </div>
@@ -605,7 +605,7 @@ export default function AgentsPage() {
                         value={input}
                         onChange={(e) => setInput(e.target.value)}
                         placeholder={`Message ${selectedAgent.display_name}...`}
-                        className="flex-1 min-h-[60px] max-h-[120px] resize-none bg-dark-bg border-neon-cyan/30 text-white placeholder:text-gray-500 focus:border-neon-cyan"
+                        className="flex-1 min-h-[60px] max-h-[120px] resize-none bg-dark-bg border-neon-cyan/30 text-white placeholder:text-gray-500 focus:border-neon-cyan font-mono rounded-none"
                         onKeyDown={(e) => {
                           if (e.key === 'Enter' && !e.shiftKey) {
                             e.preventDefault()
@@ -613,13 +613,14 @@ export default function AgentsPage() {
                           }
                         }}
                       />
-                      <Button 
+                      <CyberButton 
                         onClick={sendMessage} 
                         disabled={!input.trim() || isLoading}
-                        className="px-4 bg-neon-cyan hover:bg-neon-cyan/90 text-dark-bg border-neon-cyan"
+                        variant="cyan"
+                        className="px-4 h-auto"
                       >
                         <Send className="w-4 h-4" />
-                      </Button>
+                      </CyberButton>
                     </div>
                   </div>
                 </>
@@ -627,24 +628,24 @@ export default function AgentsPage() {
                 <div className="flex-1 flex items-center justify-center p-6">
                   <div className="text-center">
                     <Bot className="w-16 h-16 text-gray-500 mx-auto mb-4" />
-                    <h3 className="text-lg font-sci font-bold text-white mb-2">SELECT AN AI AGENT</h3>
-                    <p className="text-gray-400 font-tech">Choose an agent from the sidebar to start chatting</p>
+                    <h3 className="text-lg font-orbitron font-bold text-white mb-2">SELECT AN AI AGENT</h3>
+                    <p className="text-gray-400 font-mono">Choose an agent from the sidebar to start chatting</p>
                   </div>
                 </div>
               )}
-            </div>
+            </HudBorder>
           </div>
         </div>
 
         {/* Save to Briefcase Dialog */}
         <Dialog open={showSaveDialog} onOpenChange={setShowSaveDialog}>
-          <DialogContent className="sm:max-w-md bg-dark-card border-neon-purple/30">
+          <DialogContent className="sm:max-w-md bg-dark-card border-neon-purple/30 rounded-none">
             <DialogHeader>
-              <DialogTitle className="flex items-center gap-2 text-white font-sci">
+              <DialogTitle className="flex items-center gap-2 text-white font-orbitron">
                 <Briefcase className="w-5 h-5 text-neon-purple" />
                 Save to Briefcase
               </DialogTitle>
-              <DialogDescription className="text-gray-400 font-tech">
+              <DialogDescription className="text-gray-400 font-mono">
                 Configure how you want to save this content to your Briefcase.
               </DialogDescription>
             </DialogHeader>
@@ -716,13 +717,13 @@ export default function AgentsPage() {
             </div>
             
             <div className="flex justify-end gap-3 mt-6">
-              <Button variant="cyan" onClick={() => setShowSaveDialog(false)} className="border-neon-cyan/30 text-neon-cyan hover:bg-neon-cyan/10">
+              <CyberButton variant="cyan" onClick={() => setShowSaveDialog(false)} className="border-neon-cyan/30 text-neon-cyan hover:bg-neon-cyan/10">
                 Cancel
-              </Button>
-              <Button 
+              </CyberButton>
+              <CyberButton 
                 onClick={executeSave} 
                 disabled={!saveForm.fileName.trim() || isSaving}
-                className="bg-neon-purple hover:bg-neon-purple/90 text-white"
+                variant="purple"
               >
                 {isSaving ? (
                   <>
@@ -735,7 +736,7 @@ export default function AgentsPage() {
                     Save to Briefcase
                   </>
                 )}
-              </Button>
+              </CyberButton>
             </div>
           </DialogContent>
         </Dialog>
