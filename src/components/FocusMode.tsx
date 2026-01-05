@@ -139,7 +139,7 @@ export const FocusMode: React.FC<FocusModeProps> = ({ activeTask, onExit, onComp
                 <div className="flex items-center gap-6">
                     <button
                         onClick={onExit}
-                        className="p-4 rounded-full border-2 border-gray-700 text-gray-500 hover:text-neon-magenta hover:border-neon-magenta/50 transition-all group"
+                        className="p-4 rounded-full border-2 border-gray-700 text-gray-500 hover:text-neon-magenta hover:border-neon-magenta hover:shadow-[0_0_15px_rgba(255,0,110,0.3)] transition-all group bg-dark-card"
                         title="Abort Session"
                     >
                         <X size={24} />
@@ -149,8 +149,8 @@ export const FocusMode: React.FC<FocusModeProps> = ({ activeTask, onExit, onComp
                         onClick={toggleTimer}
                         className={`w-20 h-20 rounded-full flex items-center justify-center transition-all shadow-2xl
                             ${isActive
-                                ? 'bg-dark-card text-white border-2 border-gray-700 hover:border-neon-magenta hover:text-neon-magenta'
-                                : 'bg-neon-cyan text-dark-bg hover:scale-105 shadow-[0_0_30px_rgba(11,228,236,0.4)]'
+                                ? 'bg-dark-card text-white border-2 border-neon-cyan hover:border-neon-cyan hover:shadow-[0_0_20px_rgba(11,228,236,0.3)]'
+                                : 'bg-neon-cyan text-dark-bg hover:scale-105 shadow-[0_0_30px_rgba(11,228,236,0.4)] border-2 border-neon-cyan'
                             }`}
                     >
                         {isActive ? <Pause size={32} fill="currentColor" /> : <Play size={32} fill="currentColor" className="ml-1" />}
@@ -158,7 +158,7 @@ export const FocusMode: React.FC<FocusModeProps> = ({ activeTask, onExit, onComp
 
                     <button
                         onClick={handleComplete}
-                        className="p-4 rounded-full border-2 border-gray-700 text-neon-lime hover:bg-neon-lime/10 hover:border-neon-lime/50 transition-all"
+                        className="p-4 rounded-full border-2 border-gray-700 text-neon-lime hover:bg-neon-lime/10 hover:border-neon-lime hover:shadow-[0_0_15px_rgba(57,255,20,0.3)] transition-all bg-dark-card"
                         title="Mark Task Complete"
                     >
                         <CheckCircle2 size={24} />

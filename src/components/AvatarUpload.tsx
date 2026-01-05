@@ -129,15 +129,15 @@ const AvatarUpload: React.FC<AvatarUploadProps> = ({
   return (
     <div className={`relative ${className}`}>
       <div className="relative">
-        <div className="w-24 h-24 rounded-full bg-gradient-to-br from-purple-200 via-pink-200 to-teal-200 border-4 border-white shadow-lg shadow-purple-200/50 overflow-hidden group cursor-pointer hover:shadow-xl hover:shadow-pink-300/60 transition-all duration-300 hover:scale-105">
+        <div className="w-24 h-24 rounded-full bg-dark-card border-2 border-neon-cyan shadow-[0_0_15px_rgba(11,228,236,0.3)] overflow-hidden group cursor-pointer hover:shadow-[0_0_25px_rgba(11,228,236,0.5)] transition-all duration-300 hover:scale-105">
           {showPlaceholder ? (
             <div 
-              className="w-full h-full flex items-center justify-center text-purple-400 group-hover:text-pink-500 transition-colors relative"
+              className="w-full h-full flex items-center justify-center text-gray-500 group-hover:text-neon-cyan transition-colors relative bg-dark-bg"
               onClick={() => fileInputRef.current?.click()}
             >
               <Crown size={28} className="relative z-10" />
-              <Sparkles size={16} className="absolute top-2 right-2 text-teal-400 animate-pulse" />
-              <Heart size={12} className="absolute bottom-2 left-2 text-pink-400 animate-bounce" />
+              <Sparkles size={16} className="absolute top-2 right-2 text-neon-purple animate-pulse" />
+              <Heart size={12} className="absolute bottom-2 left-2 text-neon-magenta animate-bounce" />
             </div>
           ) : displayUrl ? (
             <div className="relative w-full h-full">
@@ -149,21 +149,21 @@ const AvatarUpload: React.FC<AvatarUploadProps> = ({
                 sizes="96px"
               />
               <div 
-                className="absolute inset-0 bg-gradient-to-br from-purple-500/0 via-pink-500/0 to-teal-500/0 group-hover:from-purple-500/30 group-hover:via-pink-500/30 group-hover:to-teal-500/30 transition-all duration-300 flex items-center justify-center cursor-pointer"
+                className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-all duration-300 flex items-center justify-center cursor-pointer backdrop-blur-sm"
                 onClick={() => fileInputRef.current?.click()}
               >
-                <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center gap-1">
+                <div className="flex items-center gap-1">
                   <Camera 
                     size={18} 
-                    className="text-white drop-shadow-lg" 
+                    className="text-neon-cyan drop-shadow-[0_0_5px_rgba(11,228,236,1)]" 
                   />
-                  <Sparkles size={14} className="text-white animate-pulse" />
+                  <Sparkles size={14} className="text-neon-purple animate-pulse" />
                 </div>
               </div>
             </div>
           ) : (
-            <div className="w-full h-full flex items-center justify-center">
-              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-transparent bg-gradient-to-r from-purple-500 to-pink-500 rounded-full"></div>
+            <div className="w-full h-full flex items-center justify-center bg-dark-bg">
+              <div className="animate-spin rounded-full h-8 w-8 border-2 border-transparent border-t-neon-cyan border-l-neon-purple rounded-full"></div>
             </div>
           )}
         </div>
@@ -172,7 +172,7 @@ const AvatarUpload: React.FC<AvatarUploadProps> = ({
         {currentAvatar && !isUploading && (
           <button
             onClick={handleRemoveAvatar}
-            className="absolute -top-2 -right-2 w-7 h-7 bg-gradient-to-r from-pink-500 to-purple-500 hover:from-pink-600 hover:to-purple-600 text-white rounded-full flex items-center justify-center transition-all duration-200 shadow-lg hover:shadow-xl hover:scale-110"
+            className="absolute -top-2 -right-2 w-7 h-7 bg-red-900/80 border border-red-500 text-red-200 rounded-full flex items-center justify-center transition-all duration-200 shadow-lg hover:bg-red-800 hover:scale-110"
             title="Remove avatar"
           >
             <X size={14} />
@@ -185,23 +185,23 @@ const AvatarUpload: React.FC<AvatarUploadProps> = ({
         <button
           onClick={() => fileInputRef.current?.click()}
           disabled={isUploading}
-          className="flex items-center gap-2 px-6 py-2.5 bg-gradient-to-r from-purple-500 via-pink-500 to-teal-500 hover:from-purple-600 hover:via-pink-600 hover:to-teal-600 disabled:from-gray-300 disabled:via-gray-300 disabled:to-gray-300 text-white rounded-full transition-all duration-300 text-sm font-medium shadow-lg hover:shadow-xl hover:scale-105 group"
+          className="flex items-center gap-2 px-6 py-2.5 bg-neon-cyan/10 hover:bg-neon-cyan/20 border border-neon-cyan text-neon-cyan rounded-full transition-all duration-300 text-sm font-medium shadow-[0_0_10px_rgba(11,228,236,0.2)] hover:shadow-[0_0_15px_rgba(11,228,236,0.4)] disabled:opacity-50 disabled:cursor-not-allowed group font-mono uppercase tracking-wider"
         >
           <Upload size={16} className="group-hover:animate-bounce" />
           {currentAvatar ? 'Change Avatar' : 'Upload Avatar'}
           <Crown size={14} className="opacity-70" />
         </button>
 
-        <p className="text-xs text-purple-600/70 mt-2 text-center font-medium">
-          ✨ JPG, PNG or WebP • Max 5MB ✨
+        <p className="text-xs text-gray-500 mt-2 text-center font-mono">
+          JPG, PNG or WebP • Max 5MB
         </p>
       </div>
 
       {/* Error message */}
       {error && (
-        <div className="mt-3 p-3 bg-gradient-to-r from-pink-50 to-purple-50 border border-pink-200 rounded-lg shadow-sm">
-          <p className="text-sm text-pink-600 font-medium flex items-center gap-2">
-            <Heart size={14} className="text-pink-500" />
+        <div className="mt-3 p-3 bg-red-900/20 border border-red-500/50 rounded-sm shadow-sm">
+          <p className="text-sm text-red-400 font-medium flex items-center gap-2 font-mono">
+            <Heart size={14} className="text-red-500" />
             {error}
           </p>
         </div>

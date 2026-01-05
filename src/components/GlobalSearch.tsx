@@ -33,12 +33,12 @@ const TYPE_ICONS = {
 }
 
 const TYPE_COLORS = {
-  chat: 'text-teal-600',
-  brand: 'text-pink-600',
-  template_save: 'text-purple-600',
-  avatar: 'text-purple-600',
-  document: 'text-gray-600',
-  ai_interaction: 'text-teal-600'
+  chat: 'text-neon-cyan',
+  brand: 'text-neon-magenta',
+  template_save: 'text-neon-purple',
+  avatar: 'text-neon-purple',
+  document: 'text-gray-400',
+  ai_interaction: 'text-neon-cyan'
 }
 
 export const GlobalSearch: React.FC = () => {
@@ -136,15 +136,16 @@ export const GlobalSearch: React.FC = () => {
   return (
     <>
       {/* Search Trigger Button */}
+      {/* Search Trigger Button */}
       <button
         onClick={() => setOpen(true)}
-        className="flex items-center gap-3 w-full max-w-sm px-4 py-2.5 bg-gradient-to-r from-purple-50 via-pink-50 to-teal-50 border border-purple-200 rounded-full hover:border-pink-300 hover:shadow-md hover:shadow-purple-200/50 transition-all duration-300 group"
+        className="flex items-center gap-3 w-full max-w-sm px-4 py-2.5 bg-dark-card border-2 border-neon-purple/50 rounded-sm hover:border-neon-magenta hover:shadow-[0_0_15px_rgba(255,0,255,0.3)] transition-all duration-300 group"
       >
-        <Search className="text-purple-400 group-hover:text-pink-500 transition-colors" size={16} />
-        <span className="text-purple-600/70 text-sm font-medium flex-1 text-left">
+        <Search className="text-neon-purple group-hover:text-neon-magenta transition-colors" size={16} />
+        <span className="text-gray-400 text-sm font-mono font-medium flex-1 text-left uppercase tracking-wider">
           {placeholder}
         </span>
-        <div className="flex items-center gap-1 px-2 py-1 bg-purple-100 rounded-full text-xs font-bold text-purple-600">
+        <div className="flex items-center gap-1 px-2 py-1 bg-dark-bg border border-gray-700 rounded-sm text-xs font-bold text-neon-purple font-mono">
           <span>⌘</span>
           <span>K</span>
         </div>
@@ -152,68 +153,68 @@ export const GlobalSearch: React.FC = () => {
 
       {/* Search Dialog */}
       <CommandDialog open={open} onOpenChange={setOpen}>
-        <div className="bg-gradient-to-br from-purple-50 via-pink-50 to-teal-50">
-          <div className="flex items-center gap-3 p-4 border-b border-purple-200">
-            <Crown className="text-purple-600" size={20} />
-            <h2 className="font-bold text-purple-900 flex items-center gap-2">
-              Search Your Empire
-              <Sparkles size={16} className="text-teal-500" />
+        <div className="bg-dark-bg border-2 border-neon-purple/30">
+          <div className="flex items-center gap-3 p-4 border-b-2 border-gray-800 bg-dark-card/50">
+            <Crown className="text-neon-purple" size={20} />
+            <h2 className="font-bold text-white flex items-center gap-2 font-orbitron uppercase tracking-wider">
+              Empire Search
+              <Sparkles size={16} className="text-neon-cyan" />
             </h2>
           </div>
           
-          <Command className="rounded-lg border-0 shadow-none bg-transparent">
+          <Command className="rounded-sm border-0 shadow-none bg-transparent font-mono">
             <CommandInput
               placeholder="Search your briefcase, conversations, brand work..."
               value={query}
               onValueChange={setQuery}
-              className="border-0 focus:ring-0 text-purple-900 placeholder-purple-500/70"
+              className="border-0 focus:ring-0 text-white placeholder-gray-600 font-mono"
             />
             
-            <CommandList className="max-h-96 p-4">
+            <CommandList className="max-h-96 p-4 custom-scrollbar bg-dark-bg">
               {loading ? (
                 <div className="flex items-center justify-center py-8">
-                  <div className="animate-spin rounded-full h-6 w-6 border-2 border-transparent bg-gradient-to-r from-purple-500 to-pink-500" />
-                  <span className="ml-3 text-purple-600 font-medium">Searching your content...</span>
+                  <div className="animate-spin rounded-full h-6 w-6 border-2 border-transparent border-t-neon-purple border-l-neon-magenta" />
+                  <span className="ml-3 text-neon-purple font-medium font-mono">SCANNING EMPIRE...</span>
                 </div>
               ) : (
                 <>
-                  <CommandEmpty className="py-8 text-center">
+                  <CommandEmpty className="py-8 text-center bg-dark-bg">
                     <div className="flex flex-col items-center gap-3">
-                      <Crown size={32} className="text-purple-400" />
+                      <Crown size={32} className="text-gray-700" />
                       <div>
-                        <p className="font-bold text-purple-900 mb-1">No results found, queen!</p>
-                        <p className="text-sm text-purple-600/80">Try searching for chats, brand work, or templates</p>
+                        <p className="font-bold text-gray-400 mb-1 font-mono uppercase">No results found</p>
+                        <p className="text-sm text-gray-600 font-mono">Try searching for chats, brand work, or templates</p>
                       </div>
                     </div>
                   </CommandEmpty>
 
                   {results.length > 0 && (
                     <CommandGroup heading={
-                      <div className="flex items-center gap-2 text-purple-700 font-bold">
-                        <Heart size={14} className="text-pink-500" />
+                      <div className="flex items-center gap-2 text-neon-purple font-bold font-mono text-xs uppercase tracking-widest">
+                        <Heart size={14} className="text-neon-magenta" />
                         Your Content
                       </div>
                     }>
                       {results.map((result) => {
                         const IconComponent = TYPE_ICONS[result.type]
-                        const colorClass = TYPE_COLORS[result.type]
+                        const colorClass = TYPE_COLORS[result.type] // Now holds neon text classes
                         
                         return (
                           <CommandItem
                             key={result.id}
                             onSelect={() => handleSelect(result.url)}
-                            className="flex items-center gap-3 p-3 rounded-xl hover:bg-white/80 cursor-pointer transition-all duration-200 hover:scale-102"
+                            className="flex items-center gap-3 p-3 rounded-sm hover:bg-dark-card/80 cursor-pointer transition-all duration-200 hover:border-l-2 hover:border-neon-purple border-l-2 border-transparent group"
                           >
-                            <div className={`p-2 rounded-lg bg-gradient-to-br from-purple-100 to-pink-100 ${colorClass}`}>
-                              <IconComponent size={16} />
+                            <div className={`p-2 rounded-sm bg-dark-card border border-gray-800 group-hover:border-neon-purple/50 transition-colors`}>
+                              <IconComponent size={16} className={colorClass} />
                             </div>
                             <div className="flex-1 min-w-0">
-                              <p className="font-medium text-purple-900 truncate">{result.title}</p>
+                              <p className="font-medium text-white truncate font-mono">{result.title}</p>
                               {result.description && (
-                                <p className="text-xs text-purple-600/80 truncate">{result.description}</p>
+                                <p className="text-xs text-gray-500 truncate font-mono">{result.description}</p>
                               )}
                             </div>
-                            <Sparkles size={12} className="text-teal-500" />
+                            <Sparkles size={12} className="text-neon-cyan opacity-0 group-hover:opacity-100 transition-opacity" />
                           </CommandItem>
                         )
                       })}
@@ -223,26 +224,26 @@ export const GlobalSearch: React.FC = () => {
                   {query.length === 0 && (
                     <>
                       <CommandGroup heading={
-                        <div className="flex items-center gap-2 text-purple-700 font-bold">
-                          <Zap size={14} className="text-teal-500" />
+                        <div className="flex items-center gap-2 text-neon-cyan font-bold font-mono text-xs uppercase tracking-widest">
+                          <Zap size={14} className="text-neon-lime" />
                           Quick Actions
                         </div>
                       }>
-                        <CommandItem onSelect={() => handleSelect('/dashboard/agents')}>
-                          <MessageCircle className="mr-3 h-4 w-4 text-teal-600" />
-                          <span className="font-medium">Chat with AI Agents</span>
+                        <CommandItem onSelect={() => handleSelect('/dashboard/agents')} className="rounded-sm hover:bg-dark-card">
+                          <MessageCircle className="mr-3 h-4 w-4 text-neon-cyan" />
+                          <span className="font-medium text-gray-300 font-mono">Chat with AI Agents</span>
                         </CommandItem>
-                        <CommandItem onSelect={() => handleSelect('/dashboard/brand')}>
-                          <Palette className="mr-3 h-4 w-4 text-pink-600" />
-                          <span className="font-medium">Brand Studio</span>
+                        <CommandItem onSelect={() => handleSelect('/dashboard/brand')} className="rounded-sm hover:bg-dark-card">
+                          <Palette className="mr-3 h-4 w-4 text-neon-magenta" />
+                          <span className="font-medium text-gray-300 font-mono">Brand Studio</span>
                         </CommandItem>
-                        <CommandItem onSelect={() => handleSelect('/templates')}>
-                          <Star className="mr-3 h-4 w-4 text-purple-600" />
-                          <span className="font-medium">Browse Templates</span>
+                        <CommandItem onSelect={() => handleSelect('/templates')} className="rounded-sm hover:bg-dark-card">
+                          <Star className="mr-3 h-4 w-4 text-neon-purple" />
+                          <span className="font-medium text-gray-300 font-mono">Browse Templates</span>
                         </CommandItem>
-                        <CommandItem onSelect={() => handleSelect('/dashboard/briefcase')}>
-                          <FileText className="mr-3 h-4 w-4 text-gray-600" />
-                          <span className="font-medium">Your Briefcase</span>
+                        <CommandItem onSelect={() => handleSelect('/dashboard/briefcase')} className="rounded-sm hover:bg-dark-card">
+                          <FileText className="mr-3 h-4 w-4 text-gray-400" />
+                          <span className="font-medium text-gray-300 font-mono">Your Briefcase</span>
                         </CommandItem>
                       </CommandGroup>
                     </>

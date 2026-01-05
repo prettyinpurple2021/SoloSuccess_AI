@@ -120,7 +120,7 @@ export const CommandPalette: React.FC<CommandPaletteProps> = ({ isOpen, setIsOpe
             label: 'System Reboot (Logout)',
             category: 'SYSTEM',
             icon: <Power size={16} />,
-            colorClass: 'text-red-500',
+            colorClass: 'text-neon-magenta',
             action: () => {
                 if (confirm("Reboot System? This will clear your session context.")) {
                     localStorage.removeItem('solo_business_context');
@@ -190,7 +190,7 @@ export const CommandPalette: React.FC<CommandPaletteProps> = ({ isOpen, setIsOpe
                         ref={inputRef}
                         type="text"
                         placeholder="Type a command or search..."
-                        className="flex-1 bg-transparent border-none text-lg text-white placeholder-gray-600 focus:ring-0 font-mono"
+                        className="flex-1 bg-transparent border-none text-lg text-white placeholder-gray-500 focus:ring-0 font-mono"
                         value={query}
                         onChange={(e) => { setQuery(e.target.value); setSelectedIndex(0); }}
                     />

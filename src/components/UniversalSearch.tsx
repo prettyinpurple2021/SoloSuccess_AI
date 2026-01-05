@@ -83,51 +83,51 @@ export function UniversalSearch({ isOpen, onClose, onNavigate }: UniversalSearch
     if (!isOpen) return null;
 
     return (
-        <div className="fixed inset-0 z-[60] flex items-start justify-center pt-[15vh] px-4">
+        <div className="fixed inset-0 z-[60] flex items-start justify-center pt-[15vh] px-4 font-mono">
             {/* Backdrop */}
             <div
-                className="absolute inset-0 bg-black/70 backdrop-blur-sm"
+                className="absolute inset-0 bg-black/80 backdrop-blur-sm"
                 onClick={onClose}
             />
 
             {/* Search Modal */}
             <div
-                className="relative w-full max-w-2xl bg-zinc-950 border border-zinc-800 rounded-2xl shadow-2xl overflow-hidden animate-in fade-in zoom-in-95 duration-200"
+                className="relative w-full max-w-2xl bg-dark-bg border-2 border-neon-cyan/30 rounded-sm shadow-[0_0_30px_rgba(11,228,236,0.2)] overflow-hidden animate-in fade-in zoom-in-95 duration-200"
                 onKeyDown={handleKeyDown}
             >
                 {/* Search Header */}
-                <div className="flex items-center gap-3 px-6 py-4 border-b border-zinc-800">
-                    <Search className="text-zinc-500" size={20} />
+                <div className="flex items-center gap-3 px-6 py-4 border-b-2 border-gray-800 bg-dark-card/50">
+                    <Search className="text-neon-cyan" size={20} />
                     <input
                         ref={inputRef}
                         type="text"
                         placeholder="Search tasks, chats, contacts, reports..."
-                        className="flex-1 bg-transparent border-none text-lg text-white placeholder-zinc-600 focus:outline-none"
+                        className="flex-1 bg-transparent border-none text-lg text-white placeholder-gray-600 focus:outline-none font-mono"
                         value={query}
                         onChange={(e) => handleSearch(e.target.value)}
                     />
                     <button
                         onClick={() => setShowFilters(!showFilters)}
-                        className="p-2 hover:bg-white/5 rounded-lg transition-colors"
+                        className="p-2 hover:bg-neon-cyan/10 hover:text-neon-cyan text-gray-500 rounded-sm transition-colors"
                         title="Filters"
                     >
-                        <Filter size={18} className={showFilters ? 'text-emerald-500' : 'text-zinc-500'} />
+                        <Filter size={18} className={showFilters ? 'text-neon-cyan' : 'text-gray-500'} />
                     </button>
                     <button
                         onClick={onClose}
-                        className="p-2 hover:bg-white/5 rounded-lg transition-colors"
+                        className="p-2 hover:bg-neon-magenta/10 hover:text-neon-magenta text-gray-500 rounded-sm transition-colors"
                         title="Close (Esc)"
                     >
-                        <X size={18} className="text-zinc-500" />
+                        <X size={18} />
                     </button>
                 </div>
 
                 {/* Results */}
-                <div className="max-h-[60vh] overflow-y-auto custom-scrollbar">
+                <div className="max-h-[60vh] overflow-y-auto custom-scrollbar bg-dark-bg">
                     {isLoading ? (
                         <div className="py-12 text-center">
-                            <div className="inline-block w-6 h-6 border-2 border-emerald-500 border-t-transparent rounded-full animate-spin" />
-                            <p className="text-zinc-500 text-sm mt-4">Searching...</p>
+                            <div className="inline-block w-6 h-6 border-2 border-neon-cyan border-t-transparent rounded-full animate-spin" />
+                            <p className="text-gray-500 text-sm mt-4 font-mono">SCANNING...</p>
                         </div>
                     ) : results.length > 0 ? (
                         <div className="p-2">
@@ -136,52 +136,52 @@ export function UniversalSearch({ isOpen, onClose, onNavigate }: UniversalSearch
                                     key={result.id}
                                     onClick={() => handleSelect(result)}
                                     onMouseEnter={() => setSelectedIndex(index)}
-                                    className={`w-full flex items-start gap-4 p-4 rounded-xl transition-all text-left ${index === selectedIndex
-                                            ? 'bg-emerald-500/10 border border-emerald-500/30'
-                                            : 'hover:bg-white/5 border border-transparent'
+                                    className={`w-full flex items-start gap-4 p-4 rounded-sm transition-all text-left ${index === selectedIndex
+                                            ? 'bg-neon-cyan/10 border-l-2 border-neon-cyan'
+                                            : 'hover:bg-dark-hover border-l-2 border-transparent'
                                         }`}
                                 >
-                                    <div className={`p-2 rounded-lg ${index === selectedIndex ? 'bg-emerald-500/20 text-emerald-400' : 'bg-zinc-900 text-zinc-500'
+                                    <div className={`p-2 rounded-sm ${index === selectedIndex ? 'bg-dark-bg text-neon-cyan' : 'bg-dark-card text-gray-500'
                                         }`}>
                                         {getIconForType(result.type)}
                                     </div>
                                     <div className="flex-1 min-w-0">
                                         <div className="flex items-center gap-2 mb-1">
-                                            <span className="font-semibold text-white text-sm">{result.title}</span>
-                                            <span className="text-[10px] uppercase tracking-wider text-zinc-600 bg-zinc-900 px-2 py-0.5 rounded">
+                                            <span className={`font-bold text-sm font-mono ${index === selectedIndex ? 'text-white' : 'text-gray-300'}`}>{result.title}</span>
+                                            <span className="text-[10px] uppercase tracking-wider text-gray-500 bg-dark-card px-2 py-0.5 rounded-sm border border-gray-800">
                                                 {result.type}
                                             </span>
                                         </div>
-                                        <p className="text-sm text-zinc-400 line-clamp-2">{result.snippet}</p>
-                                        <p className="text-xs text-zinc-600 mt-1">{new Date(result.timestamp).toLocaleDateString()}</p>
+                                        <p className="text-sm text-gray-500 line-clamp-2 font-mono">{result.snippet}</p>
+                                        <p className="text-xs text-gray-600 mt-1 font-mono">{new Date(result.timestamp).toLocaleDateString()}</p>
                                     </div>
                                 </button>
                             ))}
                         </div>
                     ) : query.trim().length >= 2 ? (
-                        <div className="py-12 text-center text-zinc-500">
-                            <Search size={48} className="mx-auto mb-4 opacity-30" />
-                            <p>No results found for "{query}"</p>
+                        <div className="py-12 text-center text-gray-600">
+                            <Search size={48} className="mx-auto mb-4 opacity-20" />
+                            <p className="font-mono uppercase tracking-widest text-sm">No results found for "{query}"</p>
                         </div>
                     ) : (
                         <div className="p-6">
-                            <p className="text-xs uppercase tracking-wider text-zinc-600 font-bold mb-4">Recent Searches</p>
+                            <p className="text-xs uppercase tracking-wider text-neon-cyan font-bold mb-4 font-mono">Recent Protocols</p>
                             {recentSearches.length > 0 ? (
                                 <div className="space-y-2">
                                     {recentSearches.map((search, i) => (
                                         <button
                                             key={i}
                                             onClick={() => handleSearch(search)}
-                                            className="flex items-center gap-3 w-full p-3 rounded-lg hover:bg-white/5 transition-colors text-left"
+                                            className="flex items-center gap-3 w-full p-3 rounded-sm hover:bg-dark-hover border border-transparent hover:border-gray-700 transition-all text-left group"
                                         >
-                                            <Clock size={14} className="text-zinc-600" />
-                                            <span className="text-sm text-zinc-400">{search}</span>
+                                            <Clock size={14} className="text-gray-600 group-hover:text-neon-cyan" />
+                                            <span className="text-sm text-gray-400 group-hover:text-white font-mono">{search}</span>
                                         </button>
                                     ))}
                                 </div>
                             ) : (
-                                <p className="text-sm text-zinc-600 text-center py-8">
-                                    Start typing to search across all your data
+                                <p className="text-sm text-gray-600 text-center py-8 font-mono">
+                                    Initiate search query...
                                 </p>
                             )}
                         </div>
@@ -189,11 +189,11 @@ export function UniversalSearch({ isOpen, onClose, onNavigate }: UniversalSearch
                 </div>
 
                 {/* Footer */}
-                <div className="border-t border-zinc-800 px-6 py-3 bg-zinc-900/50 flex items-center justify-between text-xs text-zinc-600">
+                <div className="border-t-2 border-gray-800 px-6 py-3 bg-dark-card flex items-center justify-between text-xs text-gray-500 font-mono">
                     <div className="flex gap-4">
-                        <span><strong className="text-zinc-400">↑↓</strong> Navigate</span>
-                        <span><strong className="text-zinc-400">↵</strong> Select</span>
-                        <span><strong className="text-zinc-400">Esc</strong> Close</span>
+                        <span><strong className="text-neon-cyan">↑↓</strong> Navigate</span>
+                        <span><strong className="text-neon-cyan">↵</strong> Select</span>
+                        <span><strong className="text-neon-cyan">Esc</strong> Close</span>
                     </div>
                     <div>
                         <strong>Cmd+/</strong> to open

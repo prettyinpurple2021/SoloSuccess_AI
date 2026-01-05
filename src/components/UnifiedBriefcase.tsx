@@ -67,12 +67,12 @@ const ITEM_TYPE_LABELS = {
 }
 
 const ITEM_TYPE_COLORS = {
-  avatar: 'bg-gradient-to-br from-purple-100 to-pink-100 border-purple-300 text-purple-700',
-  chat: 'bg-gradient-to-br from-teal-100 to-purple-100 border-teal-300 text-teal-700',
-  brand: 'bg-gradient-to-br from-pink-100 to-purple-100 border-pink-300 text-pink-700',
-  template_save: 'bg-gradient-to-br from-purple-100 to-teal-100 border-purple-300 text-purple-700',
-  document: 'bg-gradient-to-br from-gray-100 to-purple-100 border-gray-300 text-gray-700',
-  ai_interaction: 'bg-gradient-to-br from-teal-100 to-pink-100 border-teal-300 text-teal-700'
+  avatar: 'bg-neon-purple/10 border-neon-purple text-neon-purple',
+  chat: 'bg-neon-cyan/10 border-neon-cyan text-neon-cyan',
+  brand: 'bg-neon-magenta/10 border-neon-magenta text-neon-magenta',
+  template_save: 'bg-neon-purple/10 border-neon-purple text-neon-purple',
+  document: 'bg-gray-700/50 border-gray-500 text-gray-300',
+  ai_interaction: 'bg-neon-lime/10 border-neon-lime text-neon-lime'
 }
 
 const UnifiedBriefcase: React.FC<UnifiedBriefcaseProps> = ({ className = '' }) => {
@@ -207,16 +207,16 @@ const UnifiedBriefcase: React.FC<UnifiedBriefcaseProps> = ({ className = '' }) =
     const colorClass = ITEM_TYPE_COLORS[item.type]
 
     return (
-      <div className="bg-white/90 backdrop-blur-sm rounded-2xl border border-purple-200 p-5 hover:border-pink-300 hover:shadow-lg hover:shadow-purple-200/50 transition-all duration-300 hover:scale-102 group">
+      <div className="bg-dark-card backdrop-blur-sm rounded-sm border-2 border-gray-800 p-5 hover:border-neon-cyan hover:shadow-[0_0_15px_rgba(11,228,236,0.3)] transition-all duration-300 group font-mono">
         <div className="flex items-start justify-between mb-4">
           <div className="flex items-center gap-3">
-            <div className={`p-3 rounded-xl border-2 ${colorClass} group-hover:scale-110 transition-transform duration-200`}>
+            <div className={`p-3 rounded-sm border-2 ${colorClass} group-hover:scale-105 transition-transform duration-200`}>
               <IconComponent size={20} />
             </div>
             <div>
-              <h3 className="font-bold text-purple-900 truncate mb-1">{item.title}</h3>
-              <p className="text-xs text-purple-600/80 font-medium flex items-center gap-1">
-                <Sparkles size={10} />
+              <h3 className="font-bold text-white truncate mb-1">{item.title}</h3>
+              <p className="text-xs text-gray-500 font-medium flex items-center gap-1 uppercase tracking-wider">
+                <Sparkles size={10} className="text-neon-cyan" />
                 {ITEM_TYPE_LABELS[item.type]}
               </p>
             </div>
@@ -225,7 +225,7 @@ const UnifiedBriefcase: React.FC<UnifiedBriefcaseProps> = ({ className = '' }) =
           <div className="flex items-center gap-2">
             <button
               onClick={() => handleDeleteItem(item.id)}
-              className="p-2 text-purple-400 hover:text-pink-500 hover:bg-pink-50 rounded-full transition-all duration-200 hover:scale-110"
+              className="p-2 text-gray-600 hover:text-neon-magenta hover:bg-neon-magenta/10 rounded-sm transition-all duration-200"
               title="Delete item"
             >
               <Trash2 size={16} />
@@ -234,7 +234,7 @@ const UnifiedBriefcase: React.FC<UnifiedBriefcaseProps> = ({ className = '' }) =
         </div>
 
         {item.description && (
-          <p className="text-sm text-purple-700/80 mb-4 line-clamp-2 font-medium">
+          <p className="text-sm text-gray-400 mb-4 line-clamp-2 font-medium">
             {item.description}
           </p>
         )}
@@ -243,22 +243,22 @@ const UnifiedBriefcase: React.FC<UnifiedBriefcaseProps> = ({ className = '' }) =
           {item.tags.map(tag => (
             <span
               key={tag}
-              className="px-3 py-1 bg-gradient-to-r from-purple-100 to-pink-100 text-purple-700 text-xs rounded-full font-medium border border-purple-200 hover:scale-105 transition-transform duration-200"
+              className="px-3 py-1 bg-dark-bg text-neon-cyan text-xs rounded-sm font-medium border border-neon-cyan/30 hover:border-neon-cyan transition-colors duration-200"
             >
-              ✨ {tag}
+              #{tag}
             </span>
           ))}
         </div>
 
-        <div className="flex items-center justify-between text-xs text-purple-600/70">
+        <div className="flex items-center justify-between text-xs text-gray-600">
           <div className="flex items-center gap-1 font-medium">
-            <Clock size={12} className="text-teal-500" />
+            <Clock size={12} className="text-neon-cyan" />
             <span>{formatDate(item.updatedAt)}</span>
           </div>
           
           {item.fileSize && (
             <span className="flex items-center gap-1">
-              <Heart size={10} className="text-pink-500" />
+              <Heart size={10} className="text-neon-magenta" />
               {formatFileSize(item.fileSize)}
             </span>
           )}
@@ -272,17 +272,17 @@ const UnifiedBriefcase: React.FC<UnifiedBriefcaseProps> = ({ className = '' }) =
     const colorClass = ITEM_TYPE_COLORS[item.type]
 
     return (
-      <div className="bg-white/90 backdrop-blur-sm rounded-2xl border border-purple-200 p-5 hover:border-pink-300 hover:shadow-lg hover:shadow-purple-200/50 transition-all duration-300 group">
+      <div className="bg-dark-card backdrop-blur-sm rounded-sm border-2 border-gray-800 p-5 hover:border-neon-purple hover:shadow-[0_0_15px_rgba(180,0,255,0.3)] transition-all duration-300 group font-mono">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-4 flex-1">
-            <div className={`p-3 rounded-xl border-2 ${colorClass} group-hover:scale-110 transition-transform duration-200`}>
+            <div className={`p-3 rounded-sm border-2 ${colorClass} group-hover:scale-105 transition-transform duration-200`}>
               <IconComponent size={20} />
             </div>
             
             <div className="flex-1 min-w-0">
-              <h3 className="font-bold text-purple-900 truncate">{item.title}</h3>
-              <p className="text-sm text-purple-600/80 truncate font-medium flex items-center gap-1">
-                <Sparkles size={12} />
+              <h3 className="font-bold text-white truncate">{item.title}</h3>
+              <p className="text-sm text-gray-500 truncate font-medium flex items-center gap-1 uppercase tracking-wider">
+                <Sparkles size={12} className="text-neon-purple" />
                 {item.description || ITEM_TYPE_LABELS[item.type]}
               </p>
             </div>
@@ -291,26 +291,26 @@ const UnifiedBriefcase: React.FC<UnifiedBriefcaseProps> = ({ className = '' }) =
               {item.tags.slice(0, 3).map(tag => (
                 <span
                   key={tag}
-                  className="px-3 py-1 bg-gradient-to-r from-purple-100 to-pink-100 text-purple-700 text-xs rounded-full font-medium border border-purple-200"
+                  className="px-3 py-1 bg-dark-bg text-neon-cyan text-xs rounded-sm font-medium border border-neon-cyan/30"
                 >
-                  ✨ {tag}
+                  #{tag}
                 </span>
               ))}
               {item.tags.length > 3 && (
-                <span className="px-3 py-1 bg-gradient-to-r from-teal-100 to-purple-100 text-teal-700 text-xs rounded-full font-medium border border-teal-200">
+                <span className="px-3 py-1 bg-dark-bg text-gray-500 text-xs rounded-sm font-medium border border-gray-700">
                   +{item.tags.length - 3} more
                 </span>
               )}
             </div>
             
-            <div className="text-sm text-purple-600/70 min-w-0 font-medium flex items-center gap-1">
-              <Clock size={12} className="text-teal-500" />
+            <div className="text-sm text-gray-600 min-w-0 font-medium flex items-center gap-1">
+              <Clock size={12} className="text-neon-cyan" />
               {formatDate(item.updatedAt)}
             </div>
             
             {item.fileSize && (
-              <div className="text-sm text-purple-600/70 min-w-0 font-medium flex items-center gap-1">
-                <Heart size={12} className="text-pink-500" />
+              <div className="text-sm text-gray-600 min-w-0 font-medium flex items-center gap-1">
+                <Heart size={12} className="text-neon-magenta" />
                 {formatFileSize(item.fileSize)}
               </div>
             )}
@@ -318,7 +318,7 @@ const UnifiedBriefcase: React.FC<UnifiedBriefcaseProps> = ({ className = '' }) =
           
           <button
             onClick={() => handleDeleteItem(item.id)}
-            className="ml-4 p-3 text-purple-400 hover:text-pink-500 hover:bg-pink-50 rounded-full transition-all duration-200 hover:scale-110"
+            className="ml-4 p-3 text-gray-600 hover:text-neon-magenta hover:bg-neon-magenta/10 rounded-sm transition-all duration-200"
             title="Delete item"
           >
             <Trash2 size={16} />
@@ -329,48 +329,48 @@ const UnifiedBriefcase: React.FC<UnifiedBriefcaseProps> = ({ className = '' }) =
   }
 
   return (
-    <div className={`bg-gradient-to-br from-purple-50 via-pink-50 to-teal-50 min-h-screen ${className}`}>
+    <div className={`bg-dark-bg min-h-screen ${className} font-mono`}>
       <div className="max-w-7xl mx-auto p-6">
         {/* Header */}
         <div className="mb-8 text-center">
           <div className="flex items-center justify-center gap-3 mb-4">
-            <Crown className="text-purple-600" size={32} />
-            <h1 className="text-4xl font-bold bg-gradient-to-r from-purple-600 via-pink-600 to-teal-600 bg-clip-text text-transparent">
-              Your Briefcase
+            <Crown className="text-neon-purple" size={32} />
+            <h1 className="text-4xl font-bold text-white font-orbitron uppercase tracking-wider">
+              Secure Briefcase
             </h1>
-            <Sparkles className="text-teal-600 animate-pulse" size={32} />
+            <Sparkles className="text-neon-cyan animate-pulse" size={32} />
           </div>
-          <p className="text-purple-700/80 text-lg font-medium flex items-center justify-center gap-2">
-            <Heart size={16} className="text-pink-500" />
-            All your created content, conversations, and files in one place
-            <Heart size={16} className="text-pink-500" />
+          <p className="text-gray-400 text-lg font-medium flex items-center justify-center gap-2 font-mono">
+            <Heart size={16} className="text-neon-magenta" />
+            Classified assets, intelligence, and resources
+            <Heart size={16} className="text-neon-magenta" />
           </p>
         </div>
 
         {/* Filters and Search */}
-        <div className="bg-white/80 backdrop-blur-sm rounded-2xl border border-purple-200 shadow-lg shadow-purple-100/50 p-6 mb-8">
+        <div className="bg-dark-card backdrop-blur-sm rounded-sm border-2 border-gray-800 shadow-[0_0_20px_rgba(0,0,0,0.5)] p-6 mb-8">
           <div className="flex flex-col lg:flex-row gap-4 items-start lg:items-center justify-between">
             <div className="flex flex-col sm:flex-row gap-4 flex-1">
               <div className="relative">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-purple-400" size={20} />
+                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500" size={20} />
                 <input
                   type="text"
-                  placeholder="✨ Search your briefcase, queen..."
+                  placeholder="SEARCH ASSETS..."
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
-                  className="pl-10 pr-4 py-3 border border-purple-200 rounded-full focus:ring-2 focus:ring-pink-400 focus:border-pink-400 min-w-0 sm:min-w-[300px] bg-gradient-to-r from-purple-50 to-pink-50 placeholder-purple-400 font-medium"
+                  className="pl-10 pr-4 py-3 border border-gray-700 bg-dark-bg text-white rounded-sm focus:ring-2 focus:ring-neon-cyan focus:border-neon-cyan min-w-0 sm:min-w-[300px] placeholder-gray-600 font-mono text-sm"
                 />
               </div>
               
               <select
                 value={selectedType}
                 onChange={(e) => handleTypeFilter(e.target.value)}
-                className="px-4 py-3 border border-purple-200 rounded-full focus:ring-2 focus:ring-pink-400 focus:border-pink-400 bg-gradient-to-r from-purple-50 to-pink-50 font-medium text-purple-700"
+                className="px-4 py-3 border border-gray-700 bg-dark-bg text-gray-300 rounded-sm focus:ring-2 focus:ring-neon-cyan focus:border-neon-cyan font-mono text-sm"
               >
-                <option value="all">All Types</option>
-                <option value="chat">Chats</option>
-                <option value="brand">Brand Work</option>
-                <option value="template_save">Template Saves</option>
+                <option value="all">All Assets</option>
+                <option value="chat">Chat Logs</option>
+                <option value="brand">Brand Ident</option>
+                <option value="template_save">Templates</option>
                 <option value="avatar">Avatars</option>
                 <option value="document">Documents</option>
               </select>
@@ -379,20 +379,20 @@ const UnifiedBriefcase: React.FC<UnifiedBriefcaseProps> = ({ className = '' }) =
             <div className="flex items-center gap-2">
               <button
                 onClick={() => setViewMode('grid')}
-                className={`p-3 rounded-full transition-all duration-200 ${
+                className={`p-3 rounded-sm transition-all duration-200 border-2 ${
                   viewMode === 'grid' 
-                    ? 'bg-gradient-to-r from-purple-100 to-pink-100 text-purple-600 shadow-md' 
-                    : 'text-purple-400 hover:text-pink-500 hover:bg-purple-50'
+                    ? 'bg-neon-cyan/10 border-neon-cyan text-neon-cyan shadow-[0_0_10px_rgba(11,228,236,0.2)]' 
+                    : 'border-transparent text-gray-500 hover:text-neon-cyan hover:bg-dark-hover'
                 }`}
               >
                 <Grid size={20} />
               </button>
               <button
                 onClick={() => setViewMode('list')}
-                className={`p-3 rounded-full transition-all duration-200 ${
+                className={`p-3 rounded-sm transition-all duration-200 border-2 ${
                   viewMode === 'list' 
-                    ? 'bg-gradient-to-r from-purple-100 to-pink-100 text-purple-600 shadow-md' 
-                    : 'text-purple-400 hover:text-pink-500 hover:bg-purple-50'
+                    ? 'bg-neon-cyan/10 border-neon-cyan text-neon-cyan shadow-[0_0_10px_rgba(11,228,236,0.2)]' 
+                    : 'border-transparent text-gray-500 hover:text-neon-cyan hover:bg-dark-hover'
                 }`}
               >
                 <List size={20} />
@@ -408,13 +408,13 @@ const UnifiedBriefcase: React.FC<UnifiedBriefcaseProps> = ({ className = '' }) =
             const IconComponent = ITEM_TYPE_ICONS[type as keyof typeof ITEM_TYPE_ICONS]
             
             return (
-              <div key={type} className="bg-white/80 backdrop-blur-sm rounded-2xl border border-purple-200 p-6 hover:shadow-lg hover:shadow-purple-200/50 transition-all duration-300 hover:scale-105 group">
+              <div key={type} className="bg-dark-card backdrop-blur-sm rounded-sm border-2 border-gray-800 p-6 hover:border-neon-purple hover:shadow-[0_0_15px_rgba(180,0,255,0.2)] transition-all duration-300 group">
                 <div className="flex flex-col items-center text-center">
-                  <div className={`p-4 rounded-2xl mb-3 ${ITEM_TYPE_COLORS[type as keyof typeof ITEM_TYPE_COLORS]} group-hover:scale-110 transition-transform duration-200`}>
+                  <div className={`p-4 rounded-sm mb-3 ${ITEM_TYPE_COLORS[type as keyof typeof ITEM_TYPE_COLORS]} group-hover:scale-110 transition-transform duration-200`}>
                     <IconComponent size={24} />
                   </div>
-                  <p className="text-xs font-bold text-purple-600 uppercase tracking-wide mb-1">{label}</p>
-                  <p className="text-2xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">{count}</p>
+                  <p className="text-xs font-bold text-gray-500 uppercase tracking-wide mb-1 font-mono">{label}</p>
+                  <p className="text-2xl font-bold text-white font-orbitron">{count}</p>
                 </div>
               </div>
             )
@@ -424,40 +424,38 @@ const UnifiedBriefcase: React.FC<UnifiedBriefcaseProps> = ({ className = '' }) =
         {/* Content */}
         {loading && pagination.offset === 0 ? (
           <div className="flex flex-col items-center justify-center py-16">
-            <div className="animate-spin rounded-full h-12 w-12 border-4 border-transparent bg-gradient-to-r from-purple-500 via-pink-500 to-teal-500 rounded-full mb-4"></div>
-            <p className="text-purple-600 font-medium flex items-center gap-2">
+            <div className="animate-spin rounded-full h-12 w-12 border-4 border-gray-800 border-t-neon-purple border-l-neon-cyan rounded-full mb-4"></div>
+            <p className="text-neon-cyan font-medium flex items-center gap-2 font-mono uppercase tracking-widest">
               <Sparkles size={16} className="animate-pulse" />
-              Loading your content, queen...
+              DECRYPTING ASSETS...
               <Sparkles size={16} className="animate-pulse" />
             </p>
           </div>
         ) : error ? (
-          <div className="bg-gradient-to-r from-pink-50 to-purple-50 border border-pink-200 rounded-2xl p-6">
+          <div className="bg-dark-card border-2 border-red-500/50 rounded-sm p-6">
             <div className="text-center">
-              <Skull size={32} className="text-pink-500 mx-auto mb-3" />
-              <p className="text-pink-600 font-medium mb-4">{error}</p>
+              <Skull size={32} className="text-red-500 mx-auto mb-3" />
+              <p className="text-red-400 font-medium mb-4 font-mono">{error}</p>
               <button
                 onClick={() => loadItems()}
-                className="px-6 py-2 bg-gradient-to-r from-pink-500 to-purple-500 hover:from-pink-600 hover:to-purple-600 text-white rounded-full font-medium transition-all duration-200 hover:scale-105 shadow-lg"
+                className="px-6 py-2 bg-red-900/50 hover:bg-red-800/50 border border-red-500 text-red-200 rounded-sm font-medium transition-all duration-200 hover:scale-105 shadow-[0_0_15px_rgba(255,0,0,0.3)] uppercase font-mono tracking-wider"
               >
-                Try Again, Babe
+                RETRY CONNECTION
               </button>
             </div>
           </div>
         ) : filteredItems.length === 0 ? (
           <div className="text-center py-16">
             <div className="mb-6">
-              <Crown size={64} className="mx-auto text-purple-400 mb-4" />
-              <Sparkles size={32} className="mx-auto text-pink-400 animate-pulse" />
+              <Crown size={64} className="mx-auto text-gray-800 mb-4" />
+              <Sparkles size={32} className="mx-auto text-neon-cyan opacity-20 animate-pulse" />
             </div>
-            <h3 className="text-2xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent mb-3">No items found, queen!</h3>
-            <p className="text-purple-600/80 font-medium flex items-center justify-center gap-2">
-              <Heart size={16} className="text-pink-500" />
+            <h3 className="text-2xl font-bold text-gray-500 mb-3 font-orbitron uppercase">NO ASSETS FOUND</h3>
+            <p className="text-gray-600 font-medium flex items-center justify-center gap-2 font-mono">
               {searchTerm || selectedType !== 'all' 
-                ? 'Try adjusting your search or filters'
-                : 'Start creating content to see it here'
+                ? 'ADJUST SEARCH PARAMETERS OR FILTERS'
+                : 'INITIATE CONTENT CREATION'
               }
-              <Heart size={16} className="text-pink-500" />
             </p>
           </div>
         ) : (
@@ -482,17 +480,17 @@ const UnifiedBriefcase: React.FC<UnifiedBriefcaseProps> = ({ className = '' }) =
                 <button
                   onClick={handleLoadMore}
                   disabled={loading}
-                  className="px-8 py-3 bg-gradient-to-r from-purple-500 via-pink-500 to-teal-500 hover:from-purple-600 hover:via-pink-600 hover:to-teal-600 disabled:from-gray-300 disabled:via-gray-300 disabled:to-gray-300 text-white rounded-full font-bold transition-all duration-300 hover:scale-105 shadow-lg hover:shadow-xl flex items-center gap-2 mx-auto group"
+                  className="px-8 py-3 bg-neon-cyan/10 hover:bg-neon-cyan/20 border-2 border-neon-cyan text-neon-cyan rounded-sm font-bold transition-all duration-300 hover:shadow-[0_0_15px_rgba(11,228,236,0.3)] disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2 mx-auto group font-mono uppercase tracking-wider"
                 >
                   {loading ? (
                     <>
-                      <div className="animate-spin rounded-full h-4 w-4 border-2 border-white border-b-transparent"></div>
-                      Loading more magic...
+                      <div className="animate-spin rounded-full h-4 w-4 border-2 border-neon-cyan border-b-transparent"></div>
+                      DECRYPTING...
                     </>
                   ) : (
                     <>
-                      <Sparkles size={16} className="group-hover:animate-bounce" />
-                      Load More, Queen!
+                      <Sparkles size={16} className="group-hover:animate-pulse" />
+                      LOAD ADDITIONAL ASSETS
                       <Crown size={16} className="opacity-70" />
                     </>
                   )}

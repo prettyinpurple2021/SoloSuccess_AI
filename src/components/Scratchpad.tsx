@@ -95,7 +95,7 @@ export const Scratchpad: React.FC<ScratchpadProps> = ({ isOpen, onClose, activeA
             <div className="p-3 bg-dark-bg/50 border-t-2 border-gray-700 flex justify-between gap-2">
                 <button
                     onClick={handleCopy}
-                    className="flex-1 flex items-center justify-center gap-2 px-3 py-2 bg-dark-card hover:bg-dark-hover border-2 border-gray-700 rounded-sm text-xs font-mono font-bold uppercase tracking-wider text-gray-400 transition-colors"
+                    className="flex-1 flex items-center justify-center gap-2 px-3 py-2 bg-dark-card hover:bg-dark-hover border-2 border-gray-700 hover:border-neon-cyan/50 hover:text-neon-cyan rounded-sm text-xs font-mono font-bold uppercase tracking-wider text-gray-400 transition-all"
                 >
                     {justCopied ? <Check size={14} /> : <Copy size={14} />} {justCopied ? 'Copied' : 'Copy'}
                 </button>
@@ -104,12 +104,12 @@ export const Scratchpad: React.FC<ScratchpadProps> = ({ isOpen, onClose, activeA
                     <button
                         onClick={handleSendToAgent}
                         disabled={!content.trim()}
-                        className="flex-[2] flex items-center justify-center gap-2 px-3 py-2 bg-neon-lime/10 hover:bg-neon-lime/20 border-2 border-neon-lime/50 rounded-sm text-xs font-mono font-bold uppercase tracking-wider text-neon-lime transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                        className="flex-[2] flex items-center justify-center gap-2 px-3 py-2 bg-neon-lime/10 hover:bg-neon-lime/20 border-2 border-neon-lime/50 hover:border-neon-lime rounded-sm text-xs font-mono font-bold uppercase tracking-wider text-neon-lime transition-all disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-neon-lime/10 disabled:hover:border-neon-lime/50"
                     >
                         <MessageSquare size={14} /> Send to {activeAgent.toUpperCase()}
                     </button>
                 ) : (
-                    <div className="flex-[2] flex items-center justify-center gap-2 px-3 py-2 bg-dark-card border-2 border-gray-700 rounded-sm text-xs font-mono font-bold uppercase tracking-wider text-gray-600 cursor-not-allowed">
+                    <div className="flex-[2] flex items-center justify-center gap-2 px-3 py-2 bg-dark-card border-2 border-gray-700 rounded-sm text-xs font-mono font-bold uppercase tracking-wider text-gray-600 cursor-not-allowed opacity-70">
                         Open Chat to Send
                     </div>
                 )}
