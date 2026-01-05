@@ -769,7 +769,7 @@ export default function ProjectTimeline({ template: _template, onSave: _onSave, 
                   <h4 className="font-semibold">Team Members</h4>
                   <p className="text-sm text-gray-600">Manage your project team and their capabilities</p>
                 </div>
-                  <BossButton onClick={addResource} variant="secondary" size="sm">
+                  <BossButton onClick={addResource} variant="outline" size="sm">
                     <Plus className="w-4 h-4 mr-2" />
                     Add Team Member
                   </BossButton>

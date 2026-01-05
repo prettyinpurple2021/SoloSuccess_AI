@@ -29,7 +29,7 @@ describe('ScrapingScheduler', () => {
   describe('scheduleJob', () => {
     it('should schedule a new scraping job', async () => {
       const jobId = await scheduler.scheduleJob(
-        1, // competitorId
+        '1', // competitorId
         'user123',
         'website',
         'https://example.com',
@@ -41,7 +41,7 @@ describe('ScrapingScheduler', () => {
 
       const job = scheduler.getJob(jobId)
       expect(job).toBeDefined()
-      expect(job?.competitorId).toBe(1)
+      expect(job?.competitorId).toBe('1')
       expect(job?.userId).toBe('user123')
       expect(job?.jobType).toBe('website')
       expect(job?.url).toBe('https://example.com')
@@ -50,12 +50,12 @@ describe('ScrapingScheduler', () => {
 
     it('should generate unique job IDs for different jobs', async () => {
       const jobId1 = await scheduler.scheduleJob(
-        1, 'user123', 'website', 'https://example.com',
+        '1', 'user123', 'website', 'https://example.com',
         { type: 'interval', value: 720 }
       )
       
       const jobId2 = await scheduler.scheduleJob(
-        1, 'user123', 'pricing', 'https://example.com/pricing',
+        '1', 'user123', 'pricing', 'https://example.com/pricing',
         { type: 'interval', value: 720 }
       )
 
@@ -64,12 +64,12 @@ describe('ScrapingScheduler', () => {
 
     it('should set appropriate priority based on job type', async () => {
       const pricingJobId = await scheduler.scheduleJob(
-        1, 'user123', 'pricing', 'https://example.com/pricing',
+        '1', 'user123', 'pricing', 'https://example.com/pricing',
         { type: 'interval', value: 720 }
       )
       
       const jobsJobId = await scheduler.scheduleJob(
-        1, 'user123', 'jobs', 'https://example.com/careers',
+        '1', 'user123', 'jobs', 'https://example.com/careers',
         { type: 'interval', value: 720 }
       )
 
@@ -88,7 +88,7 @@ describe('ScrapingScheduler', () => {
       })
 
       await expect(scheduler.scheduleJob(
-        1, 'user123', 'website', 'https://example.com',
+        '1', 'user123', 'website', 'https://example.com',
         { type: 'interval', value: 720 }
       )).rejects.toThrow('Test error')
 
@@ -100,15 +100,32 @@ describe('ScrapingScheduler', () => {
   describe('scheduleCompetitorJobs', () => {
     it('should schedule multiple jobs for a competitor', async () => {
       const competitor = {
-        id: 1,
+        id: '1',
         name: 'Test Competitor',
         domain: 'example.com',
         threatLevel: 'high' as const,
-        user_id: 'user123',
-        monitoring_status: 'active' as const,
+        userId: 'user123',
+        monitoringStatus: 'active' as const,
+        keyPersonnel: [],
+        products: [],
+        marketPosition: { targetMarkets: [], competitiveAdvantages: [], marketSegments: [] },
+        competitiveAdvantages: [],
+        vulnerabilities: [],
+        monitoringConfig: {
+            websiteMonitoring: true,
+            socialMediaMonitoring: false,
+            newsMonitoring: false,
+            jobPostingMonitoring: false,
+            appStoreMonitoring: false,
+            monitoringFrequency: 'daily',
+            alertThresholds: { pricing: true, productLaunches: true, hiring: true, funding: true, partnerships: true }
+        },
+        description: 'Test Description',
+        industry: 'Tech',
+        socialMediaHandles: {},
         created_at: new Date(),
         updated_at: new Date(),
-      }
+      } as unknown as any
 
       const jobIds = await scheduler.scheduleCompetitorJobs(competitor, 'user123')
 
@@ -121,26 +138,60 @@ describe('ScrapingScheduler', () => {
 
     it('should set frequency based on threat level', async () => {
       const criticalCompetitor = {
-        id: 1,
+        id: '1',
         name: 'Critical Competitor',
         domain: 'critical.com',
         threatLevel: 'critical' as const,
-        user_id: 'user123',
-        monitoring_status: 'active' as const,
+        userId: 'user123',
+        monitoringStatus: 'active' as const,
+        keyPersonnel: [],
+        products: [],
+        marketPosition: { targetMarkets: [], competitiveAdvantages: [], marketSegments: [] },
+        competitiveAdvantages: [],
+        vulnerabilities: [],
+        monitoringConfig: {
+            websiteMonitoring: true,
+            socialMediaMonitoring: false,
+            newsMonitoring: false,
+            jobPostingMonitoring: false,
+            appStoreMonitoring: false,
+            monitoringFrequency: 'daily',
+            alertThresholds: { pricing: true, productLaunches: true, hiring: true, funding: true, partnerships: true }
+        },
+        description: 'Critical Description',
+        industry: 'Tech',
+        socialMediaHandles: {},
         created_at: new Date(),
         updated_at: new Date(),
-      }
+      } as unknown as any
 
       const lowCompetitor = {
-        id: 2,
+        id: '2',
         name: 'Low Competitor',
         domain: 'low.com',
         threatLevel: 'low' as const,
-        user_id: 'user123',
-        monitoring_status: 'active' as const,
+        userId: 'user123',
+        monitoringStatus: 'active' as const,
+        keyPersonnel: [],
+        products: [],
+        marketPosition: { targetMarkets: [], competitiveAdvantages: [], marketSegments: [] },
+        competitiveAdvantages: [],
+        vulnerabilities: [],
+        monitoringConfig: {
+            websiteMonitoring: true,
+            socialMediaMonitoring: false,
+            newsMonitoring: false,
+            jobPostingMonitoring: false,
+            appStoreMonitoring: false,
+            monitoringFrequency: 'weekly',
+            alertThresholds: { pricing: true, productLaunches: true, hiring: true, funding: true, partnerships: true }
+        },
+        description: 'Low Description',
+        industry: 'Tech',
+        socialMediaHandles: {},
         created_at: new Date(),
         updated_at: new Date(),
-      }
+      } as unknown as any
 
       const criticalJobIds = await scheduler.scheduleCompetitorJobs(criticalCompetitor, 'user123')
       const lowJobIds = await scheduler.scheduleCompetitorJobs(lowCompetitor, 'user123')
@@ -158,7 +209,7 @@ describe('ScrapingScheduler', () => {
 
     beforeEach(async () => {
       jobId = await scheduler.scheduleJob(
-        1, 'user123', 'website', 'https://example.com',
+        '1', 'user123', 'website', 'https://example.com',
         { type: 'interval', value: 720 }
       )
     })
@@ -198,17 +249,17 @@ describe('ScrapingScheduler', () => {
   describe('getCompetitorJobs', () => {
     it('should return jobs for a specific competitor', async () => {
       const competitor1JobId = await scheduler.scheduleJob(
-        1, 'user123', 'website', 'https://competitor1.com',
+        '1', 'user123', 'website', 'https://competitor1.com',
         { type: 'interval', value: 720 }
       )
       
       const competitor2JobId = await scheduler.scheduleJob(
-        2, 'user123', 'website', 'https://competitor2.com',
+        '2', 'user123', 'website', 'https://competitor2.com',
         { type: 'interval', value: 720 }
       )
 
-      const competitor1Jobs = scheduler.getCompetitorJobs(1)
-      const competitor2Jobs = scheduler.getCompetitorJobs(2)
+      const competitor1Jobs = scheduler.getCompetitorJobs('1')
+      const competitor2Jobs = scheduler.getCompetitorJobs('2')
 
       expect(competitor1Jobs).toHaveLength(1)
       expect(competitor2Jobs).toHaveLength(1)
@@ -217,7 +268,7 @@ describe('ScrapingScheduler', () => {
     })
 
     it('should return empty array for competitor with no jobs', () => {
-      const jobs = scheduler.getCompetitorJobs(999)
+      const jobs = scheduler.getCompetitorJobs('999')
       expect(jobs).toHaveLength(0)
     })
   })
@@ -225,7 +276,7 @@ describe('ScrapingScheduler', () => {
   describe('job cancellation', () => {
     it('should allow cancelling a running job', async () => {
       const jobId = await scheduler.scheduleJob(
-        1, 'user123', 'website', 'https://example.com',
+        '1', 'user123', 'website', 'https://example.com',
         { type: 'interval', value: 720 }
       )
 
@@ -248,8 +299,8 @@ describe('ScrapingScheduler', () => {
   describe('metrics', () => {
     it('should provide accurate metrics', async () => {
       // Schedule some jobs
-      await scheduler.scheduleJob(1, 'user123', 'website', 'https://example.com', { type: 'interval', value: 720 })
-      await scheduler.scheduleJob(2, 'user123', 'pricing', 'https://example2.com', { type: 'interval', value: 720 })
+      await scheduler.scheduleJob('1', 'user123', 'website', 'https://example.com', { type: 'interval', value: 720 })
+      await scheduler.scheduleJob('2', 'user123', 'pricing', 'https://example2.com', { type: 'interval', value: 720 })
 
       const metrics = scheduler.getMetrics()
 
@@ -261,7 +312,7 @@ describe('ScrapingScheduler', () => {
     })
 
     it('should update metrics when job status changes', async () => {
-      const jobId = await scheduler.scheduleJob(1, 'user123', 'website', 'https://example.com', { type: 'interval', value: 720 })
+      const jobId = await scheduler.scheduleJob('1', 'user123', 'website', 'https://example.com', { type: 'interval', value: 720 })
       
       scheduler.pauseJob(jobId)
       const metrics = scheduler.getMetrics()
@@ -272,7 +323,7 @@ describe('ScrapingScheduler', () => {
 
   describe('job history', () => {
     it('should maintain job execution history', async () => {
-      const jobId = await scheduler.scheduleJob(1, 'user123', 'website', 'https://example.com', { type: 'interval', value: 720 })
+      const jobId = await scheduler.scheduleJob('1', 'user123', 'website', 'https://example.com', { type: 'interval', value: 720 })
       
       // Initially no history
       const initialHistory = scheduler.getJobHistory(jobId)
@@ -288,7 +339,7 @@ describe('ScrapingScheduler', () => {
       const mockJob = {
         id: 'test-job',
         jobType: 'website' as const,
-        competitorId: 1,
+        competitorId: '1',
         userId: 'user123',
         url: 'https://example.com',
         priority: 'medium' as const,

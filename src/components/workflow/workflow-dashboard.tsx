@@ -35,9 +35,55 @@ import {
   ChevronRight,
   ChevronDown
 } from 'lucide-react'
-// ...
+import { BossButton } from '@/components/ui/boss-button'
+import { Badge } from '@/components/ui/badge'
+import { VisualWorkflowBuilder } from './visual-workflow-builder'
+import { WorkflowTemplates } from './workflow-templates'
+import { WorkflowExecutionMonitor } from './workflow-execution-monitor'
+import { cn } from '@/lib/utils'
+import { logInfo, logError } from '@/lib/logger'
+import { useToast } from '@/hooks/use-toast'
 
-// ... (inside component)
+// Define types locally if not exported elsewhere
+export interface Workflow {
+  id: string
+  name: string
+  nodes: any[]
+  edges: any[]
+}
+
+interface WorkflowStats {
+  totalWorkflows: number
+  activeWorkflows: number
+  totalExecutions: number
+  successfulExecutions: number
+  failedExecutions: number
+  runningExecutions: number
+  successRate: number
+  averageExecutionTime: number
+  popularTemplates: any[]
+  recentActivity: any[]
+}
+
+const INITIAL_STATS: WorkflowStats = {
+  totalWorkflows: 0,
+  activeWorkflows: 0,
+  totalExecutions: 0,
+  successfulExecutions: 0,
+  failedExecutions: 0,
+  runningExecutions: 0,
+  successRate: 0,
+  averageExecutionTime: 0,
+  popularTemplates: [],
+  recentActivity: []
+}
+
+interface WorkflowDashboardProps {
+    className?: string
+}
+
+// Map PrimaryButton to BossButton for compatibility
+const PrimaryButton = BossButton
 export function WorkflowDashboard({ className = "" }: WorkflowDashboardProps) {
   const [activeTab, setActiveTab] = useState<'overview' | 'builder' | 'templates' | 'executions'>('overview')
   const [stats, setStats] = useState<WorkflowStats>(INITIAL_STATS)
@@ -420,10 +466,10 @@ export function WorkflowDashboard({ className = "" }: WorkflowDashboardProps) {
                   <h4 className="font-medium text-sm mb-2">Current Workflow</h4>
                   <p className="text-xs text-gray-400 mb-2">{selectedWorkflow.name}</p>
                   <div className="flex items-center gap-2">
-                    <Badge variant="secondary" className="text-xs">
+                    <Badge variant="purple" className="text-xs">
                       {selectedWorkflow.nodes.length} nodes
                     </Badge>
-                    <Badge variant="secondary" className="text-xs">
+                    <Badge variant="purple" className="text-xs">
                       {selectedWorkflow.edges.length} connections
                     </Badge>
                   </div>

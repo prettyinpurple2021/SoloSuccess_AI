@@ -420,7 +420,7 @@ export function VisualWorkflowBuilder({
 
           <div className="flex items-center justify-between">
             <Badge
-              variant="secondary"
+              variant="purple"
               className="text-xs"
             >
               {nodeType.category}
@@ -539,7 +539,7 @@ export function VisualWorkflowBuilder({
               className="h-8 w-48 text-sm"
               placeholder="Workflow name..."
             />
-            <Badge variant="secondary" className="capitalize">
+            <Badge variant="purple" className="capitalize">
               {workflow.status}
             </Badge>
           </div>

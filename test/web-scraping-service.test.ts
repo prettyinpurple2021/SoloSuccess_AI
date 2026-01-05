@@ -36,7 +36,7 @@ describe('WebScrapingService', () => {
         </html>
       `
 
-      ;(fetch as jest.Mock).mockResolvedValueOnce({
+      ;(fetch as unknown as jest.Mock<any>).mockResolvedValueOnce({
         ok: true,
         status: 200,
         text: () => Promise.resolve(mockHtml),
@@ -52,7 +52,7 @@ describe('WebScrapingService', () => {
     })
 
     it('should handle network errors gracefully', async () => {
-      ;(fetch as jest.Mock).mockRejectedValue(new Error('Network error'))
+      ;(fetch as unknown as jest.Mock<any>).mockRejectedValue(new Error('Network error'))
 
       const result = await scrapingService.scrapeCompetitorWebsite('https://example.com')
 
@@ -61,7 +61,7 @@ describe('WebScrapingService', () => {
     }, 10000)
 
     it('should handle HTTP errors', async () => {
-      ;(fetch as jest.Mock).mockResolvedValueOnce({
+      ;(fetch as unknown as jest.Mock<any>).mockResolvedValueOnce({
         ok: false,
         status: 404,
         statusText: 'Not Found',
@@ -100,7 +100,7 @@ describe('WebScrapingService', () => {
         </html>
       `
 
-      ;(fetch as jest.Mock).mockResolvedValueOnce({
+      ;(fetch as unknown as jest.Mock<any>).mockResolvedValueOnce({
         ok: true,
         status: 200,
         text: () => Promise.resolve(mockPricingHtml),
@@ -119,7 +119,7 @@ describe('WebScrapingService', () => {
     it('should return error when no pricing data found', async () => {
       const mockHtml = '<html><body><p>No pricing here</p></body></html>'
 
-      ;(fetch as jest.Mock).mockResolvedValueOnce({
+      ;(fetch as unknown as jest.Mock<any>).mockResolvedValueOnce({
         ok: true,
         status: 200,
         text: () => Promise.resolve(mockHtml),
@@ -157,7 +157,7 @@ describe('WebScrapingService', () => {
         </html>
       `
 
-      ;(fetch as jest.Mock).mockResolvedValueOnce({
+      ;(fetch as unknown as jest.Mock<any>).mockResolvedValueOnce({
         ok: true,
         status: 200,
         text: () => Promise.resolve(mockProductHtml),
@@ -204,7 +204,7 @@ describe('WebScrapingService', () => {
         </html>
       `
 
-      ;(fetch as jest.Mock).mockResolvedValueOnce({
+      ;(fetch as unknown as jest.Mock<any>).mockResolvedValueOnce({
         ok: true,
         status: 200,
         text: () => Promise.resolve(mockJobsHtml),
@@ -232,7 +232,7 @@ describe('WebScrapingService', () => {
 
       const mockHtml = `<html><body>${newContent}</body></html>`
 
-      ;(fetch as jest.Mock).mockResolvedValueOnce({
+      ;(fetch as unknown as jest.Mock<any>).mockResolvedValueOnce({
         ok: true,
         status: 200,
         text: () => Promise.resolve(mockHtml),
@@ -253,7 +253,7 @@ describe('WebScrapingService', () => {
       const content = 'This is identical content.'
       const mockHtml = `<html><body>${content}</body></html>`
 
-      ;(fetch as jest.Mock).mockResolvedValueOnce({
+      ;(fetch as unknown as jest.Mock<any>).mockResolvedValueOnce({
         ok: true,
         status: 200,
         text: () => Promise.resolve(mockHtml),
@@ -271,7 +271,7 @@ describe('WebScrapingService', () => {
     it('should return cached results for repeated requests', async () => {
       const mockHtml = '<html><body>Test content</body></html>'
 
-      ;(fetch as jest.Mock).mockResolvedValueOnce({
+      ;(fetch as unknown as jest.Mock<any>).mockResolvedValueOnce({
         ok: true,
         status: 200,
         text: () => Promise.resolve(mockHtml),
@@ -300,7 +300,7 @@ describe('WebScrapingService', () => {
       })
 
       const mockHtml = '<html><body>Test</body></html>'
-      ;(fetch as jest.Mock).mockResolvedValue({
+      ;(fetch as unknown as jest.Mock<any>).mockResolvedValue({
         ok: true,
         status: 200,
         text: () => Promise.resolve(mockHtml),

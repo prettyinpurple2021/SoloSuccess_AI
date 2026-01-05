@@ -29,7 +29,7 @@ const SECURITY_HEADERS = {
 /**
  * Apply security headers to response
  */
-export function applySecurityHeaders(response: NextResponse): NextResponse {
+export function applySecurityHeaders<T = unknown>(response: NextResponse<T>): NextResponse<T> {
   Object.entries(SECURITY_HEADERS).forEach(([key, value]) => {
     response.headers.set(key, value)
   })
@@ -73,18 +73,14 @@ export async function withRateLimit(
  * Request validation middleware
  */
 export function validateRequest<T>(
-  request: NextRequest,
+  request: Request,
   schema: z.ZodSchema<T>,
-  source: 'body' | 'query' | 'params' = 'body'
+  source: 'query' | 'params' = 'query'
 ): { success: true; data: T } | { success: false; response: NextResponse } {
   try {
     let data: any
 
     switch (source) {
-      case 'body':
-        // This would need to be handled asynchronously in practice
-        data = request.body
-        break
       case 'query':
         data = Object.fromEntries(new URL(request.url).searchParams.entries())
         break
@@ -123,7 +119,7 @@ export function validateRequest<T>(
  * Async request validation middleware for request body
  */
 export async function validateRequestBody<T>(
-  request: NextRequest,
+  request: Request,
   schema: z.ZodSchema<T>
 ): Promise<{ success: true; data: T } | { success: false; response: NextResponse }> {
   try {
@@ -176,18 +172,22 @@ export function withApiMiddleware<T>(
       }
 
       // Validate request body
-      if (options.validate?.body) {
-        const bodyValidation = await validateRequestBody(request, options.validate.body)
-        if (!bodyValidation.success && bodyValidation.response) {
-          return bodyValidation.response as NextResponse<T>
+      // Validate request body
+        if (options.validate?.body) {
+           const reqClone = request.clone();
+           const bodyValidation = await validateRequestBody(reqClone, options.validate.body)
+           if (!bodyValidation.success) {
+             const failure = bodyValidation as { success: false; response: NextResponse }
+             return failure.response as NextResponse<T>
+           }
         }
-      }
 
       // Validate query parameters
       if (options.validate?.query) {
-        const queryValidation = validateRequest(request, options.validate.query, 'query')
-        if (!queryValidation.success && queryValidation.response) {
-          return queryValidation.response as NextResponse<T>
+        const queryValidation = validateRequest(request, options.validate!.query, 'query')
+        if (!queryValidation.success) {
+          const failure = queryValidation as { success: false; response: NextResponse }
+          return failure.response as NextResponse<T>
         }
       }
 
