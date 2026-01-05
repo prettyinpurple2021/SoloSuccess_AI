@@ -6,7 +6,7 @@ import { motion, easeOut} from "framer-motion"
 import { 
   Activity, AlertTriangle, TrendingUp, Eye, Globe, Shield, Target, Zap, Clock, Filter, Search, RefreshCw, BarChart3, PieChart, Calendar, ArrowUp, ArrowDown, Minus} from "lucide-react"
 
-import { BossCard, EmpowermentCard, StatsCard} from "@/components/ui/boss-card"
+import { BossCard, StatsCard} from "@/components/ui/boss-card"
 import { BossButton, ZapButton} from "@/components/ui/boss-button"
 import { Input} from "@/components/ui/input"
 import { Badge} from "@/components/ui/badge"
@@ -151,24 +151,24 @@ export function IntelligenceDashboard({ className }: IntelligenceDashboardProps)
     }
   }
 
-  const getThreatLevelBadge = (level: string) => {
-    const colors = {
-      critical: 'bg-red-100 text-red-800 border-red-200',
-      high: 'bg-orange-100 text-orange-800 border-orange-200',
-      medium: 'bg-yellow-100 text-yellow-800 border-yellow-200',
-      low: 'bg-green-100 text-green-800 border-green-200'
+  const getThreatLevelVariant = (level: string): "cyan" | "magenta" | "lime" | "purple" | "orange" => {
+    switch (level) {
+      case 'critical': return 'magenta'
+      case 'high': return 'orange'
+      case 'medium': return 'purple'
+      case 'low': return 'cyan'
+      default: return 'cyan'
     }
-    return colors[level as keyof typeof colors] || 'bg-gray-100 text-gray-800 border-gray-200'
   }
 
-  const getImportanceBadge = (importance: string) => {
-    const colors = {
-      critical: 'bg-red-100 text-red-800',
-      high: 'bg-orange-100 text-orange-800',
-      medium: 'bg-yellow-100 text-yellow-800',
-      low: 'bg-green-100 text-green-800'
+  const getImportanceVariant = (importance: string): "cyan" | "magenta" | "lime" | "purple" | "orange" => {
+    switch (importance) {
+      case 'critical': return 'magenta'
+      case 'high': return 'orange'
+      case 'medium': return 'purple'
+      case 'low': return 'cyan'
+      default: return 'cyan'
     }
-    return colors[importance as keyof typeof colors] || 'bg-gray-100 text-gray-800'
   }
 
   const filteredActivities = activities.filter(activity => {
@@ -201,12 +201,9 @@ export function IntelligenceDashboard({ className }: IntelligenceDashboardProps)
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center min-h-[60vh]">
-        <Loading 
-          variant="boss" 
-          size="lg" 
-          text="Loading intelligence dashboard..."
-        />
+      <div className="flex flex-col items-center justify-center min-h-[60vh] space-y-4">
+        <Loading variant="pulse" size="lg" />
+        <p className="text-muted-foreground font-mono animate-pulse">Loading intelligence dashboard...</p>
       </div>
     )
   }
@@ -260,7 +257,7 @@ export function IntelligenceDashboard({ className }: IntelligenceDashboardProps)
               </SelectContent>
             </Select>
             <BossButton
-              variant="secondary"
+              variant="outline"
               size="sm"
               icon={<RefreshCw className={`w-4 h-4 ${refreshing ? 'animate-spin' : ''}`} />}
               onClick={handleRefresh}
@@ -322,7 +319,7 @@ export function IntelligenceDashboard({ className }: IntelligenceDashboardProps)
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Real-time Activity Feed */}
           <motion.div variants={itemVariants} className="lg:col-span-2">
-            <EmpowermentCard>
+            <BossCard variant="purple" crown>
               <div className="flex items-center justify-between mb-6">
                 <h2 className="text-2xl font-bold text-gradient flex items-center space-x-2">
                   <Activity className="w-6 h-6" />
@@ -381,8 +378,7 @@ export function IntelligenceDashboard({ className }: IntelligenceDashboardProps)
                           </div>
                           <div className="flex items-center space-x-2">
                             <Badge 
-                              variant="outline" 
-                              className={getImportanceBadge(activity.importance)}
+                              variant={getImportanceVariant(activity.importance)}
                             >
                               {activity.importance.toUpperCase()}
                             </Badge>
@@ -440,7 +436,7 @@ export function IntelligenceDashboard({ className }: IntelligenceDashboardProps)
                     </p>
                     {(activityFilter !== "all" || threatFilter !== "all") && (
                       <BossButton 
-                        variant="secondary"
+                        variant="outline"
                         size="sm"
                         className="mt-4"
                         onClick={() => {
@@ -454,12 +450,12 @@ export function IntelligenceDashboard({ className }: IntelligenceDashboardProps)
                   </div>
                 )}
               </div>
-            </EmpowermentCard>
+            </BossCard>
           </motion.div>
 
           {/* Competitive Threat Matrix */}
           <motion.div variants={itemVariants}>
-            <BossCard variant="danger">
+            <BossCard variant="magenta">
               <div className="flex items-center justify-between mb-6">
                 <h2 className="text-2xl font-bold text-gradient flex items-center space-x-2">
                   <AlertTriangle className="w-6 h-6" />
@@ -488,8 +484,7 @@ export function IntelligenceDashboard({ className }: IntelligenceDashboardProps)
                           <h3 className="font-semibold text-sm">{competitor.name}</h3>
                         </div>
                         <Badge 
-                          variant="outline" 
-                          className={getThreatLevelBadge(competitor.threatLevel)}
+                          variant={getThreatLevelVariant(competitor.threatLevel)}
                         >
                           {competitor.threatLevel.toUpperCase()}
                         </Badge>

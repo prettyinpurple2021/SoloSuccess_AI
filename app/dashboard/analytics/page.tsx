@@ -68,7 +68,7 @@ export default function AnalyticsPage() {
         setAnalyticsData(mappedData)
       }
     } catch (error) {
-      console.error('Failed to fetch analytics:', error)
+      logError('Failed to fetch analytics:', error)
     } finally {
       setIsLoading(false)
     }

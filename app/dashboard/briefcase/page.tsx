@@ -104,7 +104,7 @@ export default function BriefcasePage() {
         title: doc.name,
         text: `Check out this file: ${doc.name}`,
         url: window.location.href,
-      }).catch((error) => console.log('Error sharing', error));
+      }).catch((error) => logError('Error sharing', error));
     } else {
       navigator.clipboard.writeText(window.location.href)
       toast({

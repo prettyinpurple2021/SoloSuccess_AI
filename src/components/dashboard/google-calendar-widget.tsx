@@ -6,6 +6,8 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle} from "@/comp
 import { Button} from "@/components/ui/button"
 import { Skeleton} from "@/components/ui/skeleton"
 import { Calendar, AlertCircle, CheckCircle, Clock} from "lucide-react"
+import { BossButton } from "@/components/ui/boss-button"
+import { BossCard } from "@/components/ui/boss-card"
 
 interface CalendarEvent {
   summary: string;
@@ -30,6 +32,7 @@ function formatEventTime(start: { dateTime?: string; date?: string }, end: { dat
   }
   return "Time not specified";
 }
+
 
 export function GoogleCalendarWidget() {
   const [events, setEvents] = useState<CalendarEvent[]>([]);
@@ -83,7 +86,7 @@ export function GoogleCalendarWidget() {
 
   if (isLoading) {
     return (
-      <Card className="boss-card">
+      <BossCard>
         <CardHeader>
           <CardTitle className="flex items-center gap-2"><Calendar className="h-5 w-5 text-blue-600" /> Today&apos;s Agenda</CardTitle>
           <CardDescription>Loading your Google Calendar events...</CardDescription>
@@ -93,13 +96,13 @@ export function GoogleCalendarWidget() {
           <Skeleton className="h-8 w-3/4" />
           <Skeleton className="h-8 w-1/2" />
         </CardContent>
-      </Card>
+      </BossCard>
     );
   }
 
   if (!isConnected) {
     return (
-      <Card className="boss-card">
+      <BossCard>
         <CardHeader>
           <CardTitle className="flex items-center gap-2"><Calendar className="h-5 w-5 text-blue-600" /> Today&apos;s Agenda</CardTitle>
           <CardDescription>Connect Google Calendar to see your events here.</CardDescription>
@@ -107,17 +110,17 @@ export function GoogleCalendarWidget() {
         <CardContent className="flex flex-col items-center justify-center text-center p-8">
           <Calendar className="h-16 w-16 text-gray-400 mb-4" />
           <p className="mb-4 font-medium">You haven&apos;t connected your Google Calendar yet.</p>
-          <Button asChild className="punk-button text-white">
-            <Link href="/dashboard/integrations">Connect Now</Link>
-          </Button>
+          <BossButton crown onClick={() => window.location.href = "/dashboard/integrations"}>
+            Connect Now
+          </BossButton>
         </CardContent>
-      </Card>
+      </BossCard>
     );
   }
 
   if (error) {
     return (
-       <Card className="boss-card bg-red-50 border-red-200">
+       <BossCard className="bg-red-50 border-red-200">
         <CardHeader>
             <CardTitle className="flex items-center gap-2 text-red-700"><AlertCircle className="h-5 w-5" /> Calendar Error</CardTitle>
             <CardDescription className="text-red-600">Could not load your calendar events.</CardDescription>
@@ -125,13 +128,13 @@ export function GoogleCalendarWidget() {
         <CardContent>
             <p className="text-sm text-red-700">{error}</p>
         </CardContent>
-      </Card>
+      </BossCard>
     )
   }
 
   return (
-    <Card className="boss-card">
-              <CardHeader>
+    <BossCard>
+      <CardHeader>
         <CardTitle className="flex items-center gap-2"><Calendar className="h-5 w-5 text-blue-600" /> Today&apos;s Agenda</CardTitle>
         <CardDescription>Your events from Google Calendar for today.</CardDescription>
       </CardHeader>
@@ -156,6 +159,6 @@ export function GoogleCalendarWidget() {
           )}
         </div>
       </CardContent>
-    </Card>
+    </BossCard>
   );
 }

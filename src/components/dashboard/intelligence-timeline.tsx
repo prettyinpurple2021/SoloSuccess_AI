@@ -6,7 +6,7 @@ import { motion} from "framer-motion"
 import { 
   Clock, Activity, Globe, Users, TrendingUp, AlertTriangle, Zap, Eye, Calendar, Filter, Search, ChevronDown, ChevronUp, ExternalLink} from "lucide-react"
 
-import { BossCard, EmpowermentCard} from "@/components/ui/boss-card"
+import { BossCard} from "@/components/ui/boss-card"
 import { BossButton} from "@/components/ui/boss-button"
 import { Input} from "@/components/ui/input"
 import { Badge} from "@/components/ui/badge"
@@ -91,29 +91,29 @@ export function IntelligenceTimeline({
 
   const getEventIcon = (type: string) => {
     switch (type) {
-      case 'website_change': return <Globe className="w-4 h-4" />
-      case 'social_post': return <Activity className="w-4 h-4" />
-      case 'news_mention': return <TrendingUp className="w-4 h-4" />
-      case 'job_posting': return <Users className="w-4 h-4" />
-      case 'product_launch': return <Zap className="w-4 h-4" />
-      case 'pricing_change': return <TrendingUp className="w-4 h-4" />
-      case 'funding': return <TrendingUp className="w-4 h-4" />
-      case 'partnership': return <Users className="w-4 h-4" />
-      default: return <Eye className="w-4 h-4" />
+      case 'website_change': return <Globe className="w-4 h-4 text-neon-cyan" />
+      case 'social_post': return <Activity className="w-4 h-4 text-neon-lime" />
+      case 'news_mention': return <TrendingUp className="w-4 h-4 text-neon-purple" />
+      case 'job_posting': return <Users className="w-4 h-4 text-neon-orange" />
+      case 'product_launch': return <Zap className="w-4 h-4 text-neon-magenta" />
+      case 'pricing_change': return <TrendingUp className="w-4 h-4 text-neon-cyan" />
+      case 'funding': return <TrendingUp className="w-4 h-4 text-neon-lime" />
+      case 'partnership': return <Users className="w-4 h-4 text-neon-purple" />
+      default: return <Eye className="w-4 h-4 text-gray-400" />
     }
   }
 
   const getEventColor = (type: string) => {
     switch (type) {
-      case 'website_change': return 'text-blue-500 bg-blue-100 dark:bg-blue-900/20'
-      case 'social_post': return 'text-green-500 bg-green-100 dark:bg-green-900/20'
-      case 'news_mention': return 'text-purple-500 bg-purple-100 dark:bg-purple-900/20'
-      case 'job_posting': return 'text-orange-500 bg-orange-100 dark:bg-orange-900/20'
-      case 'product_launch': return 'text-red-500 bg-red-100 dark:bg-red-900/20'
-      case 'pricing_change': return 'text-yellow-500 bg-yellow-100 dark:bg-yellow-900/20'
-      case 'funding': return 'text-indigo-500 bg-indigo-100 dark:bg-indigo-900/20'
-      case 'partnership': return 'text-pink-500 bg-pink-100 dark:bg-pink-900/20'
-      default: return 'text-gray-500 bg-gray-100 dark:bg-gray-900/20'
+      case 'website_change': return 'text-neon-cyan bg-neon-cyan/10'
+      case 'social_post': return 'text-neon-lime bg-neon-lime/10'
+      case 'news_mention': return 'text-neon-purple bg-neon-purple/10'
+      case 'job_posting': return 'text-neon-orange bg-neon-orange/10'
+      case 'product_launch': return 'text-neon-magenta bg-neon-magenta/10'
+      case 'pricing_change': return 'text-neon-cyan bg-neon-cyan/10'
+      case 'funding': return 'text-neon-lime bg-neon-lime/10'
+      case 'partnership': return 'text-neon-purple bg-neon-purple/10'
+      default: return 'text-muted-foreground bg-muted'
     }
   }
 
@@ -127,14 +127,14 @@ export function IntelligenceTimeline({
     }
   }
 
-  const getImportanceBadge = (importance: string) => {
-    const colors = {
-      critical: 'bg-red-100 text-red-800',
-      high: 'bg-orange-100 text-orange-800',
-      medium: 'bg-yellow-100 text-yellow-800',
-      low: 'bg-green-100 text-green-800'
+  const getImportanceVariant = (importance: string): "cyan" | "magenta" | "lime" | "purple" | "orange" => {
+    switch (importance) {
+      case 'critical': return 'magenta'
+      case 'high': return 'orange'
+      case 'medium': return 'purple'
+      case 'low': return 'cyan'
+      default: return 'cyan'
     }
-    return colors[importance as keyof typeof colors] || 'bg-gray-100 text-gray-800'
   }
 
   const getEventTypeLabel = (type: string) => {
@@ -205,7 +205,7 @@ export function IntelligenceTimeline({
     <div className={className}>
       <div className="space-y-6">
         {/* Header and Filters */}
-        <EmpowermentCard>
+        <BossCard variant="purple" crown>
           <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-4">
             <div>
               <h3 className="text-xl font-bold text-gradient flex items-center space-x-2">
@@ -259,7 +259,7 @@ export function IntelligenceTimeline({
               </Select>
             </div>
           </div>
-        </EmpowermentCard>
+        </BossCard>
 
         {/* Timeline */}
         <BossCard>
@@ -281,7 +281,7 @@ export function IntelligenceTimeline({
                       </h4>
                     </div>
                     <div className="flex-1 h-px bg-gray-200 dark:bg-gray-700"></div>
-                    <Badge variant="outline" className="text-xs">
+                    <Badge variant="cyan" className="text-xs">
                       {dayEvents.length} events
                     </Badge>
                   </div>
@@ -322,8 +322,7 @@ export function IntelligenceTimeline({
                                     </div>
                                     <h5 className="font-semibold text-sm">{event.title}</h5>
                                     <Badge 
-                                      variant="outline" 
-                                      className={getImportanceBadge(event.importance)}
+                                      variant={getImportanceVariant(event.importance)}
                                     >
                                       {event.importance.toUpperCase()}
                                     </Badge>
@@ -351,12 +350,12 @@ export function IntelligenceTimeline({
                                   {event.tags.length > 0 && (
                                     <div className="flex flex-wrap gap-1 mb-2">
                                       {event.tags.slice(0, 3).map((tag, index) => (
-                                        <Badge key={index} variant="secondary" className="text-xs">
+                                        <Badge key={index} variant="purple" className="text-xs">
                                           {tag}
                                         </Badge>
                                       ))}
                                       {event.tags.length > 3 && (
-                                        <Badge variant="secondary" className="text-xs">
+                                        <Badge variant="purple" className="text-xs">
                                           +{event.tags.length - 3} more
                                         </Badge>
                                       )}
@@ -367,7 +366,7 @@ export function IntelligenceTimeline({
                                 <div className="flex items-center space-x-2">
                                   {event.sourceUrl && (
                                     <BossButton
-                                      variant="secondary"
+                                      variant="outline"
                                       size="sm"
                                       icon={<ExternalLink className="w-3 h-3" />}
                                       onClick={() => window.open(event.sourceUrl, '_blank')}
@@ -379,7 +378,7 @@ export function IntelligenceTimeline({
                                   {event.analysisResults && event.analysisResults.length > 0 && (
                                     <CollapsibleTrigger asChild>
                                       <BossButton
-                                        variant="secondary"
+                                        variant="outline"
                                         size="sm"
                                         icon={expandedEvents.has(event.id) ? 
                                           <ChevronUp className="w-3 h-3" /> : 
@@ -408,7 +407,7 @@ export function IntelligenceTimeline({
                                               </span>
                                             </div>
                                             <span className="font-medium text-sm">{result.agentName}</span>
-                                            <Badge variant="outline" className="text-xs">
+                                            <Badge variant="cyan" className="text-xs">
                                               {result.analysisType}
                                             </Badge>
                                           </div>
@@ -477,7 +476,7 @@ export function IntelligenceTimeline({
                 </p>
                 {(searchQuery || eventTypeFilter !== "all" || importanceFilter !== "all") && (
                   <BossButton 
-                    variant="secondary"
+                    variant="outline"
                     onClick={() => {
                       setSearchQuery("")
                       setEventTypeFilter("all")

@@ -64,7 +64,7 @@ export default function IncineratorPage() {
             toast.success("Idea incinerated successfully!")
         } catch (error) {
             toast.error("Failed to incinerate idea. Please try again.")
-            console.error(error)
+            logError('Incinerator error:', error)
         } finally {
             setLoading(false)
         }

@@ -215,26 +215,26 @@ All foundational UI components have been updated to Cyberpunk Design System v3.
 
 | File | Violations | Status |
 |------|------------|--------|
-| `app/dashboard/competitors/intelligence/page.tsx` | 18 | ⬜ TODO |
-| `app/dashboard/competitors/import/page.tsx` | 21 | ⬜ TODO |
-| `app/dashboard/competitors/discover/page.tsx` | 20 | ⬜ TODO |
-| `app/dashboard/competitors/[id]/edit/page.tsx` | 10 | ⬜ TODO |
-| `app/dashboard/learning/page.tsx` | 9 | ⬜ TODO |
-| `app/dashboard/incinerator/page.tsx` | 5 | ⬜ TODO |
-| `app/dashboard/collaboration/sessions/[id]/page.tsx` | 5 | ⬜ TODO |
+| `app/dashboard/competitors/intelligence/page.tsx` | 18 | ✅ DONE |
+| `app/dashboard/competitors/import/page.tsx` | 21 | ✅ DONE |
+| `app/dashboard/competitors/discover/page.tsx` | 20 | ✅ DONE |
+| `app/dashboard/competitors/[id]/edit/page.tsx` | 10 | ✅ DONE |
+| `app/dashboard/learning/page.tsx` | 9 | ✅ DONE |
+| `app/dashboard/incinerator/page.tsx` | 5 | ✅ DONE |
+| `app/dashboard/collaboration/sessions/[id]/page.tsx` | 5 | ✅ DONE |
 | `app/dashboard/billing/page.tsx` | 3 | ✅ DONE |
-| `app/dashboard/workspace/page.tsx` | 1 | ⬜ TODO |
-| `app/dashboard/error.tsx` | 1 | ⬜ TODO |
+| `app/dashboard/workspace/page.tsx` | 1 | ✅ DONE |
+| `app/dashboard/error.tsx` | 1 | ✅ DONE |
 
 ### 3.3 Dashboard Components
 
 | File | Violations | Status |
 |------|------------|--------|
-| `dashboard/intelligence-dashboard.tsx` | 19 + 2 border | ⬜ TODO |
-| `dashboard/competitor-comparison-charts.tsx` | 18 + 1 border | ⬜ TODO |
-| `dashboard/intelligence-timeline.tsx` | 17 + 3 border | ⬜ TODO |
-| `dashboard/competitive-threat-matrix.tsx` | 16 + 4 border | ⬜ TODO |
-| `dashboard/google-calendar-widget.tsx` | 2 | ⬜ TODO |
+| `dashboard/intelligence-dashboard.tsx` | 19 + 2 border | ✅ DONE |
+| `dashboard/competitor-comparison-charts.tsx` | 18 + 1 border | ✅ DONE |
+| `dashboard/intelligence-timeline.tsx` | 17 + 3 border | ✅ DONE |
+| `dashboard/competitive-threat-matrix.tsx` | 16 + 4 border | ✅ DONE |
+| `dashboard/google-calendar-widget.tsx` | 2 | ✅ DONE |
 
 ---
 

@@ -116,7 +116,7 @@ export default function SettingsPage() {
         throw new Error('Failed to update profile')
       }
     } catch (error) {
-      console.error('Error saving settings:', error)
+      logError('Error saving settings:', error)
       toast({
         title: "Error",
         description: "Failed to save settings. Please try again.",
@@ -149,7 +149,7 @@ export default function SettingsPage() {
         throw new Error('Failed to delete account')
       }
     } catch (error) {
-      console.error('Error deleting account:', error)
+      logError('Error deleting account:', error)
       toast({
         title: "Error",
         description: "Failed to delete account. Please contact support.",

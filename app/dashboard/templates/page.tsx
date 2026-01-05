@@ -129,7 +129,7 @@ export default function TemplatesDashboard() {
           setFilteredTemplates(mappedTemplates)
         }
       } catch (error) {
-        console.error('Failed to fetch templates:', error)
+        logError('Failed to fetch templates:', error)
         toast({
           title: "Error",
           description: "Failed to load templates. Please try again.",
@@ -197,7 +197,7 @@ export default function TemplatesDashboard() {
         throw new Error('Failed to save template')
       }
     } catch (error) {
-      console.error('Error using template:', error)
+      logError('Error using template:', error)
       toast({
         title: "Error",
         description: "Failed to add template to workspace.",
@@ -229,7 +229,7 @@ export default function TemplatesDashboard() {
         throw new Error('Failed to update template')
       }
     } catch (error) {
-      console.error('Error updating template:', error)
+      logError('Error updating template:', error)
       toast({
         title: "Error",
         description: "Failed to update template.",
@@ -258,7 +258,7 @@ export default function TemplatesDashboard() {
         throw new Error('Failed to delete template')
       }
     } catch (error) {
-      console.error('Error deleting template:', error)
+      logError('Error deleting template:', error)
       toast({
         title: "Error",
         description: "Failed to delete template.",

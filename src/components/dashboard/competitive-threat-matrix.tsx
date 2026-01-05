@@ -74,14 +74,14 @@ export function CompetitiveThreatMatrix({
     }
   }
 
-  const getThreatLevelBadge = (level: string) => {
-    const colors = {
-      critical: 'bg-red-100 text-red-800 border-red-200',
-      high: 'bg-orange-100 text-orange-800 border-orange-200',
-      medium: 'bg-yellow-100 text-yellow-800 border-yellow-200',
-      low: 'bg-green-100 text-green-800 border-green-200'
+  const getThreatLevelVariant = (level: string): "magenta" | "orange" | "purple" | "cyan" => {
+    switch (level) {
+      case 'critical': return 'magenta'
+      case 'high': return 'orange'
+      case 'medium': return 'purple'
+      case 'low': return 'cyan'
+      default: return 'cyan'
     }
-    return colors[level as keyof typeof colors] || 'bg-gray-100 text-gray-800 border-gray-200'
   }
 
   const getTrendIcon = (direction: string) => {
@@ -236,7 +236,7 @@ export function CompetitiveThreatMatrix({
                       <p className="font-semibold">{competitor.name}</p>
                       <p className="text-sm">Market Overlap: {competitor.marketOverlap}%</p>
                       <p className="text-sm">Competitive Strength: {competitor.competitiveStrength}%</p>
-                      <Badge className={getThreatLevelBadge(competitor.threatLevel)}>
+                      <Badge variant={getThreatLevelVariant(competitor.threatLevel)}>
                         {competitor.threatLevel.toUpperCase()}
                       </Badge>
                     </div>
@@ -294,7 +294,7 @@ export function CompetitiveThreatMatrix({
                   )}
                 </div>
                 <div className="flex items-center space-x-2">
-                  <Badge className={getThreatLevelBadge(selectedCompetitor.threatLevel)}>
+                  <Badge variant={getThreatLevelVariant(selectedCompetitor.threatLevel)}>
                     {selectedCompetitor.threatLevel.toUpperCase()}
                   </Badge>
                   {getTrendIcon(selectedCompetitor.trendDirection)}

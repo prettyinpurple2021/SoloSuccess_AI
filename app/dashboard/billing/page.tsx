@@ -53,7 +53,7 @@ export default function BillingPage() {
           setSubscription(data)
         }
       } catch (error) {
-        console.error('Failed to fetch subscription:', error)
+        logError('Failed to fetch subscription:', error)
       }
     }
 

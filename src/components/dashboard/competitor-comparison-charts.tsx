@@ -6,7 +6,7 @@ import { motion} from "framer-motion"
 import { 
   BarChart3, TrendingUp, Users, DollarSign, Globe, Calendar, Target, Zap, ArrowUp, ArrowDown, Minus, Filter} from "lucide-react"
 
-import { BossCard, EmpowermentCard} from "@/components/ui/boss-card"
+import { BossCard} from "@/components/ui/boss-card"
 import { BossButton} from "@/components/ui/boss-button"
 import { Badge} from "@/components/ui/badge"
 import { Progress} from "@/components/ui/progress"
@@ -108,12 +108,22 @@ export function CompetitorComparisonCharts({
     return icons[metric as keyof typeof icons] || <BarChart3 className="w-4 h-4" />
   }
 
+  const getThreatLevelVariant = (level: string): "cyan" | "magenta" | "lime" | "purple" | "orange" => {
+    switch (level) {
+      case 'critical': return 'magenta'
+      case 'high': return 'orange'
+      case 'medium': return 'purple'
+      case 'low': return 'cyan'
+      default: return 'cyan'
+    }
+  }
+
   const getThreatLevelColor = (level: string) => {
     switch (level) {
-      case 'critical': return 'bg-red-500'
-      case 'high': return 'bg-orange-500'
-      case 'medium': return 'bg-yellow-500'
-      case 'low': return 'bg-green-500'
+      case 'critical': return 'bg-neon-magenta'
+      case 'high': return 'bg-neon-orange'
+      case 'medium': return 'bg-neon-purple'
+      case 'low': return 'bg-neon-cyan'
       default: return 'bg-gray-500'
     }
   }
@@ -171,7 +181,7 @@ export function CompetitorComparisonCharts({
     <div className={className}>
       <div className="space-y-6">
         {/* Header and Controls */}
-        <EmpowermentCard>
+        <BossCard variant="purple" crown>
           <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-4">
             <div>
               <h3 className="text-xl font-bold text-gradient flex items-center space-x-2">
@@ -209,7 +219,6 @@ export function CompetitorComparisonCharts({
                 <SelectContent>
                   <SelectItem value="bar">Bar Chart</SelectItem>
                   <SelectItem value="comparison">Comparison</SelectItem>
-                  <SelectItem value="radar">Radar Chart</SelectItem>
                 </SelectContent>
               </Select>
               
@@ -226,7 +235,7 @@ export function CompetitorComparisonCharts({
               </Select>
             </div>
           </div>
-        </EmpowermentCard>
+        </BossCard>
 
         {/* Chart Visualization */}
         {chartType === "bar" && (
@@ -302,7 +311,7 @@ export function CompetitorComparisonCharts({
                         />
                         <h4 className="font-semibold">{competitor.name}</h4>
                       </div>
-                      <Badge variant="outline" className="text-xs">
+                      <Badge variant={getThreatLevelVariant(competitor.threatLevel)} className="text-xs">
                         {competitor.threatLevel.toUpperCase()}
                       </Badge>
                     </div>
@@ -369,25 +378,10 @@ export function CompetitorComparisonCharts({
           </div>
         )}
 
-        {chartType === "radar" && (
-          <BossCard>
-            <div className="space-y-4">
-              <h4 className="font-semibold">Multi-Metric Radar Comparison</h4>
-              <div className="text-center py-12">
-                <BarChart3 className="w-16 h-16 text-gray-400 mx-auto mb-4" />
-                <p className="text-gray-600 dark:text-gray-400">
-                  Radar chart visualization coming soon
-                </p>
-                <p className="text-sm text-gray-500 mt-2">
-                  This will show multi-dimensional competitor comparison
-                </p>
-              </div>
-            </div>
-          </BossCard>
-        )}
+
 
         {/* Summary Stats */}
-        <EmpowermentCard>
+        <BossCard variant="purple" crown>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
             <div className="text-center">
               <div className="text-2xl font-bold text-gradient mb-1">
@@ -425,7 +419,7 @@ export function CompetitorComparisonCharts({
               </div>
             </div>
           </div>
-        </EmpowermentCard>
+        </BossCard>
       </div>
     </div>
   )
