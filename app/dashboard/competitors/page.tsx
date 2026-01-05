@@ -332,12 +332,12 @@ export default function CompetitorDashboardPage() {
     return (
       <div className="min-h-screen bg-dark-bg p-6">
         <div className="absolute inset-0 bg-[url('/grid.svg')] bg-center opacity-20 pointer-events-none" />
-        <div className="flex items-center justify-center min-h-[60vh] relative z-10">
+        <div className="flex flex-col items-center justify-center min-h-[60vh] relative z-10 gap-4">
           <Loading
             variant="flicker"
             size="lg"
-            text="Loading competitor intelligence..."
           />
+          <p className="text-neon-cyan font-mono animate-pulse">Loading competitor intelligence...</p>
         </div>
       </div>
     )
@@ -374,7 +374,7 @@ export default function CompetitorDashboardPage() {
           </div>
           <div className="flex items-center gap-3">
             <CyberButton
-              variant="secondary"
+              variant="outline"
               size="sm"
               className="border-neon-cyan/30 text-neon-cyan hover:bg-neon-cyan/10"
               onClick={handleRefresh}
@@ -520,7 +520,7 @@ export default function CompetitorDashboardPage() {
                 </Select>
 
                 <CyberButton
-                  variant="secondary"
+                  variant="outline"
                   size="sm"
                   className="border-neon-cyan/30 text-neon-cyan hover:bg-neon-cyan/10"
                 >
@@ -610,7 +610,7 @@ export default function CompetitorDashboardPage() {
 
                             <DropdownMenu>
                               <DropdownMenuTrigger asChild>
-                                <CyberButton variant="outline" size="sm" className="border-neon-cyan/30 text-neon-cyan hover:bg-neon-cyan/10">
+                                <CyberButton variant="outline" size="sm" className="text-neon-cyan border-neon-cyan/50 hover:bg-neon-cyan/20">
                                   <MoreVertical className="w-4 h-4" />
                                 </CyberButton>
                               </DropdownMenuTrigger>

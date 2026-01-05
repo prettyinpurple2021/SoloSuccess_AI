@@ -292,7 +292,7 @@ export default function DashboardPage() {
               </Link>
               <Link href="/dashboard/agents">
                 <CyberButton
-                  variant="secondary"
+                  variant="outline"
                   className="w-full"
                 >
                   <MessageCircle className="w-4 h-4 mr-2" />
@@ -470,7 +470,7 @@ export default function DashboardPage() {
                     <Target className="w-6 h-6 text-neon-cyan" />
                     <span>Today's Missions</span>
                   </h2>
-                  <CyberButton variant="secondary" size="sm">
+                  <CyberButton variant="outline" size="sm">
                     View All
                   </CyberButton>
                 </div>
@@ -679,7 +679,7 @@ export default function DashboardPage() {
                         <p className="text-sm text-gray-400 mb-3 font-mono">
                           {insight.description}
                         </p>
-                        <CyberButton size="sm" variant="secondary">
+                        <CyberButton size="sm" variant="outline">
                           {insight.action}
                         </CyberButton>
                       </motion.div>

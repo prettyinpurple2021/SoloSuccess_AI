@@ -206,7 +206,7 @@ export default function CompetitorDetailPage() {
           </div>
           <div className="flex items-center space-x-3">
             <CyberButton
-              variant="secondary"
+              variant="outline"
               size="sm"
               onClick={handleRefresh}
               disabled={refreshing}
@@ -218,7 +218,7 @@ export default function CompetitorDetailPage() {
               )}
               Refresh
             </CyberButton>
-            <CyberButton variant="secondary" size="sm">
+            <CyberButton variant="outline" size="sm">
               <Settings className="w-4 h-4 mr-2" />
               Settings
             </CyberButton>
@@ -314,7 +314,7 @@ export default function CompetitorDetailPage() {
                     <div className="flex-1">
                       <div className="flex items-center justify-between">
                         <h4 className="font-semibold text-white font-mono">{activity.title}</h4>
-                        <Badge variant="outline" className="text-xs text-neon-cyan border-neon-cyan">
+                        <Badge variant="cyan" className="text-xs text-neon-cyan border-neon-cyan">
                           {activity.type.replace('_', ' ').toUpperCase()}
                         </Badge>
                       </div>
@@ -414,7 +414,7 @@ export default function CompetitorDetailPage() {
                   <Crosshair className="w-6 h-6 mr-2 text-neon-magenta" />
                   Threat Assessment
                 </h3>
-                <CyberButton variant="secondary" size="sm">
+                <CyberButton variant="outline" size="sm">
                   <RefreshCw className="w-4 h-4 mr-2" />
                   Update Analysis
                 </CyberButton>
@@ -464,7 +464,7 @@ export default function CompetitorDetailPage() {
             <HudBorder className="p-6">
               <div className="flex items-center justify-between mb-6">
                 <h3 className="text-xl font-bold font-orbitron text-white">Action Plan</h3>
-                <CyberButton variant="secondary" size="sm">
+                <CyberButton variant="outline" size="sm">
                   <Plus className="w-4 h-4 mr-2" />
                   Add Action
                 </CyberButton>
@@ -485,8 +485,8 @@ export default function CompetitorDetailPage() {
                       </div>
                     </div>
                     <div className="flex items-center space-x-2">
-                      <Badge variant="outline" className="text-neon-cyan border-neon-cyan">monitoring</Badge>
-                      <CyberButton variant="secondary" size="sm">
+                      <Badge variant="cyan" className="text-neon-cyan border-neon-cyan">monitoring</Badge>
+                      <CyberButton variant="outline" size="sm">
                         Start Action
                       </CyberButton>
                     </div>
@@ -500,7 +500,7 @@ export default function CompetitorDetailPage() {
             <HudBorder className="p-6">
               <div className="flex items-center justify-between mb-6">
                 <h3 className="text-xl font-bold font-orbitron text-white">Active Alerts</h3>
-                <CyberButton variant="secondary" size="sm">
+                <CyberButton variant="outline" size="sm">
                   Mark All Read
                 </CyberButton>
               </div>
@@ -541,7 +541,7 @@ export default function CompetitorDetailPage() {
                           <span>{new Date(alert.timestamp).toLocaleString()}</span>
                         </div>
                       </div>
-                      <CyberButton variant="secondary" size="sm">
+                      <CyberButton variant="outline" size="sm">
                         View Details
                       </CyberButton>
                     </div>

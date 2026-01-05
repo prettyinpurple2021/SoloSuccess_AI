@@ -10,10 +10,12 @@ import {
   ArrowLeft, Upload, Download, CheckCircle, AlertTriangle, X, Trash2} from "lucide-react"
 import Link from "next/link"
 
-import { EmpowermentCard} from "@/components/ui/boss-card"
-import { BossButton, ZapButton} from "@/components/ui/boss-button"
-import { Badge} from "@/components/ui/badge"
-import { Tabs, TabsContent, TabsList, TabsTrigger} from "@/components/ui/tabs"
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
+import { Button } from "@/components/ui/button"
+import { Badge } from "@/components/ui/badge"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { Input } from "@/components/ui/input"
+import { toast } from "sonner"
 
 import {
   Table, TableBody, TableCell, TableHead, TableHeader, TableRow, } from "@/components/ui/table"
@@ -95,7 +97,7 @@ BizBoost Solutions,bizboost.com,Business management platform,Technology,New York
 
   const handleFileUpload = async (file: File) => {
     if (!file.name.endsWith('.csv')) {
-      alert('Please upload a CSV file')
+      toast.error('Please upload a CSV file')
       return
     }
 
@@ -397,11 +399,11 @@ BizBoost Solutions,bizboost.com,Business management platform,Technology,New York
 
   const getStatusBadge = (status: string) => {
     const colors = {
-      valid: 'bg-green-100 text-green-800 border-green-200',
-      warning: 'bg-yellow-100 text-yellow-800 border-yellow-200',
-      error: 'bg-red-100 text-red-800 border-red-200'
+      valid: 'bg-green-500/20 text-green-500 border-green-500/30',
+      warning: 'bg-yellow-500/20 text-yellow-500 border-yellow-500/30',
+      error: 'bg-red-500/20 text-red-500 border-red-500/30'
     }
-    return colors[status as keyof typeof colors] || 'bg-gray-100 text-gray-800 border-gray-200'
+    return colors[status as keyof typeof colors] || 'bg-gray-500/20 text-gray-400 border-gray-500/30'
   }
 
   return (
@@ -415,10 +417,10 @@ BizBoost Solutions,bizboost.com,Business management platform,Technology,New York
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-4">
             <Link href="/dashboard/competitors">
-              <BossButton variant="secondary" size="sm">
+              <Button variant="outline" size="sm" className="border-neon-cyan/50 text-neon-cyan hover:bg-neon-cyan/10">
                 <ArrowLeft className="w-4 h-4 mr-2" />
                 Back to Dashboard
-              </BossButton>
+              </Button>
             </Link>
             <div>
               <div className="flex items-center space-x-3 mb-2">
@@ -436,28 +438,30 @@ BizBoost Solutions,bizboost.com,Business management platform,Technology,New York
                 >
                   <Upload className="w-6 h-6 text-white" />
                 </motion.div>
-                <h1 className="text-3xl font-bold text-gradient">Bulk Import Competitors</h1>
+                <h1 className="text-3xl font-bold font-orbitron text-gradient tracking-wide">Bulk Import Competitors</h1>
               </div>
-              <p className="text-gray-600 dark:text-gray-400">
+              <p className="text-gray-400 font-mono">
                 Import multiple competitors at once using a CSV file
               </p>
             </div>
           </div>
           {selectedRows.size > 0 && (
-            <ZapButton
+            <Button
               onClick={handleImport}
-              loading={importing}
+              disabled={importing}
+              className="bg-neon-cyan hover:bg-neon-cyan/80 text-black font-bold"
             >
+              {importing ? <span className="animate-spin mr-2">⟳</span> : <Upload className="w-4 h-4 mr-2" />}
               Import {selectedRows.size} Competitor{selectedRows.size > 1 ? 's' : ''}
-            </ZapButton>
+            </Button>
           )}
         </div>
 
         {/* Import Tabs */}
         <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
-          <TabsList className="grid w-full grid-cols-2">
-            <TabsTrigger value="upload">Upload File</TabsTrigger>
-            <TabsTrigger value="review" disabled={importedData.length === 0}>
+          <TabsList className="grid w-full grid-cols-2 bg-dark-bg border border-neon-cyan/30">
+            <TabsTrigger value="upload" className="data-[state=active]:bg-neon-cyan data-[state=active]:text-black">Upload File</TabsTrigger>
+            <TabsTrigger value="review" disabled={importedData.length === 0} className="data-[state=active]:bg-neon-cyan data-[state=active]:text-black">
               Review & Import ({importedData.length})
             </TabsTrigger>
           </TabsList>
@@ -465,155 +469,165 @@ BizBoost Solutions,bizboost.com,Business management platform,Technology,New York
           {/* Upload Tab */}
           <TabsContent value="upload" className="space-y-6">
             {/* Instructions */}
-            <EmpowermentCard>
-              <h3 className="text-xl font-bold text-gradient mb-4">Import Instructions</h3>
-              <div className="space-y-4">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <div>
-                    <h4 className="font-semibold mb-2">Required Fields:</h4>
-                    <ul className="space-y-1 text-sm text-gray-600 dark:text-gray-400">
-                      <li>• <strong>name</strong> - Competitor company name</li>
-                      <li>• <strong>domain</strong> - Website domain (e.g., example.com)</li>
-                      <li>• <strong>threatLevel</strong> - low, medium, high, or critical</li>
-                    </ul>
+            {/* Instructions */}
+            <Card className="bg-dark-card border-neon-cyan/20">
+              <CardContent className="pt-6">
+                <h3 className="text-xl font-bold font-orbitron text-gradient mb-4">Import Instructions</h3>
+                <div className="space-y-4">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                      <h4 className="font-semibold text-neon-cyan mb-2 font-mono">Required Fields:</h4>
+                      <ul className="space-y-1 text-sm text-gray-400 font-mono">
+                        <li>• <strong className="text-white">name</strong> - Competitor company name</li>
+                        <li>• <strong className="text-white">domain</strong> - Website domain (e.g., example.com)</li>
+                        <li>• <strong className="text-white">threatLevel</strong> - low, medium, high, or critical</li>
+                      </ul>
+                    </div>
+                    <div>
+                      <h4 className="font-semibold text-neon-cyan mb-2 font-mono">Optional Fields:</h4>
+                      <ul className="space-y-1 text-sm text-gray-400 font-mono">
+                        <li>• <strong className="text-white">description</strong> - Company description</li>
+                        <li>• <strong className="text-white">industry</strong> - Industry category</li>
+                        <li>• <strong className="text-white">headquarters</strong> - Company location</li>
+                        <li>• <strong className="text-white">employeeCount</strong> - Number of employees</li>
+                        <li>• <strong className="text-white">fundingStage</strong> - seed, series-a, series-b, etc.</li>
+                      </ul>
+                    </div>
                   </div>
-                  <div>
-                    <h4 className="font-semibold mb-2">Optional Fields:</h4>
-                    <ul className="space-y-1 text-sm text-gray-600 dark:text-gray-400">
-                      <li>• <strong>description</strong> - Company description</li>
-                      <li>• <strong>industry</strong> - Industry category</li>
-                      <li>• <strong>headquarters</strong> - Company location</li>
-                      <li>• <strong>employeeCount</strong> - Number of employees</li>
-                      <li>• <strong>fundingStage</strong> - seed, series-a, series-b, etc.</li>
-                    </ul>
+                  
+                  <div className="flex items-center justify-between pt-4 border-t border-gray-700">
+                    <p className="text-sm text-gray-400">
+                      Download our template to get started with the correct format
+                    </p>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={handleDownloadTemplate}
+                      className="border-neon-cyan/50 text-neon-cyan hover:bg-neon-cyan/10"
+                    >
+                      <Download className="w-4 h-4 mr-2" />
+                      Download Template
+                    </Button>
                   </div>
                 </div>
-                
-                <div className="flex items-center justify-between pt-4 border-t border-gray-200 dark:border-gray-700">
-                  <p className="text-sm text-gray-600 dark:text-gray-400">
-                    Download our template to get started with the correct format
-                  </p>
-                  <BossButton
-                    variant="secondary"
-                    size="sm"
-                    onClick={handleDownloadTemplate}
-                    icon={<Download className="w-4 h-4" />}
-                  >
-                    Download Template
-                  </BossButton>
-                </div>
-              </div>
-            </EmpowermentCard>
+              </CardContent>
+            </Card>
 
             {/* File Upload */}
-            <EmpowermentCard>
-              <div className="space-y-6">
-                <h3 className="text-xl font-bold text-gradient">Upload CSV File</h3>
-                
-                <div
-                  className={`border-2 border-dashed rounded-lg p-8 text-center transition-colors ${
-                    dragActive 
-                      ? 'border-purple-500 bg-purple-50 dark:bg-purple-900/20' 
-                      : 'border-gray-300 dark:border-gray-600'
-                  }`}
-                  onDragEnter={handleDragEnter}
-                  onDragLeave={handleDragLeave}
-                  onDragOver={handleDragOver}
-                  onDrop={handleDrop}
-                >
-                  <motion.div
-                    animate={dragActive ? { scale: 1.05 } : { scale: 1 }}
-                    className="space-y-4"
+            {/* File Upload */}
+            <Card className="bg-dark-card border-neon-cyan/20">
+              <CardContent className="pt-6">
+                <div className="space-y-6">
+                  <h3 className="text-xl font-bold font-orbitron text-gradient">Upload CSV File</h3>
+                  
+                  <div
+                    className={`border-2 border-dashed rounded-lg p-8 text-center transition-colors ${
+                      dragActive 
+                        ? 'border-neon-cyan bg-neon-cyan/10' 
+                        : 'border-gray-700 hover:border-gray-600'
+                    }`}
+                    onDragEnter={handleDragEnter}
+                    onDragLeave={handleDragLeave}
+                    onDragOver={handleDragOver}
+                    onDrop={handleDrop}
                   >
-                    <div className="mx-auto w-16 h-16 gradient-accent rounded-full flex items-center justify-center">
-                      <Upload className="w-8 h-8 text-white" />
-                    </div>
-                    
-                    <div>
-                      <h4 className="text-lg font-semibold mb-2">
-                        {dragActive ? 'Drop your CSV file here' : 'Drag and drop your CSV file'}
-                      </h4>
-                      <p className="text-gray-600 dark:text-gray-400 mb-4">
-                        or click to browse and select a file
-                      </p>
+                    <motion.div
+                      animate={dragActive ? { scale: 1.05 } : { scale: 1 }}
+                      className="space-y-4"
+                    >
+                      <div className="mx-auto w-16 h-16 bg-gradient-to-br from-neon-cyan to-neon-purple rounded-full flex items-center justify-center">
+                        <Upload className="w-8 h-8 text-white" />
+                      </div>
                       
-                      <input
-                        type="file"
-                        accept=".csv"
-                        onChange={handleFileSelect}
-                        className="hidden"
-                        id="file-upload"
-                      />
-                      <label htmlFor="file-upload">
-                        <BossButton
-                          variant="primary"
-                          size="sm"
-                        >
-                          Select CSV File
-                        </BossButton>
-                      </label>
-                    </div>
-                    
-                    <p className="text-xs text-gray-500">
-                      Maximum file size: 10MB • Supported format: CSV
-                    </p>
-                  </motion.div>
-                </div>
-
-                {uploading && (
-                  <div className="text-center py-8">
-                    <div className="inline-flex items-center space-x-2">
-                      <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-purple-600"></div>
-                      <span className="text-gray-600 dark:text-gray-400">Processing file...</span>
-                    </div>
+                      <div>
+                        <h4 className="text-lg font-semibold text-white mb-2">
+                          {dragActive ? 'Drop your CSV file here' : 'Drag and drop your CSV file'}
+                        </h4>
+                        <p className="text-gray-400 mb-4">
+                          or click to browse and select a file
+                        </p>
+                        
+                        <input
+                          type="file"
+                          accept=".csv"
+                          onChange={handleFileSelect}
+                          className="hidden"
+                          id="file-upload"
+                        />
+                        <label htmlFor="file-upload">
+                          <Button
+                            variant="purple"
+                            size="sm"
+                            className="bg-neon-purple text-white hover:bg-neon-purple/80"
+                            asChild
+                          >
+                            <span>Select CSV File</span>
+                          </Button>
+                        </label>
+                      </div>
+                      
+                      <p className="text-xs text-gray-500">
+                        Maximum file size: 10MB • Supported format: CSV
+                      </p>
+                    </motion.div>
                   </div>
-                )}
-              </div>
-            </EmpowermentCard>
+
+                  {uploading && (
+                    <div className="text-center py-8">
+                      <div className="inline-flex items-center space-x-2">
+                        <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-neon-cyan"></div>
+                        <span className="text-gray-400">Processing file...</span>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              </CardContent>
+            </Card>
           </TabsContent>
 
           {/* Review Tab */}
           <TabsContent value="review" className="space-y-6">
             {validationResult && (
-              <EmpowermentCard>
-                <div className="flex items-center justify-between mb-4">
-                  <h3 className="text-xl font-bold text-gradient">Validation Results</h3>
-                  <div className="flex items-center space-x-4">
-                    <BossButton variant="secondary" size="sm" onClick={selectAll}>
-                      Select All Valid
-                    </BossButton>
-                    <BossButton variant="secondary" size="sm" onClick={deselectAll}>
-                      Deselect All
-                    </BossButton>
-                  </div>
-                </div>
-                
-                <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
-                  <div className="text-center p-4 glass rounded-lg">
-                    <div className="text-2xl font-bold text-gray-900 dark:text-gray-100">
-                      {validationResult.total}
+              <Card className="bg-dark-card border-neon-cyan/20">
+                <CardContent className="pt-6">
+                  <div className="flex items-center justify-between mb-4">
+                    <h3 className="text-xl font-bold font-orbitron text-gradient">Validation Results</h3>
+                    <div className="flex items-center space-x-4">
+                      <Button variant="outline" size="sm" onClick={selectAll} className="border-neon-green/50 text-neon-green hover:bg-neon-green/10">
+                        Select All Valid
+                      </Button>
+                      <Button variant="outline" size="sm" onClick={deselectAll} className="border-gray-500 text-gray-400 hover:bg-gray-800">
+                        Deselect All
+                      </Button>
                     </div>
-                    <div className="text-sm text-gray-600 dark:text-gray-400">Total Rows</div>
                   </div>
-                  <div className="text-center p-4 glass rounded-lg">
-                    <div className="text-2xl font-bold text-green-600">
-                      {validationResult.valid}
+                  
+                  <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
+                    <div className="text-center p-4 bg-dark-bg/50 rounded-lg border border-white/5">
+                      <div className="text-2xl font-bold font-mono text-white">
+                        {validationResult.total}
+                      </div>
+                      <div className="text-sm text-gray-400">Total Rows</div>
                     </div>
-                    <div className="text-sm text-gray-600 dark:text-gray-400">Valid</div>
-                  </div>
-                  <div className="text-center p-4 glass rounded-lg">
-                    <div className="text-2xl font-bold text-yellow-600">
-                      {validationResult.warnings}
+                    <div className="text-center p-4 bg-dark-bg/50 rounded-lg border border-white/5">
+                      <div className="text-2xl font-bold font-mono text-neon-green">
+                        {validationResult.valid}
+                      </div>
+                      <div className="text-sm text-gray-400">Valid</div>
                     </div>
-                    <div className="text-sm text-gray-600 dark:text-gray-400">Warnings</div>
-                  </div>
-                  <div className="text-center p-4 glass rounded-lg">
-                    <div className="text-2xl font-bold text-red-600">
-                      {validationResult.errors}
+                    <div className="text-center p-4 bg-dark-bg/50 rounded-lg border border-white/5">
+                      <div className="text-2xl font-bold font-mono text-neon-yellow">
+                        {validationResult.warnings}
+                      </div>
+                      <div className="text-sm text-gray-400">Warnings</div>
                     </div>
-                    <div className="text-sm text-gray-600 dark:text-gray-400">Errors</div>
+                    <div className="text-center p-4 bg-dark-bg/50 rounded-lg border border-white/5">
+                      <div className="text-2xl font-bold font-mono text-neon-red">
+                        {validationResult.errors}
+                      </div>
+                      <div className="text-sm text-gray-400">Errors</div>
+                    </div>
                   </div>
-                </div>
 
                 {/* Data Table */}
                 <div className="border rounded-lg overflow-hidden">
@@ -640,7 +654,7 @@ BizBoost Solutions,bizboost.com,Business management platform,Technology,New York
                                 checked={selectedRows.has(competitor.id)}
                                 onChange={() => toggleRowSelection(competitor.id)}
                                 aria-label={`Select ${competitor.name} for import`}
-                                className="rounded border-gray-300"
+                                className="rounded border-gray-600 bg-dark-bg focus:ring-neon-cyan"
                               />
                             )}
                           </TableCell>
@@ -648,7 +662,7 @@ BizBoost Solutions,bizboost.com,Business management platform,Technology,New York
                             <div className="flex items-center space-x-2">
                               {getStatusIcon(competitor.status)}
                               <Badge 
-                                variant="outline" 
+                                variant="cyan" 
                                 className={getStatusBadge(competitor.status)}
                               >
                                 {competitor.status.toUpperCase()}
@@ -660,7 +674,7 @@ BizBoost Solutions,bizboost.com,Business management platform,Technology,New York
                           <TableCell>{competitor.industry || '-'}</TableCell>
                           <TableCell>
                             {competitor.threatLevel && (
-                              <Badge variant="outline">
+                              <Badge variant="purple" className="ml-2">
                                 {competitor.threatLevel.toUpperCase()}
                               </Badge>
                             )}
@@ -684,13 +698,14 @@ BizBoost Solutions,bizboost.com,Business management platform,Technology,New York
                             )}
                           </TableCell>
                           <TableCell>
-                            <BossButton
-                              variant="secondary"
+                            <Button
+                              variant="ghost"
                               size="sm"
+                              className="text-gray-400 hover:text-red-500 hover:bg-red-500/10"
                               onClick={() => removeRow(competitor.id)}
                             >
                               <Trash2 className="w-3 h-3" />
-                            </BossButton>
+                            </Button>
                           </TableCell>
                         </TableRow>
                       ))}
@@ -699,19 +714,21 @@ BizBoost Solutions,bizboost.com,Business management platform,Technology,New York
                 </div>
 
                 {selectedRows.size > 0 && (
-                  <div className="flex items-center justify-between pt-4 border-t border-gray-200 dark:border-gray-700">
-                    <p className="text-sm text-gray-600 dark:text-gray-400">
+                  <div className="flex items-center justify-between pt-4 border-t border-gray-700">
+                    <p className="text-sm text-gray-400">
                       {selectedRows.size} competitor{selectedRows.size > 1 ? 's' : ''} selected for import
                     </p>
-                    <ZapButton
+                    <Button
                       onClick={handleImport}
-                      loading={importing}
+                      disabled={importing}
+                      className="bg-neon-cyan hover:bg-neon-cyan/80 text-black font-bold"
                     >
                       {importing ? 'Importing...' : `Import ${selectedRows.size} Competitor${selectedRows.size > 1 ? 's' : ''}`}
-                    </ZapButton>
+                    </Button>
                   </div>
                 )}
-              </EmpowermentCard>
+              </CardContent>
+            </Card>
             )}
           </TabsContent>
         </Tabs>

@@ -630,7 +630,7 @@ export default function SlaylistPage() {
               <h2 className="font-orbitron font-bold text-xl uppercase tracking-wider text-neon-purple flex items-center gap-2">
                 <Shield className="w-5 h-5" /> High-Level Goals
               </h2>
-              <Badge className="bg-neon-purple/10 text-neon-purple border-neon-purple/30 rounded-none font-mono">{goals.length}</Badge>
+              <Badge variant="purple" className="rounded-none font-mono">{goals.length}</Badge>
             </div>
 
             <div className="space-y-4 max-h-[800px] overflow-y-auto pr-2 custom-scrollbar">
@@ -684,7 +684,7 @@ export default function SlaylistPage() {
                 <Zap className="w-5 h-5 animate-pulse" /> Active Tacticals
               </h2>
               <div className="flex items-center gap-2">
-                 <Badge className="bg-neon-cyan/10 text-neon-cyan border-neon-cyan/30 rounded-none font-mono">{tasks.filter(t => t.status !== 'completed').length} PENDING</Badge>
+                 <Badge variant="cyan" className="rounded-none font-mono">{tasks.filter(t => t.status !== 'completed').length} PENDING</Badge>
                  <Badge className="bg-white/5 text-gray-500 border-white/10 rounded-none font-mono">{tasks.filter(t => t.status === 'completed').length} ARCHIVED</Badge>
               </div>
             </div>

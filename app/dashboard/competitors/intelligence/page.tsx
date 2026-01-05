@@ -78,6 +78,26 @@ interface StrategicAnalysis {
   recommendations: string[]
 }
 
+function getTypeIcon(type: string) {
+  switch (type) {
+    case 'opportunity': return <Zap className="w-4 h-4 text-yellow-400" />
+    case 'threat': return <AlertTriangle className="w-4 h-4 text-red-500" />
+    case 'trend': return <TrendingUp className="w-4 h-4 text-blue-400" />
+    case 'competitive_move': return <Activity className="w-4 h-4 text-purple-400" />
+    default: return <Info className="w-4 h-4 text-gray-400" />
+  }
+}
+
+function getImportanceVariant(importance: string): "cyan" | "magenta" | "lime" | "purple" | "orange" {
+  switch (importance.toLowerCase()) {
+    case 'critical': return 'magenta'
+    case 'high': return 'orange'
+    case 'medium': return 'purple'
+    case 'low': return 'cyan'
+    default: return 'cyan'
+  }
+}
+
 export default function IntelligencePage() {
   const [searchTerm, setSearchTerm] = useState("")
   const [isLoading, setIsLoading] = useState(false)
@@ -226,8 +246,8 @@ export default function IntelligencePage() {
                 <Brain className="w-6 h-6 text-white" />
               </motion.div>
               <div>
-                <h1 className="text-4xl font-bold text-gradient">Competitive Intelligence</h1>
-                <p className="text-lg text-purple-200">
+                <h1 className="text-4xl font-bold font-orbitron text-gradient tracking-wider">Competitive Intelligence</h1>
+                <p className="text-lg text-gray-300 font-mono">
                   AI-powered insights to dominate your competition
                 </p>
               </div>
@@ -255,7 +275,7 @@ export default function IntelligencePage() {
           <motion.div variants={itemVariants} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-6">
             <Card>
               <CardHeader className="pb-2">
-                <CardTitle className="text-sm font-medium text-purple-200">Total Insights</CardTitle>
+                <CardTitle className="text-sm font-medium font-mono text-neon-cyan/70">Total Insights</CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="text-2xl font-bold text-white">{stats.total_insights}</div>
@@ -265,7 +285,7 @@ export default function IntelligencePage() {
 
             <Card>
               <CardHeader className="pb-2">
-                <CardTitle className="text-sm font-medium text-purple-200">Critical Alerts</CardTitle>
+                <CardTitle className="text-sm font-medium font-mono text-neon-magenta/70">Critical Alerts</CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="text-2xl font-bold text-white">{stats.critical_alerts}</div>
@@ -275,7 +295,7 @@ export default function IntelligencePage() {
 
             <Card>
               <CardHeader className="pb-2">
-                <CardTitle className="text-sm font-medium text-purple-200">Opportunities</CardTitle>
+                <CardTitle className="text-sm font-medium font-mono text-neon-lime/70">Opportunities</CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="text-2xl font-bold text-white">{stats.opportunities_identified}</div>
@@ -285,7 +305,7 @@ export default function IntelligencePage() {
 
             <Card>
               <CardHeader className="pb-2">
-                <CardTitle className="text-sm font-medium text-purple-200">Threats</CardTitle>
+                <CardTitle className="text-sm font-medium font-mono text-neon-orange/70">Threats</CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="text-2xl font-bold text-white">{stats.threats_monitored}</div>
@@ -295,7 +315,7 @@ export default function IntelligencePage() {
 
             <Card>
               <CardHeader className="pb-2">
-                <CardTitle className="text-sm font-medium text-purple-200">Market Trends</CardTitle>
+                <CardTitle className="text-sm font-medium font-mono text-blue-400/70">Market Trends</CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="text-2xl font-bold text-white">{stats.market_trends_tracked}</div>
@@ -305,7 +325,7 @@ export default function IntelligencePage() {
 
             <Card>
               <CardHeader className="pb-2">
-                <CardTitle className="text-sm font-medium text-purple-200">Competitive Moves</CardTitle>
+                <CardTitle className="text-sm font-medium font-mono text-neon-purple/70">Competitive Moves</CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="text-2xl font-bold text-white">{stats.competitive_moves_detected}</div>
@@ -319,11 +339,11 @@ export default function IntelligencePage() {
         <motion.div variants={itemVariants}>
           <Card>
             <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <Search className="w-5 h-5 text-cyan-300" />
+              <CardTitle className="flex items-center gap-2 font-orbitron tracking-wide">
+                <Search className="w-5 h-5 text-neon-cyan" />
                 Intelligence Search & Analysis
               </CardTitle>
-              <CardDescription className="text-purple-200">
+              <CardDescription className="text-gray-400 font-mono">
                 Search through competitive intelligence and filter by importance or type
               </CardDescription>
             </CardHeader>
@@ -338,7 +358,7 @@ export default function IntelligencePage() {
                       placeholder="Search insights, competitors, or trends..."
                       value={searchTerm}
                       onChange={(e) => setSearchTerm(e.target.value)}
-                      className="pl-10 bg-white/5 border-purple-700 text-white placeholder:text-purple-300"
+                      className="pl-10 bg-dark-bg border-neon-cyan/30 text-white placeholder:text-gray-500 focus:border-neon-cyan"
                     />
                   </div>
                 </div>
@@ -347,10 +367,10 @@ export default function IntelligencePage() {
                   <div>
                     <Label className="text-purple-200">Importance</Label>
                     <Select value={filterImportance} onValueChange={setFilterImportance}>
-                      <SelectTrigger className="w-40 bg-white/5 border-purple-700 text-white">
+                      <SelectTrigger className="w-40 bg-dark-bg border-neon-cyan/30 text-white">
                         <SelectValue />
                       </SelectTrigger>
-                      <SelectContent className="bg-purple-900 text-white border-purple-700">
+                      <SelectContent className="bg-dark-card text-white border-neon-cyan/30">
                         <SelectItem value="all">All Levels</SelectItem>
                         <SelectItem value="critical">Critical</SelectItem>
                         <SelectItem value="high">High</SelectItem>
@@ -363,10 +383,10 @@ export default function IntelligencePage() {
                   <div>
                     <Label className="text-purple-200">Type</Label>
                     <Select value={filterType} onValueChange={setFilterType}>
-                      <SelectTrigger className="w-40 bg-white/5 border-purple-700 text-white">
+                      <SelectTrigger className="w-40 bg-dark-bg border-neon-cyan/30 text-white">
                         <SelectValue />
                       </SelectTrigger>
-                      <SelectContent className="bg-purple-900 text-white border-purple-700">
+                      <SelectContent className="bg-dark-card text-white border-neon-cyan/30">
                         <SelectItem value="all">All Types</SelectItem>
                         <SelectItem value="opportunity">Opportunities</SelectItem>
                         <SelectItem value="threat">Threats</SelectItem>
@@ -379,10 +399,10 @@ export default function IntelligencePage() {
                   <div>
                     <Label className="text-purple-200">Timeframe</Label>
                     <Select value={timeframe} onValueChange={setTimeframe}>
-                      <SelectTrigger className="w-32 bg-white/5 border-purple-700 text-white">
+                      <SelectTrigger className="w-32 bg-dark-bg border-neon-cyan/30 text-white">
                         <SelectValue />
                       </SelectTrigger>
-                      <SelectContent className="bg-purple-900 text-white border-purple-700">
+                      <SelectContent className="bg-dark-card text-white border-neon-cyan/30">
                         <SelectItem value="7d">Last 7 days</SelectItem>
                         <SelectItem value="30d">Last 30 days</SelectItem>
                         <SelectItem value="90d">Last 90 days</SelectItem>
@@ -435,14 +455,15 @@ export default function IntelligencePage() {
                         initial={{ opacity: 0, x: -20 }}
                         animate={{ opacity: 1, x: 0 }}
                         transition={{ delay: index * 0.1 }}
-                        className="p-4 bg-white/5 rounded-lg border border-purple-700 space-y-2"
+
+                        className="p-4 bg-dark-card rounded-lg border border-neon-cyan/20 space-y-2 hover:border-neon-cyan/50 transition-colors"
                       >
                         <div className="flex items-center justify-between">
                           <div className="flex items-center gap-2">
                             {getTypeIcon(insight.type)}
                             <span className="font-medium text-white">{insight.title}</span>
                           </div>
-                          <Badge className={getImportanceColor(insight.importance)}>
+                          <Badge variant={getImportanceVariant(insight.importance)}>
                             {insight.importance}
                           </Badge>
                         </div>
@@ -476,35 +497,35 @@ export default function IntelligencePage() {
                   <CardContent className="space-y-4">
                     {marketPosition ? (
                       <>
-                        <div className="flex items-center justify-between p-3 bg-white/5 rounded-lg">
-                          <span className="text-purple-200">Market Share</span>
+                        <div className="flex items-center justify-between p-3 bg-dark-bg/50 rounded-lg border border-white/5">
+                          <span className="text-gray-300 font-mono text-sm">Market Share</span>
                           <div className="flex items-center gap-2">
                             <Progress value={marketPosition.market_share} className="w-20 h-2" />
                             <span className="text-white font-medium">{marketPosition.market_share}%</span>
                           </div>
                         </div>
-                        <div className="flex items-center justify-between p-3 bg-white/5 rounded-lg">
-                          <span className="text-purple-200">Competitive Advantage</span>
-                          <Badge className={`${
-                            marketPosition.competitive_advantage === 'strong' ? 'bg-green-500/20 text-green-500 border-green-500/30' :
-                            marketPosition.competitive_advantage === 'moderate' ? 'bg-yellow-500/20 text-yellow-500 border-yellow-500/30' :
-                            'bg-orange-500/20 text-orange-500 border-orange-500/30'
-                          }`}>
+                        <div className="flex items-center justify-between p-3 bg-dark-bg/50 rounded-lg border border-white/5">
+                          <span className="text-gray-300 font-mono text-sm">Competitive Advantage</span>
+                          <Badge variant={
+                            marketPosition.competitive_advantage === 'strong' ? 'lime' :
+                            marketPosition.competitive_advantage === 'moderate' ? 'orange' :
+                            'magenta'
+                          }>
                             {marketPosition.competitive_advantage.charAt(0).toUpperCase() + marketPosition.competitive_advantage.slice(1)}
                           </Badge>
                         </div>
-                        <div className="flex items-center justify-between p-3 bg-white/5 rounded-lg">
-                          <span className="text-purple-200">Innovation Index</span>
-                          <Badge className={`${
-                            marketPosition.innovation_index === 'high' ? 'bg-blue-500/20 text-blue-500 border-blue-500/30' :
-                            marketPosition.innovation_index === 'moderate' ? 'bg-yellow-500/20 text-yellow-500 border-yellow-500/30' :
-                            'bg-orange-500/20 text-orange-500 border-orange-500/30'
-                          }`}>
+                        <div className="flex items-center justify-between p-3 bg-dark-bg/50 rounded-lg border border-white/5">
+                          <span className="text-gray-300 font-mono text-sm">Innovation Index</span>
+                          <Badge variant={
+                            marketPosition.innovation_index === 'high' ? 'cyan' :
+                            marketPosition.innovation_index === 'moderate' ? 'orange' :
+                            'magenta'
+                          }>
                             {marketPosition.innovation_index.charAt(0).toUpperCase() + marketPosition.innovation_index.slice(1)}
                           </Badge>
                         </div>
-                        <div className="flex items-center justify-between p-3 bg-white/5 rounded-lg">
-                          <span className="text-purple-200">Customer Satisfaction</span>
+                        <div className="flex items-center justify-between p-3 bg-dark-bg/50 rounded-lg border border-white/5">
+                          <span className="text-gray-300 font-mono text-sm">Customer Satisfaction</span>
                           <Badge className="bg-purple-500/20 text-purple-500 border-purple-500/30">
                             {marketPosition.customer_satisfaction.charAt(0).toUpperCase() + marketPosition.customer_satisfaction.slice(1)}
                           </Badge>
@@ -534,8 +555,8 @@ export default function IntelligencePage() {
                   {strategicAnalysis ? (
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                       <div className="space-y-4">
-                        <h4 className="font-semibold text-white flex items-center gap-2">
-                          <CheckCircle className="w-4 h-4 text-green-400" />
+                        <h4 className="font-semibold text-white flex items-center gap-2 font-orbitron tracking-wide text-sm">
+                          <CheckCircle className="w-4 h-4 text-neon-green" />
                           Opportunities
                         </h4>
                         <div className="space-y-3">
@@ -554,8 +575,8 @@ export default function IntelligencePage() {
                       </div>
 
                       <div className="space-y-4">
-                        <h4 className="font-semibold text-white flex items-center gap-2">
-                          <AlertTriangle className="w-4 h-4 text-red-400" />
+                        <h4 className="font-semibold text-white flex items-center gap-2 font-orbitron tracking-wide text-sm">
+                          <AlertTriangle className="w-4 h-4 text-neon-magenta" />
                           Threats
                         </h4>
                         <div className="space-y-3">

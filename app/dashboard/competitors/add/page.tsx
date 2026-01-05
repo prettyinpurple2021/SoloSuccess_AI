@@ -311,7 +311,7 @@ export default function AddCompetitorPage() {
             <div className="flex items-center space-x-2">
               <div className={`w-3 h-3 rounded-none ${getThreatLevelColor(formData.threatLevel)}`} />
               <Badge 
-                variant="outline" 
+                variant="orange" 
                 className={`${getThreatLevelBadge(formData.threatLevel)} rounded-none font-mono`}
               >
                 {formData.threatLevel.toUpperCase()} THREAT
@@ -596,7 +596,7 @@ export default function AddCompetitorPage() {
               </CyberButton>
             ) : (
               <CyberButton
-                variant="neon"
+                variant="purple"
                 onClick={handleSubmit}
                 disabled={loading}
                 className="bg-neon-purple hover:bg-neon-purple/80 text-white shadow-[0_0_15px_rgba(179,0,255,0.4)]"

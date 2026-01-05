@@ -499,7 +499,7 @@ export default function TemplatesDashboard() {
                       </Dialog>
 
                       <CyberButton
-                        variant="destructive"
+                        variant="error"
                         size="sm"
                         className="flex-1 bg-neon-magenta hover:bg-neon-magenta/90"
                         onClick={() => handleDeleteTemplate(template.id)}

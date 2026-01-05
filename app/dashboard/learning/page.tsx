@@ -8,6 +8,7 @@ import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { Progress } from '@/components/ui/progress'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
+import { Loading } from '@/components/ui/loading'
 import {
   BookOpen,
   Target,
@@ -143,7 +144,7 @@ export default function LearningDashboard() {
       logInfo('Learning data loaded successfully')
     } catch (error) {
       logError('Error loading learning data:', error)
-      toast.error('Failed to load learning data', { icon: '❌' })
+      toast.error('Failed to load learning data')
     } finally {
       setLoading(false)
     }
@@ -157,7 +158,7 @@ export default function LearningDashboard() {
     setRefreshing(true)
     await loadLearningData()
     setRefreshing(false)
-    toast.success('Learning data refreshed!', { icon: '✅' })
+    toast.success('Learning data refreshed!')
   }
 
   const containerVariants = {
@@ -190,53 +191,52 @@ export default function LearningDashboard() {
 
   const getPriorityColor = (priority: string) => {
     switch (priority) {
-      case 'high': return 'bg-red-500/20 text-red-500 border-red-500/30'
-      case 'medium': return 'bg-yellow-500/20 text-yellow-500 border-yellow-500/30'
-      case 'low': return 'bg-green-500/20 text-green-500 border-green-500/30'
-      default: return 'bg-gray-500/20 text-gray-500 border-gray-500/30'
+      case 'high': return 'bg-red-500/20 text-red-400 border-red-500/30'
+      case 'medium': return 'bg-yellow-500/20 text-yellow-400 border-yellow-500/30'
+      case 'low': return 'bg-green-500/20 text-green-400 border-green-500/30'
+      default: return 'bg-gray-500/20 text-gray-400 border-gray-500/30'
     }
   }
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-purple-950 to-black text-white flex items-center justify-center">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-cyan-500 mx-auto mb-4"></div>
-          <p className="text-purple-200">Loading your learning journey...</p>
-        </div>
+      <div className="min-h-screen bg-black text-white flex items-center justify-center font-mono">
+        <Loading 
+            variant="pulse" 
+            size="lg" 
+          />
       </div>
     )
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-950 to-black text-white">
+    <div className="min-h-screen bg-black text-white font-mono p-6">
       <motion.div
         variants={containerVariants}
         initial="hidden"
         animate="visible"
-        className="p-6 space-y-8"
+        className="max-w-7xl mx-auto space-y-8"
       >
         {/* Header */}
-        <motion.div variants={itemVariants} className="flex items-center justify-between">
+        <motion.div variants={itemVariants} className="flex flex-col md:flex-row md:items-center justify-between gap-6">
           <div className="space-y-2">
-            <div className="flex items-center space-x-3">
+            <div className="flex items-center space-x-4">
               <motion.div
                 animate={{
-                  rotate: [0, 10, -10, 0],
-                  scale: [1, 1.1, 1]
+                  boxShadow: ["0 0 10px #0ea5e9", "0 0 20px #a855f7", "0 0 10px #0ea5e9"],
                 }}
                 transition={{
                   duration: 3,
                   repeat: Infinity,
                   ease: "easeInOut"
                 }}
-                className="w-12 h-12 bg-gradient-to-br from-cyan-400 to-purple-500 rounded-lg flex items-center justify-center shadow-md"
+                className="w-14 h-14 bg-dark-card border border-neon-cyan/50 rounded-lg flex items-center justify-center shadow-[0_0_15px_rgba(6,182,212,0.3)]"
               >
-                <GraduationCap className="w-6 h-6 text-white" />
+                <GraduationCap className="w-7 h-7 text-neon-cyan" />
               </motion.div>
               <div>
-                <h1 className="text-4xl font-bold text-gradient">Learning Center</h1>
-                <p className="text-lg text-purple-200">
+                <h1 className="text-4xl font-bold font-orbitron text-transparent bg-clip-text bg-gradient-to-r from-white to-gray-400">Learning Center</h1>
+                <p className="text-lg text-gray-400">
                   Personalized learning paths to accelerate your entrepreneurial journey
                 </p>
               </div>
@@ -248,11 +248,12 @@ export default function LearningDashboard() {
               size="sm"
               onClick={handleRefresh}
               disabled={refreshing}
+              className="border-neon-cyan/50 text-neon-cyan hover:bg-neon-cyan/10"
             >
               <RefreshCw className={`w-4 h-4 mr-2 ${refreshing ? 'animate-spin' : ''}`} />
               Refresh
             </Button>
-            <Button>
+            <Button className="bg-neon-cyan text-black font-bold hover:bg-neon-cyan/80">
               <Download className="w-4 h-4 mr-2" />
               Export Progress
             </Button>
@@ -262,60 +263,60 @@ export default function LearningDashboard() {
         {/* Learning Tabs */}
         <motion.div variants={itemVariants}>
           <Tabs value={activeTab} onValueChange={(value) => setActiveTab(value as any)} className="space-y-6">
-            <TabsList className="grid w-full grid-cols-6 bg-purple-900/50 border border-purple-700">
-              <TabsTrigger value="overview" className="data-[state=active]:bg-cyan-500 data-[state=active]:text-white">
+            <TabsList className="grid w-full grid-cols-2 md:grid-cols-3 lg:grid-cols-6 bg-dark-card border border-neon-cyan/30 p-1">
+              <TabsTrigger value="overview" className="data-[state=active]:bg-neon-cyan/20 data-[state=active]:text-neon-cyan">
                 <BookOpen className="w-4 h-4 mr-2" />
                 Overview
               </TabsTrigger>
-              <TabsTrigger value="skill-gaps" className="data-[state=active]:bg-cyan-500 data-[state=active]:text-white">
+              <TabsTrigger value="skill-gaps" className="data-[state=active]:bg-neon-cyan/20 data-[state=active]:text-neon-cyan">
                 <Target className="w-4 h-4 mr-2" />
                 Skill Gaps
               </TabsTrigger>
-              <TabsTrigger value="recommendations" className="data-[state=active]:bg-cyan-500 data-[state=active]:text-white">
+              <TabsTrigger value="recommendations" className="data-[state=active]:bg-neon-cyan/20 data-[state=active]:text-neon-cyan">
                 <TrendingUp className="w-4 h-4 mr-2" />
-                Recommendations
+                Recs
               </TabsTrigger>
-              <TabsTrigger value="progress" className="data-[state=active]:bg-cyan-500 data-[state=active]:text-white">
+              <TabsTrigger value="progress" className="data-[state=active]:bg-neon-cyan/20 data-[state=active]:text-neon-cyan">
                 <Award className="w-4 h-4 mr-2" />
                 Progress
               </TabsTrigger>
-              <TabsTrigger value="analytics" className="data-[state=active]:bg-cyan-500 data-[state=active]:text-white">
+              <TabsTrigger value="analytics" className="data-[state=active]:bg-neon-cyan/20 data-[state=active]:text-neon-cyan">
                 <BarChart3 className="w-4 h-4 mr-2" />
                 Analytics
               </TabsTrigger>
-              <TabsTrigger value="achievements" className="data-[state=active]:bg-cyan-500 data-[state=active]:text-white">
+              <TabsTrigger value="achievements" className="data-[state=active]:bg-neon-cyan/20 data-[state=active]:text-neon-cyan">
                 <Trophy className="w-4 h-4 mr-2" />
-                Achievements
+                Rewards
               </TabsTrigger>
             </TabsList>
 
             {/* Overview Tab */}
-            <TabsContent value="overview" className="space-y-6">
+            <TabsContent value="overview" className="space-y-6 animate-in fade-in-50 slide-in-from-bottom-2 duration-300">
               {analytics && <OverviewTab analytics={analytics} formatTime={formatTime} />}
             </TabsContent>
 
             {/* Skill Gaps Tab */}
-            <TabsContent value="skill-gaps" className="space-y-6">
+            <TabsContent value="skill-gaps" className="space-y-6 animate-in fade-in-50 slide-in-from-bottom-2 duration-300">
               <SkillGapsTab skillGaps={skillGaps} getPriorityColor={getPriorityColor} />
             </TabsContent>
 
             {/* Recommendations Tab */}
-            <TabsContent value="recommendations" className="space-y-6">
+            <TabsContent value="recommendations" className="space-y-6 animate-in fade-in-50 slide-in-from-bottom-2 duration-300">
               <RecommendationsTab recommendations={recommendations} getPriorityColor={getPriorityColor} />
             </TabsContent>
 
             {/* Progress Tab */}
-            <TabsContent value="progress" className="space-y-6">
+            <TabsContent value="progress" className="space-y-6 animate-in fade-in-50 slide-in-from-bottom-2 duration-300">
               <ProgressTab progress={progress} formatTime={formatTime} />
             </TabsContent>
 
             {/* Analytics Tab */}
-            <TabsContent value="analytics" className="space-y-6">
+            <TabsContent value="analytics" className="space-y-6 animate-in fade-in-50 slide-in-from-bottom-2 duration-300">
               {analytics && <AnalyticsTab analytics={analytics} formatTime={formatTime} />}
             </TabsContent>
 
             {/* Achievements Tab */}
-            <TabsContent value="achievements" className="space-y-6">
+            <TabsContent value="achievements" className="space-y-6 animate-in fade-in-50 slide-in-from-bottom-2 duration-300">
               <AchievementsTab analytics={analytics} />
             </TabsContent>
           </Tabs>
@@ -330,125 +331,134 @@ function OverviewTab({ analytics, formatTime }: { analytics: LearningAnalytics, 
     <div className="space-y-8">
       {/* Stats Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        <Card>
+        <Card className="bg-dark-card border-neon-cyan/30 shadow-[0_0_10px_rgba(6,182,212,0.1)]">
           <CardHeader className="pb-2">
-            <CardTitle className="text-sm font-medium text-purple-200">Modules Completed</CardTitle>
+            <CardTitle className="text-sm font-medium text-gray-400 font-orbitron">Modules Completed</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold text-white">{analytics.total_modules_completed}</div>
-            <p className="text-xs text-green-400">+3 this week</p>
+            <p className="text-xs text-green-400 font-mono mt-1 flex items-center">
+              <TrendingUp className="w-3 h-3 mr-1" />
+              +3 this week
+            </p>
           </CardContent>
         </Card>
 
-        <Card>
+        <Card className="bg-dark-card border-neon-cyan/30 shadow-[0_0_10px_rgba(6,182,212,0.1)]">
           <CardHeader className="pb-2">
-            <CardTitle className="text-sm font-medium text-purple-200">Learning Streak</CardTitle>
+            <CardTitle className="text-sm font-medium text-gray-400 font-orbitron">Learning Streak</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold text-white">{analytics.current_streak} days</div>
-            <p className="text-xs text-orange-400 flex items-center gap-1">
+            <p className="text-xs text-orange-400 font-mono mt-1 flex items-center gap-1">
               <Flame className="w-3 h-3" />
               Keep it going!
             </p>
           </CardContent>
         </Card>
 
-        <Card>
+        <Card className="bg-dark-card border-neon-cyan/30 shadow-[0_0_10px_rgba(6,182,212,0.1)]">
           <CardHeader className="pb-2">
-            <CardTitle className="text-sm font-medium text-purple-200">Skills Improved</CardTitle>
+            <CardTitle className="text-sm font-medium text-gray-400 font-orbitron">Skills Improved</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold text-white">{analytics.skills_improved}</div>
-            <p className="text-xs text-blue-400">Leveling up!</p>
+            <p className="text-xs text-blue-400 font-mono mt-1 flex items-center">
+              <ArrowRight className="w-3 h-3 mr-1" />
+              Leveling up!
+            </p>
           </CardContent>
         </Card>
 
-        <Card>
+        <Card className="bg-dark-card border-neon-cyan/30 shadow-[0_0_10px_rgba(6,182,212,0.1)]">
           <CardHeader className="pb-2">
-            <CardTitle className="text-sm font-medium text-purple-200">Certifications</CardTitle>
+            <CardTitle className="text-sm font-medium text-gray-400 font-orbitron">Certifications</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold text-white">{analytics.certifications_earned}</div>
-            <p className="text-xs text-purple-400">Achievements unlocked</p>
+            <p className="text-xs text-purple-400 font-mono mt-1 flex items-center">
+              <Award className="w-3 h-3 mr-1" />
+              Achievements unlocked
+            </p>
           </CardContent>
         </Card>
       </div>
 
       {/* Learning Progress */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <Card>
+        <Card className="bg-dark-card border-neon-cyan/30">
           <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <Target className="w-5 h-5 text-green-300" />
+            <CardTitle className="flex items-center gap-2 text-white font-orbitron">
+              <Target className="w-5 h-5 text-green-400" />
               Weekly Learning Goal
             </CardTitle>
-            <CardDescription className="text-purple-200">
+            <CardDescription className="text-gray-400 font-mono">
               Track your progress towards weekly learning objectives
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
-            <div className="flex items-center justify-between">
-              <span className="text-purple-200">Progress</span>
-              <span className="text-white font-medium">{analytics.weekly_goal_progress}%</span>
+            <div className="flex items-center justify-between font-mono">
+              <span className="text-gray-400">Progress</span>
+              <span className="text-neon-cyan font-bold">{analytics.weekly_goal_progress}%</span>
             </div>
-            <Progress value={analytics.weekly_goal_progress} className="h-3" />
-            <div className="flex items-center justify-between text-sm">
-              <span className="text-purple-300">3 modules completed</span>
-              <span className="text-purple-300">4 modules target</span>
+            <Progress value={analytics.weekly_goal_progress} className="h-3 bg-dark-bg border border-neon-cyan/20" indicatorClassName="bg-neon-cyan" />
+            <div className="flex items-center justify-between text-sm font-mono text-gray-400">
+              <span className="text-green-400">3 modules completed</span>
+              <span>4 modules target</span>
             </div>
           </CardContent>
         </Card>
 
-        <Card>
+        <Card className="bg-dark-card border-neon-cyan/30">
           <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <Crown className="w-5 h-5 text-yellow-300" />
+            <CardTitle className="flex items-center gap-2 text-white font-orbitron">
+              <Crown className="w-5 h-5 text-yellow-400" />
               Peer Ranking
             </CardTitle>
-            <CardDescription className="text-purple-200">
+            <CardDescription className="text-gray-400 font-mono">
               Your position among other learners
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="text-center">
-              <div className="text-3xl font-bold text-white mb-2">#{analytics.peer_rank}</div>
-              <p className="text-purple-200">Out of 150 learners</p>
+              <div className="text-4xl font-bold text-white mb-2 font-orbitron">#{analytics.peer_rank}</div>
+              <p className="text-gray-400 font-mono">Out of 150 learners</p>
             </div>
             <div className="flex items-center justify-center gap-2">
-              <Trophy className="w-4 h-4 text-yellow-400" />
-              <span className="text-yellow-400 text-sm">Top 5% performer</span>
+              <Trophy className="w-4 h-4 text-yellow-500" />
+              <span className="text-yellow-500 text-sm font-bold font-mono">Top 5% performer</span>
             </div>
           </CardContent>
         </Card>
       </div>
 
       {/* Top Learning Categories */}
-      <Card>
+      <Card className="bg-dark-card border-neon-cyan/30">
         <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <Sparkles className="w-5 h-5 text-yellow-300" />
+          <CardTitle className="flex items-center gap-2 text-white font-orbitron">
+            <Sparkles className="w-5 h-5 text-yellow-400" />
             Top Learning Categories
           </CardTitle>
-          <CardDescription className="text-purple-200">
+          <CardDescription className="text-gray-400 font-mono">
             Your most focused learning areas
           </CardDescription>
         </CardHeader>
         <CardContent>
           <div className="space-y-4">
             {analytics.top_categories.map((category, index) => (
-              <div key={category.category} className="flex items-center justify-between p-4 bg-white/5 rounded-lg border border-purple-700">
+              <div key={category.category} className="flex items-center justify-between p-4 bg-dark-bg rounded-lg border border-neon-cyan/20 hover:border-neon-cyan/50 transition-colors">
                 <div className="flex items-center gap-4">
-                  <div className="w-8 h-8 bg-gradient-to-br from-cyan-400 to-purple-500 rounded-full flex items-center justify-center text-white font-bold text-sm">
+                  <div className="w-8 h-8 bg-neon-cyan/10 border border-neon-cyan/30 text-neon-cyan rounded-full flex items-center justify-center font-bold text-sm font-mono shadow-[0_0_8px_rgba(6,182,212,0.2)]">
                     {index + 1}
                   </div>
                   <div>
-                    <h4 className="font-semibold text-white">{category.category}</h4>
-                    <p className="text-sm text-purple-200">{category.modules_completed} modules</p>
+                    <h4 className="font-semibold text-white font-orbitron text-sm">{category.category}</h4>
+                    <p className="text-xs text-gray-400 font-mono">{category.modules_completed} modules</p>
                   </div>
                 </div>
                 <div className="text-right">
-                  <div className="text-sm text-white font-medium">{formatTime(category.time_spent)}</div>
-                  <div className="text-xs text-purple-300">Total time</div>
+                  <div className="text-sm text-neon-cyan font-bold font-mono">{formatTime(category.time_spent)}</div>
+                  <div className="text-xs text-gray-500 font-mono">Total time</div>
                 </div>
               </div>
             ))}
@@ -462,11 +472,11 @@ function OverviewTab({ analytics, formatTime }: { analytics: LearningAnalytics, 
 function SkillGapsTab({ skillGaps, getPriorityColor }: { skillGaps: SkillGap[], getPriorityColor: (p: string) => string }) {
   if (skillGaps.length === 0) {
     return (
-      <Card>
-        <CardContent className="text-center py-12">
-          <Target className="w-16 h-16 text-green-400 mx-auto mb-4" />
-          <h3 className="text-xl font-semibold text-white mb-2">No Skill Gaps Detected!</h3>
-          <p className="text-purple-200">You're doing great! Keep up the excellent work.</p>
+      <Card className="bg-dark-card border-neon-cyan/30">
+        <CardContent className="text-center py-16">
+          <Target className="w-20 h-20 text-green-500 mx-auto mb-6 opacity-80" />
+          <h3 className="text-2xl font-bold text-white mb-3 font-orbitron">No Skill Gaps Detected!</h3>
+          <p className="text-gray-400 font-mono max-w-md mx-auto">You're doing great! Keep up the excellent work and continue monitoring your progress.</p>
         </CardContent>
       </Card>
     )
@@ -481,50 +491,52 @@ function SkillGapsTab({ skillGaps, getPriorityColor }: { skillGaps: SkillGap[], 
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: index * 0.1 }}
         >
-          <Card>
+          <Card className="bg-dark-card border-neon-cyan/30">
             <CardHeader>
               <div className="flex items-start justify-between">
                 <div>
-                  <CardTitle className="text-white">{gap.skill.name}</CardTitle>
-                  <CardDescription className="text-purple-200">{gap.skill.description}</CardDescription>
+                  <CardTitle className="text-white font-orbitron text-lg">{gap.skill.name}</CardTitle>
+                  <CardDescription className="text-gray-400 font-mono">{gap.skill.description}</CardDescription>
                 </div>
-                <Badge className={getPriorityColor(gap.priority)}>
+                <Badge variant="orange" className={`${getPriorityColor(gap.priority)} font-bold`}>
                   {gap.gap_score}% gap
                 </Badge>
               </div>
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="space-y-2">
-                <div className="flex justify-between text-sm">
-                  <span className="text-purple-200">Skill Gap</span>
+                <div className="flex justify-between text-sm font-mono">
+                  <span className="text-gray-400">Skill Gap Score</span>
                   <span className="text-white">{gap.gap_score}%</span>
                 </div>
-                <Progress value={gap.gap_score} className="h-2" indicatorClassName="bg-gradient-to-r from-red-500 to-yellow-500" />
+                <Progress value={gap.gap_score} className="h-2 bg-dark-bg" indicatorClassName="bg-gradient-to-r from-red-500 to-yellow-500" />
               </div>
 
               {gap.recommended_modules.length > 0 && (
-                <div className="space-y-3">
-                  <h4 className="font-semibold text-white">Recommended Modules:</h4>
+                <div className="space-y-3 mt-4">
+                  <h4 className="font-semibold text-neon-cyan font-orbitron text-sm uppercase tracking-wider">Recommended Modules:</h4>
                   {gap.recommended_modules.map((module) => (
-                    <div key={module.id} className="p-3 bg-white/5 rounded-lg border border-purple-700">
+                    <div key={module.id} className="p-3 bg-dark-bg/60 rounded-lg border border-neon-cyan/20 hover:border-neon-cyan/40 transition-colors">
                       <div className="flex items-center justify-between mb-2">
-                        <h5 className="font-medium text-white">{module.title}</h5>
-                        <Badge variant="outline" className="border-purple-600 text-purple-200">
+                        <h5 className="font-medium text-white font-orbitron text-sm">{module.title}</h5>
+                        <Badge variant="purple" className="flex items-center gap-1">
                           {module.duration_minutes}m
                         </Badge>
                       </div>
-                      <p className="text-sm text-purple-200 mb-3">{module.description}</p>
+                      <p className="text-sm text-gray-400 mb-3 font-mono line-clamp-2">{module.description}</p>
                       <div className="flex items-center justify-between">
-                        <div className="flex items-center gap-2">
-                          <Star className="w-4 h-4 text-yellow-400" />
-                          <span className="text-sm text-white">{module.rating}</span>
-                          <Badge variant="outline" className="border-cyan-600 text-cyan-200">
+                        <div className="flex items-center gap-3">
+                          <div className="flex items-center gap-1">
+                             <Star className="w-3 h-3 text-yellow-400 fill-yellow-400" />
+                             <span className="text-sm text-white font-mono">{module.rating}</span>
+                          </div>
+                          <Badge variant="purple" className="border-purple-500/50 text-purple-400 text-xs">
                             {module.difficulty}
                           </Badge>
                         </div>
-                        <Button size="sm">
-                          <Play className="w-4 h-4 mr-2" />
-                          Start Learning
+                        <Button size="sm" className="h-7 text-xs bg-neon-cyan text-black font-bold hover:bg-neon-cyan/80">
+                          <Play className="w-3 h-3 mr-1" />
+                          Start
                         </Button>
                       </div>
                     </div>
@@ -542,11 +554,11 @@ function SkillGapsTab({ skillGaps, getPriorityColor }: { skillGaps: SkillGap[], 
 function RecommendationsTab({ recommendations, getPriorityColor }: { recommendations: LearningRecommendation[], getPriorityColor: (p: string) => string }) {
   if (recommendations.length === 0) {
     return (
-      <Card>
-        <CardContent className="text-center py-12">
-          <TrendingUp className="w-16 h-16 text-blue-400 mx-auto mb-4" />
-          <h3 className="text-xl font-semibold text-white mb-2">No Recommendations Yet</h3>
-          <p className="text-purple-200">Complete a skill assessment to get personalized recommendations.</p>
+      <Card className="bg-dark-card border-neon-cyan/30">
+        <CardContent className="text-center py-16">
+          <TrendingUp className="w-20 h-20 text-blue-500 mx-auto mb-6 opacity-80" />
+          <h3 className="text-2xl font-bold text-white mb-3 font-orbitron">No Recommendations Yet</h3>
+          <p className="text-gray-400 font-mono max-w-md mx-auto">Complete a skill assessment to get personalized recommendations tailored to your goals.</p>
         </CardContent>
       </Card>
     )
@@ -561,44 +573,46 @@ function RecommendationsTab({ recommendations, getPriorityColor }: { recommendat
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: index * 0.1 }}
         >
-          <Card>
-            <CardHeader>
+          <Card className="bg-dark-card border-neon-cyan/30 relative overflow-hidden group">
+            <div className="absolute top-0 left-0 w-1 h-full bg-gradient-to-b from-neon-cyan to-purple-600 opacity-80"></div>
+            <CardHeader className="pl-6">
               <div className="flex items-start justify-between">
                 <div>
-                  <CardTitle className="text-white">Learning Module #{index + 1}</CardTitle>
-                  <CardDescription className="text-purple-200">{rec.reason}</CardDescription>
+                  <CardTitle className="text-white font-orbitron">Learning Module #{index + 1}</CardTitle>
+                  <CardDescription className="text-gray-400 font-mono mt-1">{rec.reason}</CardDescription>
                 </div>
-                <Badge className={getPriorityColor(rec.priority)}>
+                <Badge variant="orange" className={`${getPriorityColor(rec.priority)} font-bold`}>
                   {rec.priority} priority
                 </Badge>
               </div>
             </CardHeader>
-            <CardContent className="space-y-4">
+            <CardContent className="space-y-4 pl-6">
               <div className="space-y-2">
-                <div className="flex justify-between text-sm">
-                  <span className="text-purple-200">Estimated Impact</span>
-                  <span className="text-white">{rec.estimated_impact}%</span>
+                <div className="flex justify-between text-sm font-mono">
+                  <span className="text-gray-400">Estimated Impact</span>
+                  <span className="text-neon-cyan font-bold">{rec.estimated_impact}%</span>
                 </div>
-                <Progress value={rec.estimated_impact} className="h-2" indicatorClassName="bg-gradient-to-r from-blue-500 to-purple-500" />
+                <Progress value={rec.estimated_impact} className="h-2 bg-dark-bg" indicatorClassName="bg-gradient-to-r from-blue-500 to-purple-500" />
               </div>
 
-              <div className="flex items-center justify-between">
+              <div className="flex items-center justify-between mt-4">
                 <div className="flex items-center gap-2">
                   {rec.prerequisites_met ? (
                     <CheckCircle className="w-4 h-4 text-green-400" />
                   ) : (
-                    <div className="w-4 h-4 border-2 border-yellow-400 rounded-full" />
+                    <div className="w-4 h-4 border-2 border-yellow-500 rounded-full" />
                   )}
-                  <span className="text-sm text-purple-200">
+                  <span className={`text-sm font-mono ${rec.prerequisites_met ? 'text-green-400' : 'text-yellow-500'}`}>
                     {rec.prerequisites_met ? 'Prerequisites met' : 'Prerequisites required'}
                   </span>
                 </div>
-                <div className="text-sm text-purple-200">
+                <div className="text-sm text-gray-400 font-mono flex items-center">
+                  <Clock className="w-3 h-3 mr-1" />
                   ~{rec.estimated_completion_time}m to complete
                 </div>
               </div>
 
-              <Button className="w-full">
+              <Button className="w-full mt-4 bg-neon-cyan text-black font-bold hover:bg-neon-cyan/80 group-hover:shadow-[0_0_15px_rgba(6,182,212,0.4)] transition-all">
                 <Play className="w-4 h-4 mr-2" />
                 Start Learning Module
               </Button>
@@ -613,11 +627,11 @@ function RecommendationsTab({ recommendations, getPriorityColor }: { recommendat
 function ProgressTab({ progress, formatTime }: { progress: UserProgress[], formatTime: (m: number) => string }) {
   if (progress.length === 0) {
     return (
-      <Card>
-        <CardContent className="text-center py-12">
-          <Award className="w-16 h-16 text-purple-400 mx-auto mb-4" />
-          <h3 className="text-xl font-semibold text-white mb-2">No Learning Progress Yet</h3>
-          <p className="text-purple-200">Start your first learning module to track your progress.</p>
+      <Card className="bg-dark-card border-neon-cyan/30">
+        <CardContent className="text-center py-16">
+          <Award className="w-20 h-20 text-purple-500 mx-auto mb-6 opacity-80" />
+          <h3 className="text-2xl font-bold text-white mb-3 font-orbitron">No Learning Progress Yet</h3>
+          <p className="text-gray-400 font-mono max-w-md mx-auto">Start your first learning module to track your progress and earn achievements.</p>
         </CardContent>
       </Card>
     )
@@ -632,53 +646,53 @@ function ProgressTab({ progress, formatTime }: { progress: UserProgress[], forma
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: index * 0.1 }}
         >
-          <Card>
+          <Card className="bg-dark-card border-neon-cyan/30">
             <CardHeader>
               <div className="flex items-center justify-between">
-                <CardTitle className="text-white">Module: {prog.module_id}</CardTitle>
-                <Badge className="bg-green-500/20 text-green-500 border-green-500/30">
+                <CardTitle className="text-white font-orbitron">Module: {prog.module_id}</CardTitle>
+                <Badge variant="lime" className="font-mono">
                   {prog.completion_percentage}% Complete
                 </Badge>
               </div>
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="space-y-2">
-                <div className="flex justify-between text-sm">
-                  <span className="text-purple-200">Progress</span>
+                <div className="flex justify-between text-sm font-mono">
+                  <span className="text-gray-400">Progress</span>
                   <span className="text-white">{prog.completion_percentage}%</span>
                 </div>
-                <Progress value={prog.completion_percentage} className="h-3" indicatorClassName="bg-gradient-to-r from-green-500 to-blue-500" />
+                <Progress value={prog.completion_percentage} className="h-3 bg-dark-bg" indicatorClassName="bg-gradient-to-r from-green-500 to-blue-500" />
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
-                <div className="flex items-center gap-2 p-3 bg-white/5 rounded-lg">
-                  <Clock className="w-4 h-4 text-blue-400" />
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm mt-4">
+                <div className="flex items-center gap-3 p-3 bg-dark-bg rounded-lg border border-neon-cyan/10">
+                  <Clock className="w-5 h-5 text-blue-400" />
                   <div>
-                    <div className="text-white font-medium">{formatTime(prog.time_spent)}</div>
-                    <div className="text-purple-300 text-xs">Time Spent</div>
+                    <div className="text-white font-medium font-mono">{formatTime(prog.time_spent)}</div>
+                    <div className="text-gray-500 text-xs uppercase tracking-wider">Time Spent</div>
                   </div>
                 </div>
-                <div className="flex items-center gap-2 p-3 bg-white/5 rounded-lg">
-                  <CheckCircle className="w-4 h-4 text-green-400" />
+                <div className="flex items-center gap-3 p-3 bg-dark-bg rounded-lg border border-neon-cyan/10">
+                  <CheckCircle className="w-5 h-5 text-green-400" />
                   <div>
-                    <div className="text-white font-medium">{prog.quiz_scores.length}</div>
-                    <div className="text-purple-300 text-xs">Quizzes Taken</div>
+                    <div className="text-white font-medium font-mono">{prog.quiz_scores.length}</div>
+                    <div className="text-gray-500 text-xs uppercase tracking-wider">Quizzes Taken</div>
                   </div>
                 </div>
-                <div className="flex items-center gap-2 p-3 bg-white/5 rounded-lg">
-                  <Zap className="w-4 h-4 text-purple-400" />
+                <div className="flex items-center gap-3 p-3 bg-dark-bg rounded-lg border border-neon-cyan/10">
+                  <Zap className="w-5 h-5 text-purple-400" />
                   <div>
-                    <div className="text-white font-medium">{prog.exercises_completed.length}</div>
-                    <div className="text-purple-300 text-xs">Exercises Done</div>
+                    <div className="text-white font-medium font-mono">{prog.exercises_completed.length}</div>
+                    <div className="text-gray-500 text-xs uppercase tracking-wider">Exercises Done</div>
                   </div>
                 </div>
               </div>
 
-              <div className="flex items-center justify-between pt-4 border-t border-purple-700">
-                <div className="text-sm text-purple-200">
+              <div className="flex items-center justify-between pt-4 border-t border-neon-cyan/10 mt-2">
+                <div className="text-sm text-gray-500 font-mono">
                   Last accessed: {new Date(prog.last_accessed).toLocaleDateString()}
                 </div>
-                <Button size="sm">
+                <Button size="sm" className="bg-transparent border border-neon-cyan/50 text-neon-cyan hover:bg-neon-cyan/10">
                   <ArrowRight className="w-4 h-4 mr-2" />
                   Continue Learning
                 </Button>
@@ -696,52 +710,52 @@ function AnalyticsTab({ analytics, formatTime }: { analytics: LearningAnalytics,
     <div className="space-y-8">
       {/* Performance Metrics */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <Card>
+        <Card className="bg-dark-card border-neon-cyan/30">
           <CardHeader>
-            <CardTitle className="flex items-center gap-2">
+            <CardTitle className="flex items-center gap-2 text-white font-orbitron text-base">
               <Brain className="w-5 h-5 text-blue-400" />
               Quiz Performance
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-3xl font-bold text-blue-400 mb-2">{analytics.average_quiz_score}%</div>
-            <p className="text-purple-200 text-sm">Average Score</p>
+            <div className="text-3xl font-bold text-blue-400 mb-2 font-mono">{analytics.average_quiz_score}%</div>
+            <p className="text-gray-400 text-sm">Average Score</p>
             <div className="mt-3">
-              <Progress value={analytics.average_quiz_score} className="h-2" indicatorClassName="bg-blue-500" />
+              <Progress value={analytics.average_quiz_score} className="h-2 bg-dark-bg" indicatorClassName="bg-blue-500" />
             </div>
           </CardContent>
         </Card>
 
-        <Card>
+        <Card className="bg-dark-card border-neon-cyan/30">
           <CardHeader>
-            <CardTitle className="flex items-center gap-2">
+            <CardTitle className="flex items-center gap-2 text-white font-orbitron text-base">
               <TrendingUp className="w-5 h-5 text-green-400" />
               Learning Velocity
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-3xl font-bold text-green-400 mb-2">{analytics.learning_velocity}</div>
-            <p className="text-purple-200 text-sm">Modules/Week</p>
+            <div className="text-3xl font-bold text-green-400 mb-2 font-mono">{analytics.learning_velocity}</div>
+            <p className="text-gray-400 text-sm">Modules/Week</p>
             <div className="mt-3">
-              <Badge className="bg-green-500/20 text-green-500 border-green-500/30">
+              <Badge variant="lime">
                 Above Average
               </Badge>
             </div>
           </CardContent>
         </Card>
 
-        <Card>
+        <Card className="bg-dark-card border-neon-cyan/30">
           <CardHeader>
-            <CardTitle className="flex items-center gap-2">
+            <CardTitle className="flex items-center gap-2 text-white font-orbitron text-base">
               <Award className="w-5 h-5 text-purple-400" />
               Skills Improved
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-3xl font-bold text-purple-400 mb-2">{analytics.skills_improved}</div>
-            <p className="text-purple-200 text-sm">Total Skills</p>
+            <div className="text-3xl font-bold text-purple-400 mb-2 font-mono">{analytics.skills_improved}</div>
+            <p className="text-gray-400 text-sm">Total Skills</p>
             <div className="mt-3">
-              <Badge className="bg-purple-500/20 text-purple-500 border-purple-500/30">
+              <Badge variant="purple">
                 Excellent Progress
               </Badge>
             </div>
@@ -750,18 +764,18 @@ function AnalyticsTab({ analytics, formatTime }: { analytics: LearningAnalytics,
       </div>
 
       {/* Learning Distribution */}
-      <Card>
+      <Card className="bg-dark-card border-neon-cyan/30">
         <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <BarChart3 className="w-5 h-5 text-cyan-300" />
+          <CardTitle className="flex items-center gap-2 text-white font-orbitron">
+            <BarChart3 className="w-5 h-5 text-neon-cyan" />
             Learning Distribution
           </CardTitle>
-          <CardDescription className="text-purple-200">
+          <CardDescription className="text-gray-400">
             Time spent across different learning categories
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <div className="space-y-4">
+          <div className="space-y-5">
             {analytics.top_categories.map((category, index) => {
               const totalTime = analytics.top_categories.reduce((sum, c) => sum + c.time_spent, 0)
               const percentage = totalTime > 0 ? (category.time_spent / totalTime) * 100 : 0
@@ -769,11 +783,11 @@ function AnalyticsTab({ analytics, formatTime }: { analytics: LearningAnalytics,
               return (
                 <div key={category.category} className="space-y-2">
                   <div className="flex items-center justify-between">
-                    <span className="text-purple-200 font-medium">{category.category}</span>
-                    <span className="text-white text-sm">{formatTime(category.time_spent)}</span>
+                    <span className="text-gray-300 font-medium font-mono">{category.category}</span>
+                    <span className="text-white text-sm font-mono">{formatTime(category.time_spent)}</span>
                   </div>
-                  <Progress value={percentage} className="h-2" indicatorClassName="bg-gradient-to-r from-cyan-500 to-purple-500" />
-                  <div className="flex justify-between text-xs text-purple-300">
+                  <Progress value={percentage} className="h-2 bg-dark-bg" indicatorClassName="bg-gradient-to-r from-neon-cyan to-purple-600" />
+                  <div className="flex justify-between text-xs text-gray-500 font-mono">
                     <span>{category.modules_completed} modules</span>
                     <span>{percentage.toFixed(1)}%</span>
                   </div>
@@ -846,28 +860,28 @@ function AchievementsTab({ analytics }: { analytics: LearningAnalytics | null })
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: index * 0.1 }}
           >
-            <Card className={achievement.unlocked ? 'ring-2 ring-yellow-400/50' : ''}>
+            <Card className={`bg-dark-card border  ${achievement.unlocked ? 'border-yellow-500/50 shadow-[0_0_15px_rgba(234,179,8,0.1)]' : 'border-neon-cyan/20'}`}>
               <CardHeader>
                 <div className="flex items-center justify-between">
-                  <div className={`w-12 h-12 rounded-lg bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center ${achievement.unlocked ? 'animate-pulse' : ''}`}>
-                    <achievement.icon className={`w-6 h-6 ${achievement.unlocked ? achievement.color : 'text-gray-400'}`} />
+                  <div className={`w-12 h-12 rounded-lg flex items-center justify-center ${achievement.unlocked ? 'bg-gradient-to-br from-purple-900/50 to-pink-900/50 animate-pulse ring-1 ring-white/20' : 'bg-dark-bg'}`}>
+                    <achievement.icon className={`w-6 h-6 ${achievement.unlocked ? achievement.color : 'text-gray-600'}`} />
                   </div>
                   {achievement.unlocked && (
-                    <Badge className="bg-yellow-500/20 text-yellow-500 border-yellow-500/30">
+                    <Badge variant="orange">
                       Unlocked
                     </Badge>
                   )}
                 </div>
-                <CardTitle className="text-white">{achievement.title}</CardTitle>
-                <CardDescription className="text-purple-200">{achievement.description}</CardDescription>
+                <CardTitle className={`mt-4 font-orbitron ${achievement.unlocked ? 'text-white' : 'text-gray-500'}`}>{achievement.title}</CardTitle>
+                <CardDescription className="text-gray-400 font-mono text-sm">{achievement.description}</CardDescription>
               </CardHeader>
               <CardContent>
                 <div className="space-y-2">
-                  <div className="flex justify-between text-sm">
-                    <span className="text-purple-200">Progress</span>
-                    <span className="text-white">{Math.round(achievement.progress)}%</span>
+                  <div className="flex justify-between text-sm font-mono">
+                    <span className="text-gray-500">Progress</span>
+                    <span className={achievement.unlocked ? 'text-white' : 'text-gray-500'}>{Math.round(achievement.progress)}%</span>
                   </div>
-                  <Progress value={achievement.progress} className="h-2" indicatorClassName={`bg-gradient-to-r ${achievement.unlocked ? 'from-green-500 to-emerald-500' : 'from-gray-600 to-gray-500'}`} />
+                  <Progress value={achievement.progress} className="h-2 bg-dark-bg" indicatorClassName={`bg-gradient-to-r ${achievement.unlocked ? 'from-green-500 to-emerald-500' : 'from-gray-700 to-gray-600'}`} />
                 </div>
               </CardContent>
             </Card>

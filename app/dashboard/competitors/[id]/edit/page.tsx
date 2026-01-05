@@ -2,16 +2,16 @@
 
 
 export const dynamic = 'force-dynamic'
-import { logger, logError, logWarn, logInfo, logDebug, logApi, logDb, logAuth } from '@/lib/logger'
+import { logger, logError } from '@/lib/logger'
 import { useState, useEffect} from "react"
 import { motion} from "framer-motion"
 import { useParams, useRouter} from "next/navigation"
 import { 
-  ArrowLeft, Save, Trash2, AlertTriangle, CheckCircle, Globe, Building, Users, DollarSign, Shield, Eye, Zap} from "lucide-react"
+  ArrowLeft, Save, Trash2, AlertTriangle, CheckCircle, Globe, Building, Users, DollarSign, Eye, Shield} from "lucide-react"
 import Link from "next/link"
 
-import { BossCard, EmpowermentCard} from "@/components/ui/boss-card"
-import { BossButton, ZapButton, DangerButton} from "@/components/ui/boss-button"
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
+import { Button } from "@/components/ui/button"
 import { Input} from "@/components/ui/input"
 import { Textarea} from "@/components/ui/textarea"
 import { Label} from "@/components/ui/label"
@@ -398,22 +398,21 @@ export default function EditCompetitorPage() {
 
   const getThreatLevelBadge = (level: string) => {
     const colors = {
-      critical: 'bg-red-100 text-red-800 border-red-200',
-      high: 'bg-orange-100 text-orange-800 border-orange-200',
-      medium: 'bg-yellow-100 text-yellow-800 border-yellow-200',
-      low: 'bg-green-100 text-green-800 border-green-200'
+      critical: 'bg-red-900/40 text-red-200 border-red-500/50',
+      high: 'bg-orange-900/40 text-orange-200 border-orange-500/50',
+      medium: 'bg-yellow-900/40 text-yellow-200 border-yellow-500/50',
+      low: 'bg-green-900/40 text-green-200 border-green-500/50'
     }
-    return colors[level as keyof typeof colors] || 'bg-gray-100 text-gray-800 border-gray-200'
+    return colors[level as keyof typeof colors] || 'bg-gray-800 text-gray-300 border-gray-600'
   }
 
   if (loading) {
     return (
-      <div className="min-h-screen gradient-background p-6">
+      <div className="min-h-screen bg-black p-6">
         <div className="flex items-center justify-center min-h-[60vh]">
           <Loading 
-            variant="boss" 
+            variant="pulse" 
             size="lg" 
-            text="Loading competitor data..."
           />
         </div>
       </div>
@@ -421,7 +420,7 @@ export default function EditCompetitorPage() {
   }
 
   return (
-    <div className="min-h-screen gradient-background p-6">
+    <div className="min-h-screen bg-black p-6 font-mono">
       <motion.div 
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -431,22 +430,22 @@ export default function EditCompetitorPage() {
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-4">
             <Link href={`/dashboard/competitors/${competitorId}`}>
-              <BossButton variant="secondary" size="sm">
+              <Button variant="outline" size="sm" className="border-neon-cyan/50 text-neon-cyan hover:bg-neon-cyan/10">
                 <ArrowLeft className="w-4 h-4 mr-2" />
                 Back to Profile
-              </BossButton>
+              </Button>
             </Link>
             <div>
               <div className="flex items-center space-x-3 mb-2">
                 <div className={`w-4 h-4 rounded-full ${getThreatLevelColor(formData.threatLevel)}`} />
-                <h1 className="text-3xl font-bold text-gradient">Edit {formData.name}</h1>
+                <h1 className="text-3xl font-bold font-orbitron text-white">Edit {formData.name}</h1>
                 {hasChanges && (
-                  <Badge variant="outline" className="bg-yellow-100 text-yellow-800 border-yellow-200">
+                  <Badge variant="cyan" className="font-mono">
                     Unsaved Changes
                   </Badge>
                 )}
               </div>
-              <p className="text-gray-600 dark:text-gray-400">
+              <p className="text-gray-400">
                 Update competitor information and monitoring settings
               </p>
             </div>
@@ -454,25 +453,27 @@ export default function EditCompetitorPage() {
           <div className="flex items-center gap-3">
             <AlertDialog>
               <AlertDialogTrigger asChild>
-                <DangerButton
+                <Button
                   size="sm"
-                  icon={<Trash2 className="w-4 h-4" />}
+                  variant="error"
+                  className="bg-red-900/50 hover:bg-red-900/70 text-red-100 border border-red-500/50"
                 >
+                  <Trash2 className="w-4 h-4 mr-2" />
                   Delete
-                </DangerButton>
+                </Button>
               </AlertDialogTrigger>
-              <AlertDialogContent>
+              <AlertDialogContent className="bg-dark-card border-neon-cyan/30 text-gray-300">
                 <AlertDialogHeader>
-                  <AlertDialogTitle>Delete Competitor</AlertDialogTitle>
-                  <AlertDialogDescription>
+                  <AlertDialogTitle className="text-white font-orbitron">Delete Competitor</AlertDialogTitle>
+                  <AlertDialogDescription className="text-gray-400">
                     Are you sure you want to delete {formData.name}? This action cannot be undone and will remove all associated intelligence data and alerts.
                   </AlertDialogDescription>
                 </AlertDialogHeader>
                 <AlertDialogFooter>
-                  <AlertDialogCancel>Cancel</AlertDialogCancel>
+                  <AlertDialogCancel className="bg-transparent border-neon-cyan/30 text-neon-cyan hover:bg-neon-cyan/10">Cancel</AlertDialogCancel>
                   <AlertDialogAction 
                     onClick={handleDelete}
-                    className="bg-red-600 hover:bg-red-700"
+                    className="bg-red-600 hover:bg-red-700 text-white"
                   >
                     {deleting ? 'Deleting...' : 'Delete Competitor'}
                   </AlertDialogAction>
@@ -480,572 +481,602 @@ export default function EditCompetitorPage() {
               </AlertDialogContent>
             </AlertDialog>
             
-            <ZapButton
+            <Button
               onClick={handleSave}
-              loading={saving}
-              disabled={!hasChanges}
+              disabled={!hasChanges || saving}
+              className="bg-neon-cyan hover:bg-neon-cyan/80 text-black font-bold"
             >
+              {saving ? <span className="animate-spin mr-2">⟳</span> : <Save className="w-4 h-4 mr-2" />}
               {saving ? 'Saving...' : 'Save Changes'}
-            </ZapButton>
+            </Button>
           </div>
         </div>
 
         {/* Form Tabs */}
         <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
-          <TabsList className="grid w-full grid-cols-5">
-            <TabsTrigger value="basic">Basic Info</TabsTrigger>
-            <TabsTrigger value="social">Social Media</TabsTrigger>
-            <TabsTrigger value="team">Team & Products</TabsTrigger>
-            <TabsTrigger value="analysis">Analysis</TabsTrigger>
-            <TabsTrigger value="monitoring">Monitoring</TabsTrigger>
+          <TabsList className="grid w-full grid-cols-5 bg-dark-card border border-neon-cyan/30">
+            <TabsTrigger value="basic" className="data-[state=active]:bg-neon-cyan/20 data-[state=active]:text-neon-cyan">Basic Info</TabsTrigger>
+            <TabsTrigger value="social" className="data-[state=active]:bg-neon-cyan/20 data-[state=active]:text-neon-cyan">Social Media</TabsTrigger>
+            <TabsTrigger value="team" className="data-[state=active]:bg-neon-cyan/20 data-[state=active]:text-neon-cyan">Team & Products</TabsTrigger>
+            <TabsTrigger value="analysis" className="data-[state=active]:bg-neon-cyan/20 data-[state=active]:text-neon-cyan">Analysis</TabsTrigger>
+            <TabsTrigger value="monitoring" className="data-[state=active]:bg-neon-cyan/20 data-[state=active]:text-neon-cyan">Monitoring</TabsTrigger>
           </TabsList>
 
           {/* Basic Information Tab */}
           <TabsContent value="basic" className="space-y-6">
-            <EmpowermentCard>
-              <h3 className="text-xl font-bold text-gradient mb-6">Basic Information</h3>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div className="space-y-4">
-                  <div>
-                    <Label htmlFor="name">Competitor Name *</Label>
-                    <Input
-                      id="name"
-                      value={formData.name}
-                      onChange={(e) => handleInputChange('name', e.target.value)}
-                      className="mt-1"
-                    />
+            <Card className="bg-dark-card border-neon-cyan/30">
+              <CardContent className="pt-6">
+                <h3 className="text-xl font-bold text-gray-100 font-orbitron mb-6">Basic Information</h3>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div className="space-y-4">
+                    <div>
+                      <Label htmlFor="name" className="text-neon-cyan">Competitor Name *</Label>
+                      <Input
+                        id="name"
+                        value={formData.name}
+                        onChange={(e) => handleInputChange('name', e.target.value)}
+                        className="mt-1 bg-dark-bg border-neon-cyan/30 text-gray-300 focus:border-neon-cyan focus:ring-neon-cyan/20"
+                      />
+                    </div>
+
+                    <div>
+                      <Label htmlFor="domain" className="text-neon-cyan">Website Domain</Label>
+                      <Input
+                        id="domain"
+                        value={formData.domain}
+                        onChange={(e) => handleInputChange('domain', e.target.value)}
+                        className="mt-1 bg-dark-bg border-neon-cyan/30 text-gray-300 focus:border-neon-cyan focus:ring-neon-cyan/20"
+                      />
+                    </div>
+
+                    <div>
+                      <Label htmlFor="industry" className="text-neon-cyan">Industry</Label>
+                      <Select value={formData.industry} onValueChange={(value) => handleInputChange('industry', value)}>
+                        <SelectTrigger className="mt-1 bg-dark-bg border-neon-cyan/30 text-gray-300 focus:border-neon-cyan focus:ring-neon-cyan/20">
+                          <SelectValue placeholder="Select industry" />
+                        </SelectTrigger>
+                        <SelectContent className="bg-dark-card border-neon-cyan/30 text-gray-300">
+                          <SelectItem value="technology">Technology</SelectItem>
+                          <SelectItem value="finance">Finance</SelectItem>
+                          <SelectItem value="healthcare">Healthcare</SelectItem>
+                          <SelectItem value="retail">Retail</SelectItem>
+                          <SelectItem value="manufacturing">Manufacturing</SelectItem>
+                          <SelectItem value="education">Education</SelectItem>
+                          <SelectItem value="other">Other</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+
+                    <div>
+                      <Label htmlFor="headquarters" className="text-neon-cyan">Headquarters</Label>
+                      <Input
+                        id="headquarters"
+                        value={formData.headquarters}
+                        onChange={(e) => handleInputChange('headquarters', e.target.value)}
+                        className="mt-1 bg-dark-bg border-neon-cyan/30 text-gray-300 focus:border-neon-cyan focus:ring-neon-cyan/20"
+                      />
+                    </div>
                   </div>
 
-                  <div>
-                    <Label htmlFor="domain">Website Domain</Label>
-                    <Input
-                      id="domain"
-                      value={formData.domain}
-                      onChange={(e) => handleInputChange('domain', e.target.value)}
-                      className="mt-1"
-                    />
-                  </div>
+                  <div className="space-y-4">
+                    <div>
+                      <Label htmlFor="foundedYear" className="text-neon-cyan">Founded Year</Label>
+                      <Input
+                        id="foundedYear"
+                        type="number"
+                        value={formData.foundedYear || ""}
+                        onChange={(e) => handleInputChange('foundedYear', e.target.value ? parseInt(e.target.value) : null)}
+                        className="mt-1 bg-dark-bg border-neon-cyan/30 text-gray-300 focus:border-neon-cyan focus:ring-neon-cyan/20"
+                      />
+                    </div>
 
+                    <div>
+                      <Label htmlFor="employeeCount" className="text-neon-cyan">Employee Count</Label>
+                      <Input
+                        id="employeeCount"
+                        type="number"
+                        value={formData.employeeCount || ""}
+                        onChange={(e) => handleInputChange('employeeCount', e.target.value ? parseInt(e.target.value) : null)}
+                        className="mt-1 bg-dark-bg border-neon-cyan/30 text-gray-300 focus:border-neon-cyan focus:ring-neon-cyan/20"
+                      />
+                    </div>
+
+                    <div>
+                      <Label htmlFor="fundingAmount" className="text-neon-cyan">Funding Amount ($)</Label>
+                      <Input
+                        id="fundingAmount"
+                        type="number"
+                        value={formData.fundingAmount || ""}
+                        onChange={(e) => handleInputChange('fundingAmount', e.target.value ? parseInt(e.target.value) : null)}
+                        className="mt-1 bg-dark-bg border-neon-cyan/30 text-gray-300 focus:border-neon-cyan focus:ring-neon-cyan/20"
+                      />
+                    </div>
+
+                    <div>
+                      <Label htmlFor="fundingStage" className="text-neon-cyan">Funding Stage</Label>
+                      <Select value={formData.fundingStage} onValueChange={(value) => handleInputChange('fundingStage', value)}>
+                        <SelectTrigger className="mt-1 bg-dark-bg border-neon-cyan/30 text-gray-300 focus:border-neon-cyan focus:ring-neon-cyan/20">
+                          <SelectValue placeholder="Select funding stage" />
+                        </SelectTrigger>
+                        <SelectContent className="bg-dark-card border-neon-cyan/30 text-gray-300">
+                          <SelectItem value="seed">Seed</SelectItem>
+                          <SelectItem value="series-a">Series A</SelectItem>
+                          <SelectItem value="series-b">Series B</SelectItem>
+                          <SelectItem value="series-c">Series C</SelectItem>
+                          <SelectItem value="ipo">IPO</SelectItem>
+                          <SelectItem value="private">Private</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="mt-6">
+                  <Label htmlFor="description" className="text-neon-cyan">Description</Label>
+                  <Textarea
+                    id="description"
+                    value={formData.description}
+                    onChange={(e) => handleInputChange('description', e.target.value)}
+                    className="mt-1 bg-dark-bg border-neon-cyan/30 text-gray-300 focus:border-neon-cyan focus:ring-neon-cyan/20"
+                    rows={4}
+                  />
+                </div>
+
+                <div className="mt-6 grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div>
-                    <Label htmlFor="industry">Industry</Label>
-                    <Select value={formData.industry} onValueChange={(value) => handleInputChange('industry', value)}>
-                      <SelectTrigger className="mt-1">
-                        <SelectValue placeholder="Select industry" />
+                    <Label htmlFor="threatLevel" className="text-neon-cyan">Threat Level</Label>
+                    <Select value={formData.threatLevel} onValueChange={(value) => handleInputChange('threatLevel', value)}>
+                      <SelectTrigger className="mt-1 bg-dark-bg border-neon-cyan/30 text-gray-300 focus:border-neon-cyan focus:ring-neon-cyan/20">
+                        <SelectValue placeholder="Select threat level" />
                       </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="technology">Technology</SelectItem>
-                        <SelectItem value="finance">Finance</SelectItem>
-                        <SelectItem value="healthcare">Healthcare</SelectItem>
-                        <SelectItem value="retail">Retail</SelectItem>
-                        <SelectItem value="manufacturing">Manufacturing</SelectItem>
-                        <SelectItem value="education">Education</SelectItem>
-                        <SelectItem value="other">Other</SelectItem>
+                      <SelectContent className="bg-dark-card border-neon-cyan/30 text-gray-300">
+                        <SelectItem value="low">Low Threat</SelectItem>
+                        <SelectItem value="medium">Medium Threat</SelectItem>
+                        <SelectItem value="high">High Threat</SelectItem>
+                        <SelectItem value="critical">Critical Threat</SelectItem>
+                      </SelectContent>
+                    </Select>
+                    <div className="flex items-center space-x-2 mt-2">
+                      <div className={`w-3 h-3 rounded-full ${getThreatLevelColor(formData.threatLevel)}`} />
+                      <Badge 
+                        variant="cyan" 
+                        className={getThreatLevelBadge(formData.threatLevel)}
+                      >
+                        {formData.threatLevel.toUpperCase()} THREAT
+                      </Badge>
+                    </div>
+                  </div>
+
+                  <div>
+                    <Label htmlFor="monitoringStatus" className="text-neon-cyan">Monitoring Status</Label>
+                    <Select value={formData.monitoringStatus} onValueChange={(value) => handleInputChange('monitoringStatus', value)}>
+                      <SelectTrigger className="mt-1 bg-dark-bg border-neon-cyan/30 text-gray-300 focus:border-neon-cyan focus:ring-neon-cyan/20">
+                        <SelectValue placeholder="Select status" />
+                      </SelectTrigger>
+                      <SelectContent className="bg-dark-card border-neon-cyan/30 text-gray-300">
+                        <SelectItem value="active">Active</SelectItem>
+                        <SelectItem value="paused">Paused</SelectItem>
+                        <SelectItem value="archived">Archived</SelectItem>
                       </SelectContent>
                     </Select>
                   </div>
-
-                  <div>
-                    <Label htmlFor="headquarters">Headquarters</Label>
-                    <Input
-                      id="headquarters"
-                      value={formData.headquarters}
-                      onChange={(e) => handleInputChange('headquarters', e.target.value)}
-                      className="mt-1"
-                    />
-                  </div>
                 </div>
-
-                <div className="space-y-4">
-                  <div>
-                    <Label htmlFor="foundedYear">Founded Year</Label>
-                    <Input
-                      id="foundedYear"
-                      type="number"
-                      value={formData.foundedYear || ""}
-                      onChange={(e) => handleInputChange('foundedYear', e.target.value ? parseInt(e.target.value) : null)}
-                      className="mt-1"
-                    />
-                  </div>
-
-                  <div>
-                    <Label htmlFor="employeeCount">Employee Count</Label>
-                    <Input
-                      id="employeeCount"
-                      type="number"
-                      value={formData.employeeCount || ""}
-                      onChange={(e) => handleInputChange('employeeCount', e.target.value ? parseInt(e.target.value) : null)}
-                      className="mt-1"
-                    />
-                  </div>
-
-                  <div>
-                    <Label htmlFor="fundingAmount">Funding Amount ($)</Label>
-                    <Input
-                      id="fundingAmount"
-                      type="number"
-                      value={formData.fundingAmount || ""}
-                      onChange={(e) => handleInputChange('fundingAmount', e.target.value ? parseInt(e.target.value) : null)}
-                      className="mt-1"
-                    />
-                  </div>
-
-                  <div>
-                    <Label htmlFor="fundingStage">Funding Stage</Label>
-                    <Select value={formData.fundingStage} onValueChange={(value) => handleInputChange('fundingStage', value)}>
-                      <SelectTrigger className="mt-1">
-                        <SelectValue placeholder="Select funding stage" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="seed">Seed</SelectItem>
-                        <SelectItem value="series-a">Series A</SelectItem>
-                        <SelectItem value="series-b">Series B</SelectItem>
-                        <SelectItem value="series-c">Series C</SelectItem>
-                        <SelectItem value="ipo">IPO</SelectItem>
-                        <SelectItem value="private">Private</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </div>
-                </div>
-              </div>
-
-              <div className="mt-6">
-                <Label htmlFor="description">Description</Label>
-                <Textarea
-                  id="description"
-                  value={formData.description}
-                  onChange={(e) => handleInputChange('description', e.target.value)}
-                  className="mt-1"
-                  rows={4}
-                />
-              </div>
-
-              <div className="mt-6 grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div>
-                  <Label htmlFor="threatLevel">Threat Level</Label>
-                  <Select value={formData.threatLevel} onValueChange={(value) => handleInputChange('threatLevel', value)}>
-                    <SelectTrigger className="mt-1">
-                      <SelectValue placeholder="Select threat level" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="low">Low Threat</SelectItem>
-                      <SelectItem value="medium">Medium Threat</SelectItem>
-                      <SelectItem value="high">High Threat</SelectItem>
-                      <SelectItem value="critical">Critical Threat</SelectItem>
-                    </SelectContent>
-                  </Select>
-                  <div className="flex items-center space-x-2 mt-2">
-                    <div className={`w-3 h-3 rounded-full ${getThreatLevelColor(formData.threatLevel)}`} />
-                    <Badge 
-                      variant="outline" 
-                      className={getThreatLevelBadge(formData.threatLevel)}
-                    >
-                      {formData.threatLevel.toUpperCase()} THREAT
-                    </Badge>
-                  </div>
-                </div>
-
-                <div>
-                  <Label htmlFor="monitoringStatus">Monitoring Status</Label>
-                  <Select value={formData.monitoringStatus} onValueChange={(value) => handleInputChange('monitoringStatus', value)}>
-                    <SelectTrigger className="mt-1">
-                      <SelectValue placeholder="Select status" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="active">Active</SelectItem>
-                      <SelectItem value="paused">Paused</SelectItem>
-                      <SelectItem value="archived">Archived</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-              </div>
-            </EmpowermentCard>
+              </CardContent>
+            </Card>
           </TabsContent>
 
           {/* Social Media Tab */}
           <TabsContent value="social" className="space-y-6">
-            <EmpowermentCard>
-              <h3 className="text-xl font-bold text-gradient mb-6">Social Media Handles</h3>
-              <div className="space-y-4">
-                <div>
-                  <Label htmlFor="linkedin">LinkedIn</Label>
-                  <Input
-                    id="linkedin"
-                    placeholder="https://linkedin.com/company/competitor"
-                    value={formData.socialMediaHandles.linkedin}
-                    onChange={(e) => handleSocialMediaChange('linkedin', e.target.value)}
-                    className="mt-1"
-                  />
-                </div>
+            <Card className="bg-dark-card border-neon-cyan/30">
+              <CardContent className="pt-6">
+                <h3 className="text-xl font-bold text-gray-100 font-orbitron mb-6">Social Media Handles</h3>
+                <div className="space-y-4">
+                  <div>
+                    <Label htmlFor="linkedin" className="text-neon-cyan">LinkedIn</Label>
+                    <Input
+                      id="linkedin"
+                      placeholder="https://linkedin.com/company/competitor"
+                      value={formData.socialMediaHandles.linkedin}
+                      onChange={(e) => handleSocialMediaChange('linkedin', e.target.value)}
+                      className="mt-1 bg-dark-bg border-neon-cyan/30 text-gray-300 focus:border-neon-cyan focus:ring-neon-cyan/20"
+                    />
+                  </div>
 
-                <div>
-                  <Label htmlFor="twitter">Twitter/X</Label>
-                  <Input
-                    id="twitter"
-                    placeholder="https://twitter.com/competitor"
-                    value={formData.socialMediaHandles.twitter}
-                    onChange={(e) => handleSocialMediaChange('twitter', e.target.value)}
-                    className="mt-1"
-                  />
-                </div>
+                  <div>
+                    <Label htmlFor="twitter" className="text-neon-cyan">Twitter/X</Label>
+                    <Input
+                      id="twitter"
+                      placeholder="https://twitter.com/competitor"
+                      value={formData.socialMediaHandles.twitter}
+                      onChange={(e) => handleSocialMediaChange('twitter', e.target.value)}
+                      className="mt-1 bg-dark-bg border-neon-cyan/30 text-gray-300 focus:border-neon-cyan focus:ring-neon-cyan/20"
+                    />
+                  </div>
 
-                <div>
-                  <Label htmlFor="facebook">Facebook</Label>
-                  <Input
-                    id="facebook"
-                    placeholder="https://facebook.com/competitor"
-                    value={formData.socialMediaHandles.facebook}
-                    onChange={(e) => handleSocialMediaChange('facebook', e.target.value)}
-                    className="mt-1"
-                  />
-                </div>
+                  <div>
+                    <Label htmlFor="facebook" className="text-neon-cyan">Facebook</Label>
+                    <Input
+                      id="facebook"
+                      placeholder="https://facebook.com/competitor"
+                      value={formData.socialMediaHandles.facebook}
+                      onChange={(e) => handleSocialMediaChange('facebook', e.target.value)}
+                      className="mt-1 bg-dark-bg border-neon-cyan/30 text-gray-300 focus:border-neon-cyan focus:ring-neon-cyan/20"
+                    />
+                  </div>
 
-                <div>
-                  <Label htmlFor="instagram">Instagram</Label>
-                  <Input
-                    id="instagram"
-                    placeholder="https://instagram.com/competitor"
-                    value={formData.socialMediaHandles.instagram}
-                    onChange={(e) => handleSocialMediaChange('instagram', e.target.value)}
-                    className="mt-1"
-                  />
+                  <div>
+                    <Label htmlFor="instagram" className="text-neon-cyan">Instagram</Label>
+                    <Input
+                      id="instagram"
+                      placeholder="https://instagram.com/competitor"
+                      value={formData.socialMediaHandles.instagram}
+                      onChange={(e) => handleSocialMediaChange('instagram', e.target.value)}
+                      className="mt-1 bg-dark-bg border-neon-cyan/30 text-gray-300 focus:border-neon-cyan focus:ring-neon-cyan/20"
+                    />
+                  </div>
                 </div>
-              </div>
-            </EmpowermentCard>
+              </CardContent>
+            </Card>
           </TabsContent>
 
           {/* Team & Products Tab */}
           <TabsContent value="team" className="space-y-6">
             {/* Key Personnel */}
-            <EmpowermentCard>
-              <div className="flex items-center justify-between mb-6">
-                <h3 className="text-xl font-bold text-gradient">Key Personnel</h3>
-                <BossButton variant="secondary" size="sm" onClick={addKeyPerson}>
-                  Add Person
-                </BossButton>
-              </div>
-              <div className="space-y-4">
-                {formData.keyPersonnel.map((person, index) => (
-                  <div key={index} className="p-4 glass rounded-lg">
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                      <Input
-                        placeholder="Full Name"
-                        value={person.name}
-                        onChange={(e) => updateKeyPerson(index, 'name', e.target.value)}
-                      />
-                      <Input
-                        placeholder="Role/Title"
-                        value={person.role}
-                        onChange={(e) => updateKeyPerson(index, 'role', e.target.value)}
-                      />
-                      <Input
-                        placeholder="LinkedIn Profile URL"
-                        value={person.linkedinProfile}
-                        onChange={(e) => updateKeyPerson(index, 'linkedinProfile', e.target.value)}
-                      />
-                      <div className="flex items-center space-x-2">
+            <Card className="bg-dark-card border-neon-cyan/30">
+              <CardContent className="pt-6">
+                <div className="flex items-center justify-between mb-6">
+                  <h3 className="text-xl font-bold text-gray-100 font-orbitron">Key Personnel</h3>
+                  <Button variant="outline" size="sm" onClick={addKeyPerson} className="border-neon-cyan/50 text-neon-cyan hover:bg-neon-cyan/10">
+                    Add Person
+                  </Button>
+                </div>
+                <div className="space-y-4">
+                  {formData.keyPersonnel.map((person, index) => (
+                    <div key={index} className="p-4 bg-dark-bg rounded-lg border border-neon-cyan/20">
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <Input
-                          type="date"
-                          placeholder="Join Date"
-                          value={person.joinedDate}
-                          onChange={(e) => updateKeyPerson(index, 'joinedDate', e.target.value)}
+                          placeholder="Full Name"
+                          value={person.name}
+                          onChange={(e) => updateKeyPerson(index, 'name', e.target.value)}
+                          className="bg-dark-card border-neon-cyan/30 text-gray-300"
                         />
-                        <BossButton 
-                          variant="secondary" 
-                          size="sm"
-                          onClick={() => removeKeyPerson(index)}
-                        >
-                          <Trash2 className="w-4 h-4" />
-                        </BossButton>
+                        <Input
+                          placeholder="Role/Title"
+                          value={person.role}
+                          onChange={(e) => updateKeyPerson(index, 'role', e.target.value)}
+                          className="bg-dark-card border-neon-cyan/30 text-gray-300"
+                        />
+                        <Input
+                          placeholder="LinkedIn Profile URL"
+                          value={person.linkedinProfile}
+                          onChange={(e) => updateKeyPerson(index, 'linkedinProfile', e.target.value)}
+                          className="bg-dark-card border-neon-cyan/30 text-gray-300"
+                        />
+                        <div className="flex items-center space-x-2">
+                          <Input
+                            type="date"
+                            placeholder="Join Date"
+                            value={person.joinedDate}
+                            onChange={(e) => updateKeyPerson(index, 'joinedDate', e.target.value)}
+                            className="bg-dark-card border-neon-cyan/30 text-gray-300"
+                          />
+                          <Button 
+                            variant="ghost" 
+                            size="sm"
+                            onClick={() => removeKeyPerson(index)}
+                            className="text-red-400 hover:text-red-300 hover:bg-red-900/20"
+                          >
+                            <Trash2 className="w-4 h-4" />
+                          </Button>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                ))}
-              </div>
-            </EmpowermentCard>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
 
             {/* Products */}
-            <EmpowermentCard>
-              <div className="flex items-center justify-between mb-6">
-                <h3 className="text-xl font-bold text-gradient">Products & Services</h3>
-                <BossButton variant="secondary" size="sm" onClick={addProduct}>
-                  Add Product
-                </BossButton>
-              </div>
-              <div className="space-y-4">
-                {formData.products.map((product, index) => (
-                  <div key={index} className="p-4 glass rounded-lg">
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-                      <Input
-                        placeholder="Product Name"
-                        value={product.name}
-                        onChange={(e) => updateProduct(index, 'name', e.target.value)}
+            <Card className="bg-dark-card border-neon-cyan/30">
+              <CardContent className="pt-6">
+                <div className="flex items-center justify-between mb-6">
+                  <h3 className="text-xl font-bold text-gray-100 font-orbitron">Products & Services</h3>
+                  <Button variant="outline" size="sm" onClick={addProduct} className="border-neon-cyan/50 text-neon-cyan hover:bg-neon-cyan/10">
+                    Add Product
+                  </Button>
+                </div>
+                <div className="space-y-4">
+                  {formData.products.map((product, index) => (
+                    <div key={index} className="p-4 bg-dark-bg rounded-lg border border-neon-cyan/20">
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                        <Input
+                          placeholder="Product Name"
+                          value={product.name}
+                          onChange={(e) => updateProduct(index, 'name', e.target.value)}
+                          className="bg-dark-card border-neon-cyan/30 text-gray-300"
+                        />
+                        <Input
+                          placeholder="Category"
+                          value={product.category}
+                          onChange={(e) => updateProduct(index, 'category', e.target.value)}
+                          className="bg-dark-card border-neon-cyan/30 text-gray-300"
+                        />
+                      </div>
+                      <Textarea
+                        placeholder="Product Description"
+                        value={product.description}
+                        onChange={(e) => updateProduct(index, 'description', e.target.value)}
+                        rows={2}
+                        className="mb-4 bg-dark-card border-neon-cyan/30 text-gray-300"
                       />
-                      <Input
-                        placeholder="Category"
-                        value={product.category}
-                        onChange={(e) => updateProduct(index, 'category', e.target.value)}
-                      />
+                      <div className="flex items-center justify-between">
+                        <Select 
+                          value={product.status} 
+                          onValueChange={(value) => updateProduct(index, 'status', value)}
+                        >
+                          <SelectTrigger className="w-32 bg-dark-card border-neon-cyan/30 text-gray-300">
+                            <SelectValue />
+                          </SelectTrigger>
+                          <SelectContent className="bg-dark-card border-neon-cyan/30 text-gray-300">
+                            <SelectItem value="active">Active</SelectItem>
+                            <SelectItem value="beta">Beta</SelectItem>
+                            <SelectItem value="discontinued">Discontinued</SelectItem>
+                          </SelectContent>
+                        </Select>
+                        <Button 
+                          variant="ghost" 
+                          size="sm"
+                          onClick={() => removeProduct(index)}
+                          className="text-red-400 hover:text-red-300 hover:bg-red-900/20"
+                        >
+                          <Trash2 className="w-4 h-4" />
+                        </Button>
+                      </div>
                     </div>
-                    <Textarea
-                      placeholder="Product Description"
-                      value={product.description}
-                      onChange={(e) => updateProduct(index, 'description', e.target.value)}
-                      rows={2}
-                      className="mb-4"
-                    />
-                    <div className="flex items-center justify-between">
-                      <Select 
-                        value={product.status} 
-                        onValueChange={(value) => updateProduct(index, 'status', value)}
-                      >
-                        <SelectTrigger className="w-32">
-                          <SelectValue />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="active">Active</SelectItem>
-                          <SelectItem value="beta">Beta</SelectItem>
-                          <SelectItem value="discontinued">Discontinued</SelectItem>
-                        </SelectContent>
-                      </Select>
-                      <BossButton 
-                        variant="secondary" 
-                        size="sm"
-                        onClick={() => removeProduct(index)}
-                      >
-                        <Trash2 className="w-4 h-4" />
-                      </BossButton>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </EmpowermentCard>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
           </TabsContent>
 
           {/* Analysis Tab */}
           <TabsContent value="analysis" className="space-y-6">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
               {/* Competitive Advantages */}
-              <EmpowermentCard>
-                <div className="flex items-center justify-between mb-6">
-                  <h3 className="text-xl font-bold text-gradient">Competitive Advantages</h3>
-                  <BossButton variant="secondary" size="sm" onClick={addAdvantage}>
-                    Add Advantage
-                  </BossButton>
-                </div>
-                <div className="space-y-3">
-                  {formData.competitiveAdvantages.map((advantage, index) => (
-                    <div key={index} className="flex items-center space-x-2">
-                      <Input
-                        placeholder="Competitive advantage..."
-                        value={advantage}
-                        onChange={(e) => updateAdvantage(index, e.target.value)}
-                      />
-                      <BossButton 
-                        variant="secondary" 
-                        size="sm"
-                        onClick={() => removeAdvantage(index)}
-                      >
-                        <Trash2 className="w-4 h-4" />
-                      </BossButton>
-                    </div>
-                  ))}
-                </div>
-              </EmpowermentCard>
+              <Card className="bg-dark-card border-neon-cyan/30">
+                <CardContent className="pt-6">
+                  <div className="flex items-center justify-between mb-6">
+                    <h3 className="text-xl font-bold text-gray-100 font-orbitron">Competitive Advantages</h3>
+                    <Button variant="outline" size="sm" onClick={addAdvantage} className="border-neon-cyan/50 text-neon-cyan hover:bg-neon-cyan/10">
+                      Add Advantage
+                    </Button>
+                  </div>
+                  <div className="space-y-3">
+                    {formData.competitiveAdvantages.map((advantage, index) => (
+                      <div key={index} className="flex items-center space-x-2">
+                        <Input
+                          placeholder="Competitive advantage..."
+                          value={advantage}
+                          onChange={(e) => updateAdvantage(index, e.target.value)}
+                          className="bg-dark-bg border-neon-cyan/30 text-gray-300"
+                        />
+                        <Button 
+                          variant="ghost" 
+                          size="sm"
+                          onClick={() => removeAdvantage(index)}
+                          className="text-red-400 hover:text-red-300 hover:bg-red-900/20"
+                        >
+                          <Trash2 className="w-4 h-4" />
+                        </Button>
+                      </div>
+                    ))}
+                  </div>
+                </CardContent>
+              </Card>
 
               {/* Vulnerabilities */}
-              <EmpowermentCard>
-                <div className="flex items-center justify-between mb-6">
-                  <h3 className="text-xl font-bold text-gradient">Vulnerabilities</h3>
-                  <BossButton variant="secondary" size="sm" onClick={addVulnerability}>
-                    Add Vulnerability
-                  </BossButton>
-                </div>
-                <div className="space-y-3">
-                  {formData.vulnerabilities.map((vulnerability, index) => (
-                    <div key={index} className="flex items-center space-x-2">
-                      <Input
-                        placeholder="Vulnerability or weakness..."
-                        value={vulnerability}
-                        onChange={(e) => updateVulnerability(index, e.target.value)}
-                      />
-                      <BossButton 
-                        variant="secondary" 
-                        size="sm"
-                        onClick={() => removeVulnerability(index)}
-                      >
-                        <Trash2 className="w-4 h-4" />
-                      </BossButton>
-                    </div>
-                  ))}
-                </div>
-              </EmpowermentCard>
+              <Card className="bg-dark-card border-neon-cyan/30">
+                <CardContent className="pt-6">
+                  <div className="flex items-center justify-between mb-6">
+                    <h3 className="text-xl font-bold text-gray-100 font-orbitron">Vulnerabilities</h3>
+                    <Button variant="outline" size="sm" onClick={addVulnerability} className="border-neon-cyan/50 text-neon-cyan hover:bg-neon-cyan/10">
+                      Add Vulnerability
+                    </Button>
+                  </div>
+                  <div className="space-y-3">
+                    {formData.vulnerabilities.map((vulnerability, index) => (
+                      <div key={index} className="flex items-center space-x-2">
+                        <Input
+                          placeholder="Vulnerability or weakness..."
+                          value={vulnerability}
+                          onChange={(e) => updateVulnerability(index, e.target.value)}
+                          className="bg-dark-bg border-neon-cyan/30 text-gray-300"
+                        />
+                        <Button 
+                          variant="ghost" 
+                          size="sm"
+                          onClick={() => removeVulnerability(index)}
+                          className="text-red-400 hover:text-red-300 hover:bg-red-900/20"
+                        >
+                          <Trash2 className="w-4 h-4" />
+                        </Button>
+                      </div>
+                    ))}
+                  </div>
+                </CardContent>
+              </Card>
             </div>
           </TabsContent>
 
           {/* Monitoring Tab */}
           <TabsContent value="monitoring" className="space-y-6">
-            <EmpowermentCard>
-              <h3 className="text-xl font-bold text-gradient mb-6">Monitoring Configuration</h3>
-              
-              <div className="space-y-6">
-                <div>
-                  <Label className="text-base font-semibold">Monitoring Channels</Label>
-                  <div className="mt-3 space-y-4">
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center space-x-3">
-                        <Globe className="w-5 h-5 text-blue-500" />
-                        <div>
-                          <p className="font-medium">Website Monitoring</p>
-                          <p className="text-sm text-gray-600 dark:text-gray-400">Track website changes, pricing, and content</p>
+            <Card className="bg-dark-card border-neon-cyan/30">
+              <CardContent className="pt-6">
+                <h3 className="text-xl font-bold text-gray-100 font-orbitron mb-6">Monitoring Configuration</h3>
+                
+                <div className="space-y-6">
+                  <div>
+                    <Label className="text-base font-semibold text-neon-cyan">Monitoring Channels</Label>
+                    <div className="mt-3 space-y-4">
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center space-x-3">
+                          <Globe className="w-5 h-5 text-blue-400" />
+                          <div>
+                            <p className="font-medium text-gray-200">Website Monitoring</p>
+                            <p className="text-sm text-gray-400">Track website changes, pricing, and content</p>
+                          </div>
                         </div>
+                        <Switch
+                          checked={formData.monitoringConfig.websiteMonitoring}
+                          onCheckedChange={(checked) => handleMonitoringConfigChange('websiteMonitoring', checked)}
+                        />
                       </div>
-                      <Switch
-                        checked={formData.monitoringConfig.websiteMonitoring}
-                        onCheckedChange={(checked) => handleMonitoringConfigChange('websiteMonitoring', checked)}
-                      />
-                    </div>
 
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center space-x-3">
-                        <Users className="w-5 h-5 text-purple-500" />
-                        <div>
-                          <p className="font-medium">Social Media Monitoring</p>
-                          <p className="text-sm text-gray-600 dark:text-gray-400">Monitor posts, engagement, and campaigns</p>
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center space-x-3">
+                          <Users className="w-5 h-5 text-purple-400" />
+                          <div>
+                            <p className="font-medium text-gray-200">Social Media Monitoring</p>
+                            <p className="text-sm text-gray-400">Monitor posts, engagement, and campaigns</p>
+                          </div>
                         </div>
+                        <Switch
+                          checked={formData.monitoringConfig.socialMediaMonitoring}
+                          onCheckedChange={(checked) => handleMonitoringConfigChange('socialMediaMonitoring', checked)}
+                        />
                       </div>
-                      <Switch
-                        checked={formData.monitoringConfig.socialMediaMonitoring}
-                        onCheckedChange={(checked) => handleMonitoringConfigChange('socialMediaMonitoring', checked)}
-                      />
-                    </div>
 
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center space-x-3">
-                        <Eye className="w-5 h-5 text-green-500" />
-                        <div>
-                          <p className="font-medium">News Monitoring</p>
-                          <p className="text-sm text-gray-600 dark:text-gray-400">Track news mentions and press releases</p>
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center space-x-3">
+                          <Eye className="w-5 h-5 text-green-400" />
+                          <div>
+                            <p className="font-medium text-gray-200">News Monitoring</p>
+                            <p className="text-sm text-gray-400">Track news mentions and press releases</p>
+                          </div>
                         </div>
+                        <Switch
+                          checked={formData.monitoringConfig.newsMonitoring}
+                          onCheckedChange={(checked) => handleMonitoringConfigChange('newsMonitoring', checked)}
+                        />
                       </div>
-                      <Switch
-                        checked={formData.monitoringConfig.newsMonitoring}
-                        onCheckedChange={(checked) => handleMonitoringConfigChange('newsMonitoring', checked)}
-                      />
-                    </div>
 
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center space-x-3">
-                        <Building className="w-5 h-5 text-orange-500" />
-                        <div>
-                          <p className="font-medium">Job Posting Monitoring</p>
-                          <p className="text-sm text-gray-600 dark:text-gray-400">Monitor hiring patterns and team growth</p>
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center space-x-3">
+                          <Building className="w-5 h-5 text-orange-400" />
+                          <div>
+                            <p className="font-medium text-gray-200">Job Posting Monitoring</p>
+                            <p className="text-sm text-gray-400">Monitor hiring patterns and team growth</p>
+                          </div>
                         </div>
+                        <Switch
+                          checked={formData.monitoringConfig.jobPostingMonitoring}
+                          onCheckedChange={(checked) => handleMonitoringConfigChange('jobPostingMonitoring', checked)}
+                        />
                       </div>
-                      <Switch
-                        checked={formData.monitoringConfig.jobPostingMonitoring}
-                        onCheckedChange={(checked) => handleMonitoringConfigChange('jobPostingMonitoring', checked)}
-                      />
-                    </div>
 
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center space-x-3">
-                        <DollarSign className="w-5 h-5 text-pink-500" />
-                        <div>
-                          <p className="font-medium">App Store Monitoring</p>
-                          <p className="text-sm text-gray-600 dark:text-gray-400">Track app updates, ratings, and reviews</p>
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center space-x-3">
+                          <DollarSign className="w-5 h-5 text-pink-400" />
+                          <div>
+                            <p className="font-medium text-gray-200">App Store Monitoring</p>
+                            <p className="text-sm text-gray-400">Track app updates, ratings, and reviews</p>
+                          </div>
                         </div>
+                        <Switch
+                          checked={formData.monitoringConfig.appStoreMonitoring}
+                          onCheckedChange={(checked) => handleMonitoringConfigChange('appStoreMonitoring', checked)}
+                        />
                       </div>
-                      <Switch
-                        checked={formData.monitoringConfig.appStoreMonitoring}
-                        onCheckedChange={(checked) => handleMonitoringConfigChange('appStoreMonitoring', checked)}
-                      />
+                    </div>
+                  </div>
+
+                  <div>
+                    <Label htmlFor="monitoringFrequency" className="text-neon-cyan">Monitoring Frequency</Label>
+                    <Select 
+                      value={formData.monitoringConfig.monitoringFrequency} 
+                      onValueChange={(value) => handleMonitoringConfigChange('monitoringFrequency', value)}
+                    >
+                      <SelectTrigger className="mt-1 bg-dark-bg border-neon-cyan/30 text-gray-300">
+                        <SelectValue placeholder="Select frequency" />
+                      </SelectTrigger>
+                      <SelectContent className="bg-dark-card border-neon-cyan/30 text-gray-300">
+                        <SelectItem value="hourly">Hourly (Premium)</SelectItem>
+                        <SelectItem value="daily">Daily</SelectItem>
+                        <SelectItem value="weekly">Weekly</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+
+                  <div>
+                    <Label className="text-base font-semibold text-neon-cyan">Alert Thresholds</Label>
+                    <div className="mt-3 space-y-3 text-gray-300">
+                      <div className="flex items-center justify-between">
+                        <span>Pricing Changes</span>
+                        <Switch
+                          checked={formData.monitoringConfig.alertThresholds.pricing}
+                          onCheckedChange={(checked) => handleAlertThresholdChange('pricing', checked)}
+                        />
+                      </div>
+                      <div className="flex items-center justify-between">
+                        <span>Product Launches</span>
+                        <Switch
+                          checked={formData.monitoringConfig.alertThresholds.productLaunches}
+                          onCheckedChange={(checked) => handleAlertThresholdChange('productLaunches', checked)}
+                        />
+                      </div>
+                      <div className="flex items-center justify-between">
+                        <span>Hiring Activity</span>
+                        <Switch
+                          checked={formData.monitoringConfig.alertThresholds.hiring}
+                          onCheckedChange={(checked) => handleAlertThresholdChange('hiring', checked)}
+                        />
+                      </div>
+                      <div className="flex items-center justify-between">
+                        <span>Funding News</span>
+                        <Switch
+                          checked={formData.monitoringConfig.alertThresholds.funding}
+                          onCheckedChange={(checked) => handleAlertThresholdChange('funding', checked)}
+                        />
+                      </div>
+                      <div className="flex items-center justify-between">
+                        <span>Partnerships</span>
+                        <Switch
+                          checked={formData.monitoringConfig.alertThresholds.partnerships}
+                          onCheckedChange={(checked) => handleAlertThresholdChange('partnerships', checked)}
+                        />
+                      </div>
                     </div>
                   </div>
                 </div>
-
-                <div>
-                  <Label htmlFor="monitoringFrequency">Monitoring Frequency</Label>
-                  <Select 
-                    value={formData.monitoringConfig.monitoringFrequency} 
-                    onValueChange={(value) => handleMonitoringConfigChange('monitoringFrequency', value)}
-                  >
-                    <SelectTrigger className="mt-1">
-                      <SelectValue placeholder="Select frequency" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="hourly">Hourly (Premium)</SelectItem>
-                      <SelectItem value="daily">Daily</SelectItem>
-                      <SelectItem value="weekly">Weekly</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-
-                <div>
-                  <Label className="text-base font-semibold">Alert Thresholds</Label>
-                  <div className="mt-3 space-y-3">
-                    <div className="flex items-center justify-between">
-                      <span>Pricing Changes</span>
-                      <Switch
-                        checked={formData.monitoringConfig.alertThresholds.pricing}
-                        onCheckedChange={(checked) => handleAlertThresholdChange('pricing', checked)}
-                      />
-                    </div>
-                    <div className="flex items-center justify-between">
-                      <span>Product Launches</span>
-                      <Switch
-                        checked={formData.monitoringConfig.alertThresholds.productLaunches}
-                        onCheckedChange={(checked) => handleAlertThresholdChange('productLaunches', checked)}
-                      />
-                    </div>
-                    <div className="flex items-center justify-between">
-                      <span>Hiring Activity</span>
-                      <Switch
-                        checked={formData.monitoringConfig.alertThresholds.hiring}
-                        onCheckedChange={(checked) => handleAlertThresholdChange('hiring', checked)}
-                      />
-                    </div>
-                    <div className="flex items-center justify-between">
-                      <span>Funding News</span>
-                      <Switch
-                        checked={formData.monitoringConfig.alertThresholds.funding}
-                        onCheckedChange={(checked) => handleAlertThresholdChange('funding', checked)}
-                      />
-                    </div>
-                    <div className="flex items-center justify-between">
-                      <span>Partnerships</span>
-                      <Switch
-                        checked={formData.monitoringConfig.alertThresholds.partnerships}
-                        onCheckedChange={(checked) => handleAlertThresholdChange('partnerships', checked)}
-                      />
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </EmpowermentCard>
+              </CardContent>
+            </Card>
           </TabsContent>
         </Tabs>
 
         {/* Save Warning */}
         {hasChanges && (
-          <BossCard variant="warning">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center space-x-3">
-                <AlertTriangle className="w-5 h-5 text-yellow-600" />
-                <div>
-                  <p className="font-medium">You have unsaved changes</p>
-                  <p className="text-sm text-gray-600 dark:text-gray-400">
-                    Don't forget to save your changes before leaving this page
-                  </p>
+          <Card className="bg-yellow-900/20 border-yellow-500/50">
+            <CardContent className="py-4">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center space-x-3">
+                  <AlertTriangle className="w-5 h-5 text-yellow-500" />
+                  <div>
+                    <p className="font-medium text-yellow-200">You have unsaved changes</p>
+                    <p className="text-sm text-yellow-200/70">
+                      Don't forget to save your changes before leaving this page
+                    </p>
+                  </div>
                 </div>
+                <Button
+                  onClick={handleSave}
+                  disabled={saving}
+                  className="bg-yellow-600 hover:bg-yellow-500 text-white font-bold"
+                >
+                  Save Now
+                </Button>
               </div>
-              <ZapButton
-                onClick={handleSave}
-                loading={saving}
-              >
-                Save Now
-              </ZapButton>
-            </div>
-          </BossCard>
+            </CardContent>
+          </Card>
         )}
       </motion.div>
     </div>
