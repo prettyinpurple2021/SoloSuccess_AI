@@ -150,7 +150,7 @@ export class NotificationJobQueue {
    * Get jobs that are ready to be processed
    */
   async getReadyJobs(limit: number = 10): Promise<NotificationJob[]> {
-    const result = await getSql().query(`
+    const result = await getSql()(`
       SELECT * FROM notification_jobs
       WHERE status = 'pending' 
         AND scheduled_time <= NOW()
@@ -215,7 +215,7 @@ export class NotificationJobQueue {
    * Mark a job as failed
    */
   async markJobFailed(jobId: string, error: string): Promise<void> {
-    const result = await getSql().query(`
+    const result = await getSql()(`
       UPDATE notification_jobs 
       SET error = $2, processed_at = NOW(),
           status = CASE 
@@ -240,7 +240,7 @@ export class NotificationJobQueue {
    * Cancel a scheduled job
    */
   async cancelJob(jobId: string): Promise<boolean> {
-    const result = await getSql().query(`
+    const result = await getSql()(`
       UPDATE notification_jobs 
       SET status = 'cancelled', processed_at = NOW()
       WHERE id = $1 AND status IN ('pending', 'processing')
@@ -254,7 +254,7 @@ export class NotificationJobQueue {
    * Get job queue statistics
    */
   async getStats(): Promise<JobQueueStats> {
-    const result = await getSql().query(`
+    const result = await getSql()(`
       SELECT 
         status,
         COUNT(*) as count

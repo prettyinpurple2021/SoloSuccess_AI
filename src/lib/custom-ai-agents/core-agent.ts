@@ -231,7 +231,7 @@ Do not include markdown code fences or additional commentary.`
         model: this.model as any,
         prompt: fullPrompt,
         temperature: 0.5,
-        maxOutputTokens: 1200,
+        maxTokens: 1200,
       })
 
       let text = response.text.trim()
@@ -325,13 +325,15 @@ Do not include markdown code fences or additional commentary.`
           status: 'pending',
           dependencies: [],
         })),
-        analysis: parsed.analysis
-          ? {
-              insights: parsed.analysis.insights,
-              recommendations: parsed.analysis.recommendations,
-              metadata: parsed.analysis.metadata,
-            }
-          : undefined,
+        metadata: {
+          analysis: parsed.analysis
+            ? {
+                insights: parsed.analysis.insights,
+                recommendations: parsed.analysis.recommendations,
+                metadata: parsed.analysis.metadata,
+              }
+            : undefined
+        },
       }
     } catch (error) {
       logError(`Error generating response for ${this.name}:`, error)

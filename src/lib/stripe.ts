@@ -30,7 +30,7 @@ async function getStripeInstance() {
       return null
     }
     stripeInstance = new StripeClass(process.env.STRIPE_SECRET_KEY, {
-      apiVersion: '2025-08-27.basil',
+      apiVersion: '2025-02-24.acacia',
       typescript: true,
     })
   }

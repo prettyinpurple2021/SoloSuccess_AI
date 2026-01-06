@@ -8,7 +8,7 @@ export interface PrimaryButtonProps extends Omit<ButtonHTMLAttributes<HTMLButton
   children: ReactNode
   onClick?: MouseEventHandler<HTMLButtonElement>
   disabled?: boolean
-  size?: 'sm' | 'md' | 'lg'
+  size?: 'sm' | 'md' | 'lg' | 'icon'
   variant?: 'cyan' | 'magenta' | 'lime' | 'purple' | 'orange' | 'success' | 'warning' | 'error' | 'info' | 'outline' | 'ghost'
   className?: string
   asChild?: boolean
@@ -34,6 +34,7 @@ export const PrimaryButton = ({
     sm: 'px-4 py-2 text-sm',
     md: 'px-6 py-3 text-base',
     lg: 'px-8 py-4 text-lg',
+    icon: 'h-10 w-10 p-2 flex items-center justify-center',
   }
   
   const semanticMap = {
@@ -119,7 +120,7 @@ export type ButtonVariant =
 
 interface ButtonVariantOptions {
   variant?: ButtonVariant
-  size?: 'sm' | 'md' | 'lg'
+  size?: 'sm' | 'md' | 'lg' | 'icon'
   className?: string
 }
 
@@ -129,10 +130,11 @@ interface ButtonVariantOptions {
 export function buttonVariants(options: ButtonVariantOptions = {}): string {
   const { variant = 'cyan', size = 'md', className } = options
 
-  const sizeClasses: Record<'sm' | 'md' | 'lg', string> = {
+  const sizeClasses: Record<'sm' | 'md' | 'lg' | 'icon', string> = {
     sm: 'px-4 py-2 text-sm',
     md: 'px-6 py-3 text-base',
     lg: 'px-8 py-4 text-lg',
+    icon: 'h-10 w-10 p-2 flex items-center justify-center',
   }
 
   const resolvedVariant: ButtonVariant =

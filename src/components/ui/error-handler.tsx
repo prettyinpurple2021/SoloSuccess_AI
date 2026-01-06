@@ -157,7 +157,7 @@ export function ErrorHandler({
                     {error.title}
                   </CardTitle>
                   <div className="flex items-center gap-2 mt-1">
-                    <Badge variant="outline" className="text-xs">
+                    <Badge variant="cyan" className="text-xs">
                       {error.type.toUpperCase()}
                     </Badge>
                     <span className="text-xs text-gray-500">

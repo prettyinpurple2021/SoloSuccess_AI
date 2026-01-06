@@ -5,11 +5,20 @@ import type { CompetitorProfile } from '../src/lib/competitor-intelligence-types
 // Mock the web scraping service to prevent network calls
 jest.mock('../src/lib/web-scraping-service', () => ({
   webScrapingService: {
-    scrapeCompetitorWebsite: jest.fn().mockResolvedValue({
-      title: 'Mock Company',
-      content: 'Mock company content',
-      metadata: {},
-      links: []
+    scrapeCompetitorWebsite: (jest.fn() as jest.Mock<any>).mockResolvedValue({
+      success: true,
+      data: {
+        url: 'https://mock-company.com',
+        title: 'Mock Company',
+        content: 'Mock company content',
+        metadata: {},
+        scrapedAt: new Date(),
+        responseTime: 100,
+        statusCode: 200
+      },
+      retryCount: 0,
+      responseTime: 100,
+      cached: false
     }),
     canScrapeUrl: jest.fn().mockReturnValue(true)
   }

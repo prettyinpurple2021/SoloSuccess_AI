@@ -484,7 +484,12 @@ export class AgentInterface {
         sharedKnowledge: sharedKnowledge || {},
         relevantContext,
         sessionParticipants,
-        currentGoals: conversationContext?.activeGoals || []
+        currentGoals: (conversationContext?.activeGoals || []).map(g => ({
+          id: g.id,
+          description: g.description,
+          status: g.status,
+          priority: g.priority
+        }))
       }
 
     } catch (error) {

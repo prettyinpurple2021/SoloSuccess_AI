@@ -407,6 +407,25 @@ export class AnalyticsExportService {
   }
 
   /**
+   * Generate CSV content
+   */
+  private generateCSVContent(data: ProcessedData): string {
+    const headers = ['Name', 'Value', 'Type', 'Timestamp', 'Metadata']
+    const rows = data.data.map(item => [
+      `"${item.name.replace(/"/g, '""')}"`,
+      `"${item.value.toString().replace(/"/g, '""')}"`,
+      item.type,
+      item.timestamp.toISOString(),
+      `"${JSON.stringify(item.metadata || {}).replace(/"/g, '""')}"`
+    ])
+    
+    return [
+      headers.join(','),
+      ...rows.map(row => row.join(','))
+    ].join('\n')
+  }
+
+  /**
    * Export to CSV
    */
   private async exportToCSV(data: ProcessedData, _config: ExportConfig, jobId: string): Promise<ExportResult> {

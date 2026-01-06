@@ -544,7 +544,7 @@ export function WorkflowTemplates({
                 </div>
               </Button>
               <Button
-                variant={viewMode === 'list' ? 'default' : 'ghost'}
+                variant={viewMode === 'list' ? 'purple' : 'ghost'}
                 size="sm"
                 onClick={() => setViewMode('list')}
                 className="h-8 w-8 p-0"

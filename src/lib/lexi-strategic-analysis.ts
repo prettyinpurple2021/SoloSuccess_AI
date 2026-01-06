@@ -313,7 +313,7 @@ export class LexiStrategicAnalysis {
       model: this.lexiConfig.model as any,
       prompt: analysisPrompt,
       temperature: 0.6,
-      maxOutputTokens: 2500,
+      maxTokens: 2500,
     })
 
     const analysis = this.parsePositioningAnalysis(text, competitorId)
@@ -342,7 +342,7 @@ export class LexiStrategicAnalysis {
       model: this.lexiConfig.model as any,
       prompt: analysisPrompt,
       temperature: 0.7,
-      maxOutputTokens: 2500,
+      maxTokens: 2500,
     })
 
     const analysis = this.parseMarketTrendAnalysis(text)
@@ -375,7 +375,7 @@ export class LexiStrategicAnalysis {
       model: this.lexiConfig.model as any,
       prompt: analysisPrompt,
       temperature: 0.7,
-      maxOutputTokens: 2000,
+      maxTokens: 2000,
     })
 
     const analysis = this.parseStrategicMoveAnalysis(text, competitorId)
@@ -398,7 +398,7 @@ export class LexiStrategicAnalysis {
       model: this.lexiConfig.model as any,
       prompt: analysisPrompt,
       temperature: 0.6,
-      maxOutputTokens: 2000,
+      maxTokens: 2000,
     })
 
     const assessment = this.parseThreatAssessment(text, competitorId)
@@ -425,7 +425,7 @@ export class LexiStrategicAnalysis {
       model: this.lexiConfig.model as any,
       prompt: analysisPrompt,
       temperature: 0.8,
-      maxOutputTokens: 2000,
+      maxTokens: 2000,
     })
 
     const opportunities = this.parseOpportunityAnalysis(text)
@@ -462,7 +462,7 @@ export class LexiStrategicAnalysis {
       model: this.lexiConfig.model as any,
       prompt: briefingPrompt,
       temperature: 0.7,
-      maxOutputTokens: 3000,
+      maxTokens: 3000,
     })
 
     return text
