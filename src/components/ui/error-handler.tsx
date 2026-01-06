@@ -8,7 +8,7 @@ import { Badge} from "@/components/ui/badge"
 import { Alert, AlertDescription} from "@/components/ui/alert"
 
 import {
-  AlertTriangle, RefreshCw, Wifi, WifiOff, X, Info, CheckCircle, Clock, Zap, Lightbulb, Home} from "lucide-react"
+  TriangleAlert, RefreshCw, Wifi, WifiOff, X, Info, CheckCircle, Clock, Zap, Lightbulb, Home} from "lucide-react"
 
 interface ErrorInfo {
   id: string
@@ -77,11 +77,11 @@ export function ErrorHandler({
 
   const getErrorIcon = (type: string) => {
     switch (type) {
-      case "error": return <AlertTriangle className="h-5 w-5 text-neon-magenta" />
-      case "warning": return <AlertTriangle className="h-5 w-5 text-neon-orange" />
+      case "error": return <TriangleAlert className="h-5 w-5 text-neon-magenta" />
+      case "warning": return <TriangleAlert className="h-5 w-5 text-neon-orange" />
       case "info": return <Info className="h-5 w-5 text-neon-cyan" />
       case "success": return <CheckCircle className="h-5 w-5 text-neon-lime" />
-      default: return <AlertTriangle className="h-5 w-5 text-neon-magenta" />
+      default: return <TriangleAlert className="h-5 w-5 text-neon-magenta" />
     }
   }
 
@@ -328,7 +328,7 @@ export function ErrorBoundary({ children }: { children: React.ReactNode }) {
         <Card className="w-full max-w-lg border-2 border-neon-magenta shadow-[0_0_30px_rgba(255,0,110,0.3)]">
           <CardHeader>
             <CardTitle className="flex items-center gap-2 text-neon-magenta">
-              <AlertTriangle className="h-5 w-5" />
+              <TriangleAlert className="h-5 w-5" />
               SYSTEM ERROR
             </CardTitle>
             <CardDescription className="text-gray-400 font-mono">

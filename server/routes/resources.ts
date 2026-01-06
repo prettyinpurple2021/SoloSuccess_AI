@@ -1,5 +1,5 @@
 
-import { Router } from 'express';
+import { Router, Request, Response } from 'express';
 import { db } from '../db';
 import {
     warRoomSessions, sops, jobDescriptions, interviewGuides,
@@ -16,7 +16,7 @@ const router = Router();
 // Helper for generic CRUD
 const createCrudRoutes = (path: string, table: any, dateField = 'generatedAt') => {
     // GET ALL
-    router.get(`/${path}`, authMiddleware, async (req: any, res: any) => {
+    router.get(`/${path}`, (authMiddleware as any), async (req: Request, res: Response) => {
         try {
             const userId = (req as AuthRequest).userId;
             if (!userId) return res.status(401).json({ error: 'Unauthorized' });
@@ -33,7 +33,7 @@ const createCrudRoutes = (path: string, table: any, dateField = 'generatedAt') =
     });
 
     // CREATE
-    router.post(`/${path}`, authMiddleware, async (req: any, res: any) => {
+    router.post(`/${path}`, (authMiddleware as any), async (req: Request, res: Response) => {
         try {
             const userId = (req as AuthRequest).userId;
             if (!userId) return res.status(401).json({ error: 'Unauthorized' });
@@ -54,7 +54,7 @@ const createCrudRoutes = (path: string, table: any, dateField = 'generatedAt') =
     });
 
     // DELETE
-    router.delete(`/${path}/:id`, authMiddleware, async (req: any, res: any) => {
+    router.delete(`/${path}/:id`, (authMiddleware as any), async (req: Request, res: Response) => {
         try {
             const userId = (req as AuthRequest).userId;
             if (!userId) return res.status(401).json({ error: 'Unauthorized' });

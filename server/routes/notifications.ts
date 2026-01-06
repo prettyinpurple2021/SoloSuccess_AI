@@ -1,4 +1,4 @@
-import { Router } from 'express';
+import { Router, Request, Response } from 'express';
 import { db } from '../db';
 import { notifications, notificationPreferences } from '../db/schema';
 import { eq, and, desc } from 'drizzle-orm';
@@ -20,7 +20,7 @@ const CreateNotificationSchema = z.object({
 });
 
 // Get all notifications
-router.get('/', authMiddleware, async (req: any, res: any) => {
+router.get('/', (authMiddleware as any), async (req: Request, res: Response) => {
     try {
         const userId = (req as AuthRequest).userId!;
 
@@ -37,7 +37,7 @@ router.get('/', authMiddleware, async (req: any, res: any) => {
 });
 
 // Create notification and emit real-time event
-router.post('/create', authMiddleware, async (req: any, res: any) => {
+router.post('/create', (authMiddleware as any), async (req: Request, res: Response) => {
     try {
         const userId = (req as AuthRequest).userId!;
         const parsed = CreateNotificationSchema.safeParse(req.body);
@@ -69,7 +69,7 @@ router.post('/create', authMiddleware, async (req: any, res: any) => {
 });
 
 // Mark as read
-router.post('/:id/read', authMiddleware, async (req: any, res: any) => {
+router.post('/:id/read', (authMiddleware as any), async (req: Request, res: Response) => {
     try {
         const userId = (req as AuthRequest).userId!;
         const notificationId = Number(req.params.id);
@@ -92,7 +92,7 @@ router.post('/:id/read', authMiddleware, async (req: any, res: any) => {
 });
 
 // Mark all as read
-router.post('/read-all', authMiddleware, async (req: any, res: any) => {
+router.post('/read-all', (authMiddleware as any), async (req: Request, res: Response) => {
     try {
         const userId = (req as AuthRequest).userId!;
 
@@ -112,7 +112,7 @@ router.post('/read-all', authMiddleware, async (req: any, res: any) => {
 });
 
 // Delete notification
-router.delete('/:id', authMiddleware, async (req: any, res: any) => {
+router.delete('/:id', (authMiddleware as any), async (req: Request, res: Response) => {
     try {
         const userId = (req as AuthRequest).userId!;
         const notificationId = Number(req.params.id);
@@ -134,7 +134,7 @@ router.delete('/:id', authMiddleware, async (req: any, res: any) => {
 });
 
 // Get preferences
-router.get('/preferences', authMiddleware, async (req: any, res: any) => {
+router.get('/preferences', (authMiddleware as any), async (req: Request, res: Response) => {
     try {
         const userId = (req as AuthRequest).userId!;
 
@@ -163,7 +163,7 @@ router.get('/preferences', authMiddleware, async (req: any, res: any) => {
 });
 
 // Update preferences
-router.put('/preferences', authMiddleware, async (req: any, res: any) => {
+router.put('/preferences', (authMiddleware as any), async (req: Request, res: Response) => {
     try {
         const userId = (req as AuthRequest).userId!;
         const newPrefs = req.body;

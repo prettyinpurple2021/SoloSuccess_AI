@@ -73,7 +73,7 @@ router.post('/', async (req: Request, res: Response) => {
                 role,
                 notes,
                 linkedinUrl,
-                tags,
+                tags: tags as string[],
                 lastContact: lastContact ? new Date(lastContact) : null,
                 relationship
             })

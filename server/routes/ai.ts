@@ -1,5 +1,5 @@
 
-import { Router } from 'express';
+import { Router, Request, Response } from 'express';
 import { GoogleGenAI, Type } from '@google/genai';
 import { db } from '../db';
 import { businessContext, tasks, competitorReports, boardReports, pivotAnalyses, warRoomSessions, dailyIntelligence } from '../db/schema';
@@ -134,7 +134,7 @@ const requireAi = (req: any, res: any, next: any) => {
 // --- ENDPOINTS ---
 
 // Generic Chat / Agent Response
-router.post('/chat', authMiddleware, requireAi, async (req: any, res: any) => {
+router.post('/chat', (authMiddleware as any), requireAi, async (req: Request, res: Response) => {
     try {
         const { agentId, history, message } = req.body;
         const userId = (req as AuthRequest).userId!;
@@ -177,7 +177,7 @@ router.post('/chat', authMiddleware, requireAi, async (req: any, res: any) => {
 });
 
 // Competitor Report
-router.post('/competitor-report', authMiddleware, requireAi, async (req: any, res: any) => {
+router.post('/competitor-report', (authMiddleware as any), requireAi, async (req: Request, res: Response) => {
     try {
         const { competitorName, agentId } = req.body;
         const userId = (req as AuthRequest).userId!;
@@ -246,7 +246,7 @@ router.post('/competitor-report', authMiddleware, requireAi, async (req: any, re
 });
 
 // War Room
-router.post('/war-room', authMiddleware, requireAi, async (req: any, res: any) => {
+router.post('/war-room', (authMiddleware as any), requireAi, async (req: Request, res: Response) => {
     try {
         const { topic, previousSessionId } = req.body;
         const userId = (req as AuthRequest).userId!;
@@ -265,7 +265,7 @@ router.post('/war-room', authMiddleware, requireAi, async (req: any, res: any) =
                 CONTEXT FROM PREVIOUS SESSION:
                 Topic: "${session.topic}"
                 Consensus: "${session.consensus}"
-                Action Plan: ${session.actionPlan?.join(', ')}
+                Action Plan: ${(session.actionPlan as string[])?.join(', ')}
                 
                 (Use this history to maintain continuity if the new topic is related.)
                 `;
@@ -296,7 +296,7 @@ router.post('/war-room', authMiddleware, requireAi, async (req: any, res: any) =
 });
 
 // Daily Briefing
-router.post('/briefing', authMiddleware, requireAi, async (req: any, res: any) => {
+router.post('/briefing', (authMiddleware as any), requireAi, async (req: Request, res: Response) => {
     try {
         const userId = (req as AuthRequest).userId!;
         const today = new Date().toISOString().split('T')[0]; // YYYY-MM-DD
@@ -360,7 +360,7 @@ router.post('/briefing', authMiddleware, requireAi, async (req: any, res: any) =
 });
 
 // Tactical Plan
-router.post('/tactical-plan', authMiddleware, requireAi, async (req: any, res: any) => {
+router.post('/tactical-plan', (authMiddleware as any), requireAi, async (req: Request, res: Response) => {
     try {
         const { goal } = req.body;
         const userId = (req as AuthRequest).userId!;
@@ -396,7 +396,7 @@ router.post('/tactical-plan', authMiddleware, requireAi, async (req: any, res: a
 // --- MARKETING & STRATEGY ---
 
 // Incinerator
-router.post('/incinerator', authMiddleware, requireAi, async (req: any, res: any) => {
+router.post('/incinerator', (authMiddleware as any), requireAi, async (req: Request, res: Response) => {
     try {
         const { content, mode, brutality } = req.body;
         const userId = (req as AuthRequest).userId!;
@@ -417,7 +417,7 @@ router.post('/incinerator', authMiddleware, requireAi, async (req: any, res: any
 });
 
 // Pitch Deck
-router.post('/pitch-deck', authMiddleware, requireAi, async (req: any, res: any) => {
+router.post('/pitch-deck', (authMiddleware as any), requireAi, async (req: Request, res: Response) => {
     try {
         const userId = (req as AuthRequest).userId!;
         const context = await getContext(userId);
@@ -433,7 +433,7 @@ router.post('/pitch-deck', authMiddleware, requireAi, async (req: any, res: any)
 });
 
 // Blue Oceans
-router.post('/blue-oceans', authMiddleware, requireAi, async (req: any, res: any) => {
+router.post('/blue-oceans', (authMiddleware as any), requireAi, async (req: Request, res: Response) => {
     try {
         const userId = (req as AuthRequest).userId!;
         const context = await getContext(userId);
@@ -449,7 +449,7 @@ router.post('/blue-oceans', authMiddleware, requireAi, async (req: any, res: any
 });
 
 // Tribe Blueprint
-router.post('/tribe-blueprint', authMiddleware, requireAi, async (req: any, res: any) => {
+router.post('/tribe-blueprint', (authMiddleware as any), requireAi, async (req: Request, res: Response) => {
     try {
         const { audience, enemy } = req.body;
         const userId = (req as AuthRequest).userId!;
@@ -466,7 +466,7 @@ router.post('/tribe-blueprint', authMiddleware, requireAi, async (req: any, res:
 });
 
 // Amplified Content
-router.post('/amplified-content', authMiddleware, requireAi, async (req: any, res: any) => {
+router.post('/amplified-content', (authMiddleware as any), requireAi, async (req: Request, res: Response) => {
     try {
         const { source } = req.body;
         const userId = (req as AuthRequest).userId!;
@@ -483,7 +483,7 @@ router.post('/amplified-content', authMiddleware, requireAi, async (req: any, re
 });
 
 // Social Strategy
-router.post('/social-strategy', authMiddleware, requireAi, async (req: any, res: any) => {
+router.post('/social-strategy', (authMiddleware as any), requireAi, async (req: Request, res: Response) => {
     try {
         const userId = (req as AuthRequest).userId!;
         const context = await getContext(userId);
@@ -499,7 +499,7 @@ router.post('/social-strategy', authMiddleware, requireAi, async (req: any, res:
 });
 
 // Launch Strategy
-router.post('/launch-strategy', authMiddleware, requireAi, async (req: any, res: any) => {
+router.post('/launch-strategy', (authMiddleware as any), requireAi, async (req: Request, res: Response) => {
     try {
         const { product, date } = req.body;
         const userId = (req as AuthRequest).userId!;
@@ -518,7 +518,7 @@ router.post('/launch-strategy', authMiddleware, requireAi, async (req: any, res:
 // --- OPS & HR ---
 
 // Job Description
-router.post('/job-description', authMiddleware, requireAi, async (req: any, res: any) => {
+router.post('/job-description', (authMiddleware as any), requireAi, async (req: Request, res: Response) => {
     try {
         const { roleTitle, employmentType } = req.body;
         const userId = (req as AuthRequest).userId!;
@@ -535,7 +535,7 @@ router.post('/job-description', authMiddleware, requireAi, async (req: any, res:
 });
 
 // Interview Guide
-router.post('/interview-guide', authMiddleware, requireAi, async (req: any, res: any) => {
+router.post('/interview-guide', (authMiddleware as any), requireAi, async (req: Request, res: Response) => {
     try {
         const { roleTitle, keyFocus } = req.body;
         const userId = (req as AuthRequest).userId!;
@@ -552,7 +552,7 @@ router.post('/interview-guide', authMiddleware, requireAi, async (req: any, res:
 });
 
 // SOP
-router.post('/sop', authMiddleware, requireAi, async (req: any, res: any) => {
+router.post('/sop', (authMiddleware as any), requireAi, async (req: Request, res: Response) => {
     try {
         const { taskName } = req.body;
         const userId = (req as AuthRequest).userId!;
@@ -569,7 +569,7 @@ router.post('/sop', authMiddleware, requireAi, async (req: any, res: any) => {
 });
 
 // Board Report
-router.post('/board-report', authMiddleware, requireAi, async (req: any, res: any) => {
+router.post('/board-report', (authMiddleware as any), requireAi, async (req: Request, res: Response) => {
     try {
         const { financials, tasks, reports, contacts } = req.body;
         const userId = (req as AuthRequest).userId!;
@@ -587,7 +587,7 @@ router.post('/board-report', authMiddleware, requireAi, async (req: any, res: an
 });
 
 // Financial Audit
-router.post('/financial-audit', authMiddleware, requireAi, async (req: any, res: any) => {
+router.post('/financial-audit', (authMiddleware as any), requireAi, async (req: Request, res: Response) => {
     try {
         const { financials } = req.body;
         const prompt = `Audit these financials: ${JSON.stringify(financials)}. Return JSON with runwayScore, verdict, strategicMoves, riskFactors.`;
@@ -602,7 +602,7 @@ router.post('/financial-audit', authMiddleware, requireAi, async (req: any, res:
 });
 
 // Tech Audit
-router.post('/tech-audit', authMiddleware, requireAi, async (req: any, res: any) => {
+router.post('/tech-audit', (authMiddleware as any), requireAi, async (req: Request, res: Response) => {
     try {
         const { stack } = req.body;
         const prompt = `Audit tech stack: ${stack}. Return JSON with score, verdict, pros, cons, recommendations.`;
@@ -619,7 +619,7 @@ router.post('/tech-audit', authMiddleware, requireAi, async (req: any, res: any)
 // --- LEGAL & SALES ---
 
 // Cold Email
-router.post('/cold-email', authMiddleware, requireAi, async (req: any, res: any) => {
+router.post('/cold-email', (authMiddleware as any), requireAi, async (req: Request, res: Response) => {
     try {
         const { contact } = req.body;
         const userId = (req as AuthRequest).userId!;
@@ -636,7 +636,7 @@ router.post('/cold-email', authMiddleware, requireAi, async (req: any, res: any)
 });
 
 // Negotiation Prep
-router.post('/negotiation-prep', authMiddleware, requireAi, async (req: any, res: any) => {
+router.post('/negotiation-prep', (authMiddleware as any), requireAi, async (req: Request, res: Response) => {
     try {
         const { contact } = req.body;
         const userId = (req as AuthRequest).userId!;
@@ -653,7 +653,7 @@ router.post('/negotiation-prep', authMiddleware, requireAi, async (req: any, res
 });
 
 // Draft Legal Doc
-router.post('/legal-doc', authMiddleware, requireAi, async (req: any, res: any) => {
+router.post('/legal-doc', (authMiddleware as any), requireAi, async (req: Request, res: Response) => {
     try {
         const { type, details } = req.body;
         const userId = (req as AuthRequest).userId!;
@@ -671,7 +671,7 @@ router.post('/legal-doc', authMiddleware, requireAi, async (req: any, res: any) 
 });
 
 // Analyze Contract
-router.post('/contract-analysis', authMiddleware, requireAi, async (req: any, res: any) => {
+router.post('/contract-analysis', (authMiddleware as any), requireAi, async (req: Request, res: Response) => {
     try {
         const { text } = req.body;
         const userId = (req as AuthRequest).userId!;
@@ -691,7 +691,7 @@ router.post('/contract-analysis', authMiddleware, requireAi, async (req: any, re
 // --- MENTAL & ROLEPLAY ---
 
 // Stoic Coaching
-router.post('/stoic-coaching', authMiddleware, requireAi, async (req: any, res: any) => {
+router.post('/stoic-coaching', (authMiddleware as any), requireAi, async (req: Request, res: Response) => {
     try {
         const { mood, stressLevel, primaryBlocker } = req.body;
         const prompt = `Stoic coaching for: Mood ${mood}, Stress ${stressLevel}, Blocker ${primaryBlocker}. Return JSON with reframing, stoicQuote, actionableStep, breathingExercise.`;
@@ -706,7 +706,7 @@ router.post('/stoic-coaching', authMiddleware, requireAi, async (req: any, res: 
 });
 
 // Roleplay Reply
-router.post('/roleplay-reply', authMiddleware, requireAi, async (req: any, res: any) => {
+router.post('/roleplay-reply', (authMiddleware as any), requireAi, async (req: Request, res: Response) => {
     try {
         const { scenario, history, userInput } = req.body;
         const prompt = `Roleplay: ${scenario.title}. Role: ${scenario.opponentRole}. History: ${JSON.stringify(history)}. User: ${userInput}. Respond in character.`;
@@ -721,7 +721,7 @@ router.post('/roleplay-reply', authMiddleware, requireAi, async (req: any, res: 
 });
 
 // Roleplay Feedback
-router.post('/roleplay-feedback', authMiddleware, requireAi, async (req: any, res: any) => {
+router.post('/roleplay-feedback', (authMiddleware as any), requireAi, async (req: Request, res: Response) => {
     try {
         const { scenario, history } = req.body;
         const prompt = `Evaluate roleplay session. Scenario: ${scenario.title}. History: ${JSON.stringify(history)}. Return JSON with score, strengths, weaknesses, proTip.`;
@@ -738,7 +738,7 @@ router.post('/roleplay-feedback', authMiddleware, requireAi, async (req: any, re
 // --- MISC ---
 
 // Brand Image
-router.post('/brand-image', authMiddleware, requireAi, async (req: any, res: any) => {
+router.post('/brand-image', (authMiddleware as any), requireAi, async (req: Request, res: Response) => {
     try {
         const { promptUser, styleDesc } = req.body;
         const userId = (req as AuthRequest).userId!;
@@ -756,7 +756,7 @@ router.post('/brand-image', authMiddleware, requireAi, async (req: any, res: any
 });
 
 // Code Solution
-router.post('/code-solution', authMiddleware, requireAi, async (req: any, res: any) => {
+router.post('/code-solution', (authMiddleware as any), requireAi, async (req: Request, res: Response) => {
     try {
         const { problem } = req.body;
         const prompt = `Solve coding problem: ${problem}. Return JSON with language, code, explanation.`;
@@ -771,7 +771,7 @@ router.post('/code-solution', authMiddleware, requireAi, async (req: any, res: a
 });
 
 // Simulation
-router.post('/simulation', authMiddleware, requireAi, async (req: any, res: any) => {
+router.post('/simulation', (authMiddleware as any), requireAi, async (req: Request, res: Response) => {
     try {
         const { scenario } = req.body;
         const prompt = `Simulate scenario: ${scenario}. Return JSON with likelyCase, bestCase, worstCase, strategicAdvice.`;
@@ -786,7 +786,7 @@ router.post('/simulation', authMiddleware, requireAi, async (req: any, res: any)
 });
 
 // Market Pulse
-router.post('/market-pulse', authMiddleware, requireAi, async (req: any, res: any) => {
+router.post('/market-pulse', (authMiddleware as any), requireAi, async (req: Request, res: Response) => {
     try {
         const userId = (req as AuthRequest).userId!;
         const context = await getContext(userId);

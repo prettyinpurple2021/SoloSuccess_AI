@@ -10,7 +10,7 @@ const router = Router();
 
 
 // Search
-router.post('/', authMiddleware, async (req: Request, res: Response) => {
+router.post('/', (authMiddleware as any), async (req: Request, res: Response) => {
     try {
         const userId = (req as AuthRequest).userId!;
         const { q, filters } = req.query; // q can be in query or body, let's check both
@@ -52,7 +52,7 @@ router.post('/', authMiddleware, async (req: Request, res: Response) => {
 });
 
 // Manual Index (for testing or manual triggers)
-router.post('/index', authMiddleware, async (req: Request, res: Response) => {
+router.post('/index', (authMiddleware as any), async (req: Request, res: Response) => {
     try {
         const userId = (req as AuthRequest).userId!;
         const { type, id, title, content, tags } = req.body;
@@ -64,7 +64,7 @@ router.post('/index', authMiddleware, async (req: Request, res: Response) => {
     }
 });
 
-router.delete('/index', authMiddleware, async (req: Request, res: Response) => {
+router.delete('/index', (authMiddleware as any), async (req: Request, res: Response) => {
     try {
         const userId = (req as AuthRequest).userId!;
         const { type, id } = req.body;

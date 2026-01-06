@@ -179,3 +179,170 @@ export const dailyIntelligence = pgTable('daily_intelligence', {
     motivationalMessage: text('motivational_message'),
     generatedAt: timestamp('generated_at').defaultNow(),
 });
+
+// ========================================
+// RESOURCES & CRM
+// ========================================
+
+export const pitchDecks = pgTable('pitch_decks', {
+    id: text('id').primaryKey(),
+    userId: integer('user_id').notNull(),
+    title: text('title').notNull(),
+    content: jsonb('content'),
+    slides: jsonb('slides'),
+    status: text('status').default('draft'),
+    createdAt: timestamp('created_at').defaultNow(),
+    updatedAt: timestamp('updated_at').defaultNow(),
+});
+
+export const contacts = pgTable('contacts', {
+    id: serial('id').primaryKey(),
+    userId: integer('user_id').notNull(),
+    name: text('name').notNull(),
+    email: text('email'),
+    phone: text('phone'),
+    company: text('company'),
+    role: text('role'),
+    notes: text('notes'),
+    linkedinUrl: text('linkedin_url'),
+    tags: text('tags').array(),
+    lastContact: timestamp('last_contact'),
+    relationship: text('relationship'),
+    createdAt: timestamp('created_at').defaultNow(),
+    updatedAt: timestamp('updated_at').defaultNow(),
+});
+
+export const sops = pgTable('sops', {
+    id: serial('id').primaryKey(),
+    userId: integer('user_id').notNull(),
+    taskName: text('task_name'),
+    goal: text('goal'),
+    content: jsonb('content'),
+    generatedAt: timestamp('generated_at').defaultNow(),
+});
+
+export const jobDescriptions = pgTable('job_descriptions', {
+    id: serial('id').primaryKey(),
+    userId: integer('user_id').notNull(),
+    roleTitle: text('role_title'),
+    content: jsonb('content'),
+    generatedAt: timestamp('generated_at').defaultNow(),
+});
+
+export const interviewGuides = pgTable('interview_guides', {
+    id: serial('id').primaryKey(),
+    userId: integer('user_id').notNull(),
+    roleTitle: text('role_title'),
+    content: jsonb('content'),
+    generatedAt: timestamp('generated_at').defaultNow(),
+});
+
+export const productSpecs = pgTable('product_specs', {
+    id: serial('id').primaryKey(),
+    userId: integer('user_id').notNull(),
+    title: text('title'),
+    content: jsonb('content'),
+    generatedAt: timestamp('generated_at').defaultNow(),
+});
+
+export const pivotAnalyses = pgTable('pivot_analyses', {
+    id: serial('id').primaryKey(),
+    userId: integer('user_id').notNull(),
+    gaps: jsonb('gaps'),
+    content: jsonb('content'),
+    generatedAt: timestamp('generated_at').defaultNow(),
+});
+
+export const legalDocs = pgTable('legal_docs', {
+    id: serial('id').primaryKey(),
+    userId: integer('user_id').notNull(),
+    title: text('title'),
+    content: text('content'),
+    generatedAt: timestamp('generated_at').defaultNow(),
+});
+
+export const trainingHistory = pgTable('training_history', {
+    id: serial('id').primaryKey(),
+    userId: integer('user_id').notNull(),
+    title: text('title'),
+    content: jsonb('content'),
+    timestamp: timestamp('timestamp').defaultNow(),
+});
+
+export const simulations = pgTable('simulations', {
+    id: serial('id').primaryKey(),
+    userId: integer('user_id').notNull(),
+    scenario: text('scenario'),
+    results: jsonb('results'),
+    timestamp: timestamp('timestamp').defaultNow(),
+});
+
+export const campaigns = pgTable('campaigns', {
+    id: serial('id').primaryKey(),
+    userId: integer('user_id').notNull(),
+    title: text('title'),
+    content: jsonb('content'),
+    generatedAt: timestamp('generated_at').defaultNow(),
+});
+
+export const creativeAssets = pgTable('creative_assets', {
+    id: serial('id').primaryKey(),
+    userId: integer('user_id').notNull(),
+    title: text('title'),
+    content: jsonb('content'), // urls or base64
+    generatedAt: timestamp('generated_at').defaultNow(),
+});
+
+export const codeSnippets = pgTable('code_snippets', {
+    id: serial('id').primaryKey(),
+    userId: integer('user_id').notNull(),
+    title: text('title'),
+    code: text('code'),
+    language: text('language'),
+    description: text('description'),
+    generatedAt: timestamp('generated_at').defaultNow(),
+});
+
+export const launchStrategies = pgTable('launch_strategies', {
+    id: serial('id').primaryKey(),
+    userId: integer('user_id').notNull(),
+    productName: text('product_name'),
+    launchDate: text('launch_date'),
+    content: jsonb('content'),
+    generatedAt: timestamp('generated_at').defaultNow(),
+});
+
+export const tribeBlueprints = pgTable('tribe_blueprints', {
+    id: serial('id').primaryKey(),
+    userId: integer('user_id').notNull(),
+    audience: text('audience'),
+    content: jsonb('content'),
+    generatedAt: timestamp('generated_at').defaultNow(),
+});
+
+export const boardReports = pgTable('board_reports', {
+    id: serial('id').primaryKey(),
+    userId: integer('user_id').notNull(),
+    ceoScore: integer('ceo_score'),
+    consensus: text('consensus'),
+    executiveSummary: text('executive_summary'),
+    grades: jsonb('grades'),
+    generatedAt: timestamp('generated_at').defaultNow(),
+});
+
+export const warRoomSessions = pgTable('war_room_sessions', {
+    id: serial('id').primaryKey(),
+    userId: integer('user_id').notNull(),
+    topic: text('topic'),
+    consensus: text('consensus'),
+    actionPlan: jsonb('action_plan'), // array of strings
+    timestamp: timestamp('timestamp').defaultNow(),
+});
+
+export const agentInstructions = pgTable('agent_instructions', {
+    id: serial('id').primaryKey(),
+    userId: integer('user_id').notNull(),
+    agentId: text('agent_id'),
+    instructions: text('instructions'),
+    updatedAt: timestamp('updated_at').defaultNow(),
+});

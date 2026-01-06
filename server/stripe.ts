@@ -6,7 +6,7 @@ import { eq, and, count } from 'drizzle-orm';
 
 // Initialize Stripe with secret key from environment
 export const stripe = new Stripe(process.env.STRIPE_SECRET_KEY || '', {
-    apiVersion: '2025-11-17.clover',
+    apiVersion: '2025-12-15.clover' as any,
 });
 
 // Price IDs for each tier

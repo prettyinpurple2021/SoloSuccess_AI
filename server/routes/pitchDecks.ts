@@ -8,7 +8,7 @@ import { checkSuspended } from '../middleware/checkSuspended';
 const router = express.Router();
 
 // Apply auth and suspension check to all routes
-router.use(authMiddleware as any);
+router.use((authMiddleware as any));
 router.use(checkSuspended as any);
 
 // Get all pitch decks for authenticated user
@@ -92,7 +92,7 @@ router.post('/', async (req: Request, res: Response) => {
                     userId: Number(userId),
                     title,
                     slides,
-                    generatedAt: generatedAt ? new Date(generatedAt) : new Date()
+                    createdAt: generatedAt ? new Date(generatedAt) : new Date()
                 })
                 .returning();
 
