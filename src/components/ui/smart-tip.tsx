@@ -100,7 +100,7 @@ export function SmartTipPopup({ tip, onDismiss, onAction, position = "top-right"
                 
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2 mb-2">
-                    <Badge variant="outline" className={`text-xs ${priorityColors[tip.priority]}`}>
+                    <Badge variant="cyan" className={`text-xs ${priorityColors[tip.priority]}`}>
                       {tip.priority}
                     </Badge>
                     <Badge variant="cyan" className="text-xs">

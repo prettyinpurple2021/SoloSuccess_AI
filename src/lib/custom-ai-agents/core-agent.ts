@@ -52,6 +52,7 @@ export interface AgentResponse {
     priority: string
   }>
   followUpTasks: AgentTask[]
+  metadata?: Record<string, any>
   analysis?: {
     insights: Array<{
       id?: string

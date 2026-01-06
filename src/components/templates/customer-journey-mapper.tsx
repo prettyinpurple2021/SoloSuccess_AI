@@ -112,19 +112,20 @@ interface CustomerJourneyData {
 
 interface CustomerJourneyMapperProps {
   template: TemplateData
+  initialData?: Partial<CustomerJourneyData>
   onSave?: (data: CustomerJourneyData) => Promise<void>
   onExport?: (format: 'json' | 'pdf' | 'csv') => void
 }
 
-export default function CustomerJourneyMapper({ template, onSave: _onSave, onExport: _onExport }: CustomerJourneyMapperProps) {
+export default function CustomerJourneyMapper({ template, initialData, onSave: _onSave, onExport: _onExport }: CustomerJourneyMapperProps) {
   const [currentStep, setCurrentStep] = useState(1)
   const [data, setData] = useState<CustomerJourneyData>({
-    journeyName: "",
-    journeyDescription: "",
-    businessGoal: "",
-    targetOutcome: "",
-    timeframe: "",
-    persona: {
+    journeyName: initialData?.journeyName || "",
+    journeyDescription: initialData?.journeyDescription || "",
+    businessGoal: initialData?.businessGoal || "",
+    targetOutcome: initialData?.targetOutcome || "",
+    timeframe: initialData?.timeframe || "",
+    persona: initialData?.persona || {
       id: crypto.randomUUID(),
       name: "",
       demographics: {
@@ -146,19 +147,19 @@ export default function CustomerJourneyMapper({ template, onSave: _onSave, onExp
         deviceUsage: []
       }
     },
-    stages: [],
-    touchpoints: [],
-    overallSatisfactionScore: 0,
-    criticalPainPoints: [],
-    keyOpportunities: [],
-    priorityImprovements: [],
-    quickWins: [],
-    longTermImprovements: [],
-    resourceRequirements: "",
-    expectedROI: "",
-    successMetrics: [],
-    currentMetrics: {},
-    targetMetrics: {}
+    stages: initialData?.stages || [],
+    touchpoints: initialData?.touchpoints || [],
+    overallSatisfactionScore: initialData?.overallSatisfactionScore || 0,
+    criticalPainPoints: initialData?.criticalPainPoints || [],
+    keyOpportunities: initialData?.keyOpportunities || [],
+    priorityImprovements: initialData?.priorityImprovements || [],
+    quickWins: initialData?.quickWins || [],
+    longTermImprovements: initialData?.longTermImprovements || [],
+    resourceRequirements: initialData?.resourceRequirements || "",
+    expectedROI: initialData?.expectedROI || "",
+    successMetrics: initialData?.successMetrics || [],
+    currentMetrics: initialData?.currentMetrics || {},
+    targetMetrics: initialData?.targetMetrics || {}
   })
 
   const totalSteps = 5

@@ -51,7 +51,16 @@ interface Template {
   isNew: boolean
   isPopular: boolean
   user_id: string
+  template_slug?: string
 }
+
+// Helper to infer slug
+const toSlug = (value: string) =>
+  value
+    .toLowerCase()
+    .replace(/&/g, 'and')
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '')
 
 const categories = [
   { id: "all", label: "All Categories", icon: FileText },
@@ -114,6 +123,7 @@ export default function TemplatesDashboard() {
           const data = await response.json()
           const mappedTemplates = data.map((t: any) => ({
             ...t,
+            template_slug: t.template_slug || toSlug(t.title),
             tier: t.tier || 'launch',
             estimatedTime: t.estimated_minutes ? `${t.estimated_minutes} min` : '15 min',
             difficulty: t.difficulty || 'beginner',
@@ -181,6 +191,7 @@ export default function TemplatesDashboard() {
           description: template.description,
           content: template.content,
           category: template.category,
+          template_slug: template.template_slug || toSlug(template.title),
           is_public: false
         })
       })
@@ -411,95 +422,113 @@ export default function TemplatesDashboard() {
                   </div>
 
                   <div className="flex gap-2 pt-2">
-                    <Dialog>
-                      <DialogTrigger asChild>
-                        <CyberButton variant="ghost" size="sm" className="flex-1 border-neon-cyan/30 text-neon-cyan hover:bg-neon-cyan/10">
-                          <Eye className="h-4 w-4 mr-2" />
-                          Preview
-                        </CyberButton>
-                      </DialogTrigger>
-                      <DialogContent className="max-w-2xl bg-dark-card border-neon-cyan/30 rounded-none">
-                        <DialogHeader>
-                          <DialogTitle className="text-white font-orbitron">{template.title}</DialogTitle>
-                          <DialogDescription className="text-gray-400 font-mono">
-                            {template.description}
-                          </DialogDescription>
-                        </DialogHeader>
-                        <div className="space-y-4">
-                          <div className="p-4 bg-dark-bg/50 border border-neon-cyan/20 rounded-none">
-                            <h4 className="font-medium mb-2 text-white font-orbitron">Template Preview:</h4>
-                            <p className="text-sm text-gray-400 font-mono space-y-2 whitespace-pre-wrap">
-                              {template.preview}
-                            </p>
-                          </div>
-                          <div className="flex items-center justify-between">
-                            <div className="flex items-center gap-4 text-sm text-gray-400 font-mono">
-                              <span>⏱️ {template.estimatedTime}</span>
-                              <span>👥 {template.usageCount.toLocaleString()} uses</span>
-                              <span>⭐ {template.rating}</span>
-                            </div>
-                            <CyberButton
-                              onClick={() => handleUseTemplate(template)}
-                              disabled={!hasAccess || isSaving}
-                              variant="purple"
-                              className="bg-gradient-to-r from-neon-purple to-neon-magenta text-white hover:opacity-90 border-none"
-                            >
-                              {isUsed ? (
-                                <>
-                                  <CheckCircle className="h-4 w-4 mr-2" />
-                                  Added
-                                </>
-                              ) : (
-                                <>
-                                  <Download className="h-4 w-4 mr-2" />
-                                  Add to Workspace
-                                </>
-                              )}
+                    {/* Public Template Actions */}
+                    {template.user_id !== user?.id && (
+                      <>
+                        <Dialog>
+                          <DialogTrigger asChild>
+                            <CyberButton variant="ghost" size="sm" className="flex-1 border-neon-cyan/30 text-neon-cyan hover:bg-neon-cyan/10">
+                              <Eye className="h-4 w-4 mr-2" />
+                              Preview
                             </CyberButton>
-                          </div>
-                        </div>
-                      </DialogContent>
-                    </Dialog>
+                          </DialogTrigger>
+                          <DialogContent className="max-w-2xl bg-dark-card border-neon-cyan/30 rounded-none">
+                            <DialogHeader>
+                              <DialogTitle className="text-white font-orbitron">{template.title}</DialogTitle>
+                              <DialogDescription className="text-gray-400 font-mono">
+                                {template.description}
+                              </DialogDescription>
+                            </DialogHeader>
+                            <div className="space-y-4">
+                              <div className="p-4 bg-dark-bg/50 border border-neon-cyan/20 rounded-none">
+                                <h4 className="font-medium mb-2 text-white font-orbitron">Template Preview:</h4>
+                                <p className="text-sm text-gray-400 font-mono space-y-2 whitespace-pre-wrap">
+                                  {template.preview}
+                                </p>
+                              </div>
+                              <div className="flex items-center justify-between">
+                                <div className="flex items-center gap-4 text-sm text-gray-400 font-mono">
+                                  <span>⏱️ {template.estimatedTime}</span>
+                                  <span>👥 {template.usageCount.toLocaleString()} uses</span>
+                                  <span>⭐ {template.rating}</span>
+                                </div>
+                                <CyberButton
+                                  onClick={() => handleUseTemplate(template)}
+                                  disabled={!hasAccess || isSaving}
+                                  variant="purple"
+                                  className="bg-gradient-to-r from-neon-purple to-neon-magenta text-white hover:opacity-90 border-none"
+                                >
+                                  {isUsed ? (
+                                    <>
+                                      <CheckCircle className="h-4 w-4 mr-2" />
+                                      Added
+                                    </>
+                                  ) : (
+                                    <>
+                                      <Download className="h-4 w-4 mr-2" />
+                                      Add to Workspace
+                                    </>
+                                  )}
+                                </CyberButton>
+                              </div>
+                            </div>
+                          </DialogContent>
+                        </Dialog>
 
-                    <CyberButton
-                      onClick={() => handleUseTemplate(template)}
-                      disabled={!hasAccess || isSaving}
-                      size="sm"
-                      variant="purple"
-                      className="flex-1 bg-gradient-to-r from-neon-purple to-neon-magenta text-white hover:opacity-90 border-none"
-                    >
-                      {isUsed ? (
-                        <>
-                          <CheckCircle className="h-4 w-4 mr-2" />
-                          Added
-                        </>
-                      ) : (
-                        <>
-                          <Copy className="h-4 w-4 mr-2" />
-                          Add
-                        </>
-                      )}
-                    </CyberButton>
+                        <CyberButton
+                          onClick={() => handleUseTemplate(template)}
+                          disabled={!hasAccess || isSaving}
+                          size="sm"
+                          variant="purple"
+                          className="flex-1 bg-gradient-to-r from-neon-purple to-neon-magenta text-white hover:opacity-90 border-none"
+                        >
+                          {isUsed ? (
+                            <>
+                              <CheckCircle className="h-4 w-4 mr-2" />
+                              Added
+                            </>
+                          ) : (
+                            <>
+                              <Copy className="h-4 w-4 mr-2" />
+                              Add
+                            </>
+                          )}
+                        </CyberButton>
+                      </>
+                    )}
+
+                    {/* Owned Users Template Actions */}
+                    {template.user_id === user?.id && (
+                       <CyberButton
+                          onClick={() => router.push(`/dashboard/templates/${template.id}`)}
+                          variant="purple"
+                          size="sm"
+                          className="flex-1 bg-neon-cyan/20 text-neon-cyan border border-neon-cyan/50 hover:bg-neon-cyan/30"
+                        >
+                          <FileText className="h-4 w-4 mr-2" />
+                          Open Editor
+                        </CyberButton>
+                    )}
                   </div>
 
                   {template.user_id === user?.id && (
                     <div className="flex gap-2 pt-2 border-t border-neon-cyan/20 mt-2">
-                      <Dialog>
+                       <Dialog>
                         <DialogTrigger asChild>
                           <CyberButton variant="ghost" size="sm" className="flex-1 border-neon-cyan/30 text-neon-cyan hover:bg-neon-cyan/10">
-                            Edit
+                            Edit Info
                           </CyberButton>
                         </DialogTrigger>
                         <DialogContent className="bg-dark-card border-neon-cyan/30 rounded-none">
                           <DialogHeader>
-                            <DialogTitle className="text-white font-orbitron">Edit Template</DialogTitle>
+                            <DialogTitle className="text-white font-orbitron">Edit Template Info</DialogTitle>
                           </DialogHeader>
                           <EditTemplateForm template={template} onSave={handleEditTemplate} />
                         </DialogContent>
                       </Dialog>
 
                       <CyberButton
-                        variant="error"
+                        variant="destructive"
                         size="sm"
                         className="flex-1 bg-neon-magenta hover:bg-neon-magenta/90"
                         onClick={() => handleDeleteTemplate(template.id)}

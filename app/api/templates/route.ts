@@ -42,7 +42,7 @@ export async function POST(req: NextRequest) {
 
     const userId = authResult.user.id
     const body = await req.json()
-    const { title, description, content, category, tags, difficulty, estimated_minutes } = body
+    const { title, description, content, category, tags, difficulty, estimated_minutes, template_slug } = body
 
     if (!title || !content) {
       return NextResponse.json({ error: 'Title and content are required' }, { status: 400 })
@@ -52,6 +52,7 @@ export async function POST(req: NextRequest) {
       .insert(templates)
       .values({
         user_id: userId,
+        template_slug,
         title,
         description: description || '',
         content,

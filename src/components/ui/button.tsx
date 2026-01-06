@@ -14,7 +14,10 @@ export interface PrimaryButtonProps extends Omit<ButtonHTMLAttributes<HTMLButton
   asChild?: boolean
 }
 
-export const PrimaryButton = ({ 
+import { forwardRef } from 'react'
+// ... existing imports ...
+
+export const PrimaryButton = forwardRef<HTMLButtonElement, PrimaryButtonProps>(({ 
   children, 
   onClick, 
   disabled = false,
@@ -23,7 +26,7 @@ export const PrimaryButton = ({
   className = '',
   asChild = false,
   ...props
-}: PrimaryButtonProps) => {
+}, ref) => {
   // Theme is not available during static generation (React context is null)
   // Use default values that work for all themes
   // The theme-dependent styling will be applied on the client side after hydration
@@ -70,6 +73,7 @@ export const PrimaryButton = ({
   
   return (
     <Comp
+      ref={ref}
       onClick={onClick}
       disabled={disabled}
       className={cn(
@@ -89,7 +93,8 @@ export const PrimaryButton = ({
       {children}
     </Comp>
   )
-}
+})
+PrimaryButton.displayName = 'PrimaryButton'
 
 /**
  * Backward-compatible exports for existing components that expect

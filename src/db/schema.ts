@@ -182,6 +182,7 @@ export const tasks = pgTable('tasks', {
 export const templates = pgTable('templates', {
   id: text('id').primaryKey().$defaultFn(() => uuidv4()),
   user_id: text('user_id').references(() => users.id, { onDelete: 'cascade' }),
+  template_slug: varchar('template_slug', { length: 255 }),
   title: varchar('title', { length: 255 }).notNull(),
   description: text('description'),
   content: text('content').notNull(),
