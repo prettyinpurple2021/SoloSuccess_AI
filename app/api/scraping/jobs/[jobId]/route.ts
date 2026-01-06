@@ -204,7 +204,7 @@ export async function PUT(
       const updatedJob = scrapingScheduler.getJob(jobId)
       if (updatedJob) {
         if (validatedData.frequency) {
-          updatedJob.frequency = validatedData.frequency
+          updatedJob.frequency = validatedData.frequency as any
         }
         if (validatedData.config) {
           updatedJob.config = { ...updatedJob.config, ...validatedData.config }

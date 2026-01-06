@@ -9,7 +9,7 @@ export interface PrimaryButtonProps extends Omit<ButtonHTMLAttributes<HTMLButton
   onClick?: MouseEventHandler<HTMLButtonElement>
   disabled?: boolean
   size?: 'sm' | 'md' | 'lg' | 'icon'
-  variant?: 'cyan' | 'magenta' | 'lime' | 'purple' | 'orange' | 'success' | 'warning' | 'error' | 'info' | 'outline' | 'ghost'
+  variant?: 'cyan' | 'magenta' | 'lime' | 'purple' | 'orange' | 'success' | 'warning' | 'error' | 'info' | 'outline' | 'ghost' | 'default' | 'secondary' | 'destructive' | 'link'
   className?: string
   asChild?: boolean
 }
@@ -45,9 +45,12 @@ export const PrimaryButton = forwardRef<HTMLButtonElement, PrimaryButtonProps>((
     warning: 'orange',
     error: 'magenta',
     info: 'cyan',
+    default: 'cyan',
+    secondary: 'purple',
+    destructive: 'magenta',
   } as const
   
-  const resolvedVariant = semanticMap[variant as keyof typeof semanticMap] || variant
+  const resolvedVariant = (semanticMap as any)[variant] || variant
   
   const variants = {
     cyan: `border-2 border-neon-cyan text-neon-cyan hover:bg-neon-cyan hover:bg-opacity-10 ${
@@ -67,6 +70,17 @@ export const PrimaryButton = forwardRef<HTMLButtonElement, PrimaryButtonProps>((
     }`,
     outline: 'border border-gray-600 text-gray-300 hover:border-neon-cyan hover:text-neon-cyan',
     ghost: 'border-transparent text-gray-300 hover:bg-dark-hover',
+    link: 'text-neon-cyan hover:underline underline-offset-4',
+    // Fallbacks for any unmapped variants that might slip through
+    default: `border-2 border-neon-cyan text-neon-cyan hover:bg-neon-cyan hover:bg-opacity-10 ${
+      isBalanced ? 'hover:shadow-[0_0_15px_rgba(11,228,236,0.3)]' : 'hover:shadow-[0_0_20px_rgba(11,228,236,0.5)]'
+    }`,
+    secondary: `border-2 border-neon-purple text-neon-purple hover:bg-neon-purple hover:bg-opacity-10 ${
+      isBalanced ? 'hover:shadow-[0_0_15px_rgba(179,0,255,0.3)]' : 'hover:shadow-[0_0_20px_rgba(179,0,255,0.5)]'
+    }`,
+    destructive: `border-2 border-neon-magenta text-neon-magenta hover:bg-neon-magenta hover:bg-opacity-10 ${
+      isBalanced ? 'hover:shadow-[0_0_15px_rgba(255,0,110,0.3)]' : 'hover:shadow-[0_0_20px_rgba(255,0,110,0.5)]'
+    }`,
   }
   
   const Comp = asChild ? Slot : 'button'
@@ -78,7 +92,7 @@ export const PrimaryButton = forwardRef<HTMLButtonElement, PrimaryButtonProps>((
       disabled={disabled}
       className={cn(
         sizes[size],
-        variants[resolvedVariant as keyof typeof variants],
+        (variants as any)[resolvedVariant] || variants.cyan,
         'bg-transparent',
         'font-bold uppercase tracking-wider',
         theme === 'aggressive' ? 'rounded-none' : 'rounded-sm',
@@ -122,6 +136,10 @@ export type ButtonVariant =
   // legacy shadcn-style variants we still see in a few places
   | 'outline'
   | 'ghost'
+  | 'default'
+  | 'secondary'
+  | 'destructive'
+  | 'link'
 
 interface ButtonVariantOptions {
   variant?: ButtonVariant
@@ -142,17 +160,20 @@ export function buttonVariants(options: ButtonVariantOptions = {}): string {
     icon: 'h-10 w-10 p-2 flex items-center justify-center',
   }
 
-  const resolvedVariant: ButtonVariant =
+  const resolvedVariant: string =
     (variant === 'success' && 'lime') ||
     (variant === 'warning' && 'orange') ||
     (variant === 'error' && 'magenta') ||
     (variant === 'info' && 'cyan') ||
+    (variant === 'default' && 'cyan') ||
+    (variant === 'secondary' && 'purple') ||
+    (variant === 'destructive' && 'magenta') ||
     variant
 
   const base =
     'font-bold uppercase tracking-wider transition-all duration-300 ease-out disabled:opacity-30 disabled:cursor-not-allowed'
 
-  const variantClasses: Record<ButtonVariant, string> = {
+  const variantClasses: Record<string, string> = {
     cyan: 'border-2 border-neon-cyan text-neon-cyan hover:bg-neon-cyan hover:bg-opacity-10 hover:shadow-[0_0_15px_rgba(11,228,236,0.3)]',
     magenta:
       'border-2 border-neon-magenta text-neon-magenta hover:bg-neon-magenta hover:bg-opacity-10 hover:shadow-[0_0_15px_rgba(255,0,110,0.3)]',
@@ -172,7 +193,12 @@ export function buttonVariants(options: ButtonVariantOptions = {}): string {
       'border-2 border-neon-cyan text-neon-cyan hover:bg-neon-cyan hover:bg-opacity-10 hover:shadow-[0_0_15px_rgba(11,228,236,0.3)]',
     outline: 'border border-gray-600 text-gray-300 hover:border-neon-cyan hover:text-neon-cyan',
     ghost: 'border-transparent text-gray-300 hover:bg-dark-hover',
+    link: 'text-neon-cyan hover:underline underline-offset-4',
+    // Mapping direct styles for safety if resolvedVariant doesn't catch them
+    default: 'border-2 border-neon-cyan text-neon-cyan hover:bg-neon-cyan hover:bg-opacity-10 hover:shadow-[0_0_15px_rgba(11,228,236,0.3)]',
+    secondary: 'border-2 border-neon-purple text-neon-purple hover:bg-neon-purple hover:bg-opacity-10 hover:shadow-[0_0_15px_rgba(179,0,255,0.3)]',
+    destructive: 'border-2 border-neon-magenta text-neon-magenta hover:bg-neon-magenta hover:bg-opacity-10 hover:shadow-[0_0_15px_rgba(255,0,110,0.3)]',
   }
 
-  return cn(sizeClasses[size], base, variantClasses[resolvedVariant], className)
+  return cn(sizeClasses[size], base, variantClasses[resolvedVariant] || variantClasses[variant], className)
 }

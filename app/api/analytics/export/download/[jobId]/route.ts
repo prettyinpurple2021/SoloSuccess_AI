@@ -17,10 +17,10 @@ export const dynamic = 'force-dynamic'
  */
 export async function GET(
   request: NextRequest,
-  { params }: { params: { jobId: string } }
+  { params }: { params: Promise<{ jobId: string }> }
 ) {
   try {
-    const { jobId } = params
+    const { jobId } = await params
 
     // Authentication
     const { user, error: authError } = await verifyAuth()
@@ -61,7 +61,7 @@ export async function GET(
     let body: Buffer | string
 
     // Handle binary content (PDF/Excel) vs text content (CSV/JSON)
-    if (result.format === 'pdf' || result.format === 'excel' || result.format === 'png') {
+    if (result.format === 'pdf' || result.format === 'excel') {
       body = Buffer.from(result.content, 'base64')
     } else {
       body = result.content

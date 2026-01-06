@@ -313,3 +313,4 @@ export function StatsCard({
     </BossCard>
   )
 }
+export const EmpowermentCard = CyanCard;

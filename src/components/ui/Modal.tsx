@@ -1,7 +1,7 @@
 'use client'
 
 import { ReactNode } from 'react'
-import { PrimaryButton } from './Button'
+import { PrimaryButton } from './button'
 import { cn } from '@/lib/utils'
 
 interface ModalAction {

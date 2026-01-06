@@ -15,7 +15,7 @@ async function main() {
             return
         }
 
-        const userId = user.id
+        const userId = user.id as string
         console.log(`👤 Testing for user: ${userId}`)
 
         // 2. Test Certifications Query

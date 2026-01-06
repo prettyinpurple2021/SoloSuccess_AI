@@ -6,14 +6,28 @@ import {
   createErrorResponse,
   verifyDocumentOwnership
 } from '@/lib/api-utils'
+import { z } from 'zod'
 
 // Edge runtime enabled after refactoring to jose and Neon HTTP
 export const runtime = 'edge'
 
+const inviteSchema = z.object({
+  email: z.string().email(),
+  role: z.enum(['viewer', 'editor', 'owner']),
+  message: z.string().optional()
+})
+
 export const POST = withDocumentAuth(
   async (request: NextRequest, user: any, documentId: string) => {
     try {
-      const { email, role, message } = await request.json()
+      const json = await request.json()
+      const parseResult = inviteSchema.safeParse(json)
+      
+      if (!parseResult.success) {
+        return createErrorResponse('Invalid request data', 400)
+      }
+      
+      const { email, role, message } = parseResult.data
 
       if (!email || !role) {
         return createErrorResponse('Email and role are required', 400)

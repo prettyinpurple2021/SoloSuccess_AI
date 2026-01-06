@@ -280,11 +280,11 @@ const ALLOWED_DOCUMENT_FIELDS = [
   'created_at', 'updated_at'
 ]
 
-export async function verifyDocumentOwnership(
+export async function verifyDocumentOwnership<T = any>(
   documentId: string,
   userId: string,
   selectFields: string = 'id'
-): Promise<{ document: unknown | null; error: string | null }> {
+): Promise<{ document: T | null; error: string | null }> {
   try {
     // Validate selectFields against whitelist to prevent SQL injection
     const requestedFields = selectFields.split(',').map(f => f.trim())
@@ -315,7 +315,7 @@ export async function verifyDocumentOwnership(
       const result = await sqlClient.unsafe(
         `SELECT ${selectFields} FROM documents WHERE id = $1 AND user_id = $2`,
         [documentId, userId]
-      ) as any[]
+      ) as T[]
       if (!result || result.length === 0) {
         return { document: null, error: 'Document not found' }
       }
@@ -327,7 +327,7 @@ export async function verifyDocumentOwnership(
     const result = await sql`
       SELECT id, name, description, file_type, file_size, user_id, created_at, updated_at
       FROM documents WHERE id = ${documentId} AND user_id = ${userId}
-    ` as any[]
+    ` as T[]
     
     if (!result || result.length === 0) {
       return { document: null, error: 'Document not found' }

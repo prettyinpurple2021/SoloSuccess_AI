@@ -53,7 +53,6 @@ export function ThemeProvider({ children, ...props }: ThemeProviderProps) {
       storageKey="solosuccess-theme"
       enableSystem={false}
       disableTransitionOnChange
-      suppressHydrationWarning
     >
       {children}
     </NextThemesProvider>

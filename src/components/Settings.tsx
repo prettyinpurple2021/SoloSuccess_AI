@@ -7,12 +7,12 @@ import { soundService } from '../services/soundService';
 import { storageService } from '../services/storageService';
 import { apiService } from '../services/apiService';
 import { useUser } from '@stackframe/stack';
-import { useNavigate } from 'react-router-dom';
+import { useRouter } from 'next/navigation';
 import { logError } from '../lib/logger';
 
 export const Settings: React.FC = () => {
     const user = useUser();
-    const navigate = useNavigate();
+    const router = useRouter();
     const [context, setContext] = useState<BusinessContext>({
         founderName: '',
         companyName: '',
@@ -130,7 +130,7 @@ export const Settings: React.FC = () => {
                             )}
                         </div>
                         <button
-                            onClick={() => navigate('/pricing')}
+                            onClick={() => router.push('/pricing')}
                             className="px-6 py-3 border-2 border-neon-cyan bg-neon-cyan/10 text-neon-cyan font-mono font-bold rounded-sm hover:bg-neon-cyan/20 hover:shadow-[0_0_20px_rgba(11,228,236,0.4)] transition-all uppercase text-xs tracking-wider"
                         >
                             Upgrade Plan
@@ -257,7 +257,7 @@ export const Settings: React.FC = () => {
                         {/* Replay Onboarding */}
                         <div className="mt-4 flex justify-end">
                             <button
-                                onClick={() => navigate('/app/onboarding')}
+                                onClick={() => router.push('/app/onboarding')}
                                 className="text-gray-500 hover:text-neon-cyan text-xs font-mono font-bold uppercase tracking-wider flex items-center gap-2 transition-colors"
                             >
                                 <RefreshCcw size={14} /> Replay Onboarding
