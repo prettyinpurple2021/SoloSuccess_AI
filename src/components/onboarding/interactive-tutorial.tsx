@@ -79,35 +79,35 @@ export function InteractiveTutorial({
         content: (
           <div className="space-y-4">
             <div className="text-center">
-              <div className="w-16 h-16 mx-auto bg-gradient-to-r from-purple-500 to-pink-500 rounded-full flex items-center justify-center mb-4">
-                <Crown className="h-8 w-8 text-white" />
+              <div className="w-16 h-16 mx-auto bg-neon-purple/20 border border-neon-purple/50 rounded-full flex items-center justify-center mb-4 shadow-[0_0_15px_rgba(179,0,255,0.3)]">
+                <Crown className="h-8 w-8 text-neon-purple" />
               </div>
-              <h3 className="text-xl font-bold boss-heading mb-2">Your Command Center</h3>
-              <p className="text-muted-foreground">
+              <h3 className="text-xl font-bold font-orbitron text-white uppercase tracking-wider mb-2">Your Command Center</h3>
+              <p className="text-gray-400 font-mono text-sm">
                 This is where you&apos;ll manage your entire business empire. Everything you need is just a click away!
               </p>
             </div>
-            <div className="grid grid-cols-2 gap-3 text-sm">
+            <div className="grid grid-cols-2 gap-3 text-sm font-mono">
               <div className="flex items-center gap-2">
-                <Sparkles className="h-4 w-4 text-purple-500" />
+                <Sparkles className="h-4 w-4 text-neon-cyan" />
                 <span>AI Agents</span>
               </div>
               <div className="flex items-center gap-2">
-                <Target className="h-4 w-4 text-pink-500" />
+                <Target className="h-4 w-4 text-neon-lime" />
                 <span>Goals & Tasks</span>
               </div>
               <div className="flex items-center gap-2">
-                <TrendingUp className="h-4 w-4 text-teal-500" />
+                <TrendingUp className="h-4 w-4 text-neon-purple" />
                 <span>Analytics</span>
               </div>
               <div className="flex items-center gap-2">
-                <FileText className="h-4 w-4 text-orange-500" />
+                <FileText className="h-4 w-4 text-neon-orange" />
                 <span>Files & Docs</span>
               </div>
             </div>
             {showTimeEstimates && (
-              <div className="text-center p-2 bg-purple-50 rounded-lg">
-                <p className="text-xs text-purple-600">⏱️ Estimated time: 30 seconds</p>
+              <div className="text-center p-2 bg-neon-purple/10 rounded-sm border border-neon-purple/20">
+                <p className="text-xs text-neon-purple font-mono">⏱️ Estimated time: 30 seconds</p>
               </div>
             )}
           </div>
@@ -121,27 +121,27 @@ export function InteractiveTutorial({
         position: "right",
         content: (
           <div className="space-y-4">
-            <h3 className="text-lg font-bold">Quick Navigation</h3>
-            <div className="space-y-3">
-              <div className="flex items-center gap-3 p-2 bg-purple-50 rounded-lg">
-                <Users className="h-5 w-5 text-purple-600" />
+            <h3 className="text-lg font-bold font-orbitron text-white">Quick Navigation</h3>
+            <div className="space-y-3 font-mono">
+              <div className="flex items-center gap-3 p-2 bg-neon-purple/10 border border-neon-purple/20 rounded-sm">
+                <Users className="h-5 w-5 text-neon-purple" />
                 <div>
-                  <p className="font-medium text-sm">AI Squad</p>
-                  <p className="text-xs text-muted-foreground">Chat with your AI agents</p>
+                  <p className="font-medium text-sm text-neon-purple">AI Squad</p>
+                  <p className="text-xs text-gray-400">Chat with your AI agents</p>
                 </div>
               </div>
-              <div className="flex items-center gap-3 p-2 bg-pink-50 rounded-lg">
-                <Target className="h-5 w-5 text-pink-600" />
+              <div className="flex items-center gap-3 p-2 bg-neon-cyan/10 border border-neon-cyan/20 rounded-sm">
+                <Target className="h-5 w-5 text-neon-cyan" />
                 <div>
-                  <p className="font-medium text-sm">Goals & Tasks</p>
-                  <p className="text-xs text-muted-foreground">Manage your objectives</p>
+                  <p className="font-medium text-sm text-neon-cyan">Goals & Tasks</p>
+                  <p className="text-xs text-gray-400">Manage your objectives</p>
                 </div>
               </div>
-              <div className="flex items-center gap-3 p-2 bg-teal-50 rounded-lg">
-                <TrendingUp className="h-5 w-5 text-teal-600" />
+              <div className="flex items-center gap-3 p-2 bg-neon-lime/10 border border-neon-lime/20 rounded-sm">
+                <TrendingUp className="h-5 w-5 text-neon-lime" />
                 <div>
-                  <p className="font-medium text-sm">Analytics</p>
-                  <p className="text-xs text-muted-foreground">Track your progress</p>
+                  <p className="font-medium text-sm text-neon-lime">Analytics</p>
+                  <p className="text-xs text-gray-400">Track your progress</p>
                 </div>
               </div>
             </div>
@@ -156,26 +156,26 @@ export function InteractiveTutorial({
         position: "bottom",
         content: (
           <div className="space-y-4">
-            <h3 className="text-lg font-bold">Speed Up Your Workflow</h3>
+            <h3 className="text-lg font-bold font-orbitron text-white">Speed Up Your Workflow</h3>
             <div className="grid grid-cols-2 gap-3">
-              <Button size="sm" className="w-full">
+              <Button size="sm" className="w-full" variant="lime">
                 <Plus className="h-4 w-4 mr-2" />
                 New Task
               </Button>
-              <Button size="sm" variant="outline" className="w-full">
+              <Button size="sm" variant="outline" className="w-full border-neon-cyan text-neon-cyan hover:bg-neon-cyan/10">
                 <Users className="h-4 w-4 mr-2" />
                 AI Chat
               </Button>
-              <Button size="sm" variant="outline" className="w-full">
+              <Button size="sm" variant="outline" className="w-full border-neon-purple text-neon-purple hover:bg-neon-purple/10">
                 <Target className="h-4 w-4 mr-2" />
                 Set Goal
               </Button>
-              <Button size="sm" variant="outline" className="w-full">
+              <Button size="sm" variant="outline" className="w-full border-neon-orange text-neon-orange hover:bg-neon-orange/10">
                 <FileText className="h-4 w-4 mr-2" />
                 Upload File
               </Button>
             </div>
-            <p className="text-sm text-muted-foreground">
+            <p className="text-sm text-gray-400 font-mono">
               These buttons let you create tasks, chat with AI agents, set goals, and upload files instantly!
             </p>
           </div>
@@ -189,24 +189,24 @@ export function InteractiveTutorial({
         position: "top",
         content: (
           <div className="space-y-4">
-            <h3 className="text-lg font-bold">Real-Time Insights</h3>
+            <h3 className="text-lg font-bold font-orbitron text-white">Real-Time Insights</h3>
             <div className="space-y-3">
-              <div className="flex items-center justify-between p-3 bg-gradient-to-r from-purple-50 to-pink-50 rounded-lg">
+              <div className="flex items-center justify-between p-3 bg-neon-purple/10 border border-neon-purple/20 rounded-sm">
                 <div>
-                  <p className="font-bold text-2xl text-purple-600">87%</p>
-                  <p className="text-sm text-muted-foreground">Task Completion</p>
+                  <p className="font-bold text-2xl text-neon-purple font-orbitron">87%</p>
+                  <p className="text-sm text-gray-400 font-mono">Task Completion</p>
                 </div>
-                <CheckCircle className="h-8 w-8 text-purple-600" />
+                <CheckCircle className="h-8 w-8 text-neon-purple" />
               </div>
-              <div className="flex items-center justify-between p-3 bg-gradient-to-r from-teal-50 to-blue-50 rounded-lg">
+              <div className="flex items-center justify-between p-3 bg-neon-cyan/10 border border-neon-cyan/20 rounded-sm">
                 <div>
-                  <p className="font-bold text-2xl text-teal-600">12</p>
-                  <p className="text-sm text-muted-foreground">Goals Active</p>
+                  <p className="font-bold text-2xl text-neon-cyan font-orbitron">12</p>
+                  <p className="text-sm text-gray-400 font-mono">Goals Active</p>
                 </div>
-                <Target className="h-8 w-8 text-teal-600" />
+                <Target className="h-8 w-8 text-neon-cyan" />
               </div>
             </div>
-            <p className="text-sm text-muted-foreground">
+            <p className="text-sm text-gray-400 font-mono">
               Your dashboard updates in real-time to show your progress and keep you motivated!
             </p>
           </div>
@@ -223,29 +223,29 @@ export function InteractiveTutorial({
         content: (
           <div className="space-y-4">
             <div className="text-center">
-              <div className="w-16 h-16 mx-auto bg-gradient-to-r from-pink-500 to-purple-500 rounded-full flex items-center justify-center mb-4">
-                <Users className="h-8 w-8 text-white" />
+              <div className="w-16 h-16 mx-auto bg-neon-magenta/20 border border-neon-magenta/50 rounded-full flex items-center justify-center mb-4 shadow-[0_0_15px_rgba(255,0,110,0.3)]">
+                <Users className="h-8 w-8 text-neon-magenta" />
               </div>
-              <h3 className="text-xl font-bold boss-heading mb-2">Your AI Team</h3>
-              <p className="text-muted-foreground">
+              <h3 className="text-xl font-bold font-orbitron text-white uppercase tracking-wider mb-2">Your AI Team</h3>
+              <p className="text-gray-400 font-mono text-sm">
                 Each agent has unique skills and personality. They work 24/7 to help you succeed!
               </p>
             </div>
-            <div className="grid grid-cols-2 gap-2 text-sm">
+            <div className="grid grid-cols-2 gap-2 text-sm font-mono">
               <div className="flex items-center gap-2">
-                <div className="w-3 h-3 bg-purple-500 rounded-full"></div>
+                <div className="w-3 h-3 bg-neon-purple rounded-full shadow-[0_0_5px_rgba(179,0,255,0.8)]"></div>
                 <span>Roxy - Executive Assistant</span>
               </div>
               <div className="flex items-center gap-2">
-                <div className="w-3 h-3 bg-pink-500 rounded-full"></div>
+                <div className="w-3 h-3 bg-neon-magenta rounded-full shadow-[0_0_5px_rgba(255,0,110,0.8)]"></div>
                 <span>Blaze - Growth Strategist</span>
               </div>
               <div className="flex items-center gap-2">
-                <div className="w-3 h-3 bg-teal-500 rounded-full"></div>
+                <div className="w-3 h-3 bg-neon-cyan rounded-full shadow-[0_0_5px_rgba(11,228,236,0.8)]"></div>
                 <span>Echo - Marketing Maven</span>
               </div>
               <div className="flex items-center gap-2">
-                <div className="w-3 h-3 bg-orange-500 rounded-full"></div>
+                <div className="w-3 h-3 bg-neon-orange rounded-full shadow-[0_0_5px_rgba(255,102,0,0.8)]"></div>
                 <span>Lumi - Legal & Docs</span>
               </div>
             </div>
@@ -260,18 +260,18 @@ export function InteractiveTutorial({
         position: "left",
         content: (
           <div className="space-y-4">
-            <h3 className="text-lg font-bold">Chat with Your AI</h3>
-            <div className="space-y-3">
-              <div className="p-3 bg-purple-50 rounded-lg">
-                <p className="text-sm font-medium">Try asking:</p>
-                <p className="text-sm text-muted-foreground">&quot;Help me plan my week&quot;</p>
+            <h3 className="text-lg font-bold font-orbitron text-white">Chat with Your AI</h3>
+            <div className="space-y-3 font-mono">
+              <div className="p-3 bg-neon-purple/10 border border-neon-purple/20 rounded-sm">
+                <p className="text-sm font-medium text-neon-purple">Try asking:</p>
+                <p className="text-sm text-gray-400">&quot;Help me plan my week&quot;</p>
               </div>
-              <div className="p-3 bg-pink-50 rounded-lg">
-                <p className="text-sm font-medium">Or:</p>
-                <p className="text-sm text-muted-foreground">&quot;What should I focus on today?&quot;</p>
+              <div className="p-3 bg-neon-magenta/10 border border-neon-magenta/20 rounded-sm">
+                <p className="text-sm font-medium text-neon-magenta">Or:</p>
+                <p className="text-sm text-gray-400">&quot;What should I focus on today?&quot;</p>
               </div>
             </div>
-            <p className="text-sm text-muted-foreground">
+            <p className="text-sm text-gray-400 font-mono">
               Your AI agents remember your preferences and get smarter over time!
             </p>
           </div>
@@ -295,32 +295,32 @@ export function InteractiveTutorial({
         content: (
           <div className="space-y-4">
             <div className="text-center">
-              <div className="w-16 h-16 mx-auto bg-gradient-to-r from-teal-500 to-blue-500 rounded-full flex items-center justify-center mb-4">
-                <Target className="h-8 w-8 text-white" />
+              <div className="w-16 h-16 mx-auto bg-neon-cyan/20 border border-neon-cyan/50 rounded-full flex items-center justify-center mb-4 shadow-[0_0_15px_rgba(11,228,236,0.3)]">
+                <Target className="h-8 w-8 text-neon-cyan" />
               </div>
-              <h3 className="text-xl font-bold boss-heading mb-2">Smart Task Management</h3>
-              <p className="text-muted-foreground">
+              <h3 className="text-xl font-bold font-orbitron text-white uppercase tracking-wider mb-2">Smart Task Management</h3>
+              <p className="text-gray-400 font-mono text-sm">
                 Create, organize, and track tasks with AI-powered insights and automation.
               </p>
             </div>
-            <div className="grid grid-cols-3 gap-3 text-center">
+            <div className="grid grid-cols-3 gap-3 text-center font-mono">
               <div>
-                <div className="w-8 h-8 mx-auto bg-green-100 rounded-full flex items-center justify-center mb-2">
-                  <CheckCircle className="h-4 w-4 text-green-600" />
+                <div className="w-8 h-8 mx-auto bg-neon-lime/10 border border-neon-lime/50 rounded-full flex items-center justify-center mb-2">
+                  <CheckCircle className="h-4 w-4 text-neon-lime" />
                 </div>
-                <p className="text-xs font-medium">Create</p>
+                <p className="text-xs font-medium text-gray-400">Create</p>
               </div>
               <div>
-                <div className="w-8 h-8 mx-auto bg-blue-100 rounded-full flex items-center justify-center mb-2">
-                  <Settings className="h-4 w-4 text-blue-600" />
+                <div className="w-8 h-8 mx-auto bg-neon-cyan/10 border border-neon-cyan/50 rounded-full flex items-center justify-center mb-2">
+                  <Settings className="h-4 w-4 text-neon-cyan" />
                 </div>
-                <p className="text-xs font-medium">Organize</p>
+                <p className="text-xs font-medium text-gray-400">Organize</p>
               </div>
               <div>
-                <div className="w-8 h-8 mx-auto bg-purple-100 rounded-full flex items-center justify-center mb-2">
-                  <TrendingUp className="h-4 w-4 text-purple-600" />
+                <div className="w-8 h-8 mx-auto bg-neon-purple/10 border border-neon-purple/50 rounded-full flex items-center justify-center mb-2">
+                  <TrendingUp className="h-4 w-4 text-neon-purple" />
                 </div>
-                <p className="text-xs font-medium">Track</p>
+                <p className="text-xs font-medium text-gray-400">Track</p>
               </div>
             </div>
           </div>
@@ -334,18 +334,18 @@ export function InteractiveTutorial({
         position: "bottom",
         content: (
           <div className="space-y-4">
-            <h3 className="text-lg font-bold">Quick Task Creation</h3>
-            <div className="space-y-3">
-              <div className="p-3 bg-gradient-to-r from-purple-50 to-pink-50 rounded-lg">
-                <p className="text-sm font-medium">Voice Input</p>
-                <p className="text-xs text-muted-foreground">Just speak to create tasks!</p>
+            <h3 className="text-lg font-bold font-orbitron text-white">Quick Task Creation</h3>
+            <div className="space-y-3 font-mono">
+              <div className="p-3 bg-neon-purple/10 border border-neon-purple/20 rounded-sm">
+                <p className="text-sm font-medium text-neon-purple">Voice Input</p>
+                <p className="text-xs text-gray-400">Just speak to create tasks!</p>
               </div>
-              <div className="p-3 bg-gradient-to-r from-teal-50 to-blue-50 rounded-lg">
-                <p className="text-sm font-medium">AI Suggestions</p>
-                <p className="text-xs text-muted-foreground">Get smart task recommendations</p>
+              <div className="p-3 bg-neon-cyan/10 border border-neon-cyan/20 rounded-sm">
+                <p className="text-sm font-medium text-neon-cyan">AI Suggestions</p>
+                <p className="text-xs text-gray-400">Get smart task recommendations</p>
               </div>
             </div>
-            <p className="text-sm text-muted-foreground">
+            <p className="text-sm text-gray-400 font-mono">
               Click the + button to start creating tasks with voice, text, or AI assistance!
             </p>
           </div>
@@ -369,25 +369,25 @@ export function InteractiveTutorial({
         content: (
           <div className="space-y-4">
             <div className="text-center">
-              <div className="w-16 h-16 mx-auto bg-gradient-to-r from-orange-500 to-red-500 rounded-full flex items-center justify-center mb-4">
-                <Target className="h-8 w-8 text-white" />
+              <div className="w-16 h-16 mx-auto bg-neon-orange/20 border border-neon-orange/50 rounded-full flex items-center justify-center mb-4 shadow-[0_0_15px_rgba(255,102,0,0.3)]">
+                <Target className="h-8 w-8 text-neon-orange" />
               </div>
-              <h3 className="text-xl font-bold boss-heading mb-2">Goal Mastery</h3>
-              <p className="text-muted-foreground">
+              <h3 className="text-xl font-bold font-orbitron text-white uppercase tracking-wider mb-2">Goal Mastery</h3>
+              <p className="text-gray-400 font-mono text-sm">
                 Set ambitious goals and track your progress with AI-powered insights and motivation.
               </p>
             </div>
-            <div className="space-y-2">
+            <div className="space-y-2 font-mono">
               <div className="flex items-center gap-2">
-                <Star className="h-4 w-4 text-yellow-500" />
+                <Star className="h-4 w-4 text-neon-yellow" />
                 <span className="text-sm">SMART goal framework</span>
               </div>
               <div className="flex items-center gap-2">
-                <TrendingUp className="h-4 w-4 text-green-500" />
+                <TrendingUp className="h-4 w-4 text-neon-lime" />
                 <span className="text-sm">Progress tracking</span>
               </div>
               <div className="flex items-center gap-2">
-                <Zap className="h-4 w-4 text-purple-500" />
+                <Zap className="h-4 w-4 text-neon-purple" />
                 <span className="text-sm">AI-powered insights</span>
               </div>
             </div>
@@ -405,29 +405,29 @@ export function InteractiveTutorial({
         content: (
           <div className="space-y-4">
             <div className="text-center">
-              <div className="w-16 h-16 mx-auto bg-gradient-to-r from-indigo-500 to-purple-500 rounded-full flex items-center justify-center mb-4">
-                <FileText className="h-8 w-8 text-white" />
+              <div className="w-16 h-16 mx-auto bg-neon-purple/20 border border-neon-purple/50 rounded-full flex items-center justify-center mb-4 shadow-[0_0_15px_rgba(179,0,255,0.3)]">
+                <FileText className="h-8 w-8 text-neon-purple" />
               </div>
-              <h3 className="text-xl font-bold boss-heading mb-2">Smart File Management</h3>
-              <p className="text-muted-foreground">
+              <h3 className="text-xl font-bold font-orbitron text-white uppercase tracking-wider mb-2">Smart File Management</h3>
+              <p className="text-gray-400 font-mono text-sm">
                 Upload, organize, and analyze documents with AI-powered content extraction.
               </p>
             </div>
-            <div className="grid grid-cols-2 gap-3 text-sm">
+            <div className="grid grid-cols-2 gap-3 text-sm font-mono">
               <div className="flex items-center gap-2">
-                <FileText className="h-4 w-4 text-blue-500" />
+                <FileText className="h-4 w-4 text-neon-cyan" />
                 <span>Document Upload</span>
               </div>
               <div className="flex items-center gap-2">
-                <Search className="h-4 w-4 text-green-500" />
+                <Search className="h-4 w-4 text-neon-lime" />
                 <span>AI Search</span>
               </div>
               <div className="flex items-center gap-2">
-                <Brain className="h-4 w-4 text-purple-500" />
+                <Brain className="h-4 w-4 text-neon-purple" />
                 <span>Content Analysis</span>
               </div>
               <div className="flex items-center gap-2">
-                <Settings className="h-4 w-4 text-orange-500" />
+                <Settings className="h-4 w-4 text-neon-orange" />
                 <span>Smart Organization</span>
               </div>
             </div>
@@ -444,36 +444,36 @@ export function InteractiveTutorial({
         position: "bottom",
         content: (
           <div className="space-y-6 text-center">
-            <div className="w-20 h-20 mx-auto bg-gradient-to-r from-purple-500 via-pink-500 to-teal-500 rounded-full flex items-center justify-center">
-              <Rocket className="h-10 w-10 text-white" />
+            <div className="w-20 h-20 mx-auto bg-neon-cyan/20 border border-neon-cyan/50 rounded-full flex items-center justify-center shadow-[0_0_25px_rgba(11,228,236,0.3)]">
+              <Rocket className="h-10 w-10 text-neon-cyan" />
             </div>
             <div>
-              <h3 className="text-2xl font-bold boss-heading mb-2">Welcome to Your Empire!</h3>
-              <p className="text-muted-foreground mb-4">
+              <h3 className="text-2xl font-bold font-orbitron text-white uppercase tracking-wider mb-2">Welcome to Your Empire!</h3>
+              <p className="text-gray-400 font-mono mb-4 text-sm">
                 You&apos;ve completed the tutorial and are ready to start building your business empire with AI-powered productivity tools.
               </p>
             </div>
-            <div className="grid grid-cols-2 gap-4 text-sm">
-              <div className="p-3 bg-purple-50 rounded-lg">
-                <p className="font-medium">Next Steps:</p>
-                <ul className="text-xs text-muted-foreground mt-1 space-y-1">
+            <div className="grid grid-cols-2 gap-4 text-sm font-mono">
+              <div className="p-3 bg-neon-purple/10 border border-neon-purple/20 rounded-sm">
+                <p className="font-medium text-neon-purple">Next Steps:</p>
+                <ul className="text-xs text-gray-400 mt-1 space-y-1 text-left pl-2">
                   <li>• Create your first task</li>
                   <li>• Chat with an AI agent</li>
                   <li>• Set a goal</li>
                 </ul>
               </div>
-              <div className="p-3 bg-pink-50 rounded-lg">
-                <p className="font-medium">Pro Tips:</p>
-                <ul className="text-xs text-muted-foreground mt-1 space-y-1">
+              <div className="p-3 bg-neon-magenta/10 border border-neon-magenta/20 rounded-sm">
+                <p className="font-medium text-neon-magenta">Pro Tips:</p>
+                <ul className="text-xs text-gray-400 mt-1 space-y-1 text-left pl-2">
                   <li>• Use voice commands</li>
                   <li>• Explore AI features</li>
                   <li>• Check analytics</li>
                 </ul>
               </div>
             </div>
-            <div className="flex items-center justify-center gap-2 text-lg font-semibold empowering-text">
+            <div className="flex items-center justify-center gap-2 text-lg font-bold font-orbitron text-neon-lime uppercase tracking-wide">
               <Sparkles className="h-5 w-5" />
-              Ready to dominate your industry!
+              Ready to dominate!
               <Sparkles className="h-5 w-5" />
             </div>
           </div>
@@ -779,29 +779,29 @@ export function InteractiveTutorial({
   return (
     <TooltipProvider>
       <Dialog open={open} onOpenChange={() => {}}>
-        <DialogContent className="sm:max-w-[500px] max-h-[90vh] overflow-y-auto boss-card border-2 border-purple-200 mx-4 sm:mx-auto">
+        <DialogContent className="sm:max-w-[500px] max-h-[90vh] overflow-y-auto bg-dark-bg border-2 border-neon-cyan/20 mx-4 sm:mx-auto shadow-[0_0_50px_rgba(11,228,236,0.1)]">
           <DialogHeader>
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
               <div className="flex-1">
-                <DialogTitle className="boss-heading text-xl flex items-center gap-2">
-                  <Lightbulb className="h-5 w-5 text-purple-600" />
+                <DialogTitle className="font-orbitron text-xl flex items-center gap-2 text-white uppercase tracking-wider">
+                  <Lightbulb className="h-5 w-5 text-neon-yellow" />
                   Interactive Tutorial
                 </DialogTitle>
-                <DialogDescription className="text-sm sm:text-base">
-                  Step {currentStep + 1} of {totalSteps} - {currentStepData.title}
+                <DialogDescription className="text-sm sm:text-base text-gray-400 font-mono mt-2">
+                  Step {currentStep + 1} of {totalSteps} - <span className="text-neon-cyan">{currentStepData.title}</span>
                 </DialogDescription>
                 {showTimeEstimates && (
-                  <p className="text-xs text-muted-foreground mt-1">
+                  <p className="text-xs text-gray-500 mt-1 font-mono">
                     ⏱️ {currentStepData.estimatedTime || 0}s • Total: ~{Math.round(estimatedTotalTime / 60)}m
                   </p>
                 )}
                 {currentStepData.difficulty && (
                   <div className="flex items-center gap-2 mt-1">
-                    <span className="text-xs text-muted-foreground">Difficulty:</span>
-                    <span className={`text-xs px-2 py-1 rounded-full ${
-                      currentStepData.difficulty === 'easy' ? 'bg-green-100 text-green-700' :
-                      currentStepData.difficulty === 'medium' ? 'bg-yellow-100 text-yellow-700' :
-                      'bg-red-100 text-red-700'
+                    <span className="text-xs text-gray-500 font-mono">Difficulty:</span>
+                    <span className={`text-xs px-2 py-1 rounded-full font-mono ${
+                      currentStepData.difficulty === 'easy' ? 'bg-neon-lime/10 text-neon-lime border border-neon-lime/20' :
+                      currentStepData.difficulty === 'medium' ? 'bg-neon-yellow/10 text-neon-yellow border border-neon-yellow/20' :
+                      'bg-neon-orange/10 text-neon-orange border border-neon-orange/20'
                     }`}>
                       {currentStepData.difficulty}
                     </span>
@@ -810,24 +810,24 @@ export function InteractiveTutorial({
               </div>
               <div className="flex items-center gap-2 flex-shrink-0">
                 {allowSkipping && (
-                  <Button variant="ghost" size="sm" onClick={skipTutorial} className="text-sm hover:bg-purple-50 transition-colors">
+                  <Button variant="ghost" size="sm" onClick={skipTutorial} className="text-sm hover:bg-neon-cyan/10 hover:text-neon-cyan transition-colors text-gray-400 font-mono">
                     <SkipForward className="h-4 w-4 mr-1" />
                     <span className="hidden sm:inline">Skip</span>
                   </Button>
                 )}
-                <Button variant="ghost" size="sm" onClick={onSkipAction} className="text-sm hover:bg-purple-50 transition-colors">
+                <Button variant="ghost" size="sm" onClick={onSkipAction} className="text-sm hover:bg-neon-orange/10 hover:text-neon-orange transition-colors text-gray-400">
                   <X className="h-4 w-4" />
                 </Button>
               </div>
             </div>
-            {showProgressBar && <Progress value={progress} className="w-full" />}
+            {showProgressBar && <Progress value={progress} className="w-full h-1 bg-dark-card" indicatorClassName="bg-neon-cyan shadow-[0_0_10px_rgba(11,228,236,0.5)]" />}
           </DialogHeader>
 
           {/* Quick Tips Section */}
           {showTips && (
-            <div className="p-3 bg-gradient-to-r from-purple-50 to-pink-50 rounded-lg border border-purple-200 mb-4">
-              <h4 className="font-medium text-sm text-purple-800 mb-2">💡 Quick Tips:</h4>
-              <ul className="text-xs text-purple-700 space-y-1">
+            <div className="p-3 bg-neon-purple/5 border border-neon-purple/20 rounded-sm mb-4">
+              <h4 className="font-medium text-sm text-neon-purple mb-2 font-orbitron">💡 Quick Tips:</h4>
+              <ul className="text-xs text-gray-400 space-y-1 font-mono pl-2">
                 <li>• Use arrow keys or spacebar to navigate</li>
                 <li>• Press 'H' to toggle this tips panel</li>
                 <li>• Press 'Escape' to close tutorial</li>
@@ -836,13 +836,13 @@ export function InteractiveTutorial({
               </ul>
               
               {/* Voice Commands Preview */}
-              <div className="mt-3 pt-3 border-t border-purple-200">
-                <h5 className="font-medium text-xs text-purple-800 mb-2">🎤 Voice Commands (Coming Soon):</h5>
-                <div className="grid grid-cols-2 gap-2 text-xs">
+              <div className="mt-3 pt-3 border-t border-neon-purple/20">
+                <h5 className="font-medium text-xs text-neon-purple mb-2 font-orbitron">🎤 Voice Commands (Coming Soon):</h5>
+                <div className="grid grid-cols-2 gap-2 text-xs font-mono">
                   {voiceCommands.map((cmd, index) => (
-                    <div key={index} className="flex justify-between">
-                      <span className="text-purple-600">"{cmd.command}"</span>
-                      <span className="text-purple-700">{cmd.action}</span>
+                    <div key={index} className="flex justify-between hover:bg-neon-purple/5 p-1 rounded transition-colors">
+                      <span className="text-gray-300">"{cmd.command}"</span>
+                      <span className="text-gray-500">{cmd.action}</span>
                     </div>
                   ))}
                 </div>
@@ -854,12 +854,12 @@ export function InteractiveTutorial({
             {currentStepData.content}
           </div>
 
-          <div className="flex flex-col sm:flex-row justify-between pt-4 border-t gap-4">
+          <div className="flex flex-col sm:flex-row justify-between pt-4 border-t border-neon-cyan/20 gap-4">
             <Button
               variant="outline"
               onClick={prevStep}
               disabled={currentStep === 0 || isTransitioning}
-              className="flex items-center gap-2 bg-transparent hover:bg-purple-50 transition-colors order-2 sm:order-1"
+              className="flex items-center gap-2 bg-transparent border-neon-cyan/20 text-gray-400 hover:text-neon-cyan hover:bg-neon-cyan/10 hover:border-neon-cyan transition-colors order-2 sm:order-1 font-mono text-xs uppercase tracking-wider"
             >
               <ArrowLeft className="h-4 w-4" />
               Previous
@@ -867,14 +867,15 @@ export function InteractiveTutorial({
 
             <div className="flex items-center gap-2 order-1 sm:order-2">
               {currentStepData.optional && allowSkipping && (
-                <Button variant="ghost" onClick={skipCurrentStep} className="text-sm hover:bg-purple-50 transition-colors">
+                <Button variant="ghost" onClick={skipCurrentStep} className="text-sm hover:bg-neon-lime/10 hover:text-neon-lime transition-colors text-gray-400 font-mono text-xs uppercase tracking-wider">
                   Skip This
                 </Button>
               )}
               <Button
                 onClick={currentStepData.action ? currentStepData.action.onClick : nextStep}
                 disabled={isTransitioning}
-                className="punk-button text-white flex items-center gap-2 hover:scale-105 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+                variant="cyan"
+                className="flex items-center gap-2 hover:scale-105 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed font-orbitron text-xs uppercase tracking-wider shadow-[0_0_15px_rgba(11,228,236,0.3)] hover:shadow-[0_0_25px_rgba(11,228,236,0.5)]"
               >
                 {currentStepData.action ? (
                   <>
@@ -897,26 +898,26 @@ export function InteractiveTutorial({
           </div>
 
           {/* User Preferences Footer */}
-          <div className="pt-3 border-t border-gray-100">
-            <div className="flex items-center justify-between text-xs text-muted-foreground">
+          <div className="pt-3 border-t border-neon-cyan/10 mt-2">
+            <div className="flex items-center justify-between text-xs text-gray-500 font-mono">
               <div className="flex items-center gap-4">
                 <button
                   onClick={() => toggleUserPreference('showAnimations')}
-                  className={`flex items-center gap-1 ${userPreferences.showAnimations ? 'text-purple-600' : ''}`}
+                  className={`flex items-center gap-1 transition-colors hover:text-neon-cyan ${userPreferences.showAnimations ? 'text-neon-cyan' : ''}`}
                 >
                   <Sparkles className="h-3 w-3" />
                   Animations
                 </button>
                 <button
                   onClick={() => toggleUserPreference('autoAdvance')}
-                  className={`flex items-center gap-1 ${userPreferences.autoAdvance ? 'text-purple-600' : ''}`}
+                  className={`flex items-center gap-1 transition-colors hover:text-neon-cyan ${userPreferences.autoAdvance ? 'text-neon-cyan' : ''}`}
                 >
                   <ArrowRight className="h-3 w-3" />
                   Auto-advance
                 </button>
                 <button
                   onClick={resetTutorial}
-                  className="text-muted-foreground hover:text-purple-600 transition-colors"
+                  className="hover:text-neon-purple transition-colors"
                   title="Reset tutorial progress"
                 >
                   🔄 Reset
@@ -924,7 +925,7 @@ export function InteractiveTutorial({
               </div>
               <button
                 onClick={() => setShowTips(prev => !prev)}
-                className="text-purple-600 hover:text-purple-800"
+                className="text-neon-purple hover:text-neon-magenta transition-colors"
               >
                 Press 'H' for tips
               </button>
@@ -937,11 +938,11 @@ export function InteractiveTutorial({
       {highlightedElement && userPreferences.showAnimations && (
         <div
           ref={overlayRef}
-          className="fixed inset-0 z-40 pointer-events-none tutorial-overlay"
+          className="fixed inset-0 z-40 pointer-events-none tutorial-overlay backdrop-blur-[1px]"
         >
           <div
             ref={highlightRef}
-            className="absolute border-2 border-purple-500 rounded-lg shadow-lg tutorial-highlight tutorial-highlight-position animate-pulse"
+            className="absolute border-2 border-neon-cyan rounded-lg shadow-[0_0_30px_rgba(11,228,236,0.5)] tutorial-highlight tutorial-highlight-position animate-pulse bg-neon-cyan/5"
           />
         </div>
       )}

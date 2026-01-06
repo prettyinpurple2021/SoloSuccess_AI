@@ -6,8 +6,8 @@ import { useRouter, usePathname} from "next/navigation"
 import { Input} from "@/components/ui/input"
 import { Label} from "@/components/ui/label"
 import { Alert, AlertDescription} from "@/components/ui/alert"
-import { EmpowermentCard} from "@/components/ui/boss-card"
-import { CalendarIcon, AlertCircle, CheckCircle, Lock, Crown} from "lucide-react"
+import { Button } from "@/components/ui/button"
+import { CalendarIcon, AlertCircle, CheckCircle, Lock, Crown, Loader2} from "lucide-react"
 import { format, subYears} from "date-fns"
 import { motion} from "framer-motion"
 import type { User as AppUser } from "@/lib/neon/types"
@@ -38,7 +38,7 @@ export function NeonAuth() {
   const [signUpLoading, setSignUpLoading] = useState(false)
 
   // Determine if we're on signin or signup page
-  const isSignInPage = pathname === '/signin'
+  const isSignInPage = pathname === '/signin' || pathname === '/login' // Handle likely redirects
   const isSignUpPage = pathname === '/signup'
 
   // Verify JWT token and set user
@@ -285,10 +285,10 @@ export function NeonAuth() {
   // Show loading during SSR
   if (!isClient) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
+      <div className="min-h-screen flex items-center justify-center bg-dark-bg">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-purple-600 mx-auto mb-4"></div>
-          <p>Loading authentication...</p>
+          <Loader2 className="animate-spin h-8 w-8 text-neon-cyan mx-auto mb-4" />
+          <p className="text-gray-400 font-mono">Loading authentication...</p>
         </div>
       </div>
     )
@@ -300,64 +300,50 @@ export function NeonAuth() {
   }
 
   return (
-    <div className="min-h-screen gradient-background flex items-center justify-center p-6">
+    <div className="min-h-screen bg-dark-bg flex items-center justify-center p-6 relative overflow-hidden">
+      {/* Background Gradients */}
+      <div className="absolute top-0 left-0 w-full h-full overflow-hidden z-0">
+         <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-neon-cyan/10 blur-[100px] rounded-full" />
+         <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-neon-purple/10 blur-[100px] rounded-full" />
+      </div>
+
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6 }}
-        className="w-full max-w-md"
+        className="w-full max-w-md relative z-10"
       >
-        <EmpowermentCard className="relative overflow-hidden">
-          {/* Animated background elements */}
-          <motion.div
-            animate={{
-              rotate: 360,
-              scale: [1, 1.1, 1]
-            }}
-            transition={{
-              duration: 20,
-              repeat: Infinity,
-              ease: "linear"
-            }}
-            className="absolute -top-20 -right-20 w-40 h-40 gradient-primary rounded-full opacity-10"
-          />
+        <div className="bg-dark-card border border-gray-700/50 rounded-sm p-8 shadow-[0_0_40px_rgba(0,0,0,0.5)] backdrop-blur-xl hover:border-neon-cyan/30 transition-all duration-300">
           
           <div className="relative z-10">
             <div className="text-center mb-6">
               <motion.div
-                animate={{
-                  scale: [1, 1.05, 1],
-                  rotate: [0, 2, -2, 0]
-                }}
-                transition={{
-                  duration: 4,
-                  repeat: Infinity,
-                  ease: "easeInOut"
-                }}
-                className="inline-flex items-center space-x-2 mb-4"
+                className="inline-flex items-center space-x-2 mb-4 group"
               >
-                <div className="w-12 h-12 gradient-empowerment rounded-full flex items-center justify-center">
-                  <Crown className="w-6 h-6 text-white" />
+                <div className="w-12 h-12 bg-dark-bg border border-neon-cyan/50 rounded-sm flex items-center justify-center shadow-[0_0_15px_rgba(11,228,236,0.2)] group-hover:shadow-[0_0_20px_rgba(11,228,236,0.4)] transition-all">
+                  <Crown className="w-6 h-6 text-neon-cyan" />
                 </div>
-                <span className="text-2xl font-bold text-gradient font-boss">SoloSuccess AI</span>
+                <span className="text-2xl font-bold font-orbitron text-white uppercase tracking-wider">
+                  Solo<span className="text-neon-cyan">Success</span> AI
+                </span>
               </motion.div>
-              <p className="text-gray-600 dark:text-gray-400">
-                {isSignInPage ? "Welcome back, boss!" : "Join the empire of bad ass girl bosses"}
+              <p className="text-gray-400 font-mono text-sm">
+                {isSignInPage ? "Welcome back, boss!" : "Join the empire of tomorrow"}
               </p>
             </div>
 
             {/* Error/Success Messages */}
             {error && (
-              <Alert className="mb-4 border-red-200 bg-red-50">
-                <AlertCircle className="h-4 w-4 text-red-600" />
-                <AlertDescription className="text-red-800">{error}</AlertDescription>
+              <Alert className="mb-4 border-neon-magenta/50 bg-neon-magenta/10">
+                <AlertCircle className="h-4 w-4 text-neon-magenta" />
+                <AlertDescription className="text-neon-magenta font-mono">{error}</AlertDescription>
               </Alert>
             )}
             
             {success && (
-              <Alert className="mb-4 border-green-200 bg-green-50">
-                <CheckCircle className="h-4 w-4 text-green-600" />
-                <AlertDescription className="text-green-800">{success}</AlertDescription>
+              <Alert className="mb-4 border-neon-lime/50 bg-neon-lime/10">
+                <CheckCircle className="h-4 w-4 text-neon-lime" />
+                <AlertDescription className="text-neon-lime font-mono">{success}</AlertDescription>
               </Alert>
             )}
 
@@ -365,7 +351,7 @@ export function NeonAuth() {
             {isSignInPage && (
               <form onSubmit={(e) => e.preventDefault()} className="space-y-4">
                                  <div className="space-y-2">
-                   <Label htmlFor="email" className="text-sm font-medium">Email or Username</Label>
+                   <Label htmlFor="email" className="text-sm font-bold font-mono text-neon-cyan uppercase tracking-wider">Email or Username</Label>
                    <Input
                      id="email"
                      name="email"
@@ -373,14 +359,14 @@ export function NeonAuth() {
                      value={email}
                      onChange={(e) => setEmail(e.target.value)}
                      placeholder="Enter your email or username"
-                     className="glass"
+                     className="bg-dark-bg border-gray-700 focus:border-neon-cyan focus:ring-neon-cyan/20"
                      required
                      autoComplete="username"
                    />
                  </div>
                 
                 <div className="space-y-2">
-                  <Label htmlFor="password" className="text-sm font-medium">Password</Label>
+                  <Label htmlFor="password" className="text-sm font-bold font-mono text-neon-cyan uppercase tracking-wider">Password</Label>
                   <Input
                     id="password"
                     name="password"
@@ -388,50 +374,50 @@ export function NeonAuth() {
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     placeholder="Enter your password"
-                    className="glass"
+                    className="bg-dark-bg border-gray-700 focus:border-neon-cyan focus:ring-neon-cyan/20"
                     required
                     autoComplete="current-password"
                   />
                 </div>
                 
-                <button
+                <Button
                   onClick={handleSignIn}
                   disabled={!email || !password || loading}
-                  className="w-full bg-gradient-to-r from-neon-cyan to-neon-purple hover:from-neon-cyan/90 hover:to-neon-purple/90 disabled:from-gray-400 disabled:to-gray-500 text-white font-medium py-3 px-4 rounded-lg transition-all duration-200 flex items-center justify-center gap-2"
+                  className="w-full"
+                  variant="cyan"
                   type="button"
                 >
                   {loading ? (
                     <>
-                      <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
+                      <Loader2 className="animate-spin h-4 w-4 mr-2" />
                       Signing In...
                     </>
                   ) : (
                     <>
-                      <Lock className="w-4 h-4" />
+                      <Lock className="w-4 h-4 mr-2" />
                       Sign In
                     </>
                   )}
-                </button>
+                </Button>
 
                 {/* Forgot Password Link */}
-                <div className="text-center">
+                <div className="text-center mt-4">
                   <button
                     type="button"
                     onClick={() => router.push('/forgot-password')}
-                    className="text-sm text-neon-purple hover:text-neon-magenta font-medium flex items-center justify-center gap-1 mx-auto"
+                    className="text-sm text-gray-400 hover:text-neon-cyan font-mono transition-colors flex items-center justify-center gap-1 mx-auto"
                   >
-                    <Lock className="w-3 h-3" />
                     Forgot Password?
                   </button>
                 </div>
 
-                <div className="text-center">
-                  <p className="text-sm text-gray-600">
+                <div className="text-center mt-2">
+                  <p className="text-sm text-gray-500 font-mono">
                     Don&apos;t have an account?{" "}
                     <button
                       type="button"
                       onClick={() => router.push('/signup')}
-                      className="text-neon-purple hover:text-neon-magenta font-medium"
+                      className="text-neon-purple hover:text-neon-magenta font-bold transition-colors ml-1"
                     >
                       Sign up here
                     </button>
@@ -445,7 +431,7 @@ export function NeonAuth() {
               <form onSubmit={(e) => e.preventDefault()} className="space-y-4">
                 <div className="grid grid-cols-2 gap-4">
                   <div className="space-y-2">
-                    <Label htmlFor="firstName" className="text-sm font-medium">First Name</Label>
+                    <Label htmlFor="firstName" className="text-xs font-bold font-mono text-neon-cyan uppercase">First Name</Label>
                     <Input
                       id="firstName"
                       name="firstName"
@@ -453,17 +439,17 @@ export function NeonAuth() {
                       value={signUpData.firstName}
                       onChange={(e) => handleSignUpInputChange("firstName", e.target.value)}
                       placeholder="First name"
-                      className="glass"
+                      className="bg-dark-bg border-gray-700 focus:border-neon-cyan focus:ring-neon-cyan/20"
                       required
                       autoComplete="given-name"
                     />
                     {signUpErrors.firstName && (
-                      <p className="text-red-500 text-xs">{signUpErrors.firstName}</p>
+                      <p className="text-neon-magenta text-xs font-mono">{signUpErrors.firstName}</p>
                     )}
                   </div>
                   
                   <div className="space-y-2">
-                    <Label htmlFor="lastName" className="text-sm font-medium">Last Name</Label>
+                    <Label htmlFor="lastName" className="text-xs font-bold font-mono text-neon-cyan uppercase">Last Name</Label>
                     <Input
                       id="lastName"
                       name="lastName"
@@ -471,18 +457,18 @@ export function NeonAuth() {
                       value={signUpData.lastName}
                       onChange={(e) => handleSignUpInputChange("lastName", e.target.value)}
                       placeholder="Last name"
-                      className="glass"
+                      className="bg-dark-bg border-gray-700 focus:border-neon-cyan focus:ring-neon-cyan/20"
                       required
                       autoComplete="family-name"
                     />
                     {signUpErrors.lastName && (
-                      <p className="text-red-500 text-xs">{signUpErrors.lastName}</p>
+                      <p className="text-neon-magenta text-xs font-mono">{signUpErrors.lastName}</p>
                     )}
                   </div>
                 </div>
 
                 <div className="space-y-2">
-                  <Label htmlFor="dateOfBirth" className="text-sm font-medium">Date of Birth</Label>
+                  <Label htmlFor="dateOfBirth" className="text-xs font-bold font-mono text-neon-cyan uppercase">Date of Birth</Label>
                   <div className="relative">
                     <Input
                       id="dateOfBirth"
@@ -491,18 +477,18 @@ export function NeonAuth() {
                       value={signUpData.dateOfBirth}
                       onChange={(e) => handleSignUpInputChange("dateOfBirth", e.target.value)}
                       max={format(subYears(new Date(), 18), 'yyyy-MM-dd')}
-                      className="glass pr-10"
+                      className="bg-dark-bg border-gray-700 focus:border-neon-cyan focus:ring-neon-cyan/20 pr-10"
                       required
                     />
                     <CalendarIcon className="absolute right-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
                   </div>
                   {signUpErrors.dateOfBirth && (
-                    <p className="text-red-500 text-xs">{signUpErrors.dateOfBirth}</p>
+                    <p className="text-neon-magenta text-xs font-mono">{signUpErrors.dateOfBirth}</p>
                   )}
                 </div>
 
                 <div className="space-y-2">
-                  <Label htmlFor="email" className="text-sm font-medium">Email</Label>
+                  <Label htmlFor="email" className="text-xs font-bold font-mono text-neon-cyan uppercase">Email</Label>
                   <Input
                     id="email"
                     name="email"
@@ -510,17 +496,17 @@ export function NeonAuth() {
                     value={signUpData.email}
                     onChange={(e) => handleSignUpInputChange("email", e.target.value)}
                     placeholder="Enter your email"
-                    className="glass"
+                    className="bg-dark-bg border-gray-700 focus:border-neon-cyan focus:ring-neon-cyan/20"
                     required
                     autoComplete="email"
                   />
                   {signUpErrors.email && (
-                    <p className="text-red-500 text-xs">{signUpErrors.email}</p>
+                    <p className="text-neon-magenta text-xs font-mono">{signUpErrors.email}</p>
                   )}
                 </div>
 
                 <div className="space-y-2">
-                  <Label htmlFor="username" className="text-sm font-medium">Username</Label>
+                  <Label htmlFor="username" className="text-xs font-bold font-mono text-neon-cyan uppercase">Username</Label>
                   <Input
                     id="username"
                     name="username"
@@ -528,17 +514,17 @@ export function NeonAuth() {
                     value={signUpData.username}
                     onChange={(e) => handleSignUpInputChange("username", e.target.value)}
                     placeholder="Choose a username"
-                    className="glass"
+                    className="bg-dark-bg border-gray-700 focus:border-neon-cyan focus:ring-neon-cyan/20"
                     required
                     autoComplete="username"
                   />
                   {signUpErrors.username && (
-                    <p className="text-red-500 text-xs">{signUpErrors.username}</p>
+                    <p className="text-neon-magenta text-xs font-mono">{signUpErrors.username}</p>
                   )}
                 </div>
 
                 <div className="space-y-2">
-                  <Label htmlFor="password" className="text-sm font-medium">Password</Label>
+                  <Label htmlFor="password" className="text-xs font-bold font-mono text-neon-cyan uppercase">Password</Label>
                   <Input
                     id="password"
                     name="password"
@@ -546,17 +532,17 @@ export function NeonAuth() {
                     value={signUpData.password}
                     onChange={(e) => handleSignUpInputChange("password", e.target.value)}
                     placeholder="Create a strong password"
-                    className="glass"
+                    className="bg-dark-bg border-gray-700 focus:border-neon-cyan focus:ring-neon-cyan/20"
                     required
                     autoComplete="new-password"
                   />
                   {signUpErrors.password && (
-                    <p className="text-red-500 text-xs">{signUpErrors.password}</p>
+                    <p className="text-neon-magenta text-xs font-mono">{signUpErrors.password}</p>
                   )}
                 </div>
 
                 <div className="space-y-2">
-                  <Label htmlFor="confirmPassword" className="text-sm font-medium">Confirm Password</Label>
+                  <Label htmlFor="confirmPassword" className="text-xs font-bold font-mono text-neon-cyan uppercase">Confirm Password</Label>
                   <Input
                     id="confirmPassword"
                     name="confirmPassword"
@@ -564,41 +550,42 @@ export function NeonAuth() {
                     value={signUpData.confirmPassword}
                     onChange={(e) => handleSignUpInputChange("confirmPassword", e.target.value)}
                     placeholder="Confirm your password"
-                    className="glass"
+                    className="bg-dark-bg border-gray-700 focus:border-neon-cyan focus:ring-neon-cyan/20"
                     required
                     autoComplete="new-password"
                   />
                   {signUpErrors.confirmPassword && (
-                    <p className="text-red-500 text-xs">{signUpErrors.confirmPassword}</p>
+                    <p className="text-neon-magenta text-xs font-mono">{signUpErrors.confirmPassword}</p>
                   )}
                 </div>
 
-                <button
+                <Button
                   onClick={handleSignUp}
                   disabled={signUpLoading}
-                  className="w-full bg-gradient-to-r from-neon-cyan to-neon-purple hover:from-neon-cyan/90 hover:to-neon-purple/90 disabled:from-gray-400 disabled:to-gray-500 text-white font-medium py-3 px-4 rounded-lg transition-all duration-200 flex items-center justify-center gap-2"
+                  className="w-full"
+                  variant="purple"
                   type="button"
                 >
                   {signUpLoading ? (
                     <>
-                      <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
+                      <Loader2 className="animate-spin h-4 w-4 mr-2" />
                       Creating Account...
                     </>
                   ) : (
                     <>
-                      <Lock className="w-4 h-4" />
+                      <Lock className="w-4 h-4 mr-2" />
                       Create Account
                     </>
                   )}
-                </button>
+                </Button>
 
-                <div className="text-center">
-                  <p className="text-sm text-gray-600">
+                <div className="text-center mt-4">
+                  <p className="text-sm text-gray-500 font-mono">
                     Already have an account?{" "}
                     <button
                       type="button"
                       onClick={() => router.push('/signin')}
-                      className="text-neon-purple hover:text-neon-magenta font-medium"
+                      className="text-neon-cyan hover:text-neon-lime font-bold transition-colors ml-1"
                     >
                       Sign in here
                     </button>
@@ -607,7 +594,7 @@ export function NeonAuth() {
               </form>
             )}
           </div>
-        </EmpowermentCard>
+        </div>
       </motion.div>
     </div>
   )

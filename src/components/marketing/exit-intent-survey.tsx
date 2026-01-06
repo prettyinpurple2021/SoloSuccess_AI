@@ -1,10 +1,10 @@
 "use client"
 
-import { logger, logError, logWarn, logInfo, logDebug, logApi, logDb, logAuth } from '@/lib/logger'
+import { logger, logError } from '@/lib/logger'
 import { useEffect, useState } from 'react'
 import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
 import { useAuth } from '@/hooks/use-auth'
-
 
 export default function ExitIntentSurvey() {
   // Allow disabling via env toggle
@@ -154,8 +154,8 @@ export default function ExitIntentSurvey() {
   if (!open || submitted || dismissed) return null
 
   return (
-    <div className="fixed inset-0 z-[60] flex items-center justify-center bg-black/70 backdrop-blur-sm p-4">
-      <div className="relative w-full max-w-lg border-2 border-neon-cyan bg-dark-card p-6 shadow-[0_0_30px_rgba(11,228,236,0.3)] rounded-sm overflow-hidden">
+    <div className="fixed inset-0 z-[60] flex items-center justify-center bg-black/70 backdrop-blur-sm p-4 animate-in fade-in duration-300">
+      <div className="relative w-full max-w-lg border-2 border-neon-cyan bg-dark-card p-6 shadow-[0_0_30px_rgba(11,228,236,0.3)] rounded-sm overflow-hidden animate-in zoom-in-95 duration-300">
         {/* Scanlines overlay */}
         <div className="pointer-events-none absolute inset-0 bg-[repeating-linear-gradient(0deg,transparent,transparent_2px,rgba(0,0,0,0.1)_2px,rgba(0,0,0,0.1)_4px)] opacity-20" />
         
@@ -165,34 +165,34 @@ export default function ExitIntentSurvey() {
         <div className="absolute bottom-0 left-0 h-4 w-4 border-b-2 border-l-2 border-neon-purple" />
         <div className="absolute bottom-0 right-0 h-4 w-4 border-b-2 border-r-2 border-neon-purple" />
         
-        <h3 className="font-orbitron text-xl font-bold uppercase tracking-wider text-neon-cyan mb-2">
+        <h3 className="font-orbitron text-xl font-bold uppercase tracking-wider text-neon-cyan mb-2 relative z-10">
           Before you go—
         </h3>
-        <p className="font-mono text-gray-300 mb-6">
+        <p className="font-mono text-gray-300 mb-6 relative z-10">
           Mind a 1‑minute survey? Help us tailor SoloSuccess AI for you. <span className="text-gray-500">Totally optional.</span>
         </p>
         
-        <div className="grid grid-cols-1 gap-4">
-          <input 
-            className="w-full border-2 border-gray-700 bg-dark-bg px-4 py-3 font-mono text-neon-purple placeholder:text-gray-500 focus:border-neon-cyan focus:outline-none focus:shadow-[0_0_10px_rgba(11,228,236,0.3)] transition-all duration-300 rounded-sm" 
+        <div className="grid grid-cols-1 gap-4 relative z-10">
+          <Input 
+            className="bg-dark-bg border-gray-700 text-neon-purple placeholder:text-gray-500 focus:border-neon-cyan focus:ring-neon-cyan/20"
             placeholder="Your role (e.g., Solo Founder)" 
             value={role} 
             onChange={(e) => setRole(e.target.value)} 
           />
-          <input 
-            className="w-full border-2 border-gray-700 bg-dark-bg px-4 py-3 font-mono text-neon-purple placeholder:text-gray-500 focus:border-neon-cyan focus:outline-none focus:shadow-[0_0_10px_rgba(11,228,236,0.3)] transition-all duration-300 rounded-sm" 
+          <Input 
+            className="bg-dark-bg border-gray-700 text-neon-purple placeholder:text-gray-500 focus:border-neon-cyan focus:ring-neon-cyan/20"
             placeholder="Primary goal (e.g., automate content)" 
             value={goal} 
             onChange={(e) => setGoal(e.target.value)} 
           />
-          <input 
-            className="w-full border-2 border-gray-700 bg-dark-bg px-4 py-3 font-mono text-neon-purple placeholder:text-gray-500 focus:border-neon-cyan focus:outline-none focus:shadow-[0_0_10px_rgba(11,228,236,0.3)] transition-all duration-300 rounded-sm" 
+          <Input 
+            className="bg-dark-bg border-gray-700 text-neon-purple placeholder:text-gray-500 focus:border-neon-cyan focus:ring-neon-cyan/20"
             placeholder="Top blocker (e.g., time)" 
             value={blocker} 
             onChange={(e) => setBlocker(e.target.value)} 
           />
-          <input 
-            className="w-full border-2 border-gray-700 bg-dark-bg px-4 py-3 font-mono text-neon-purple placeholder:text-gray-500 focus:border-neon-cyan focus:outline-none focus:shadow-[0_0_10px_rgba(11,228,236,0.3)] transition-all duration-300 rounded-sm" 
+          <Input 
+            className="bg-dark-bg border-gray-700 text-neon-purple placeholder:text-gray-500 focus:border-neon-cyan focus:ring-neon-cyan/20"
             placeholder="Email (optional)" 
             type="email" 
             value={email} 
@@ -200,20 +200,22 @@ export default function ExitIntentSurvey() {
           />
         </div>
         
-        <div className="mt-6 flex gap-3 justify-end">
-          <button 
+        <div className="mt-6 flex gap-3 justify-end relative z-10">
+          <Button 
+            variant="ghost"
             onClick={handleSkip}
-            className="border-2 border-gray-600 bg-transparent px-5 py-2 font-mono text-sm uppercase tracking-wider text-gray-400 hover:border-neon-magenta hover:text-neon-magenta transition-all duration-300 rounded-sm"
+            className="text-gray-400 hover:text-neon-magenta hover:bg-neon-magenta/10"
           >
             Skip
-          </button>
-          <button 
+          </Button>
+          <Button 
+            variant="cyan"
             onClick={submit} 
             disabled={submitting}
-            className="border-2 border-neon-cyan bg-neon-cyan/10 px-5 py-2 font-mono text-sm font-bold uppercase tracking-wider text-neon-cyan hover:bg-neon-cyan/20 hover:shadow-[0_0_20px_rgba(11,228,236,0.4)] disabled:opacity-30 disabled:cursor-not-allowed transition-all duration-300 rounded-sm"
+            className="font-bold"
           >
             {submitting ? 'Saving…' : 'Submit'}
-          </button>
+          </Button>
         </div>
       </div>
     </div>
