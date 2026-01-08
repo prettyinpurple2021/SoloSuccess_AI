@@ -70,7 +70,7 @@ export interface DashboardData {
     }
   }>
   recentBriefcases: Array<{
-    id: number
+    id: string
     title: string
     description: string
     status: string
