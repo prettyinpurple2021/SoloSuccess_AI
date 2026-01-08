@@ -74,15 +74,36 @@ export async function GET(
     })
 
     // Sanitize filename for Content-Disposition header
-    const sanitizedFilename = result.filename
-      .replace(/["\r\n]/g, '')
-      .replace(/[^\x20-\x7E]/g, '_')
+    // 1. Basic cleaning: trim and remove control characters (0x00-0x1F) and delete (0x7F)
+    let cleanFilename = (result.filename || 'export').trim().replace(/[\x00-\x1F\x7F]/g, '')
+
+    // 2. ASCII-safe version for 'filename' parameter
+    // Replace non-ASCII characters with underscore, remove double quotes to prevent breaking the header string
+    let asciiFilename = cleanFilename.replace(/[^\x20-\x7E]/g, '_').replace(/"/g, '')
+    
+    // Limit length to 255 characters
+    if (asciiFilename.length > 255) {
+      asciiFilename = asciiFilename.substring(0, 255)
+    }
+    
+    // Fallback to safe default if empty
+    if (!asciiFilename) {
+      asciiFilename = 'export_file'
+    }
+
+    // 3. RFC5987 encoded version for 'filename*' parameter (Handles full UTF-8)
+    // Encode for safe inclusion in header
+    const encodedFilename = encodeURIComponent(cleanFilename)
+      .replace(/'/g, '%27')
+      .replace(/\(/g, '%28')
+      .replace(/\)/g, '%29')
+      .replace(/\*/g, '%2A')
 
     return new NextResponse(body, {
       status: 200,
       headers: {
         'Content-Type': result.mimeType,
-        'Content-Disposition': `attachment; filename="${sanitizedFilename}"`,
+        'Content-Disposition': `attachment; filename="${asciiFilename}"; filename*=UTF-8''${encodedFilename}`,
         'Content-Length': body.length.toString(),
         'Cache-Control': 'no-store, max-age=0'
       }

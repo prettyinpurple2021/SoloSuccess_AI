@@ -38,10 +38,22 @@ export async function POST(req: Request) {
     const userId = session.user.id;
 
     // 1. Generate the AI Roadmap
-    const launchPlan = await onboardingAI.generateLaunchPlan({
-      name: personalInfo.name,
-      businessType: personalInfo.businessType,
-      goals: userGoals.primaryGoals
+    const controller = new AbortController();
+    const timeout = setTimeout(() => {
+      controller.abort();
+    }, 30000); // 30 second timeout
+
+    const launchPlan = await Promise.race([
+      onboardingAI.generateLaunchPlan({
+        name: personalInfo.name,
+        businessType: personalInfo.businessType,
+        goals: userGoals.primaryGoals
+      }, { signal: controller.signal }),
+      new Promise<never>((_, reject) => {
+        setTimeout(() => reject(new ApiError('AI generation timed out', 504)), 30000);
+      })
+    ]).finally(() => {
+      clearTimeout(timeout);
     });
 
     logInfo('AI Roadmap Generated', { userId, phases: launchPlan.roadmap.length });

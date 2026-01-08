@@ -25,7 +25,8 @@ export const ExportConfigSchema = z.object({
     companyName: z.string().optional()
   }).optional(),
   compression: z.boolean().default(false),
-  password: z.string().optional()
+  password: z.string().optional(),
+  maxRows: z.number().optional()
 })
 
 export type ExportConfig = z.infer<typeof ExportConfigSchema>
@@ -297,7 +298,8 @@ export class AnalyticsExportService {
         y += 10
 
         // Rows
-        const maxRows = 20
+        // Rows
+        const maxRows = config.maxRows || 1000
         const displayedData = data.data.slice(0, maxRows)
         for (const item of displayedData) {
           if (y > 270) {
@@ -312,10 +314,14 @@ export class AnalyticsExportService {
         }
 
         if (data.data.length > maxRows) {
+          if (y > 270) {
+            doc.addPage()
+            y = 20
+          }
           y += 5
           doc.setFontSize(9)
           doc.setTextColor(100, 100, 100)
-          doc.text(`... and ${data.data.length - maxRows} more records (truncated for PDF preview)`, 20, y)
+          doc.text(`Showing ${maxRows} of ${data.data.length} records. Results truncated.`, 20, y)
           doc.setTextColor(0, 0, 0)
         }
       }

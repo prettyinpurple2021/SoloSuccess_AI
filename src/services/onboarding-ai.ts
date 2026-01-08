@@ -37,7 +37,7 @@ export class OnboardingAIService {
     }
   }
 
-  async generateLaunchPlan(profile: OnboardingProfile): Promise<LaunchPlan> {
+  async generateLaunchPlan(profile: OnboardingProfile, options?: { signal?: AbortSignal }): Promise<LaunchPlan> {
     if (!this.openai) {
       return this.generateFallbackPlan(profile);
     }
@@ -73,7 +73,7 @@ export class OnboardingAIService {
         ],
         response_format: { type: 'json_object' },
         temperature: 0.7,
-      });
+      }, { signal: options?.signal }); // Pass abort signal to OpenAI client
 
       const content = response.choices[0].message.content;
       if (!content) throw new Error('No content received from OpenAI');

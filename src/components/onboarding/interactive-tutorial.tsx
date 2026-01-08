@@ -867,7 +867,7 @@ export function InteractiveTutorial({
 
             <div className="flex items-center gap-2 order-1 sm:order-2">
               {currentStepData.optional && allowSkipping && (
-                <Button variant="ghost" onClick={skipCurrentStep} className="text-sm hover:bg-neon-lime/10 hover:text-neon-lime transition-colors text-gray-400 font-mono text-xs uppercase tracking-wider">
+                <Button variant="ghost" onClick={skipCurrentStep} className="hover:bg-neon-lime/10 hover:text-neon-lime transition-colors text-gray-400 font-mono text-xs uppercase tracking-wider">
                   Skip This
                 </Button>
               )}

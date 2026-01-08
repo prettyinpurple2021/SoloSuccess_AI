@@ -81,6 +81,8 @@ export function SimpleOnboarding({ open, onCompleteAction, onSkipAction, userDat
   }
 
   const handleComplete = async () => {
+    if (isLoading) return
+
     setIsLoading(true)
     const interval = startLoadingSequence()
 
@@ -95,11 +97,16 @@ export function SimpleOnboarding({ open, onCompleteAction, onSkipAction, userDat
     
     try {
       // 1. Update basic profile
-      await fetch('/api/profile', {
+      // 1. Update basic profile
+      const profileResponse = await fetch('/api/profile', {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ onboarding_completed: true, onboarding_data: data })
       })
+
+      if (!profileResponse.ok) {
+        throw new Error(`Profile update failed: ${profileResponse.statusText}`)
+      }
 
       // 2. Generate Roadmap
       const response = await fetch('/api/onboarding/generate-plan', {
@@ -291,7 +298,8 @@ export function SimpleOnboarding({ open, onCompleteAction, onSkipAction, userDat
                 </Button>
                 <Button
                   onClick={handleComplete}
-                  className="bg-gradient-to-r from-military-hot-pink to-military-blush-pink text-white hover:opacity-90 hover:shadow-lg hover:shadow-military-hot-pink/50 transition-all"
+                  disabled={isLoading}
+                  className="bg-gradient-to-r from-military-hot-pink to-military-blush-pink text-white hover:opacity-90 hover:shadow-lg hover:shadow-military-hot-pink/50 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   <Rocket className="h-4 w-4 mr-2" />
                   Launch Your Empire!
