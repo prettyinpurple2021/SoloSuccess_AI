@@ -123,6 +123,22 @@ export class OnboardingAIService {
             { title: "Talk to 5 Potential Customers", description: "Validate your problem/solution fit.", estimatedMinutes: 120 },
             { title: "Draft Service Agreement", description: "Create a standard contract template.", estimatedMinutes: 60 }
           ]
+        },
+        {
+          phaseName: "Week 3: Growth (Fallback)",
+          tasks: [
+            { title: "Create Content Calendar", description: "Plan 2 weeks of social media posts.", estimatedMinutes: 60 },
+            { title: "Launch Beta Program", description: "Onboard your first non-family users.", estimatedMinutes: 120 },
+            { title: "Setup Analytics", description: "Install tracking tools to measure traffic.", estimatedMinutes: 45 }
+          ]
+        },
+        {
+          phaseName: "Week 4: Scale/Optimize (Fallback)",
+          tasks: [
+            { title: "Collect Beta Feedback", description: "Survey early users for improvements.", estimatedMinutes: 90 },
+            { title: "Refine Pricing Model", description: "Adjust pricing based on feedback.", estimatedMinutes: 45 },
+            { title: "Set Up Email Marketing", description: "Create a welcome sequence for leads.", estimatedMinutes: 60 }
+          ]
         }
       ]
     };
