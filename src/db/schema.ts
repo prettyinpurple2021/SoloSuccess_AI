@@ -653,22 +653,21 @@ export const customReports = pgTable('custom_reports', {
 // Feedback table for user submissions
 export const feedback = pgTable('feedback', {
   id: text('id').primaryKey().$defaultFn(() => uuidv4()),
-  userId: text('user_id').references(() => users.id, { onDelete: 'set null' }),
-  type: feedbackTypeEnum('type').notNull(),
+  user_id: text('user_id').references(() => users.id, { onDelete: 'set null' }),
+  type: text('type').notNull(),
   title: text('title'),
   message: text('message').notNull(),
-  browserInfo: jsonb('browser_info'),
-  screenshotUrl: text('screenshot_url'),
-  status: feedbackStatusEnum('status').notNull().default('pending'),
-  priority: feedbackPriorityEnum('priority').notNull().default('medium'),
-  createdAt: timestamp('created_at').defaultNow(),
-  updatedAt: timestamp('updated_at').defaultNow().$onUpdate(() => new Date()),
+  browser_info: jsonb('browser_info'),
+  screenshot_url: text('screenshot_url'),
+  status: text('status').notNull().default('pending'),
+  priority: text('priority').notNull().default('medium'),
+  created_at: timestamp('created_at').defaultNow(),
+  updated_at: timestamp('updated_at').defaultNow(),
 }, (table) => ({
-  userIdIdx: index('feedback_user_id_idx').on(table.userId),
+  userIdIdx: index('feedback_user_id_idx').on(table.user_id),
   typeIdx: index('feedback_type_idx').on(table.type),
   statusIdx: index('feedback_status_idx').on(table.status),
 }));
-
 
 
 
@@ -1534,7 +1533,7 @@ export const userApiKeys = pgTable('user_api_keys', {
 
 export const feedbackRelations = relations(feedback, ({ one }) => ({
   user: one(users, {
-    fields: [feedback.userId],
+    fields: [feedback.user_id],
     references: [users.id],
   }),
 }));

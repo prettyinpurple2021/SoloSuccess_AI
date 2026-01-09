@@ -5,6 +5,7 @@ export const dynamic = 'force-dynamic'
 import { useState, useEffect } from "react"
 import { useRouter } from "next/navigation"
 import { authClient } from "@/lib/auth-client"
+import { logAuth, logError } from "@/lib/logger"
 import { PrimaryButton } from "@/components/ui/button"
 import { Alert } from "@/components/ui/alert"
 import { Heading } from "@/components/ui/Heading"
@@ -121,7 +122,39 @@ export default function DeviceApprovalPage() {
   }
 
   const handleDeny = async () => {
-    router.push("/login")
+    setIsApproving(true) // Show loading state
+    
+    try {
+      const deviceId = deviceInfo?.id || 'unknown'
+      
+      // Log denial attempt
+      logAuth('device_denial_initiated', undefined, true, { 
+        deviceId,
+        deviceName: deviceInfo?.deviceName,
+        ip: deviceInfo?.ipAddress,
+        userAgent: deviceInfo?.userAgent
+      })
+
+      // 1. Call backend denial endpoint
+      await authClient.multiSession.denyDevice({ 
+        deviceFingerprint: deviceId 
+      })
+
+      // 2. Revoke current session
+      await authClient.multiSession.revokeSession()
+
+      // Log success
+      logAuth('device_denial_completed', undefined, true, { deviceId })
+      
+      // 3. Redirect to login
+      router.push("/login")
+    } catch (err) {
+      logError('Device denial failed', { error: err })
+      // Even on error, force redirect to login for security
+      router.push("/login")
+    } finally {
+      setIsApproving(false)
+    }
   }
 
   const getDeviceIcon = (deviceType: string) => {

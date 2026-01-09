@@ -363,9 +363,21 @@ export class WorkflowEngine {
           const resultBool = !!result
           
           // Sanitize condition in logs to prevent sensitive data exposure
-          const sanitizedCondition = configTyped.condition.length > 50 
-            ? `${configTyped.condition.substring(0, 47)}...` 
-            : configTyped.condition
+          const sanitizeCondition = (str: string) => {
+             // Replace string literals (single or double quoted) with [STRING]
+             // Replace numbers with [NUMBER]
+             // Truncate if still too long
+             let sanitized = str
+               .replace(/(["'])(?:(?=(\\?))\2.)*?\1/g, '"[REDACTED_STRING]"')
+               .replace(/\b\d+(\.\d+)?\b/g, '[REDACTED_NUMBER]')
+             
+             if (sanitized.length > 100) {
+               sanitized = sanitized.substring(0, 97) + '...'
+             }
+             return sanitized
+          }
+
+          const sanitizedCondition = sanitizeCondition(configTyped.condition)
 
           logInfo('Condition evaluated', { 
             condition: sanitizedCondition, 

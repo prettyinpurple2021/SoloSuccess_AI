@@ -49,4 +49,7 @@ async function testGeneration() {
   }
 }
 
-testGeneration();
+testGeneration().catch(err => {
+  console.error("Unhanlded rejection in testGeneration:", err);
+  process.exit(1);
+});

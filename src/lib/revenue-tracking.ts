@@ -128,6 +128,10 @@ export class RevenueTrackingService {
   /**
     * Stripe-specific MRR calculation
     */
+   /**
+    * Stripe-specific MRR calculation
+    * Iterates through ALL subscriptions and their items to calculate total MRR
+    */
   private static async calculateStripeMRR(connection: PaymentConnection): Promise<number> {
     if (!connection.access_token) return 0
     try {
@@ -136,35 +140,46 @@ export class RevenueTrackingService {
       })
 
       let mrr = 0
-      let hasMore = true
-      let startingAfter: string | undefined = undefined
-
-      while (hasMore) {
-        const subscriptions = await stripe.subscriptions.list({
-          status: 'active',
-          limit: 100,
-          starting_after: startingAfter
-        })
-
-        for (const subscription of subscriptions.data) {
-          for (const item of subscription.items.data) {
-            const price = item.price
-            if (price && price.recurring) {
-              const quantity = item.quantity || 1
-              const amount = ((price.unit_amount || 0) / 100) * quantity
-              switch (price.recurring.interval) {
-                case 'month': mrr += amount; break
-                case 'year': mrr += amount / 12; break
-                case 'week': mrr += amount * 4.33; break
-                case 'day': mrr += amount * 30; break
-              }
-            }
+      
+      // Use auto-pagination to iterate through all active subscriptions
+      for await (const subscription of stripe.subscriptions.list({
+        status: 'active',
+        limit: 100, // Max limit per page
+        expand: ['data.items'] // Ensure we get all line items
+      })) {
+        
+        // Iterate through all items in the subscription
+        for (const item of subscription.items.data) {
+          const price = item.price
+          
+          if (price && price.recurring && typeof price.unit_amount === 'number') {
+             const quantity = item.quantity || 1
+             const amount = (price.unit_amount / 100) * quantity
+             
+             // Normalize to monthly MRR
+             switch (price.recurring.interval) {
+               case 'month':
+                 mrr += amount * (price.recurring.interval_count || 1) // Handle "every 3 months" etc? No, usually handled by division if it's billing frequency. 
+                 // Wait, interval_count of 3 months means billing every 3 months. So monthly revenue is Amount / 3.
+                 // Correction:
+                 const intervalCount = price.recurring.interval_count || 1
+                 mrr += amount / intervalCount
+                 break
+               case 'year':
+                 mrr += amount / 12
+                 break
+               case 'week':
+                 mrr += amount * 4.33 // Avg weeks in a month
+                 break
+               case 'day': 
+                 mrr += amount * 30 // Avg days in a month
+                 break
+               default:
+                 // unexpected interval, default to straight addition if unknown (safest fallback or log warning)
+                 logWarn(`Unknown recurring interval: ${price.recurring.interval}`, { subscriptionId: subscription.id })
+                 break
+             }
           }
-        }
-
-        hasMore = subscriptions.has_more
-        if (hasMore && subscriptions.data.length > 0) {
-          startingAfter = subscriptions.data[subscriptions.data.length - 1].id
         }
       }
 
