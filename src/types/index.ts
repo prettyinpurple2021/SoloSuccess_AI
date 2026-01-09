@@ -48,6 +48,19 @@ export interface BusinessContext {
 }
 
 export type TaskStatus = 'backlog' | 'todo' | 'in-progress' | 'done';
+
+export interface Task {
+    id: string;
+    title: string;
+    description: string;
+    status: TaskStatus;
+    priority?: 'low' | 'medium' | 'high' | 'critical';
+    dueDate?: string | Date;
+    tags?: string[];
+    assignee?: AgentId;
+    createdAt?: string;
+    updatedAt?: string;
+}
 // ... existing imports ...
 export interface DepartmentGrade {
     agentId: AgentId;
@@ -242,4 +255,11 @@ export interface SavedWarRoomSession extends WarRoomResponse {
     id: string;
     topic: string;
     timestamp: string;
+}
+
+export interface MentalCoaching {
+    stoicQuote: string;
+    reframing: string;
+    actionableStep: string;
+    breathingExercise?: boolean;
 }
