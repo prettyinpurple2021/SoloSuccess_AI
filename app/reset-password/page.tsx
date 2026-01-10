@@ -88,10 +88,10 @@ export default function ResetPasswordPage() {
         <div className="max-w-md w-full px-6">
           <div className="text-center mb-8">
             <SoloSuccessLogo size={64} animated={true} className="mx-auto mb-4" />
-            <h1 className="font-sci text-3xl font-bold text-white mb-2">
+            <h1 className="font-orbitron text-3xl font-bold text-white mb-2 uppercase tracking-wider">
               RESET_PASSWORD
             </h1>
-            <p className="text-gray-400 font-tech">
+            <p className="text-gray-300 font-mono">
               Establish new neural link credentials
             </p>
           </div>
@@ -99,19 +99,19 @@ export default function ResetPasswordPage() {
           <HudBorder className="p-8">
             {message ? (
               <div className="text-center">
-                <div className="w-16 h-16 mx-auto mb-6 rounded-full bg-cyber-cyan/20 flex items-center justify-center">
-                  <CheckCircle className="w-8 h-8 text-cyber-cyan" />
+                <div className="w-16 h-16 mx-auto mb-6 rounded-full bg-neon-cyan/20 border-2 border-neon-cyan/50 flex items-center justify-center shadow-[0_0_20px_rgba(11,228,236,0.3)]">
+                  <CheckCircle className="w-8 h-8 text-neon-cyan" />
                 </div>
-                <h2 className="font-sci text-2xl text-white mb-4">PROTOCOL_COMPLETE</h2>
-                <p className="text-gray-400 font-tech">{message}</p>
+                <h2 className="font-orbitron text-2xl text-white mb-4 uppercase tracking-wider">PROTOCOL_COMPLETE</h2>
+                <p className="text-gray-300 font-mono">{message}</p>
               </div>
             ) : error && !token ? (
               <div className="text-center">
                 <div className="w-16 h-16 mx-auto mb-6 rounded-full bg-red-500/20 flex items-center justify-center">
                   <AlertCircle className="w-8 h-8 text-red-400" />
                 </div>
-                <h2 className="font-sci text-2xl text-white mb-4">INVALID_TOKEN</h2>
-                <p className="text-gray-400 font-tech mb-6">{error}</p>
+                <h2 className="font-orbitron text-2xl text-white mb-4 uppercase tracking-wider">INVALID_TOKEN</h2>
+                <p className="text-gray-300 font-mono mb-6">{error}</p>
                 <Link href="/forgot-password">
                   <CyberButton variant="primary" size="md">
                     REQUEST_NEW_LINK
@@ -121,7 +121,7 @@ export default function ResetPasswordPage() {
             ) : (
               <form onSubmit={handleSubmit} className="space-y-6">
                 <div>
-                  <Label className="text-cyber-cyan font-sci text-xs uppercase tracking-widest mb-2 block">
+                  <Label className="text-neon-cyan font-mono font-bold text-xs uppercase tracking-widest mb-2 block">
                     NEW_PASSWORD
                   </Label>
                   <div className="relative">
@@ -130,14 +130,14 @@ export default function ResetPasswordPage() {
                       type={showPassword ? 'text' : 'password'}
                       value={password}
                       onChange={(e) => setPassword(e.target.value)}
-                      className="pl-10 pr-10 bg-cyber-dark/50 border-cyber-cyan/30 text-white placeholder:text-gray-500 focus:border-cyber-cyan"
+                      className="pl-10 pr-10 bg-dark-card border-2 border-gray-700 text-white placeholder:text-gray-500 focus:border-neon-cyan focus:ring-neon-cyan/20 rounded-sm font-mono"
                       placeholder="••••••••"
                       required
                     />
                     <button
                       type="button"
                       onClick={() => setShowPassword(!showPassword)}
-                      className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-cyber-cyan"
+                      className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-neon-cyan transition-colors"
                     >
                       {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
                     </button>
@@ -145,7 +145,7 @@ export default function ResetPasswordPage() {
                 </div>
 
                 <div>
-                  <Label className="text-cyber-cyan font-sci text-xs uppercase tracking-widest mb-2 block">
+                  <Label className="text-neon-cyan font-mono font-bold text-xs uppercase tracking-widest mb-2 block">
                     CONFIRM_PASSWORD
                   </Label>
                   <div className="relative">
@@ -154,14 +154,14 @@ export default function ResetPasswordPage() {
                       type={showConfirmPassword ? 'text' : 'password'}
                       value={confirmPassword}
                       onChange={(e) => setConfirmPassword(e.target.value)}
-                      className="pl-10 pr-10 bg-cyber-dark/50 border-cyber-cyan/30 text-white placeholder:text-gray-500 focus:border-cyber-cyan"
+                      className="pl-10 pr-10 bg-dark-card border-2 border-gray-700 text-white placeholder:text-gray-500 focus:border-neon-cyan focus:ring-neon-cyan/20 rounded-sm font-mono"
                       placeholder="••••••••"
                       required
                     />
                     <button
                       type="button"
                       onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                      className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-cyber-cyan"
+                      className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-neon-cyan transition-colors"
                     >
                       {showConfirmPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
                     </button>
@@ -185,7 +185,7 @@ export default function ResetPasswordPage() {
             )}
 
             <div className="mt-6 text-center">
-              <Link href="/signin" className="text-sm text-cyber-cyan hover:text-cyber-purple font-tech">
+              <Link href="/signin" className="text-sm text-neon-cyan hover:text-neon-purple font-mono transition-colors">
                 Back to login
               </Link>
             </div>

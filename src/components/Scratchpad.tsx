@@ -69,7 +69,7 @@ export const Scratchpad: React.FC<ScratchpadProps> = ({ isOpen, onClose, activeA
                     </button>
                     <button
                         onClick={onClose}
-                        className="p-1.5 text-gray-500 hover:text-white transition-colors rounded-sm hover:bg-gray-700"
+                        className="p-1.5 text-gray-500 hover:text-white transition-colors rounded-sm hover:bg-dark-hover"
                     >
                         <X size={14} />
                     </button>

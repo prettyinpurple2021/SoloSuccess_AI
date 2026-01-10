@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Search, MoreVertical, Ban, CheckCircle, XCircle } from 'lucide-react';
+import { logError } from '@/lib/logger';
 
 interface User {
     id: number;
@@ -30,7 +31,7 @@ export function UserTable() {
             const data = await res.json();
             setUsers(data);
         } catch (error) {
-            console.error('Failed to fetch users:', error);
+            logError('Failed to fetch users', error);
         } finally {
             setIsLoading(false);
         }
@@ -53,7 +54,7 @@ export function UserTable() {
             // Refresh list
             fetchUsers();
         } catch (error) {
-            console.error('Failed to suspend user:', error);
+            logError('Failed to suspend user', error, { userId });
         }
     };
 

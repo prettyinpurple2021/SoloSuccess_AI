@@ -92,7 +92,7 @@ export default function TeamPage() {
       requiredTier="accelerator" 
       feature="AI Team Collaboration"
     >
-      <div className="min-h-screen bg-background">
+      <div className="min-h-screen bg-dark-bg">
       {/* Header */}
       <div className="border-b border-border bg-card/50 backdrop-blur-sm sticky top-0 z-40">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
@@ -130,13 +130,13 @@ export default function TeamPage() {
                         key={agent.id}
                         variant={selectedAgent.id === agent.id ? "purple" : "ghost"}
                         className={`w-full justify-start p-4 h-auto ${
-                          selectedAgent.id === agent.id ? "bg-gradient-primary text-white" : "hover:bg-muted"
+                          selectedAgent.id === agent.id ? "bg-gradient-primary text-white" : "hover:bg-dark-card"
                         }`}
                         onClick={() => setSelectedAgent(agent)}
                       >
                         <div className="flex items-center space-x-3">
                           <div className={`w-10 h-10 rounded-full bg-gradient-to-r ${agent.color} p-0.5`}>
-                            <div className="w-full h-full rounded-full bg-background flex items-center justify-center">
+                            <div className="w-full h-full rounded-full bg-dark-bg flex items-center justify-center">
                               <Image
                                 src={agent.avatar || "/default-user.svg"}
                                 alt={agent.name}
@@ -173,7 +173,7 @@ export default function TeamPage() {
                   <div className="flex items-center justify-between">
                     <div className="flex items-center space-x-4">
                       <div className={`w-12 h-12 rounded-full bg-gradient-to-r ${selectedAgent.color} p-0.5`}>
-                        <div className="w-full h-full rounded-full bg-background flex items-center justify-center">
+                        <div className="w-full h-full rounded-full bg-dark-bg flex items-center justify-center">
                           <Image
                             src={selectedAgent.avatar || "/default-user.svg"}
                             alt={selectedAgent.name}
@@ -236,7 +236,7 @@ export default function TeamPage() {
                         {messages.length === 0 ? (
                           <div className="flex flex-col items-center justify-center h-full text-center">
                             <div className={`w-20 h-20 rounded-full bg-gradient-to-r ${selectedAgent.color} p-1 mb-4`}>
-                              <div className="w-full h-full rounded-full bg-background flex items-center justify-center">
+                              <div className="w-full h-full rounded-full bg-dark-bg flex items-center justify-center">
                                 <Image
                                   src={selectedAgent.avatar || "/default-user.svg"}
                                   alt={selectedAgent.name}
@@ -257,7 +257,7 @@ export default function TeamPage() {
                               <div key={msg.id} className={`flex ${msg.role === "user" ? "justify-end" : "justify-start"}`}>
                                 <div
                                   className={`max-w-[80%] rounded-lg p-3 ${
-                                    msg.role === "user" ? "bg-gradient-primary text-white" : "bg-muted"
+                                    msg.role === "user" ? "bg-gradient-primary text-white" : "bg-dark-card"
                                   }`}
                                 >
                                   <p className="text-sm">{msg.content}</p>
@@ -276,7 +276,7 @@ export default function TeamPage() {
                             ))}
                             {isLoading && (
                               <div className="flex justify-start">
-                                <div className="bg-muted rounded-lg p-3 max-w-[80%]">
+                                <div className="bg-dark-card rounded-lg p-3 max-w-[80%]">
                                   <div className="flex items-center space-x-2">
                                     <div className="w-2 h-2 bg-primary rounded-full animate-bounce"></div>
                                     <div className="w-2 h-2 bg-primary rounded-full animate-bounce delay-100"></div>
@@ -333,7 +333,7 @@ export default function TeamPage() {
                   <div className="flex items-center justify-between">
                     <div className="flex items-center space-x-4">
                       <div className={`w-12 h-12 rounded-full bg-gradient-to-r ${selectedAgent.color} p-0.5`}>
-                        <div className="w-full h-full rounded-full bg-background flex items-center justify-center">
+                        <div className="w-full h-full rounded-full bg-dark-bg flex items-center justify-center">
                           <Image
                             src={selectedAgent.avatar || "/default-user.svg"}
                             alt={selectedAgent.name}
@@ -380,7 +380,7 @@ export default function TeamPage() {
                         {messages.length === 0 ? (
                           <div className="flex flex-col items-center justify-center h-full text-center">
                             <div className={`w-20 h-20 rounded-full bg-gradient-to-r ${selectedAgent.color} p-1 mb-4`}>
-                              <div className="w-full h-full rounded-full bg-background flex items-center justify-center">
+                              <div className="w-full h-full rounded-full bg-dark-bg flex items-center justify-center">
                                 <Image
                                   src={selectedAgent.avatar || "/default-user.svg"}
                                   alt={selectedAgent.name}
@@ -401,7 +401,7 @@ export default function TeamPage() {
                               <div key={msg.id} className={`flex ${msg.role === "user" ? "justify-end" : "justify-start"}`}>
                                 <div
                                   className={`max-w-[80%] rounded-lg p-3 ${
-                                    msg.role === "user" ? "bg-gradient-primary text-white" : "bg-muted"
+                                    msg.role === "user" ? "bg-gradient-primary text-white" : "bg-dark-card"
                                   }`}
                                 >
                                   <p className="text-sm">{msg.content}</p>
@@ -420,7 +420,7 @@ export default function TeamPage() {
                             ))}
                             {isLoading && (
                               <div className="flex justify-start">
-                                <div className="bg-muted rounded-lg p-3 max-w-[80%]">
+                                <div className="bg-dark-card rounded-lg p-3 max-w-[80%]">
                                   <div className="flex items-center space-x-2">
                                     <div className="w-2 h-2 bg-primary rounded-full animate-bounce"></div>
                                     <div className="w-2 h-2 bg-primary rounded-full animate-bounce delay-100"></div>
@@ -477,7 +477,7 @@ export default function TeamPage() {
                   <div className="flex items-center justify-between">
                     <div className="flex items-center space-x-4">
                       <div className={`w-12 h-12 rounded-full bg-gradient-to-r ${selectedAgent.color} p-0.5`}>
-                        <div className="w-full h-full rounded-full bg-background flex items-center justify-center">
+                        <div className="w-full h-full rounded-full bg-dark-bg flex items-center justify-center">
                           <Image
                             src={selectedAgent.avatar || "/default-user.svg"}
                             alt={selectedAgent.name}
@@ -524,7 +524,7 @@ export default function TeamPage() {
                         {messages.length === 0 ? (
                           <div className="flex flex-col items-center justify-center h-full text-center">
                             <div className={`w-20 h-20 rounded-full bg-gradient-to-r ${selectedAgent.color} p-1 mb-4`}>
-                              <div className="w-full h-full rounded-full bg-background flex items-center justify-center">
+                              <div className="w-full h-full rounded-full bg-dark-bg flex items-center justify-center">
                                 <Image
                                   src={selectedAgent.avatar || "/default-user.svg"}
                                   alt={selectedAgent.name}
@@ -545,7 +545,7 @@ export default function TeamPage() {
                               <div key={msg.id} className={`flex ${msg.role === "user" ? "justify-end" : "justify-start"}`}>
                                 <div
                                   className={`max-w-[80%] rounded-lg p-3 ${
-                                    msg.role === "user" ? "bg-gradient-primary text-white" : "bg-muted"
+                                    msg.role === "user" ? "bg-gradient-primary text-white" : "bg-dark-card"
                                   }`}
                                 >
                                   <p className="text-sm">{msg.content}</p>
@@ -564,7 +564,7 @@ export default function TeamPage() {
                             ))}
                             {isLoading && (
                               <div className="flex justify-start">
-                                <div className="bg-muted rounded-lg p-3 max-w-[80%]">
+                                <div className="bg-dark-card rounded-lg p-3 max-w-[80%]">
                                   <div className="flex items-center space-x-2">
                                     <div className="w-2 h-2 bg-primary rounded-full animate-bounce"></div>
                                     <div className="w-2 h-2 bg-primary rounded-full animate-bounce delay-100"></div>
@@ -621,7 +621,7 @@ export default function TeamPage() {
                   <div className="flex items-center justify-between">
                     <div className="flex items-center space-x-4">
                       <div className={`w-12 h-12 rounded-full bg-gradient-to-r ${selectedAgent.color} p-0.5`}>
-                        <div className="w-full h-full rounded-full bg-background flex items-center justify-center">
+                        <div className="w-full h-full rounded-full bg-dark-bg flex items-center justify-center">
                           <Image
                             src={selectedAgent.avatar || "/default-user.svg"}
                             alt={selectedAgent.name}
@@ -668,7 +668,7 @@ export default function TeamPage() {
                         {messages.length === 0 ? (
                           <div className="flex flex-col items-center justify-center h-full text-center">
                             <div className={`w-20 h-20 rounded-full bg-gradient-to-r ${selectedAgent.color} p-1 mb-4`}>
-                              <div className="w-full h-full rounded-full bg-background flex items-center justify-center">
+                              <div className="w-full h-full rounded-full bg-dark-bg flex items-center justify-center">
                                 <Image
                                   src={selectedAgent.avatar || "/default-user.svg"}
                                   alt={selectedAgent.name}
@@ -689,7 +689,7 @@ export default function TeamPage() {
                               <div key={msg.id} className={`flex ${msg.role === "user" ? "justify-end" : "justify-start"}`}>
                                 <div
                                   className={`max-w-[80%] rounded-lg p-3 ${
-                                    msg.role === "user" ? "bg-gradient-primary text-white" : "bg-muted"
+                                    msg.role === "user" ? "bg-gradient-primary text-white" : "bg-dark-card"
                                   }`}
                                 >
                                   <p className="text-sm">{msg.content}</p>
@@ -708,7 +708,7 @@ export default function TeamPage() {
                             ))}
                             {isLoading && (
                               <div className="flex justify-start">
-                                <div className="bg-muted rounded-lg p-3 max-w-[80%]">
+                                <div className="bg-dark-card rounded-lg p-3 max-w-[80%]">
                                   <div className="flex items-center space-x-2">
                                     <div className="w-2 h-2 bg-primary rounded-full animate-bounce"></div>
                                     <div className="w-2 h-2 bg-primary rounded-full animate-bounce delay-100"></div>
@@ -766,7 +766,7 @@ export default function TeamPage() {
                   <div className="flex items-center justify-between">
                     <div className="flex items-center space-x-4">
                       <div className={`w-12 h-12 rounded-full bg-gradient-to-r ${selectedAgent.color} p-0.5`}>
-                        <div className="w-full h-full rounded-full bg-background flex items-center justify-center">
+                        <div className="w-full h-full rounded-full bg-dark-bg flex items-center justify-center">
                           <Image
                             src={selectedAgent.avatar || "/default-user.svg"}
                             alt={selectedAgent.name}
@@ -818,7 +818,7 @@ export default function TeamPage() {
                     {messages.length === 0 ? (
                       <div className="flex flex-col items-center justify-center h-full text-center">
                         <div className={`w-20 h-20 rounded-full bg-gradient-to-r ${selectedAgent.color} p-1 mb-4`}>
-                          <div className="w-full h-full rounded-full bg-background flex items-center justify-center">
+                          <div className="w-full h-full rounded-full bg-dark-bg flex items-center justify-center">
                             <Image
                               src={selectedAgent.avatar || "/default-user.svg"}
                               alt={selectedAgent.name}
@@ -840,7 +840,7 @@ export default function TeamPage() {
                           <div key={msg.id} className={`flex ${msg.role === "user" ? "justify-end" : "justify-start"}`}>
                             <div
                               className={`max-w-[80%] rounded-lg p-3 ${
-                                msg.role === "user" ? "bg-gradient-primary text-white" : "bg-muted"
+                                msg.role === "user" ? "bg-gradient-primary text-white" : "bg-dark-card"
                               }`}
                             >
                               <p className="text-sm">{msg.content}</p>
@@ -859,7 +859,7 @@ export default function TeamPage() {
                         ))}
                         {isLoading && (
                           <div className="flex justify-start">
-                            <div className="bg-muted rounded-lg p-3 max-w-[80%]">
+                            <div className="bg-dark-card rounded-lg p-3 max-w-[80%]">
                               <div className="flex items-center space-x-2">
                                 <div className="w-2 h-2 bg-primary rounded-full animate-bounce"></div>
                                 <div className="w-2 h-2 bg-primary rounded-full animate-bounce delay-100"></div>

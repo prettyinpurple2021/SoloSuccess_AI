@@ -132,7 +132,7 @@ const fetchChartData = async (metric: string): Promise<DataPoint[]> => {
       label: item.name,
     }));
   } catch (error) {
-    console.error('Error fetching chart data:', error);
+    logError('Error fetching chart data', error instanceof Error ? error : new Error(String(error)));
     return [];
   }
 }

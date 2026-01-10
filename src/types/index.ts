@@ -263,3 +263,174 @@ export interface MentalCoaching {
     actionableStep: string;
     breathingExercise?: boolean;
 }
+
+export interface IncineratorResponse {
+    roastSummary: string;
+    survivalScore: number; // 0-100
+    feedback: string[];
+    rewrittenContent?: string;
+}
+
+export interface TacticalPlan {
+    goal: string;
+    tasks: Task[];
+    createdAt: string;
+    completedAt?: string;
+}
+
+export interface FinancialContext {
+    currentCash: number;
+    monthlyBurn: number;
+    monthlyRevenue: number;
+    growthRate: number; // percentage
+}
+
+export interface FinancialAudit {
+    runwayScore: number; // 0-100
+    verdict: string;
+    strategicMoves: string[];
+    riskFactors: string[];
+}
+
+export interface PitchDeck {
+    id: string;
+    title: string;
+    slides: Slide[];
+    generatedAt: string;
+}
+
+export interface Slide {
+    title: string;
+    keyPoint: string;
+    content: string[];
+    visualIdea: string;
+}
+
+export interface TechStackAudit {
+    score: number; // 0-100
+    verdict: string;
+    pros: string[];
+    cons: string[];
+    recommendations: string[];
+}
+
+export interface CodeSnippet {
+    language: string;
+    code: string;
+    explanation: string;
+}
+
+export interface SimulationResult {
+    id: string;
+    query: string;
+    likelyCase: ScenarioOutcome;
+    bestCase: ScenarioOutcome;
+    worstCase: ScenarioOutcome;
+    strategicAdvice: string;
+    timestamp: string;
+}
+
+export interface ScenarioOutcome {
+    title: string;
+    probability: number; // 0-100
+    timeline: string; // e.g. "3 Months"
+    description: string;
+    keyEvents: string[];
+}
+
+export type ContactCategory = 'investor' | 'lead' | 'partner' | 'media' | 'vip';
+
+export interface Contact {
+    id: string;
+    name: string;
+    role: string;
+    company: string;
+    category: ContactCategory;
+    email: string;
+    notes: string;
+    lastContact?: string;
+    aiAnalysis?: string;
+}
+
+export interface NegotiationPrep {
+    strategy: string;
+    leveragePoints: string[];
+    psychologicalProfile: string;
+    openingLine: string;
+}
+
+export interface LegalAnalysis {
+    safetyScore: number; // 0-100
+    verdict: string;
+    criticalRisks: string[];
+    suggestions: string[];
+}
+
+export type LegalDocType = 'NDA' | 'Contractor Agreement' | 'SaaS Terms of Service' | 'Privacy Policy' | 'Offer Letter';
+
+export interface MarketGap {
+    name: string;
+    description: string;
+    competitionScore: number; // 0-100 (Low is better)
+    profitabilityScore: number; // 0-100 (High is better)
+    soloFitScore: number; // 0-100 (High is better)
+    whyItWorks: string;
+    firstStep: string;
+}
+
+export interface PivotAnalysis {
+    currentIndustry: string;
+    gaps: MarketGap[];
+}
+
+export interface MentalState {
+    mood: string;
+    stressLevel: number; // 0-100
+    primaryBlocker: string;
+}
+
+export interface ProductFeature {
+    name: string;
+    userStory: string; // "As a user I want..."
+    acceptanceCriteria: string[];
+    techNotes: string;
+}
+
+export interface ProductSpec {
+    id: string;
+    featureName: string;
+    summary: string;
+    features: ProductFeature[];
+    dataModel: string[]; // Rough schema description
+    generatedAt: string;
+}
+
+export interface RoleplayScenario {
+    id: string;
+    title: string;
+    description: string;
+    difficulty: 'ROOKIE' | 'VETERAN' | 'NIGHTMARE';
+    opponentRole: string;
+    opponentPersona: string;
+    objective: string;
+}
+
+export interface RoleplayTurn {
+    role: 'user' | 'opponent';
+    text: string;
+}
+
+export interface RoleplayFeedback {
+    score: number;
+    strengths: string[];
+    weaknesses: string[];
+    proTip: string;
+}
+
+export interface LaunchEvent {
+    day: string; // e.g. "T-Minus 7"
+    title: string;
+    description: string;
+    owner: AgentId;
+    channel: string;
+}

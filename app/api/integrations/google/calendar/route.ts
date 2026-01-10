@@ -68,6 +68,7 @@ export async function GET(request: NextRequest) {
             })
         }
 
+
         if (action === 'events') {
             // Retrieve stored token for user
             const connection = await db
@@ -202,9 +203,15 @@ export async function GET(request: NextRequest) {
 }
 
 const PostSchema = z.object({
+    action: z.string().optional(),
     code: z.string().optional(),
     state: z.string().optional(),
-    disconnect: z.boolean().optional()
+    disconnect: z.boolean().optional(),
+    title: z.string().optional(),
+    description: z.string().optional(),
+    startTime: z.string().optional(),
+    endTime: z.string().optional(),
+    calendarId: z.string().optional()
 })
 
 export async function POST(request: NextRequest) {
@@ -222,7 +229,103 @@ export async function POST(request: NextRequest) {
             return NextResponse.json({ error: 'Invalid request', details: validation.error.errors }, { status: 400 })
         }
 
-        const { code, state, disconnect } = validation.data
+        const { action, code, state, disconnect, title, description, startTime, endTime, calendarId } = validation.data
+
+        // Handle event creation
+        if (action === 'create_event' && title && startTime && endTime) {
+            // Get calendar connection
+            const connection = await db
+                .select()
+                .from(calendarConnections)
+                .where(and(
+                    eq(calendarConnections.user_id, userId),
+                    eq(calendarConnections.provider, 'google'),
+                    eq(calendarConnections.is_active, true)
+                ))
+                .limit(1)
+
+            if (connection.length === 0) {
+                return NextResponse.json({ error: 'Calendar not connected' }, { status: 404 })
+            }
+
+            const conn = connection[0]
+            const oauth2Client = getOAuth2Client()
+
+            // Check if token needs refresh
+            let accessToken = conn.access_token
+            if (conn.refresh_token && conn.expires_at && new Date(conn.expires_at) < new Date()) {
+                oauth2Client.setCredentials({
+                    refresh_token: conn.refresh_token
+                })
+
+                try {
+                    const { credentials } = await oauth2Client.refreshAccessToken()
+                    accessToken = credentials.access_token || conn.access_token
+
+                    // Update stored token
+                    await db
+                        .update(calendarConnections)
+                        .set({
+                            access_token: credentials.access_token || conn.access_token,
+                            expires_at: credentials.expiry_date ? new Date(credentials.expiry_date) : conn.expires_at,
+                            updated_at: new Date()
+                        })
+                        .where(eq(calendarConnections.id, conn.id))
+                } catch (refreshError) {
+                    logError('Failed to refresh Google Calendar token:', refreshError)
+                    return NextResponse.json({ error: 'Token refresh failed. Please reconnect.' }, { status: 401 })
+                }
+            }
+
+            // Set credentials and create event
+            oauth2Client.setCredentials({
+                access_token: accessToken,
+                refresh_token: conn.refresh_token
+            })
+
+            const calendar = google.calendar({ version: 'v3', auth: oauth2Client })
+            const targetCalendarId = calendarId || 'primary'
+
+            const event = {
+                summary: title,
+                description: description || '',
+                start: {
+                    dateTime: new Date(startTime).toISOString(),
+                    timeZone: 'UTC'
+                },
+                end: {
+                    dateTime: new Date(endTime).toISOString(),
+                    timeZone: 'UTC'
+                }
+            }
+
+            try {
+                const createdEvent = await calendar.events.insert({
+                    calendarId: targetCalendarId,
+                    requestBody: event
+                })
+
+                logInfo('Calendar event created successfully', { 
+                    userId, 
+                    eventId: createdEvent.data.id,
+                    title,
+                    calendarId: targetCalendarId
+                })
+
+                return NextResponse.json({
+                    success: true,
+                    id: createdEvent.data.id,
+                    htmlLink: createdEvent.data.htmlLink,
+                    title: createdEvent.data.summary
+                })
+            } catch (error) {
+                logError('Failed to create calendar event:', error)
+                return NextResponse.json({ 
+                    error: 'Failed to create calendar event',
+                    details: error instanceof Error ? error.message : 'Unknown error'
+                }, { status: 500 })
+            }
+        }
 
         if (disconnect) {
             // Disconnect calendar

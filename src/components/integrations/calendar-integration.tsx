@@ -1,6 +1,6 @@
 "use client"
 
-import { logger, logError, logWarn, logInfo, logDebug, logApi, logDb, logAuth } from '@/lib/logger'
+import { logError, logWarn, logInfo } from '@/lib/logger'
 import { useState, useEffect, useCallback} from 'react'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle} from '@/components/ui/card'
 import { Button} from '@/components/ui/button'
@@ -129,12 +129,13 @@ export function CalendarIntegration({ className = "" }: CalendarIntegrationProps
   }, [checkCalendarConnection])
 
   const connectCalendar = async (provider: 'google' | 'outlook') => {
-    if (provider !== 'google') {
+    if (provider === 'outlook') {
       toast({
-        title: "Coming soon",
-        description: "Outlook integration is coming soon",
+        title: "Outlook integration",
+        description: "Outlook Calendar integration is planned for a future release. Google Calendar is available now.",
         variant: "default",
       })
+      logInfo('Outlook integration requested', { provider })
       return
     }
 
@@ -306,51 +307,6 @@ export function CalendarIntegration({ className = "" }: CalendarIntegrationProps
     }
   }
 
-  const syncTasksToCalendar = async () => {
-    try {
-      setIsLoading(true)
-      
-      // TODO: Implement task sync to calendar
-      // This would fetch tasks and create calendar events for them
-      // Status: Development pending for V2
-      toast({
-        title: "Feature in development",
-        description: "Task sync to calendar is coming soon",
-      })
-    } catch (error) {
-      logError('Failed to sync tasks:', error)
-      toast({
-        title: "❌ Sync failed",
-        description: "Please try again",
-        variant: "destructive",
-      })
-    } finally {
-      setIsLoading(false)
-    }
-  }
-
-  const createCalendarEvent = async () => {
-    try {
-      setIsLoading(true)
-      
-      // TODO: Implement calendar event creation
-      // This would open a dialog to create a new event and POST to Google Calendar API
-      // Status: Development pending for V2
-      toast({
-        title: "Feature in development",
-        description: "Event creation is coming soon",
-      })
-    } catch (error) {
-      logError('Failed to create event:', error)
-      toast({
-        title: "❌ Failed to create event",
-        description: "Please try again",
-        variant: "destructive",
-      })
-    } finally {
-      setIsLoading(false)
-    }
-  }
 
   const formatEventTime = (dateString: string) => {
     return new Date(dateString).toLocaleTimeString('en-US', {
@@ -366,6 +322,178 @@ export function CalendarIntegration({ className = "" }: CalendarIntegrationProps
       month: 'short',
       day: 'numeric'
     })
+  }
+
+  const syncTasksToCalendar = async () => {
+    try {
+      setIsLoading(true)
+      const token = localStorage.getItem('authToken') || localStorage.getItem('auth_token')
+      if (!token) {
+        throw new Error('Not authenticated')
+      }
+
+      // Fetch user's tasks
+      const tasksResponse = await fetch('/api/tasks', {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      })
+
+      if (!tasksResponse.ok) {
+        throw new Error('Failed to fetch tasks')
+      }
+
+      const tasksData = await tasksResponse.json()
+      const tasks = tasksData.tasks || []
+
+      // Filter tasks that need to be synced (not completed, have due date)
+      const tasksToSync = tasks.filter((task: any) => {
+        return !task.completed && task.due_date && new Date(task.due_date) >= new Date()
+      })
+
+      if (tasksToSync.length === 0) {
+        toast({
+          title: "No tasks to sync",
+          description: "All tasks are either completed or don't have due dates.",
+          variant: "default",
+        })
+        return
+      }
+
+      // Sync each task to calendar
+      let syncedCount = 0
+      let failedCount = 0
+
+      for (const task of tasksToSync) {
+        try {
+          const dueDate = new Date(task.due_date)
+          const startTime = new Date(dueDate)
+          startTime.setHours(9, 0, 0, 0) // Default to 9 AM
+          const endTime = new Date(startTime)
+          endTime.setHours(startTime.getHours() + 1) // 1 hour duration
+
+          const eventResponse = await fetch('/api/integrations/google/calendar', {
+            method: 'POST',
+            headers: {
+              'Authorization': `Bearer ${token}`,
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+              action: 'create_event',
+              title: task.title || 'Untitled Task',
+              description: task.description || `Task from SoloSuccess AI: ${task.title}`,
+              startTime: startTime.toISOString(),
+              endTime: endTime.toISOString(),
+              calendarId: 'primary'
+            })
+          })
+
+          if (eventResponse.ok) {
+            syncedCount++
+          } else {
+            failedCount++
+          }
+        } catch (error) {
+          logError('Failed to sync task to calendar', error, { taskId: task.id })
+          failedCount++
+        }
+      }
+
+      toast({
+        title: `✅ Task sync complete`,
+        description: `Successfully synced ${syncedCount} task${syncedCount !== 1 ? 's' : ''}${failedCount > 0 ? ` (${failedCount} failed)` : ''}`,
+        variant: syncedCount > 0 ? "default" : "destructive",
+      })
+
+      // Refresh calendar events
+      await loadCalendarEvents()
+
+      logInfo('Tasks synced to calendar', { syncedCount, failedCount, totalTasks: tasksToSync.length })
+    } catch (error) {
+      logError('Failed to sync tasks to calendar', error)
+      toast({
+        title: "❌ Sync failed",
+        description: "Please try again or check your calendar connection",
+        variant: "destructive",
+      })
+    } finally {
+      setIsLoading(false)
+    }
+  }
+
+  const createCalendarEvent = async () => {
+    try {
+      setIsLoading(true)
+      const token = localStorage.getItem('authToken') || localStorage.getItem('auth_token')
+      if (!token) {
+        throw new Error('Not authenticated')
+      }
+
+      // Prompt user for event details
+      const title = prompt('Event Title:')
+      if (!title) {
+        setIsLoading(false)
+        return
+      }
+
+      const description = prompt('Event Description (optional):') || ''
+      const dateStr = prompt('Event Date & Time (YYYY-MM-DD HH:MM):')
+      if (!dateStr) {
+        setIsLoading(false)
+        return
+      }
+
+      // Parse date
+      const [datePart, timePart] = dateStr.split(' ')
+      const [year, month, day] = datePart.split('-').map(Number)
+      const [hours, minutes] = timePart ? timePart.split(':').map(Number) : [9, 0]
+
+      const startTime = new Date(year, month - 1, day, hours, minutes)
+      const endTime = new Date(startTime)
+      endTime.setHours(endTime.getHours() + 1) // Default 1 hour duration
+
+      const response = await fetch('/api/integrations/google/calendar', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          action: 'create_event',
+          title,
+          description,
+          startTime: startTime.toISOString(),
+          endTime: endTime.toISOString(),
+          calendarId: 'primary'
+        })
+      })
+
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => ({}))
+        throw new Error(errorData.error || 'Failed to create event')
+      }
+
+      const eventData = await response.json()
+
+      toast({
+        title: "✅ Event created",
+        description: `${title} has been added to your calendar`,
+      })
+
+      // Refresh calendar events
+      await loadCalendarEvents()
+
+      logInfo('Calendar event created', { eventId: eventData.id, title })
+    } catch (error) {
+      logError('Failed to create calendar event', error)
+      toast({
+        title: "❌ Failed to create event",
+        description: error instanceof Error ? error.message : "Please try again",
+        variant: "destructive",
+      })
+    } finally {
+      setIsLoading(false)
+    }
   }
 
   return (
@@ -424,6 +552,7 @@ export function CalendarIntegration({ className = "" }: CalendarIntegrationProps
               </Button>
               <Button 
                 size="sm"
+                variant="outline"
                 onClick={() => connectCalendar('outlook')}
                 disabled={isLoading}
               >
@@ -516,6 +645,7 @@ export function CalendarIntegration({ className = "" }: CalendarIntegrationProps
             </div>
           </div>
         )}
+
 
         {/* Recent Events */}
         {isConnected && events.length > 0 && (

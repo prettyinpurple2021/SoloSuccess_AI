@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Loader2 } from "lucide-react";
 import { realtimeService } from "../services/realtimeService";
 import { useRouter, usePathname } from "next/navigation";
+import { logError } from "@/lib/logger";
 
 export function AuthGate({ children }: { children: React.ReactNode }) {
     const router = useRouter();
@@ -24,7 +25,7 @@ export function AuthGate({ children }: { children: React.ReactNode }) {
                 realtimeService.connect(user.id || user.stackUserId);
                 setIsAuthenticated(true);
             } catch (e) {
-                console.error("Auth check failed", e);
+                logError("Auth check failed", e instanceof Error ? e : new Error(String(e)));
                 setIsAuthenticated(false);
             }
         };

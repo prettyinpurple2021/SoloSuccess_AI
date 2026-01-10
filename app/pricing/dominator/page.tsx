@@ -93,7 +93,7 @@ export default function DominatorPricingPage() {
         }}
       />
       
-      <div className="min-h-screen bg-[#020204] relative overflow-hidden text-white selection:bg-neon-purple selection:text-white">
+      <div className="min-h-screen bg-dark-bg relative overflow-hidden text-white selection:bg-neon-purple selection:text-white">
         {/* Background Effects */}
         <div className="absolute inset-0 z-0 bg-[linear-gradient(rgba(18,16,16,0)_50%,rgba(0,0,0,0.25)_50%),linear-gradient(90deg,rgba(255,0,0,0.06),rgba(0,255,0,0.02),rgba(0,0,255,0.06))] bg-[length:100%_4px,3px_100%] pointer-events-none opacity-20" />
         <div className="absolute top-[-20%] right-[-10%] w-[60%] h-[60%] bg-neon-purple/20 rounded-full blur-[120px] pointer-events-none" />
@@ -107,7 +107,7 @@ export default function DominatorPricingPage() {
                 <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-neon-purple to-neon-magenta flex items-center justify-center shadow-[0_0_15px_rgba(179,0,255,0.3)] group-hover:shadow-[0_0_25px_rgba(179,0,255,0.5)] transition-all duration-300">
                   <Crown className="w-5 h-5 text-white" />
                 </div>
-                <span className="font-sans text-xl font-bold tracking-tight text-white">SoloSuccess AI</span>
+                <span className="font-orbitron text-xl font-bold tracking-widest text-white uppercase">SoloSuccess AI</span>
               </Link>
               
               <div className="flex items-center gap-4">
@@ -146,7 +146,7 @@ export default function DominatorPricingPage() {
                 </span>
               </div>
               
-              <h1 className="font-sans text-6xl md:text-7xl font-bold text-white mb-6 leading-tight tracking-tight">
+              <h1 className="font-orbitron text-6xl md:text-7xl font-bold text-white mb-6 leading-tight tracking-wider uppercase">
                 <span className="text-transparent bg-clip-text bg-gradient-to-r from-neon-purple via-neon-magenta to-neon-purple animate-gradient-x">
                   Dominator
                 </span> Plan
@@ -204,7 +204,7 @@ export default function DominatorPricingPage() {
                   viewport={{ once: true }}
                   transition={{ delay: index * 0.1 }}
                 >
-                  <div className="h-full p-8 rounded-2xl bg-white/5 backdrop-blur-sm border border-white/10 hover:border-neon-purple/50 transition-colors duration-300">
+                  <div className="h-full p-8 rounded-sm bg-dark-card backdrop-blur-sm border-2 border-gray-700 hover:border-neon-purple/50 transition-colors duration-300">
                     <div className="w-16 h-16 mx-auto mb-6 rounded-2xl bg-gradient-to-br from-neon-purple/20 to-neon-magenta/20 border border-neon-purple/30 flex items-center justify-center">
                       {index === 0 && <Infinity className="w-8 h-8 text-neon-purple" />}
                       {index === 1 && <Globe className="w-8 h-8 text-neon-magenta" />}
@@ -231,7 +231,7 @@ export default function DominatorPricingPage() {
         </div>
 
         {/* Comparison Section */}
-        <div className="py-20 bg-white/5 relative z-10">
+        <div className="py-20 bg-dark-card/50 relative z-10">
           <div className="container mx-auto px-4">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -251,7 +251,7 @@ export default function DominatorPricingPage() {
                 <div className="grid md:grid-cols-2 gap-x-12 gap-y-10">
                     <div className="space-y-8">
                         <div className="flex gap-4">
-                            <div className="w-12 h-12 rounded-lg bg-neon-purple/10 flex items-center justify-center flex-shrink-0">
+                            <div className="w-12 h-12 rounded-sm bg-neon-purple/10 flex items-center justify-center flex-shrink-0">
                                 <Crown className="w-6 h-6 text-neon-purple" />
                             </div>
                             <div>
@@ -281,7 +281,7 @@ export default function DominatorPricingPage() {
 
                     <div className="space-y-8">
                         <div className="flex gap-4">
-                            <div className="w-12 h-12 rounded-lg bg-neon-purple/10 flex items-center justify-center flex-shrink-0">
+                            <div className="w-12 h-12 rounded-sm bg-neon-purple/10 flex items-center justify-center flex-shrink-0">
                                 <Zap className="w-6 h-6 text-neon-purple" />
                             </div>
                             <div>
@@ -339,7 +339,7 @@ export default function DominatorPricingPage() {
                   viewport={{ once: true }}
                   transition={{ delay: index * 0.1 }}
                 >
-                  <div className="h-full p-8 rounded-2xl bg-white/5 border border-white/10 hover:bg-white/10 transition-colors">
+                  <div className="h-full p-8 rounded-sm bg-dark-card border-2 border-gray-700 hover:bg-dark-hover transition-colors">
                     <div className="flex gap-1 mb-4">
                       {[...Array(testimonial.rating)].map((_, i) => (
                         <Star key={i} className="w-4 h-4 text-neon-purple fill-neon-purple" />
@@ -372,7 +372,7 @@ export default function DominatorPricingPage() {
             <div className="max-w-4xl mx-auto rounded-3xl p-12 relative overflow-hidden text-center border border-neon-purple/30 bg-black/60 backdrop-blur-xl">
                <div className="absolute inset-0 bg-gradient-to-r from-neon-purple/10 to-neon-magenta/10 z-0" />
                <div className="relative z-10">
-                  <div className="w-20 h-20 mx-auto mb-8 rounded-2xl bg-gradient-to-br from-neon-purple to-neon-magenta flex items-center justify-center p-4 shadow-lg shadow-neon-purple/20">
+                  <div className="w-20 h-20 mx-auto mb-8 rounded-sm bg-gradient-to-br from-neon-purple to-neon-magenta flex items-center justify-center p-4 shadow-[0_0_20px_rgba(179,0,255,0.3)]">
                     <Crown className="w-10 h-10 text-white" />
                   </div>
                   

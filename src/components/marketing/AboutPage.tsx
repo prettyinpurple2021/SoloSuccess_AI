@@ -13,7 +13,7 @@ export function AboutPage() {
                     </h1>
 
                     <div className="prose prose-invert prose-lg text-gray-400 font-mono">
-                        <p className="lead text-xl text-white mb-8 font-sans">
+                        <p className="lead text-xl text-white mb-8 font-mono">
                             We believe that with the right tools, a single individual can achieve the output of a 10-person team.
                         </p>
 

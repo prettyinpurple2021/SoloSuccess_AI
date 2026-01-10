@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Server, Database, Activity, CheckCircle, AlertTriangle, XCircle } from 'lucide-react';
+import { logError } from '@/lib/logger';
 
 export function SystemHealth() {
     const [health, setHealth] = useState<any>(null);
@@ -16,7 +17,7 @@ export function SystemHealth() {
                 const data = await res.json();
                 setHealth(data);
             } catch (error) {
-                console.error('Failed to fetch health:', error);
+                logError('Failed to fetch system health', error instanceof Error ? error : new Error(String(error)));
             } finally {
                 setIsLoading(false);
             }

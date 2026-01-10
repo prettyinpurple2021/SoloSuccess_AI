@@ -10,6 +10,7 @@ import { Badge} from '@/components/ui/badge';
 import { useState} from 'react';
 import { useTemplateSave} from '@/hooks/use-template-save';
 import { Save, Sparkles, Plus, Trash2, Target, Heart, DollarSign, MapPin} from 'lucide-react';
+import { logError} from '@/lib/logger';
 
 interface VisionElement {
   id: string;
@@ -89,7 +90,7 @@ export function VisionBoardGenerator() {
 
       setElements(newElements);
     } catch (error) {
-      console.error('Failed to generate:', error);
+      logError('Failed to generate vision board', error instanceof Error ? error : new Error(String(error)));
       // Fallback or toast error here
     } finally {
       setIsGenerating(false);

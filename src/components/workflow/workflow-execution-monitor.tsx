@@ -166,7 +166,7 @@ export function WorkflowExecutionMonitor({
         setExecutions(mappedExecutions)
       }
     } catch (error) {
-       console.error('Failed to fetch executions', error)
+       logError('Failed to fetch executions', error)
     }
   }, [])
 
@@ -189,7 +189,7 @@ export function WorkflowExecutionMonitor({
         })
       }
     } catch (error) {
-      console.error('Failed to fetch stats', error)
+      logError('Failed to fetch stats', error)
     }
   }, [])
 

@@ -27,15 +27,15 @@ interface HudMetricProps {
 
 const HudMetric = ({ label, value, status, pcolor }: HudMetricProps) => (
   <div className="space-y-1 font-mono text-xs tracking-wider">
-    <div className="flex justify-between items-end text-[#8892b0]">
+    <div className="flex justify-between items-end text-gray-400">
       <span>{label}</span>
       <span className={status === 'active' ? 'text-neon-cyan' : 'text-neon-purple'}>
         {value}
       </span>
     </div>
-    <div className="h-1 w-full bg-[#1a1b26] relative overflow-hidden">
+    <div className="h-1 w-full bg-dark-card relative overflow-hidden">
       <div 
-        className={`absolute top-0 left-0 h-full ${pcolor === 'cyan' ? 'bg-[#00F0FF]' : 'bg-[#BC13FE]'}`} 
+        className={`absolute top-0 left-0 h-full ${pcolor === 'cyan' ? 'bg-neon-cyan' : 'bg-neon-purple'}`} 
         style={{ width: status === 'active' ? '100%' : '60%' }}
       >
         {status === 'stabilizing' && (
@@ -60,27 +60,27 @@ const BracketCorner = ({ position }: { position: string }) => {
 
 // --- Navbar Component ---
 const Navbar = () => (
-  <nav className="fixed top-0 left-0 right-0 z-50 bg-[#020204]/80 backdrop-blur-md border-b border-white/10">
+  <nav className="fixed top-0 left-0 right-0 z-50 bg-dark-bg/80 backdrop-blur-md border-b border-gray-700">
     <div className="max-w-[1240px] mx-auto px-6 h-20 flex items-center justify-between">
       <div className="flex items-center gap-3">
         <InlineSSLogo size={32} animated={true} />
-        <span className="font-sci font-bold text-xl tracking-widest text-white">
+        <span className="font-orbitron font-bold text-xl tracking-widest text-white">
           SOLO<span className="text-neon-cyan">SUCCESS</span>.AI
         </span>
       </div>
       
       <div className="hidden md:flex items-center gap-8">
-        <Link href="#features" className="text-sm font-sci tracking-widest text-gray-400 hover:text-neon-cyan transition-colors uppercase">
+        <Link href="#features" className="text-sm font-mono tracking-widest text-gray-400 hover:text-neon-cyan transition-colors uppercase">
           Features
         </Link>
-        <Link href="#agents" className="text-sm font-sci tracking-widest text-gray-400 hover:text-neon-cyan transition-colors uppercase">
+        <Link href="#agents" className="text-sm font-mono tracking-widest text-gray-400 hover:text-neon-cyan transition-colors uppercase">
           AI Squad
         </Link>
-        <Link href="#pricing" className="text-sm font-sci tracking-widest text-gray-400 hover:text-neon-cyan transition-colors uppercase">
+        <Link href="#pricing" className="text-sm font-mono tracking-widest text-gray-400 hover:text-neon-cyan transition-colors uppercase">
           Pricing
         </Link>
         <Link href="/login">
-          <button className="px-6 py-2 border border-neon-cyan/50 text-neon-cyan font-sci text-xs font-bold uppercase tracking-widest hover:bg-neon-cyan hover:text-black transition-all">
+          <button className="px-6 py-2 border-2 border-neon-cyan/50 text-neon-cyan font-mono font-bold uppercase tracking-widest hover:bg-neon-cyan/10 hover:border-neon-cyan transition-all rounded-sm">
             Sign In
           </button>
         </Link>
@@ -97,7 +97,7 @@ export default function HomePage() {
   }, [])
 
   return (
-    <main className="min-h-screen bg-[#020204] relative overflow-hidden flex flex-col selection:bg-[#00F0FF] selection:text-black">
+    <main className="min-h-screen bg-dark-bg relative overflow-hidden flex flex-col selection:bg-neon-cyan selection:text-black">
       {/* 1. Global Background Effects */}
       <div className="absolute inset-0 z-0 opacity-40 pointer-events-none fixed">
         <NeuralNetworkCanvas particleCount={60} connectionDistance={150} mouseDistance={200} />
@@ -124,14 +124,14 @@ export default function HomePage() {
           >
             {/* Headline */}
             <div className="space-y-4">
-              <div className="inline-block px-3 py-1 mb-2 border border-[#00F0FF]/30 bg-[#00F0FF]/5 rounded-sm">
-                <span className="font-mono text-[10px] text-[#00F0FF] tracking-[0.2em] uppercase flex items-center gap-2">
-                  <span className="w-1.5 h-1.5 bg-[#00F0FF] rounded-full animate-pulse" />
+              <div className="inline-block px-3 py-1 mb-2 border border-neon-cyan/30 bg-neon-cyan/10 rounded-sm">
+                <span className="font-mono text-[10px] text-neon-cyan tracking-[0.2em] uppercase flex items-center gap-2">
+                  <span className="w-1.5 h-1.5 bg-neon-cyan rounded-full animate-pulse" />
                   Intelligence Network Active
                 </span>
               </div>
               
-              <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold font-sci tracking-tight leading-[1.1] text-white glitch-text" data-text="YOUR AI CO-FOUNDER">
+              <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold font-orbitron tracking-tight leading-[1.1] text-white uppercase tracking-wider glitch-text" data-text="YOUR AI CO-FOUNDER">
                 YOUR AI <br />
                 <span className="text-transparent bg-clip-text bg-gradient-to-r from-neon-cyan to-neon-purple animate-pulse">
                   CO-FOUNDER
@@ -140,20 +140,20 @@ export default function HomePage() {
             </div>
 
             {/* Subtext */}
-            <p className="text-[#8892b0] text-lg md:text-xl max-w-[550px] mx-auto lg:mx-0 leading-relaxed font-sans">
+            <p className="text-gray-300 text-lg md:text-xl max-w-[550px] mx-auto lg:mx-0 leading-relaxed font-mono">
               Build your intelligent business ecosystem. Scale your operations with a network of specialized AI agents working 24/7.
             </p>
 
             {/* Buttons */}
             <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start pt-2">
               <Link href="/register">
-                <button className="group relative px-8 py-4 bg-transparent border border-[#00F0FF] text-[#00F0FF] font-sci tracking-widest uppercase text-sm transition-all hover:bg-[#00F0FF]/10 hover:shadow-[0_0_20px_rgba(0,240,255,0.4)]">
+                <button className="group relative px-8 py-4 bg-transparent border-2 border-neon-cyan text-neon-cyan font-mono font-bold tracking-widest uppercase text-sm transition-all hover:bg-neon-cyan/10 hover:shadow-[0_0_20px_rgba(11,228,236,0.4)] rounded-sm">
                   <span className="relative z-10">Get Started</span>
                 </button>
               </Link>
               
               <Link href="#features">
-                <button className="group px-8 py-4 bg-transparent text-white font-sci tracking-widest uppercase text-sm border border-transparent hover:border-white/20 transition-all opacity-70 hover:opacity-100">
+                <button className="group px-8 py-4 bg-transparent text-white font-mono font-bold tracking-widest uppercase text-sm border-2 border-transparent hover:border-gray-700 transition-all opacity-70 hover:opacity-100 rounded-sm">
                   Learn More
                 </button>
               </Link>
@@ -168,7 +168,7 @@ export default function HomePage() {
               ].map((stat, i) => (
                 <div key={i} className="text-center lg:text-left">
                   <div className="text-2xl font-mono text-white mb-1">{stat.value}</div>
-                  <div className="text-[10px] text-[#8892b0] uppercase tracking-widest font-mono">{stat.label}</div>
+                  <div className="text-[10px] text-gray-500 uppercase tracking-widest font-mono">{stat.label}</div>
                 </div>
               ))}
             </div>
@@ -191,15 +191,15 @@ export default function HomePage() {
               <BracketCorner position="br" />
 
               {/* Header */}
-              <div className="flex justify-between items-center mb-8 border-b border-[#00F0FF]/20 pb-4">
-                <div className="font-mono text-xs text-[#00F0FF] tracking-[0.2em] flex items-center gap-2">
+              <div className="flex justify-between items-center mb-8 border-b border-neon-cyan/30 pb-4">
+                <div className="font-mono text-xs text-neon-cyan tracking-[0.2em] flex items-center gap-2">
                   <Server size={14} />
                   <span>HUB_01</span>
                 </div>
                 <div className="flex gap-1">
-                  <div className="w-2 h-2 bg-[#00F0FF] rounded-full animate-pulse" />
-                  <div className="w-2 h-2 bg-[#00F0FF]/30 rounded-full" />
-                  <div className="w-2 h-2 bg-[#00F0FF]/30 rounded-full" />
+                  <div className="w-2 h-2 bg-neon-cyan rounded-full animate-pulse" />
+                  <div className="w-2 h-2 bg-neon-cyan/30 rounded-full" />
+                  <div className="w-2 h-2 bg-neon-cyan/30 rounded-full" />
                 </div>
               </div>
 
@@ -212,7 +212,7 @@ export default function HomePage() {
                    <h3 className="relative z-10 font-mono text-sm text-gray-400 mb-2 tracking-widest uppercase">
                      Current Objective
                    </h3>
-                   <p className="relative z-10 font-sci text-3xl text-white font-bold tracking-wider drop-shadow-[0_0_10px_rgba(179,0,255,0.5)]">
+                   <p className="relative z-10 font-orbitron text-3xl text-white font-bold tracking-wider drop-shadow-[0_0_10px_rgba(179,0,255,0.5)] uppercase">
                      MARKET_INTELLIGENCE
                    </p>
                 </div>
@@ -234,7 +234,7 @@ export default function HomePage() {
                 </div>
 
                 {/* Terminal Log Output */}
-                <div className="mt-6 p-4 bg-black/80 border border-white/10 font-mono text-[10px] text-gray-400 rounded-sm h-32 overflow-hidden relative">
+                <div className="mt-6 p-4 bg-dark-card border border-gray-700 font-mono text-[10px] text-gray-400 rounded-sm h-32 overflow-hidden relative">
                   <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-b from-transparent to-dark-bg/90 pointer-events-none" />
                   <div className="space-y-2 opacity-80">
                     <p><span className="text-neon-cyan">{'>'}</span> Initializing intelligence modules...</p>

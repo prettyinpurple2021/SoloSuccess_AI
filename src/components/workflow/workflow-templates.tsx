@@ -131,7 +131,7 @@ export function WorkflowTemplates({
              try {
                 parsedWorkflow = typeof t.content === 'string' ? JSON.parse(t.content) : t.content
              } catch (e) {
-               console.error('Failed to parse workflow content', e)
+               logError('Failed to parse workflow content', e instanceof Error ? e : new Error(String(e)))
              }
              
              return {

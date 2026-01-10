@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { TrendingUp, Users, DollarSign, CreditCard } from 'lucide-react';
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, Cell } from 'recharts';
+import { logError } from '@/lib/logger';
 
 export function SubscriptionMetrics() {
     const [metrics, setMetrics] = useState<any>(null);
@@ -20,7 +21,7 @@ export function SubscriptionMetrics() {
             const data = await res.json();
             setMetrics(data);
         } catch (error) {
-            console.error('Failed to fetch metrics:', error);
+            logError('Failed to fetch subscription metrics', error instanceof Error ? error : new Error(String(error)));
         } finally {
             setIsLoading(false);
         }

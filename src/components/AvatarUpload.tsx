@@ -172,7 +172,7 @@ const AvatarUpload: React.FC<AvatarUploadProps> = ({
         {currentAvatar && !isUploading && (
           <button
             onClick={handleRemoveAvatar}
-            className="absolute -top-2 -right-2 w-7 h-7 bg-red-900/80 border border-red-500 text-red-200 rounded-full flex items-center justify-center transition-all duration-200 shadow-lg hover:bg-red-800 hover:scale-110"
+            className="absolute -top-2 -right-2 w-7 h-7 bg-red-900/80 border border-red-500 text-red-200 rounded-full flex items-center justify-center transition-all duration-200 shadow-[0_0_15px_rgba(239,68,68,0.3)] hover:bg-red-800 hover:shadow-[0_0_20px_rgba(239,68,68,0.5)] hover:scale-110"
             title="Remove avatar"
           >
             <X size={14} />

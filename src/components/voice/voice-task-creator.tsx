@@ -63,7 +63,7 @@ export function VoiceTaskCreator({ isOpen, onClose, onTaskCreate }: VoiceTaskCre
             }
 
             recognitionRef.current.onerror = (event: any) => {
-                console.error("Speech recognition error", event.error)
+                logError("Speech recognition error", new Error(event.error?.message || String(event.error)))
                 setIsListening(false)
                 toast.error("Voice recognition failed. Please try again.")
             }
