@@ -260,6 +260,9 @@ export const colors = {
     lime: '#39ff14',       // Tertiary accent (neon green)
     purple: '#b300ff',     // Quaternary accent (electric purple)
     orange: '#ff6600',     // Highlight accent (neon orange)
+    yellow: '#ffff00',     // Bright accent (neon yellow)
+    blue: '#00bfff',       // Sky accent (neon blue)
+    pink: '#ff1493',       // Deep accent (neon pink)
   },
   
   text: {
@@ -274,6 +277,9 @@ export const colors = {
     magenta: '#ff006e',    // Magenta glowing borders
     lime: '#39ff14',       // Lime glowing borders
     purple: '#b300ff',     // Purple glowing borders
+    yellow: '#ffff00',     // Yellow glowing borders
+    blue: '#00bfff',       // Blue glowing borders
+    pink: '#ff1493',       // Pink glowing borders
     subtle: '#1a2347',     // Subtle dark borders
   },
   

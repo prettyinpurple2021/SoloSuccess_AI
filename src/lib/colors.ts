@@ -11,6 +11,9 @@ export const colors = {
     lime: '#39ff14',       // Tertiary accent (neon green)
     purple: '#b300ff',     // Quaternary accent (electric purple)
     orange: '#ff6600',     // Highlight accent (neon orange)
+    yellow: '#ffff00',     // Bright accent (neon yellow)
+    blue: '#00bfff',       // Sky accent (neon blue)
+    pink: '#ff1493',       // Deep accent (neon pink)
   },
   
   text: {
@@ -25,6 +28,9 @@ export const colors = {
     magenta: '#ff006e',    // Magenta glowing borders
     lime: '#39ff14',       // Lime glowing borders
     purple: '#b300ff',     // Purple glowing borders
+    yellow: '#ffff00',     // Yellow glowing borders
+    blue: '#00bfff',       // Blue glowing borders
+    pink: '#ff1493',       // Pink glowing borders
     subtle: '#1a2347',     // Subtle dark borders
   },
   
@@ -44,6 +50,9 @@ export const glows = {
     lime: '0 0 10px rgba(57, 255, 20, 0.3), 0 0 15px rgba(57, 255, 20, 0.15)',
     purple: '0 0 10px rgba(179, 0, 255, 0.3), 0 0 15px rgba(179, 0, 255, 0.15)',
     orange: '0 0 10px rgba(255, 102, 0, 0.3), 0 0 15px rgba(255, 102, 0, 0.15)',
+    yellow: '0 0 10px rgba(255, 255, 0, 0.3), 0 0 15px rgba(255, 255, 0, 0.15)',
+    blue: '0 0 10px rgba(0, 191, 255, 0.3), 0 0 15px rgba(0, 191, 255, 0.15)',
+    pink: '0 0 10px rgba(255, 20, 147, 0.3), 0 0 15px rgba(255, 20, 147, 0.15)',
   },
   // Aggressive Mode (intense, eye-catching)
   aggressive: {
@@ -52,5 +61,8 @@ export const glows = {
     lime: '0 0 10px rgba(57, 255, 20, 0.5), 0 0 20px rgba(57, 255, 20, 0.3)',
     purple: '0 0 10px rgba(179, 0, 255, 0.5), 0 0 20px rgba(179, 0, 255, 0.3)',
     orange: '0 0 10px rgba(255, 102, 0, 0.5), 0 0 20px rgba(255, 102, 0, 0.3)',
+    yellow: '0 0 10px rgba(255, 255, 0, 0.5), 0 0 20px rgba(255, 255, 0, 0.3)',
+    blue: '0 0 10px rgba(0, 191, 255, 0.5), 0 0 20px rgba(0, 191, 255, 0.3)',
+    pink: '0 0 10px rgba(255, 20, 147, 0.5), 0 0 20px rgba(255, 20, 147, 0.3)',
   },
 }

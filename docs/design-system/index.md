@@ -166,7 +166,7 @@ Border Color:         #e5e7eb (gray-200)
 
 ### Core Neon Palette (Same in Both Themes)
 
-**These 5 colors are semantic and never change between themes:**
+**These 8 colors are semantic and never change between themes:**
 
 | Name | Hex | Usage | Emotion |
 |------|-----|-------|---------|

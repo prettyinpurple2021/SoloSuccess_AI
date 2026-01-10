@@ -100,6 +100,9 @@ Use [Production Checklist](docs/production-checklist.md) before deployment.
 | Lime | #39ff14 | Success, Positive, Confirmation |
 | Purple | #b300ff | Tertiary, Special, Premium |
 | Orange | #ff6600 | Warning, Secondary CTA, Action |
+| Yellow | #ffff00 | Bright, Energetic, Attention |
+| Blue | #00bfff | Sky, Calm, Technical |
+| Pink | #ff1493 | Creative, Vibrant, Bold |
 
 ### AI Agents (8 Unique Color Systems)
 

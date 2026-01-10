@@ -7,7 +7,7 @@
 
 ## Core Neon Palette
 
-**These 5 colors are semantic and never change between themes:**
+**These 8 colors are semantic and never change between themes:**
 
 | Name | Hex | Usage | Emotion |
 |------|-----|-------|---------|
@@ -16,6 +16,9 @@
 | **Lime** | #39ff14 | Success, Positive, Confirmation | Growth, Energy, Victory |
 | **Purple** | #b300ff | Tertiary, Special, Premium | Innovation, Mystery, Elevated |
 | **Orange** | #ff6600 | Warning, Secondary CTA, Action | Caution, Power, Activation |
+| **Yellow** | #ffff00 | Bright, Energetic, Attention | Optimism, Energy, Clarity |
+| **Blue** | #00bfff | Sky, Calm, Technical | Trust, Stability, Professional |
+| **Pink** | #ff1493 | Creative, Vibrant, Bold | Playfulness, Creativity, Innovation |
 
 ---
 
