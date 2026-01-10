@@ -2,6 +2,7 @@
 
 import { signIn, signOut } from '@/lib/auth';
 import { AuthError } from 'next-auth';
+import { logError, logInfo, logAuth } from '@/lib/logger';
 import { db } from '@/db';
 import { users } from '@/db/schema';
 import bcrypt from 'bcryptjs';
@@ -79,7 +80,7 @@ const RegisterSchema = z.object({
 });
 
 export async function register(prevState: any, formData: FormData) {
-  console.log('Register action triggered');
+  logInfo('Register action triggered', { source: 'auth-actions.register' });
   const rawData = Object.fromEntries(formData);
   const validatedFields = RegisterSchema.safeParse(rawData);
 
@@ -117,7 +118,7 @@ export async function register(prevState: any, formData: FormData) {
       date_of_birth: new Date(dateOfBirth),
     });
   } catch (error) {
-    console.error('Registration error:', error);
+    logError('Registration error: Failed to create user in database', { source: 'auth-actions.register' }, error instanceof Error ? error : new Error(String(error)));
     return {
       error: 'Database error: Failed to create user.',
     };
@@ -129,7 +130,11 @@ export async function register(prevState: any, formData: FormData) {
   } catch (error) {
     // Only catch AuthErrors - let redirect errors (NEXT_REDIRECT) bubble up naturally
     if (error instanceof AuthError) {
-      console.error('Sign in error during registration:', error);
+      logAuth('sign-in during registration', undefined, false, { 
+        source: 'auth-actions.register',
+        errorType: error.type 
+      });
+      logError('Sign in error during registration after successful user creation', { source: 'auth-actions.register', errorType: error.type }, error);
       // Since the user IS created, we shouldn't say "registration failed".
       // We can ask them to login manually.
       return {

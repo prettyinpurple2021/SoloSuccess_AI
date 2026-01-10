@@ -1,4 +1,5 @@
 import type { NextAuthConfig } from "next-auth"
+import { logInfo, logAuth } from "@/lib/logger"
 
 export const authConfig = {
   pages: {
@@ -18,9 +19,14 @@ export const authConfig = {
       
       // Protect dashboard/admin routes
       if (isOnDashboard) {
-        console.log(`Auth check for dashboard: isLoggedIn=${isLoggedIn}`);
+        logAuth('authorization check', auth?.user?.id as string | undefined, isLoggedIn, { 
+          path: nextUrl.pathname 
+        });
         if (isLoggedIn) return true
-        console.log("Redirecting to login...");
+        logInfo('Redirecting unauthenticated user to login', { 
+          source: 'auth.config.authorized',
+          path: nextUrl.pathname 
+        });
         return false // Redirect unauthenticated users to login page
       }
       
