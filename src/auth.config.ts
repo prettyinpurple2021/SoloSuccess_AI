@@ -28,20 +28,9 @@ export const authConfig = {
           return true
         }
         
-        // Check if there's a session cookie that might not be processed yet
-        // This can happen right after login when redirecting - allow access so session can be verified
-        const sessionCookie = request.cookies.get('authjs.session-token')?.value ||
-                             request.cookies.get('__Secure-authjs.session-token')?.value
-        
-        if (sessionCookie) {
-          // Session cookie exists but auth object is empty - might be timing issue
-          // Allow access and let NextAuth handle session verification on the page
-          logInfo('Session cookie found but auth not populated, allowing access for session verification', { 
-            source: 'auth.config.authorized',
-            path: nextUrl.pathname 
-          });
-          return true
-        }
+        // If auth.user is not available, deny access
+        // NextAuth middleware should populate auth before this callback is called
+        // Allowing access based on cookie presence alone is a security risk
         
         logInfo('Redirecting unauthenticated user to login', { 
           source: 'auth.config.authorized',

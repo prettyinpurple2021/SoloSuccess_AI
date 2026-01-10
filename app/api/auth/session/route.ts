@@ -32,16 +32,20 @@ export async function GET(request: NextRequest) {
         const session = await auth()
         
         if (session?.user) {
+          // Explicitly set all fields with fallbacks - spread operator would overwrite fallbacks
+          const user = session.user as any
           return NextResponse.json({
             user: {
-              id: session.user.id || '',
-              email: session.user.email || '',
-              name: session.user.name || '',
-              image: session.user.image || null,
-              full_name: (session.user as any).full_name || session.user.name || null,
-              role: (session.user as any).role || null,
-              subscription_tier: (session.user as any).subscription_tier || null,
-              ...session.user
+              id: user.id || '',
+              email: user.email || '',
+              name: user.name || '',
+              image: user.image || null,
+              full_name: user.full_name || user.name || null,
+              role: user.role || null,
+              subscription_tier: user.subscription_tier || null,
+              emailVerified: user.emailVerified || false,
+              createdAt: user.createdAt || null,
+              updatedAt: user.updatedAt || null,
             },
             session: {
               expires: session.expires?.toISOString() || new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString(),

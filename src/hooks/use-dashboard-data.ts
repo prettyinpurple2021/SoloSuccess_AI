@@ -158,27 +158,6 @@ export function useDashboardData() {
                 }
               }
             }
-            
-            // Also check if NextAuth handlers are available (might be using NextAuth instead of Better Auth)
-            // Wait a moment for session to be established after login
-            await new Promise(resolve => setTimeout(resolve, 500))
-            
-            // Try one more time after waiting
-            const finalRetry = await fetch('/api/dashboard', {
-              method: 'GET',
-              headers: {
-                'Content-Type': 'application/json',
-              },
-              credentials: 'include',
-              cache: 'no-cache',
-            })
-            
-            if (finalRetry.ok) {
-              const finalData = await finalRetry.json()
-              setData(finalData)
-              setLastUpdated(new Date())
-              return
-            }
           } catch (sessionError) {
             // Session check failed, proceed with redirect after a delay
             logError('Session check failed:', undefined, sessionError instanceof Error ? sessionError : undefined)
