@@ -1,7 +1,8 @@
 'use client';
 
 import { useActionState } from 'react';
-import { authenticate, socialLogin } from '@/lib/auth-actions';
+import { authenticateAction } from '@/lib/actions/authenticate-action';
+import { socialLogin } from '@/lib/auth-actions';
 import { useSearchParams } from 'next/navigation';
 import { PrimaryButton } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -17,7 +18,7 @@ export function LoginForm() {
   
   // @ts-ignore
   const [errorMessage, formAction, isPending] = useActionState(
-    authenticate,
+    authenticateAction,
     undefined
   );
 
