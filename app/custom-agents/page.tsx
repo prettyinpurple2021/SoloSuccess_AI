@@ -26,7 +26,7 @@ const AGENT_INFO = [
     title: "Growth Strategist",
     description: "Cost-Benefit-Mitigation Matrix specialist for scaling and revenue growth",
     icon: Zap,
-    color: "bg-orange-500",
+    color: "bg-neon-orange",
     specialties: ["Growth Strategy", "Sales Optimization", "Market Analysis", "Revenue Generation"]
   },
   {
@@ -44,7 +44,7 @@ const AGENT_INFO = [
     title: "Guardian AI",
     description: "Compliance and legal guidance that transforms burdens into advantages",
     icon: Shield,
-    color: "bg-green-500",
+    color: "bg-neon-lime",
     specialties: ["GDPR/CCPA Compliance", "Policy Generation", "Legal Guidance", "Trust Building"]
   },
   {
@@ -53,7 +53,7 @@ const AGENT_INFO = [
     title: "Technical Architect", 
     description: "System design and technical implementation with security-first approach",
     icon: Code,
-    color: "bg-neon-cyan",
+    color: "bg-neon-lime",
     specialties: ["System Architecture", "Security", "Performance", "Automation"]
   },
   {
@@ -62,7 +62,7 @@ const AGENT_INFO = [
     title: "Strategy Analyst",
     description: "Data analysis and insights with Five Whys root cause investigation",
     icon: BarChart3,
-    color: "bg-indigo-500", 
+    color: "bg-neon-purple", 
     specialties: ["Data Analysis", "Strategic Insights", "Performance Metrics", "Pattern Recognition"]
   },
   {
@@ -80,7 +80,7 @@ const AGENT_INFO = [
     title: "Problem-Solving Architect",
     description: "Quality assurance and debugging with systematic Five Whys analysis",
     icon: Bug,
-    color: "bg-red-500",
+    color: "bg-neon-magenta",
     specialties: ["Problem Solving", "Quality Assurance", "Debug Analysis", "System Optimization"]
   }
 ]

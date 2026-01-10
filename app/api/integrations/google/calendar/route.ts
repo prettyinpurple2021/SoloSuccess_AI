@@ -212,6 +212,31 @@ const PostSchema = z.object({
     startTime: z.string().optional(),
     endTime: z.string().optional(),
     calendarId: z.string().optional()
+}).superRefine((data, ctx) => {
+    // Provide specific field-level errors for create_event action
+    if (data.action === 'create_event') {
+        if (!data.title || (typeof data.title === 'string' && data.title.trim() === '')) {
+            ctx.addIssue({
+                code: z.ZodIssueCode.custom,
+                message: 'Title is required when action is "create_event"',
+                path: ['title']
+            })
+        }
+        if (!data.startTime || (typeof data.startTime === 'string' && data.startTime.trim() === '')) {
+            ctx.addIssue({
+                code: z.ZodIssueCode.custom,
+                message: 'startTime is required when action is "create_event"',
+                path: ['startTime']
+            })
+        }
+        if (!data.endTime || (typeof data.endTime === 'string' && data.endTime.trim() === '')) {
+            ctx.addIssue({
+                code: z.ZodIssueCode.custom,
+                message: 'endTime is required when action is "create_event"',
+                path: ['endTime']
+            })
+        }
+    }
 })
 
 export async function POST(request: NextRequest) {
@@ -226,26 +251,30 @@ export async function POST(request: NextRequest) {
         const validation = PostSchema.safeParse(body)
 
         if (!validation.success) {
-            return NextResponse.json({ error: 'Invalid request', details: validation.error.errors }, { status: 400 })
+            // Check if validation failed due to missing required fields for create_event
+            const hasCreateEventErrors = validation.error.errors.some(
+                err => err.path[0] === 'title' || err.path[0] === 'startTime' || err.path[0] === 'endTime'
+            )
+            
+            if (hasCreateEventErrors) {
+                return NextResponse.json({ 
+                    error: 'Missing required fields for event creation',
+                    details: validation.error.errors,
+                    message: 'The following fields are required when action is "create_event": title, startTime, endTime'
+                }, { status: 400 })
+            }
+            
+            return NextResponse.json({ 
+                error: 'Invalid request', 
+                details: validation.error.errors 
+            }, { status: 400 })
         }
 
         const { action, code, state, disconnect, title, description, startTime, endTime, calendarId } = validation.data
 
         // Handle event creation
+        // Note: Required fields are already validated by Zod schema, so if we reach here, all required fields are present
         if (action === 'create_event') {
-            // Validate required fields for event creation
-            const missingFields: string[] = []
-            if (!title) missingFields.push('title')
-            if (!startTime) missingFields.push('startTime')
-            if (!endTime) missingFields.push('endTime')
-
-            if (missingFields.length > 0) {
-                return NextResponse.json({ 
-                    error: 'Missing required fields for event creation',
-                    missingFields,
-                    details: `The following fields are required when action is 'create_event': ${missingFields.join(', ')}`
-                }, { status: 400 })
-            }
 
             // Get calendar connection
             const connection = await db
