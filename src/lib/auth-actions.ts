@@ -12,9 +12,23 @@ export async function authenticate(
   prevState: string | undefined,
   formData: FormData,
 ) {
+  const email = formData.get('email')?.toString();
+  const password = formData.get('password')?.toString();
+  const redirectTo = formData.get('redirectTo')?.toString() || '/dashboard';
+  
+  if (!email || !password) {
+    return 'Email and password are required.';
+  }
+  
   try {
-    await signIn('credentials', formData);
+    await signIn('credentials', { 
+      email,
+      password,
+      redirectTo 
+    });
+    // signIn will throw a redirect error on success - let it bubble up
   } catch (error) {
+    // Only catch AuthErrors - let redirect errors (NEXT_REDIRECT) bubble up naturally
     if (error instanceof AuthError) {
       switch (error.type) {
         case 'CredentialsSignin':
@@ -23,6 +37,7 @@ export async function authenticate(
           return 'Something went wrong.';
       }
     }
+    // Re-throw all other errors (including redirect errors) to allow Next.js to handle them
     throw error;
   }
 }
@@ -110,18 +125,19 @@ export async function register(prevState: any, formData: FormData) {
 
   try {
     await signIn('credentials', { email, password, redirectTo: '/dashboard' });
+    // signIn will throw a redirect error on success - let it bubble up
   } catch (error) {
-    if ((error as any).message === 'NEXT_REDIRECT') {
-      throw error;
+    // Only catch AuthErrors - let redirect errors (NEXT_REDIRECT) bubble up naturally
+    if (error instanceof AuthError) {
+      console.error('Sign in error during registration:', error);
+      // Since the user IS created, we shouldn't say "registration failed".
+      // We can ask them to login manually.
+      return {
+        error: 'Account created, but auto-login failed. Please sign in manually.',
+      };
     }
-    console.error('Sign in error during registration:', error);
-    
-    // Instead of crashing, return a success state but with a warning, or a specific error
-    // Since the user IS created, we shouldn't say "registration failed".
-    // We can ask them to login manually.
-    return {
-      error: 'Account created, but auto-login failed. Please sign in manually.',
-    };
+    // Re-throw all other errors (including redirect errors) to allow Next.js to handle them
+    throw error;
   }
 }
 

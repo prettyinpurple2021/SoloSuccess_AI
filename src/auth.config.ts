@@ -9,7 +9,14 @@ export const authConfig = {
     authorized({ auth, request: { nextUrl } }) {
       const isLoggedIn = !!auth?.user
       const isOnDashboard = nextUrl.pathname.startsWith('/dashboard') || nextUrl.pathname.startsWith('/admin')
+      const isAuthPage = nextUrl.pathname.startsWith('/login') || nextUrl.pathname.startsWith('/register')
       
+      // Always allow access to auth pages
+      if (isAuthPage) {
+        return true
+      }
+      
+      // Protect dashboard/admin routes
       if (isOnDashboard) {
         console.log(`Auth check for dashboard: isLoggedIn=${isLoggedIn}`);
         if (isLoggedIn) return true
