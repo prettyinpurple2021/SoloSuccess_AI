@@ -125,11 +125,12 @@ export function useDashboardData() {
       
       if (!response.ok) {
         if (response.status === 401) {
-          // Token expired or invalid - check if we have a Better Auth session
+          // Token expired or invalid - check if we have a NextAuth session
           localStorage.removeItem('authToken')
           
-          // Check for Better Auth session before redirecting
+          // Check for NextAuth session before redirecting
           try {
+            // Check NextAuth session endpoint
             const sessionResponse = await fetch('/api/auth/session', {
               credentials: 'include',
               cache: 'no-cache',
@@ -138,7 +139,7 @@ export function useDashboardData() {
             if (sessionResponse.ok) {
               const sessionData = await sessionResponse.json()
               if (sessionData?.user) {
-                // We have a Better Auth session, retry the dashboard request
+                // We have a NextAuth session, retry the dashboard request
                 // The cookies should be sent automatically
                 const retryResponse = await fetch('/api/dashboard', {
                   method: 'GET',
@@ -157,12 +158,33 @@ export function useDashboardData() {
                 }
               }
             }
+            
+            // Also check if NextAuth handlers are available (might be using NextAuth instead of Better Auth)
+            // Wait a moment for session to be established after login
+            await new Promise(resolve => setTimeout(resolve, 500))
+            
+            // Try one more time after waiting
+            const finalRetry = await fetch('/api/dashboard', {
+              method: 'GET',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              credentials: 'include',
+              cache: 'no-cache',
+            })
+            
+            if (finalRetry.ok) {
+              const finalData = await finalRetry.json()
+              setData(finalData)
+              setLastUpdated(new Date())
+              return
+            }
           } catch (sessionError) {
-            // Session check failed, proceed with redirect
+            // Session check failed, proceed with redirect after a delay
             logError('Session check failed:', undefined, sessionError instanceof Error ? sessionError : undefined)
           }
           
-          // No valid session found, redirect to login
+          // No valid session found after all retries, redirect to login
           setError('Authentication expired. Please sign in again.')
           // Only redirect if we're not already on the login page
           if (window.location.pathname !== '/login' && window.location.pathname !== '/signup') {

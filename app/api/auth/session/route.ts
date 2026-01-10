@@ -19,7 +19,42 @@ export const dynamic = 'force-dynamic'
  */
 export async function GET(request: NextRequest) {
   try {
-    // Try to get token from Authorization header or cookie
+    // First, check for NextAuth session cookies
+    const nextAuthSessionCookie = request.cookies.get('authjs.session-token')?.value ||
+                                   request.cookies.get('__Secure-authjs.session-token')?.value
+    
+    if (nextAuthSessionCookie) {
+      // Use NextAuth's built-in auth() function
+      // In NextAuth v5, auth() reads from request headers/cookies automatically in server contexts
+      try {
+        const { auth } = await import('@/lib/auth')
+        // auth() automatically uses the current request context in server components/API routes
+        const session = await auth()
+        
+        if (session?.user) {
+          return NextResponse.json({
+            user: {
+              id: session.user.id || '',
+              email: session.user.email || '',
+              name: session.user.name || '',
+              image: session.user.image || null,
+              full_name: (session.user as any).full_name || session.user.name || null,
+              role: (session.user as any).role || null,
+              subscription_tier: (session.user as any).subscription_tier || null,
+              ...session.user
+            },
+            session: {
+              expires: session.expires?.toISOString() || new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString(),
+            }
+          })
+        }
+      } catch (authError) {
+        // NextAuth session check failed, fall through to JWT token check
+        // This can happen if session hasn't been fully established yet
+      }
+    }
+    
+    // Try to get token from Authorization header or cookie (fallback for JWT auth)
     const authHeader = request.headers.get('authorization')
     const cookieToken = request.cookies.get('auth_token')?.value
     
