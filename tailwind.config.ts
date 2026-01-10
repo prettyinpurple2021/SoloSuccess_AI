@@ -92,7 +92,7 @@ const config: Config = {
         'neon-lime': '#39ff14',
         'neon-purple': '#b300ff',
         'neon-orange': '#ff6600',
-        'neon-red': '#ff1414',
+        'neon-red': '#EF4444',  // Glitch agent color per design system
         'neon-yellow': '#ffff00',
         'neon-blue': '#00bfff',
         'neon-pink': '#ff1493',

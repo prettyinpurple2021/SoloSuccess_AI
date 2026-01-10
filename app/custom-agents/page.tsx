@@ -80,7 +80,7 @@ const AGENT_INFO = [
     title: "Problem-Solving Architect",
     description: "Quality assurance and debugging with systematic Five Whys analysis",
     icon: Bug,
-    color: "bg-agent-glitch",
+    color: "bg-neon-red",
     specialties: ["Problem Solving", "Quality Assurance", "Debug Analysis", "System Optimization"]
   }
 ]
