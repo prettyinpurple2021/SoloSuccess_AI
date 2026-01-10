@@ -232,7 +232,21 @@ export async function POST(request: NextRequest) {
         const { action, code, state, disconnect, title, description, startTime, endTime, calendarId } = validation.data
 
         // Handle event creation
-        if (action === 'create_event' && title && startTime && endTime) {
+        if (action === 'create_event') {
+            // Validate required fields for event creation
+            const missingFields: string[] = []
+            if (!title) missingFields.push('title')
+            if (!startTime) missingFields.push('startTime')
+            if (!endTime) missingFields.push('endTime')
+
+            if (missingFields.length > 0) {
+                return NextResponse.json({ 
+                    error: 'Missing required fields for event creation',
+                    missingFields,
+                    details: `The following fields are required when action is 'create_event': ${missingFields.join(', ')}`
+                }, { status: 400 })
+            }
+
             // Get calendar connection
             const connection = await db
                 .select()
@@ -417,7 +431,20 @@ export async function POST(request: NextRequest) {
             })
         }
 
-        return NextResponse.json({ error: 'Missing code' }, { status: 400 })
+        // If action was specified but not handled, return specific error
+        if (action && action !== 'create_event') {
+            return NextResponse.json({ error: `Invalid action: ${action}. Supported actions: 'create_event'` }, { status: 400 })
+        }
+
+        // If no valid action or code provided, return helpful error
+        if (!code && !disconnect) {
+            return NextResponse.json({ 
+                error: 'Missing required parameter',
+                details: 'Either provide "code" (for OAuth callback), "disconnect" (boolean), or "action" with required fields (e.g., action: "create_event" with title, startTime, endTime)'
+            }, { status: 400 })
+        }
+
+        return NextResponse.json({ error: 'Invalid request' }, { status: 400 })
 
     } catch (error) {
         logError('Google Calendar Auth Error:', error)
