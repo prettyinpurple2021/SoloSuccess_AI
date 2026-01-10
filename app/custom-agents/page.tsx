@@ -17,7 +17,7 @@ const AGENT_INFO = [
     title: "Strategic Decision Architect",
     description: "SPADE Framework expert for Type 1 decisions and strategic planning",
     icon: Target,
-    color: "bg-neon-purple",
+    color: "bg-neon-magenta",
     specialties: ["Strategic Planning", "Decision Making", "Risk Assessment", "Executive Assistance"]
   },
   {
@@ -44,7 +44,7 @@ const AGENT_INFO = [
     title: "Guardian AI",
     description: "Compliance and legal guidance that transforms burdens into advantages",
     icon: Shield,
-    color: "bg-neon-yellow",
+    color: "bg-neon-blue",
     specialties: ["GDPR/CCPA Compliance", "Policy Generation", "Legal Guidance", "Trust Building"]
   },
   {
@@ -53,7 +53,7 @@ const AGENT_INFO = [
     title: "Technical Architect", 
     description: "System design and technical implementation with security-first approach",
     icon: Code,
-    color: "bg-neon-blue",
+    color: "bg-neon-lime",
     specialties: ["System Architecture", "Security", "Performance", "Automation"]
   },
   {
@@ -62,7 +62,7 @@ const AGENT_INFO = [
     title: "Strategy Analyst",
     description: "Data analysis and insights with Five Whys root cause investigation",
     icon: BarChart3,
-    color: "bg-neon-magenta", 
+    color: "bg-neon-purple", 
     specialties: ["Data Analysis", "Strategic Insights", "Performance Metrics", "Pattern Recognition"]
   },
   {
@@ -80,7 +80,7 @@ const AGENT_INFO = [
     title: "Problem-Solving Architect",
     description: "Quality assurance and debugging with systematic Five Whys analysis",
     icon: Bug,
-    color: "bg-neon-lime",
+    color: "bg-neon-red",
     specialties: ["Problem Solving", "Quality Assurance", "Debug Analysis", "System Optimization"]
   }
 ]

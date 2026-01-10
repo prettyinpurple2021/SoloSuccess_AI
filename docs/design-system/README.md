@@ -106,12 +106,12 @@ Use [Production Checklist](docs/production-checklist.md) before deployment.
 
 ### AI Agents (8 Unique Color Systems)
 
-- 🔷 **Roxy** - Executive Intelligence (Indigo)
-- 🟠 **Blaze** - Growth Acceleration (Amber)
+- 🟣 **Roxy** - Executive Intelligence (Magenta/Indigo)
+- 🟠 **Blaze** - Growth Acceleration (Orange)
 - 🌸 **Echo** - Signal Amplification (Pink)
 - 🔵 **Lumi** - Compliance Intelligence (Blue)
-- 🟢 **Vex** - Technical Integration (Emerald)
-- 🟣 **Lexi** - Strategic Foresight (Violet)
+- 🟢 **Vex** - Technical Integration (Lime/Emerald)
+- 🟣 **Lexi** - Strategic Foresight (Purple/Violet)
 - 🔷 **Nova** - Creative Intelligence (Cyan)
 - 🔴 **Glitch** - Quality Assurance (Red)
 
