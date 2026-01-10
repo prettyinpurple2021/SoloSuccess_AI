@@ -201,10 +201,10 @@ export default function CustomReportBuilderEnhanced({
     switch (category) {
       case 'user': return 'bg-blue-100 text-blue-700 border-blue-200'
       case 'engagement': return 'bg-green-100 text-green-700 border-green-200'
-      case 'productivity': return 'bg-purple-100 text-purple-700 border-purple-200'
+      case 'productivity': return 'bg-neon-purple/10 text-neon-purple border-neon-purple/50'
       case 'business': return 'bg-orange-100 text-orange-700 border-orange-200'
       case 'performance': return 'bg-pink-100 text-pink-700 border-pink-200'
-      default: return 'bg-gray-100 text-gray-700 border-gray-200'
+      default: return 'bg-dark-card text-gray-300 border-gray-700'
     }
   }
 
@@ -308,7 +308,7 @@ export default function CustomReportBuilderEnhanced({
       {/* Header */}
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-3">
-          <div className="w-8 h-8 bg-gradient-to-br from-purple-500 to-pink-500 rounded-lg flex items-center justify-center">
+          <div className="w-8 h-8 bg-gradient-to-br from-purple-500 to-pink-500 rounded-sm flex items-center justify-center">
             <BarChart3 className="w-4 h-4 text-white" />
           </div>
           <div>
@@ -435,9 +435,9 @@ export default function CustomReportBuilderEnhanced({
                   <div
                     key={metric.id}
                     className={cn(
-                      "flex items-center justify-between p-3 border rounded-lg cursor-pointer transition-colors",
+                      "flex items-center justify-between p-3 border rounded-sm cursor-pointer transition-colors",
                       selectedMetrics.includes(metric.id) 
-                        ? "border-purple-500 bg-purple-50" 
+                        ? "border-neon-purple bg-neon-purple/10" 
                         : "border-gray-200 hover:border-gray-300"
                     )}
                     onClick={() => selectedMetrics.includes(metric.id) ? removeMetric(metric.id) : addMetric(metric.id)}
@@ -603,7 +603,7 @@ export default function CustomReportBuilderEnhanced({
                 <CardContent>
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                     {previewData.metrics.map((metric: any) => (
-                      <div key={metric.id} className="text-center p-4 border rounded-lg">
+                      <div key={metric.id} className="text-center p-4 border rounded-sm">
                         <p className="text-sm text-gray-600">{metric.name}</p>
                         <p className="text-2xl font-bold text-purple-600">{metric.value}</p>
                         <p className={cn(
@@ -625,7 +625,7 @@ export default function CustomReportBuilderEnhanced({
                     <CardTitle className="capitalize">{chart.type} Chart</CardTitle>
                   </CardHeader>
                   <CardContent>
-                    <div className="h-64 bg-gray-50 rounded-lg flex items-center justify-center">
+                    <div className="h-64 bg-dark-card rounded-sm flex items-center justify-center">
                       <p className="text-gray-500">Chart preview will be rendered here</p>
                     </div>
                   </CardContent>

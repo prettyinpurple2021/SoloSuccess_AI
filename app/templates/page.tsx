@@ -39,10 +39,10 @@ export default function TemplatesPage() {
               <Sparkles className="w-4 h-4 text-cyber-purple" />
               <span className="text-xs font-bold tracking-widest text-cyber-purple uppercase">Template Library</span>
             </div>
-            <h1 className="text-4xl md:text-6xl font-sci font-bold text-white mb-6">
+            <h1 className="text-4xl md:text-6xl font-orbitron font-bold text-white mb-6">
               NEURAL <span className="text-cyber-purple">TEMPLATES</span>
             </h1>
-            <p className="text-lg text-gray-400 max-w-2xl mx-auto font-tech">
+            <p className="text-lg text-gray-400 max-w-2xl mx-auto font-mono">
               Pre-configured workflows and templates to accelerate your business operations.
             </p>
           </div>
@@ -53,8 +53,8 @@ export default function TemplatesPage() {
               return (
                 <HudBorder key={category.id} variant="hover" className="p-6 cursor-pointer">
                   <Icon className="w-8 h-8 text-cyber-purple mb-4" />
-                  <h3 className="font-sci text-lg text-white mb-2">{category.name}</h3>
-                  <p className="text-sm text-gray-400 font-tech">{category.description}</p>
+                  <h3 className="font-orbitron text-lg text-white mb-2">{category.name}</h3>
+                  <p className="text-sm text-gray-400 font-mono">{category.description}</p>
                 </HudBorder>
               )
             })}
@@ -64,10 +64,10 @@ export default function TemplatesPage() {
             {featuredTemplates.map((template) => (
               <Link key={template.id} href={`/templates/${template.slug}`}>
                 <HudBorder variant="hover" className="p-6 h-full cursor-pointer">
-                  <h3 className="font-sci text-lg text-white mb-2">{template.name}</h3>
-                  <p className="text-sm text-gray-400 font-tech mb-4 leading-relaxed">{template.description}</p>
-                  <div className="flex items-center gap-2 text-xs text-gray-500 font-tech">
-                    <span className="text-cyber-cyan">{template.category}</span>
+                  <h3 className="font-orbitron text-lg text-white mb-2">{template.name}</h3>
+                  <p className="text-sm text-gray-400 font-mono mb-4 leading-relaxed">{template.description}</p>
+                  <div className="flex items-center gap-2 text-xs text-gray-500 font-mono">
+                    <span className="text-neon-cyan">{template.category}</span>
                     <span>•</span>
                     <span>{template.difficulty}</span>
                   </div>

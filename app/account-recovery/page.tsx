@@ -62,9 +62,9 @@ export default function AccountRecoveryPage() {
 
       <div className="w-full max-w-md relative z-10">
         <div className="relative group">
-          <div className="absolute -inset-0.5 bg-gradient-to-r from-neon-purple to-neon-cyan rounded-2xl opacity-20 group-hover:opacity-40 transition duration-500 blur"></div>
+          <div className="absolute -inset-0.5 bg-gradient-to-r from-neon-purple to-neon-cyan rounded-sm opacity-20 group-hover:opacity-40 transition duration-500 blur"></div>
           
-          <div className="relative bg-dark-card/90 backdrop-blur-xl p-8 rounded-2xl border border-neon-purple/30">
+          <div className="relative bg-dark-card/90 backdrop-blur-xl p-8 rounded-sm border-2 border-neon-purple/30 shadow-[0_0_20px_rgba(179,0,255,0.3)]">
             <div className="text-center mb-8">
               <Heading level={1} color="purple" glitch={true} className="text-2xl mb-2">
                 RECOVER ACCOUNT

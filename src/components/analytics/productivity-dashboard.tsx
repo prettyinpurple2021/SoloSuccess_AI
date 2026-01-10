@@ -94,8 +94,8 @@ export function ProductivityDashboard({ className = "" }: ProductivityDashboardP
           {[...Array(4)].map((_, i) => (
             <Card key={i} className="animate-pulse">
               <CardContent className="p-6">
-                <div className="h-4 bg-gray-200 rounded w-3/4 mb-2"></div>
-                <div className="h-8 bg-gray-200 rounded w-1/2"></div>
+                <div className="h-4 bg-dark-card rounded-sm w-3/4 mb-2"></div>
+                <div className="h-8 bg-dark-card rounded-sm w-1/2"></div>
               </CardContent>
             </Card>
           ))}
@@ -321,11 +321,11 @@ export function ProductivityDashboard({ className = "" }: ProductivityDashboardP
                 Performance Insights
               </h4>
               <div className="space-y-3">
-                <div className="flex items-center justify-between p-3 bg-blue-50 rounded-lg">
+                <div className="flex items-center justify-between p-3 bg-neon-cyan/10 rounded-sm border-2 border-neon-cyan/50">
                   <span className="text-sm">Best performing day</span>
                   <Badge variant="cyan">{data.insights.topPerformingDay}</Badge>
                 </div>
-                <div className="flex items-center justify-between p-3 bg-green-50 rounded-lg">
+                <div className="flex items-center justify-between p-3 bg-neon-lime/10 rounded-sm border-2 border-neon-lime/50">
                   <span className="text-sm">Most productive time</span>
                   <Badge variant="purple">{data.insights.mostProductiveTime}</Badge>
                 </div>
@@ -357,7 +357,7 @@ export function ProductivityDashboard({ className = "" }: ProductivityDashboardP
             </h4>
             <div className="space-y-2">
               {data.insights.recommendations.map((recommendation, index) => (
-                <div key={index} className="flex items-start gap-3 p-3 bg-green-50 rounded-lg">
+                <div key={index} className="flex items-start gap-3 p-3 bg-neon-lime/10 rounded-sm border-2 border-neon-lime/50">
                   <div className="w-2 h-2 bg-green-500 rounded-full mt-2"></div>
                   <p className="text-sm">{recommendation}</p>
                 </div>

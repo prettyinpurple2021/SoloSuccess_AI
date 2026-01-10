@@ -289,7 +289,7 @@ export default function VersionHistoryModal({
                 initial={{ opacity: 0, height: 0 }}
                 animate={{ opacity: 1, height: 'auto' }}
                 exit={{ opacity: 0, height: 0 }}
-                className="border rounded-lg p-4 bg-gray-50"
+                className="border rounded-sm p-4 bg-dark-card"
               >
                 <div className="space-y-3">
                   <Label htmlFor="changelog">Version Changelog</Label>
@@ -345,7 +345,7 @@ export default function VersionHistoryModal({
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: index * 0.1 }}
-                    className={`p-4 border rounded-lg ${
+                    className={`p-4 border rounded-sm ${
                       version.isCurrent 
                         ? 'border-purple-300 bg-purple-50' 
                         : 'border-gray-200 bg-white'
@@ -353,13 +353,13 @@ export default function VersionHistoryModal({
                   >
                     <div className="flex items-start justify-between">
                       <div className="flex items-start gap-3 flex-1">
-                        <div className="w-10 h-10 bg-purple-100 rounded-lg flex items-center justify-center">
+                        <div className="w-10 h-10 bg-purple-100 rounded-sm flex items-center justify-center">
                           <FileText className="w-5 h-5 text-purple-600" />
                         </div>
                         
                         <div className="flex-1 min-w-0">
                           <div className="flex items-center gap-2 mb-1">
-                            <h3 className="font-medium text-gray-900">
+                            <h3 className="font-medium text-white font-orbitron uppercase tracking-wider">
                               Version {version.versionNumber}
                             </h3>
                             {version.isCurrent && (

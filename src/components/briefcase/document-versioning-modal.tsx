@@ -313,7 +313,7 @@ export default function DocumentVersioningModal({
       case 'major': return 'bg-blue-100 text-blue-700'
       case 'minor': return 'bg-green-100 text-green-700'
       case 'restore': return 'bg-purple-100 text-purple-700'
-      default: return 'bg-gray-100 text-gray-700'
+      default: return 'bg-dark-card text-gray-300 font-mono'
     }
   }
 
@@ -323,7 +323,7 @@ export default function DocumentVersioningModal({
       case 'addition': return 'bg-green-100 text-green-700'
       case 'deletion': return 'bg-red-100 text-red-700'
       case 'modification': return 'bg-yellow-100 text-yellow-700'
-      default: return 'bg-gray-100 text-gray-700'
+      default: return 'bg-dark-card text-gray-300 font-mono'
     }
   }
 
@@ -406,7 +406,7 @@ export default function DocumentVersioningModal({
                 {versions.map((version) => (
                   <div
                     key={version.id}
-                    className={`p-4 border rounded-lg transition-all ${
+                    className={`p-4 border rounded-sm transition-all ${
                       selectedVersion === version.id ? 'border-blue-500 bg-blue-50' : ''
                     }`}
                     onClick={() => setSelectedVersion(version.id)}
@@ -487,7 +487,7 @@ export default function DocumentVersioningModal({
                         </div>
                         
                         {version.changeDescription && (
-                          <div className="mt-2 text-sm bg-gray-50 p-2 rounded">
+                          <div className="mt-2 text-sm bg-dark-card p-2 rounded">
                             {version.changeDescription}
                           </div>
                         )}
@@ -569,7 +569,7 @@ export default function DocumentVersioningModal({
                     <ScrollArea className="h-[350px]">
                       <div className="space-y-3">
                         {versionCompare?.differences.map((diff, index) => (
-                          <div key={index} className="p-3 border rounded-lg">
+                          <div key={index} className="p-3 border rounded-sm">
                             <div className="flex items-center gap-2 mb-2">
                               <Badge className={getDiffTypeBadge(diff.type)}>
                                 {diff.type.charAt(0).toUpperCase() + diff.type.slice(1)}

@@ -362,7 +362,7 @@ export default function AdvancedSearchPanel({
                   initial={{ opacity: 0, y: -10 }}
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -10 }}
-                  className="absolute z-10 w-full mt-1 bg-white border rounded-md shadow-lg max-h-64 overflow-y-auto"
+                  className="absolute z-10 w-full mt-1 bg-dark-card border rounded-md shadow-[0_0_20px_rgba(179,0,255,0.3)] max-h-64 overflow-y-auto"
                 >
                   {searchSuggestions.map((suggestion, index) => (
                     <button
@@ -598,7 +598,7 @@ export default function AdvancedSearchPanel({
                     </div>
 
                     {filters.semantic && (
-                      <div className="p-3 bg-purple-50 rounded-lg border border-purple-200">
+                      <div className="p-3 bg-neon-purple/10 rounded-sm border-2 border-neon-purple/50">
                         <div className="flex items-center gap-2 mb-2">
                           <Sparkles className="w-4 h-4 text-purple-600" />
                           <span className="text-sm font-medium text-purple-900">AI Search Active</span>

@@ -212,7 +212,7 @@ export default function DeviceApprovalPage() {
             </div>
           {deviceInfo && (
             <div className="space-y-6">
-              <div className="bg-dark-bg/50 rounded-lg p-6 border border-white/10">
+              <div className="bg-dark-bg/50 rounded-sm p-6 border border-white/10">
                 <div className="flex items-center space-x-4 mb-4">
                   <div className="text-neon-cyan">
                     {getDeviceIcon(deviceInfo.deviceType)}
@@ -265,7 +265,7 @@ export default function DeviceApprovalPage() {
                 </PrimaryButton>
               </div>
 
-              <div className="bg-neon-cyan/10 border border-neon-cyan/30 rounded-lg p-4">
+              <div className="bg-neon-cyan/10 border border-neon-cyan/30 rounded-sm p-4">
                 <h4 className="text-neon-cyan font-bold mb-2 font-mono uppercase text-sm">Security Notice</h4>
                 <p className="text-gray-300 text-sm font-mono">
                   Only approve this device if you recognize it and trust the location. 

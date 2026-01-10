@@ -56,10 +56,10 @@ export default function ContactPage() {
         <div className="pt-32 pb-20">
           <div className="max-w-2xl mx-auto px-6">
             <HudBorder className="p-12 text-center">
-              <div className="w-20 h-20 mx-auto mb-8 rounded-full bg-cyber-cyan/20 flex items-center justify-center">
-                <CheckCircle className="w-10 h-10 text-cyber-cyan" />
+              <div className="w-20 h-20 mx-auto mb-8 rounded-full bg-neon-cyan/20 flex items-center justify-center">
+                <CheckCircle className="w-10 h-10 text-neon-cyan" />
               </div>
-              <h1 className="font-sci text-4xl font-bold text-white mb-4">
+              <h1 className="font-orbitron text-4xl font-bold text-white mb-4">
                 MESSAGE SENT
               </h1>
               <p className="text-gray-400 font-tech">
@@ -77,8 +77,8 @@ export default function ContactPage() {
       <div className="pt-32 pb-20">
         <div className="max-w-4xl mx-auto px-6">
           <div className="text-center mb-16">
-            <h1 className="text-4xl md:text-6xl font-sci font-bold text-white mb-6">
-              GET IN <span className="text-cyber-cyan">TOUCH</span>
+            <h1 className="text-4xl md:text-6xl font-orbitron font-bold text-white mb-6">
+              GET IN <span className="text-neon-cyan">TOUCH</span>
             </h1>
             <p className="text-lg text-gray-400 max-w-2xl mx-auto font-tech">
               Connect with our team. We'll respond within 24 hours.
@@ -89,39 +89,39 @@ export default function ContactPage() {
             <form onSubmit={handleSubmit} className="space-y-6">
               <div className="grid md:grid-cols-2 gap-6">
                 <div>
-                  <label className="block text-sm font-sci text-cyber-cyan mb-2 uppercase tracking-widest">
+                  <label className="block text-sm font-orbitron text-neon-cyan mb-2 uppercase tracking-widest">
                     NAME
                   </label>
                   <Input
                     value={formData.name}
                     onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                    className="bg-cyber-dark/50 border-cyber-cyan/30 text-white placeholder:text-gray-500 focus:border-cyber-cyan"
+                    className="bg-dark-card/50 border-neon-cyan/30 text-white placeholder:text-gray-500 focus:border-neon-cyan"
                     required
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-sci text-cyber-cyan mb-2 uppercase tracking-widest">
+                  <label className="block text-sm font-orbitron text-neon-cyan mb-2 uppercase tracking-widest">
                     EMAIL
                   </label>
                   <Input
                     type="email"
                     value={formData.email}
                     onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                    className="bg-cyber-dark/50 border-cyber-cyan/30 text-white placeholder:text-gray-500 focus:border-cyber-cyan"
+                    className="bg-dark-card/50 border-neon-cyan/30 text-white placeholder:text-gray-500 focus:border-neon-cyan"
                     required
                   />
                 </div>
               </div>
 
               <div>
-                <label className="block text-sm font-sci text-cyber-cyan mb-2 uppercase tracking-widest">
+                <label className="block text-sm font-orbitron text-neon-cyan mb-2 uppercase tracking-widest">
                   CATEGORY
                 </label>
                 <Select value={formData.category} onValueChange={(value) => setFormData({ ...formData, category: value })}>
-                  <SelectTrigger className="bg-cyber-dark/50 border-cyber-cyan/30 text-white">
+                  <SelectTrigger className="bg-dark-card/50 border-neon-cyan/30 text-white">
                     <SelectValue placeholder="Select category" />
                   </SelectTrigger>
-                  <SelectContent className="bg-cyber-dark border-cyber-cyan/30">
+                  <SelectContent className="bg-dark-card border-neon-cyan/30">
                     <SelectItem value="general">General Inquiry</SelectItem>
                     <SelectItem value="support">Technical Support</SelectItem>
                     <SelectItem value="sales">Sales Question</SelectItem>
@@ -131,25 +131,25 @@ export default function ContactPage() {
               </div>
 
               <div>
-                <label className="block text-sm font-sci text-cyber-cyan mb-2 uppercase tracking-widest">
+                <label className="block text-sm font-orbitron text-neon-cyan mb-2 uppercase tracking-widest">
                   SUBJECT
                 </label>
                 <Input
                   value={formData.subject}
                   onChange={(e) => setFormData({ ...formData, subject: e.target.value })}
-                  className="bg-cyber-dark/50 border-cyber-cyan/30 text-white placeholder:text-gray-500 focus:border-cyber-cyan"
+                  className="bg-dark-card/50 border-neon-cyan/30 text-white placeholder:text-gray-500 focus:border-neon-cyan"
                   required
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-sci text-cyber-cyan mb-2 uppercase tracking-widest">
+                <label className="block text-sm font-orbitron text-neon-cyan mb-2 uppercase tracking-widest">
                   MESSAGE
                 </label>
                 <Textarea
                   value={formData.message}
                   onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                  className="bg-cyber-dark/50 border-cyber-cyan/30 text-white placeholder:text-gray-500 focus:border-cyber-cyan min-h-[200px]"
+                  className="bg-dark-card/50 border-neon-cyan/30 text-white placeholder:text-gray-500 focus:border-neon-cyan min-h-[200px]"
                   required
                 />
               </div>

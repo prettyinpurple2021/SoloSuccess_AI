@@ -39,12 +39,12 @@ export default function SecurityPage() {
       <div className="pt-32 pb-20">
         <div className="max-w-7xl mx-auto px-6">
           <div className="text-center mb-16">
-            <div className="inline-flex items-center gap-2 px-3 py-1 border border-cyber-cyan/30 bg-cyber-cyan/5 rounded-none mb-6">
-              <Shield className="w-4 h-4 text-cyber-cyan" />
-              <span className="text-xs font-bold tracking-widest text-cyber-cyan uppercase">Security Protocol</span>
+            <div className="inline-flex items-center gap-2 px-3 py-1 border border-neon-cyan/30 bg-neon-cyan/5 rounded-none mb-6">
+              <Shield className="w-4 h-4 text-neon-cyan" />
+              <span className="text-xs font-bold tracking-widest text-neon-cyan uppercase">Security Protocol</span>
             </div>
-            <h1 className="text-4xl md:text-6xl font-sci font-bold text-white mb-6">
-              QUANTUM-GRADE <span className="text-cyber-cyan">SECURITY</span>
+            <h1 className="text-4xl md:text-6xl font-orbitron font-bold text-white mb-6">
+              QUANTUM-GRADE <span className="text-neon-cyan">SECURITY</span>
             </h1>
             <p className="text-lg text-gray-400 max-w-2xl mx-auto font-tech">
               Your data is protected by advanced security protocols and encryption standards.
@@ -55,12 +55,12 @@ export default function SecurityPage() {
             {securityFeatures.map((feature, index) => (
               <HudBorder key={index} variant="hover" className="p-6">
                 <div className="flex items-start justify-between mb-4">
-                  <feature.icon className="w-8 h-8 text-cyber-cyan" />
-                  <span className="text-xs font-sci text-cyber-purple uppercase tracking-widest">
+                  <feature.icon className="w-8 h-8 text-neon-cyan" />
+                  <span className="text-xs font-orbitron text-neon-purple uppercase tracking-widest">
                     {feature.status}
                   </span>
                 </div>
-                <h3 className="font-sci text-lg text-white mb-2">{feature.title}</h3>
+                <h3 className="font-orbitron text-lg text-white mb-2">{feature.title}</h3>
                 <p className="text-sm text-gray-400 font-tech leading-relaxed">{feature.description}</p>
               </HudBorder>
             ))}

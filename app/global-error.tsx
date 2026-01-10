@@ -16,35 +16,35 @@ export default function GlobalError({
   return (
     <html>
       <body
-        className="font-sans min-h-screen flex items-center justify-center p-4 bg-gradient-to-br from-purple-50 via-white to-pink-50"
+        className="font-mono min-h-screen flex items-center justify-center p-4 bg-dark-bg"
       >
-        <div className="w-full max-w-lg bg-white rounded-lg shadow-lg border-2 border-red-200 overflow-hidden">
-          <div className="p-6 border-b border-gray-200">
-            <div className="flex items-center gap-2 text-red-600 mb-2">
+        <div className="w-full max-w-lg bg-dark-card rounded-sm shadow-[0_0_20px_rgba(255,0,110,0.3)] border-2 border-neon-magenta/50 overflow-hidden">
+          <div className="p-6 border-b-2 border-gray-700">
+            <div className="flex items-center gap-2 text-neon-magenta mb-2">
               <AlertCircle className="h-6 w-6" />
-              <h1 className="text-xl font-bold">Something went wrong</h1>
+              <h1 className="text-xl font-bold font-orbitron uppercase tracking-wider text-white">Something went wrong</h1>
             </div>
-            <p className="text-gray-600">
+            <p className="text-gray-300 font-mono">
               We&apos;ve encountered a critical error. Our team has been
               notified.
             </p>
           </div>
 
           <div className="p-6">
-            <div className="bg-gray-50 p-4 rounded-md border border-gray-200 text-sm text-gray-700 overflow-auto max-h-40">
+            <div className="bg-dark-bg p-4 rounded-sm border-2 border-gray-700 text-sm text-gray-300 font-mono overflow-auto max-h-40">
               {error?.message || "Unknown error"}
               {error?.digest && (
-                <div className="mt-2 text-xs text-gray-500">
+                <div className="mt-2 text-xs text-gray-500 font-mono">
                   Error ID: {error.digest}
                 </div>
               )}
             </div>
           </div>
 
-          <div className="p-6 bg-gray-50 flex justify-between gap-2">
+          <div className="p-6 bg-dark-bg/50 flex justify-between gap-2">
             <button
               onClick={() => (window.location.href = "/")}
-              className="px-4 py-2 border border-gray-300 rounded-md text-gray-700 bg-white hover:bg-gray-50 flex items-center gap-2"
+              className="px-4 py-2 border-2 border-gray-700 rounded-sm text-gray-300 bg-dark-card hover:bg-dark-hover hover:border-neon-cyan transition-all font-mono font-bold uppercase tracking-wider flex items-center gap-2"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -64,7 +64,7 @@ export default function GlobalError({
             </button>
             <button
               onClick={() => reset()}
-              className="px-4 py-2 bg-purple-600 text-white rounded-md hover:bg-purple-700 flex items-center gap-2"
+              className="px-4 py-2 bg-neon-purple text-white rounded-sm hover:bg-neon-purple/80 hover:shadow-[0_0_15px_rgba(179,0,255,0.3)] transition-all font-mono font-bold uppercase tracking-wider flex items-center gap-2"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"

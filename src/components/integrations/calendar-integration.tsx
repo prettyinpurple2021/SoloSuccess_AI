@@ -394,7 +394,7 @@ export function CalendarIntegration({ className = "" }: CalendarIntegrationProps
             failedCount++
           }
         } catch (error) {
-          logError('Failed to sync task to calendar', error, { taskId: task.id })
+          logError('Failed to sync task to calendar', { taskId: task.id }, error instanceof Error ? error : new Error(String(error)))
           failedCount++
         }
       }

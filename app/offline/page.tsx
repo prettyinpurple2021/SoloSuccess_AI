@@ -13,27 +13,27 @@ export default function OfflinePage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-50 to-indigo-100 flex items-center justify-center p-4">
-      <Card className="w-full max-w-md text-center">
+    <div className="min-h-screen bg-dark-bg flex items-center justify-center p-4">
+      <Card className="w-full max-w-md text-center border-2 border-neon-magenta/50 rounded-sm shadow-[0_0_20px_rgba(255,0,110,0.3)]">
         <CardHeader className="space-y-4">
-          <div className="mx-auto w-16 h-16 bg-red-100 rounded-full flex items-center justify-center">
-            <WifiOff className="w-8 h-8 text-red-600" />
+          <div className="mx-auto w-16 h-16 bg-neon-magenta/20 border-2 border-neon-magenta/50 rounded-full flex items-center justify-center shadow-[0_0_15px_rgba(255,0,110,0.3)]">
+            <WifiOff className="w-8 h-8 text-neon-magenta" />
           </div>
-          <CardTitle className="text-2xl font-bold text-gray-900">
+          <CardTitle className="text-2xl font-bold font-orbitron uppercase tracking-wider text-white">
             You&apos;re Offline! 😱
           </CardTitle>
-          <CardDescription className="text-gray-600">
+          <CardDescription className="text-gray-300 font-mono">
             Don&apos;t worry, boss! We can&apos;t connect to the internet right now, but your SoloSuccess AI platform is still here for you.
           </CardDescription>
         </CardHeader>
         
         <CardContent className="space-y-4">
-          <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+          <div className="bg-neon-cyan/10 border-2 border-neon-cyan/50 rounded-sm p-4">
             <div className="flex items-start gap-3">
-              <Wifi className="w-5 h-5 text-blue-600 mt-0.5" />
+              <Wifi className="w-5 h-5 text-neon-cyan mt-0.5" />
               <div className="text-left">
-                <h3 className="font-medium text-blue-900">What you can do:</h3>
-                <ul className="text-sm text-blue-800 mt-2 space-y-1">
+                <h3 className="font-bold font-orbitron uppercase tracking-wider text-neon-cyan">What you can do:</h3>
+                <ul className="text-sm text-gray-300 mt-2 space-y-1 font-mono">
                   <li>• View cached pages and data</li>
                   <li>• Access your saved templates</li>
                   <li>• Review your goals and tasks</li>
@@ -57,7 +57,7 @@ export default function OfflinePage() {
             </Link>
           </div>
 
-          <div className="text-xs text-gray-500 pt-4 border-t">
+          <div className="text-xs text-gray-500 pt-4 border-t-2 border-gray-700 font-mono">
             <p>💡 Pro tip: Enable offline mode in your browser settings for the best experience!</p>
           </div>
         </CardContent>

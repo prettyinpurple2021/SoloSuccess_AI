@@ -283,7 +283,7 @@ export default function EnhancedFilePreviewModal({
     if (previewState.error) {
       return (
         <div className={`flex flex-col items-center justify-center ${contentHeight} text-center px-4`}>
-          <div className="w-12 h-12 sm:w-16 sm:h-16 bg-gray-100 rounded-full flex items-center justify-center mb-4">
+          <div className="w-12 h-12 sm:w-16 sm:h-16 bg-dark-card border-2 border-neon-cyan/50 rounded-full shadow-[0_0_15px_rgba(11,228,236,0.3)] flex items-center justify-center mb-4">
             {getFileIcon(file?.name || '', null)}
           </div>
           <h3 className="text-base sm:text-lg font-semibold mb-2">Preview Not Available</h3>
@@ -328,7 +328,7 @@ export default function EnhancedFilePreviewModal({
       case 'text':
         return (
           <ScrollArea className={contentHeight}>
-            <pre className="text-xs sm:text-sm whitespace-pre-wrap font-mono p-3 sm:p-4 bg-gray-50 rounded-lg">
+            <pre className="text-xs sm:text-sm whitespace-pre-wrap font-mono p-3 sm:p-4 bg-gray-50 rounded-sm">
               {previewState.content}
             </pre>
           </ScrollArea>
@@ -340,7 +340,7 @@ export default function EnhancedFilePreviewModal({
             {previewState.previewUrl && (
               <iframe
                 src={previewState.previewUrl}
-                className="w-full h-full border-0 rounded-lg"
+                className="w-full h-full border-0 rounded-sm"
                 title={`PDF preview: ${file?.name}`}
               />
             )}
@@ -372,7 +372,7 @@ export default function EnhancedFilePreviewModal({
             {previewState.previewUrl && (
               <video
                 controls
-                className="max-w-full max-h-full rounded-lg"
+                className="max-w-full max-h-full rounded-sm"
                 preload="metadata"
                 playsInline
               >
@@ -386,7 +386,7 @@ export default function EnhancedFilePreviewModal({
       default:
         return (
           <div className={`flex flex-col items-center justify-center ${contentHeight} text-center px-4`}>
-            <div className="w-12 h-12 sm:w-16 sm:h-16 bg-gray-100 rounded-full flex items-center justify-center mb-4">
+            <div className="w-12 h-12 sm:w-16 sm:h-16 bg-dark-card border-2 border-neon-cyan/50 rounded-full shadow-[0_0_15px_rgba(11,228,236,0.3)] flex items-center justify-center mb-4">
               {getFileIcon(file?.name || '', previewState.previewType)}
             </div>
             <h3 className="text-base sm:text-lg font-semibold mb-2">Preview Not Supported</h3>

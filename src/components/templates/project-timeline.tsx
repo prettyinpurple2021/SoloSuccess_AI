@@ -372,13 +372,13 @@ export default function ProjectTimeline({ template: _template, onSave: _onSave, 
   // Get status color
   const getStatusColor = (status: string) => {
     const colors = {
-      'not-started': 'bg-gray-100 text-gray-700',
+      'not-started': 'bg-dark-card text-gray-300 font-mono',
       'in-progress': 'bg-blue-100 text-blue-700',
       'completed': 'bg-green-100 text-green-700',
       'blocked': 'bg-red-100 text-red-700',
-      'cancelled': 'bg-gray-100 text-gray-500'
+      'cancelled': 'bg-dark-card text-gray-500 font-mono'
     }
-    return colors[status as keyof typeof colors] || 'bg-gray-100 text-gray-700'
+    return colors[status as keyof typeof colors] || 'bg-dark-card text-gray-300 font-mono'
   }
 
   // Get priority color
@@ -415,7 +415,7 @@ export default function ProjectTimeline({ template: _template, onSave: _onSave, 
       <div className="overflow-x-auto">
         <div className="min-w-full" style={{ width: `${chartWidth}px` }}>
           {/* Timeline Header */}
-          <div className="flex bg-gray-50 p-2 border-b sticky top-0 z-10">
+          <div className="flex bg-dark-card p-2 border-b sticky top-0 z-10">
             <div className="w-64 font-semibold">Task</div>
             <div className="flex-1 relative">
               <div className="flex">
@@ -435,7 +435,7 @@ export default function ProjectTimeline({ template: _template, onSave: _onSave, 
           {/* Tasks */}
           <div className="space-y-1">
             {data.tasks.map((task: ProjectTask, index: number) => (
-              <div key={task.id} className="flex items-center hover:bg-gray-50">
+              <div key={task.id} className="flex items-center hover:bg-dark-card">
                 <div className="w-64 p-2 border-r">
                   <div className="flex items-center gap-2">
                     {task.subtasks.length > 0 && (
@@ -728,9 +728,9 @@ export default function ProjectTimeline({ template: _template, onSave: _onSave, 
                 />
               </div>
 
-              <div className="bg-gradient-to-r from-purple-50 to-pink-50 p-4 rounded-lg border">
+              <div className="bg-gradient-to-r from-purple-50 to-pink-50 p-4 rounded-sm border">
                 <h4 className="font-semibold mb-2">Project Planning Tips</h4>
-                <ul className="text-sm space-y-1 list-disc list-inside text-gray-700">
+                <ul className="text-sm space-y-1 list-disc list-inside text-gray-300 font-mono">
                   <li>Define clear, measurable objectives and success criteria</li>
                   <li>Identify all stakeholders and their responsibilities early</li>
                   <li>Build buffer time into your timeline for unexpected delays</li>
@@ -781,11 +781,11 @@ export default function ProjectTimeline({ template: _template, onSave: _onSave, 
                     key={resource.id}
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
-                    className="p-4 border rounded-lg"
+                    className="p-4 border rounded-sm"
                   >
                     <div className="flex justify-between items-start mb-4">
                       <div className="flex items-center gap-3">
-                        <div className="w-10 h-10 bg-purple-100 text-purple-600 rounded-full flex items-center justify-center font-bold">
+                        <div className="w-10 h-10 bg-neon-purple/20 border-2 border-neon-purple/50 text-neon-purple rounded-full flex items-center justify-center font-bold font-orbitron uppercase tracking-wider shadow-[0_0_15px_rgba(179,0,255,0.3)]">
                           {resource.name ? resource.name.charAt(0).toUpperCase() : '?'}
                         </div>
                         <div className="flex-1 grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -891,7 +891,7 @@ export default function ProjectTimeline({ template: _template, onSave: _onSave, 
               )}
 
               {data.resources.length > 0 && (
-                <div className="bg-gradient-to-r from-blue-50 to-purple-50 p-4 rounded-lg border">
+                <div className="bg-gradient-to-r from-blue-50 to-purple-50 p-4 rounded-sm border">
                   <h4 className="font-semibold mb-2">Team Summary</h4>
                   <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
                     <div>
@@ -971,7 +971,7 @@ export default function ProjectTimeline({ template: _template, onSave: _onSave, 
                       key={task.id}
                       initial={{ opacity: 0, y: 20 }}
                       animate={{ opacity: 1, y: 0 }}
-                      className="p-4 border rounded-lg"
+                      className="p-4 border rounded-sm"
                     >
                       <div className="flex justify-between items-start mb-3">
                         <Input
@@ -1133,18 +1133,18 @@ export default function ProjectTimeline({ template: _template, onSave: _onSave, 
                       <div className="flex items-center justify-between pt-3 border-t">
                         <div className="flex items-center gap-2">
                           <Badge className={
-                            task.priority === 'critical' ? 'bg-red-100 text-red-700' :
-                            task.priority === 'high' ? 'bg-orange-100 text-orange-700' :
-                            task.priority === 'medium' ? 'bg-yellow-100 text-yellow-700' :
-                            'bg-green-100 text-green-700'
+                            task.priority === 'critical' ? 'bg-neon-magenta/10 text-neon-magenta font-mono' :
+                            task.priority === 'high' ? 'bg-neon-orange/10 text-neon-orange font-mono' :
+                            task.priority === 'medium' ? 'bg-neon-orange/10 text-neon-orange font-mono' :
+                            'bg-neon-lime/10 text-neon-lime font-mono'
                           }>
                             {task.priority}
                           </Badge>
                           <Badge className={
-                            task.status === 'completed' ? 'bg-green-100 text-green-700' :
-                            task.status === 'in-progress' ? 'bg-blue-100 text-blue-700' :
-                            task.status === 'blocked' ? 'bg-red-100 text-red-700' :
-                            'bg-gray-100 text-gray-700'
+                            task.status === 'completed' ? 'bg-neon-lime/10 text-neon-lime font-mono' :
+                            task.status === 'in-progress' ? 'bg-neon-cyan/10 text-neon-cyan font-mono' :
+                            task.status === 'blocked' ? 'bg-neon-magenta/10 text-neon-magenta font-mono' :
+                            'bg-dark-card text-gray-300 font-mono'
                           }>
                             {task.status.replace('-', ' ')}
                           </Badge>
@@ -1196,7 +1196,7 @@ export default function ProjectTimeline({ template: _template, onSave: _onSave, 
                       key={milestone.id}
                       initial={{ opacity: 0, y: 20 }}
                       animate={{ opacity: 1, y: 0 }}
-                      className="p-4 border rounded-lg"
+                      className="p-4 border rounded-sm"
                     >
                       <div className="flex justify-between items-start mb-3">
                         <Input
@@ -1342,7 +1342,7 @@ export default function ProjectTimeline({ template: _template, onSave: _onSave, 
                     key={milestone.id}
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
-                    className="p-4 border rounded-lg"
+                    className="p-4 border rounded-sm"
                   >
                     <div className="flex justify-between items-start mb-4">
                       <div className="flex items-center gap-3">
@@ -1494,7 +1494,7 @@ export default function ProjectTimeline({ template: _template, onSave: _onSave, 
                       key={risk.id}
                       initial={{ opacity: 0, y: 20 }}
                       animate={{ opacity: 1, y: 0 }}
-                      className={`p-4 border rounded-lg ${riskColor} border-l-4`}
+                      className={`p-4 border rounded-sm ${riskColor} border-l-4`}
                     >
                       <div className="flex justify-between items-start mb-4">
                         <Input
@@ -1639,7 +1639,7 @@ export default function ProjectTimeline({ template: _template, onSave: _onSave, 
               )}
 
               {data.risks.length > 0 && (
-                <div className="bg-gradient-to-r from-red-50 to-orange-50 p-4 rounded-lg border">
+                <div className="bg-gradient-to-r from-neon-magenta/10 to-neon-orange/10 border-2 border-neon-magenta/50 p-4 rounded-sm border">
                   <h4 className="font-semibold mb-2">Risk Summary</h4>
                   <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
                     <div>
@@ -1696,23 +1696,23 @@ export default function ProjectTimeline({ template: _template, onSave: _onSave, 
               </CardHeader>
               <CardContent>
                 <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
-                  <div className="text-center p-4 border rounded-lg">
+                  <div className="text-center p-4 border rounded-sm">
                     <div className="text-2xl font-bold text-purple-900">{analytics.totalProgress}%</div>
                     <div className="text-sm text-purple-700">Overall Progress</div>
                     <Progress value={analytics.totalProgress} className="mt-2 h-2" />
                   </div>
-                  <div className="text-center p-4 border rounded-lg">
+                  <div className="text-center p-4 border rounded-sm">
                     <div className="text-2xl font-bold text-purple-900">{analytics.completedTasks}/{analytics.totalTasks}</div>
                     <div className="text-sm text-purple-700">Tasks Completed</div>
                   </div>
-                  <div className="text-center p-4 border rounded-lg">
+                  <div className="text-center p-4 border rounded-sm">
                     <div className="text-2xl font-bold text-purple-900">{data.currency} {Math.round(analytics.budgetUsed)}</div>
                     <div className="text-sm text-purple-700">Budget Used</div>
                     {data.budget > 0 && (
                       <Progress value={(analytics.budgetUsed / data.budget) * 100} className="mt-2 h-2" />
                     )}
                   </div>
-                  <div className="text-center p-4 border rounded-lg">
+                  <div className="text-center p-4 border rounded-sm">
                     <div className="text-2xl font-bold text-purple-900">{analytics.efficiency}%</div>
                     <div className="text-sm text-purple-700">Efficiency</div>
                   </div>
@@ -1746,7 +1746,7 @@ export default function ProjectTimeline({ template: _template, onSave: _onSave, 
 
                 {/* Timeline Visualization */}
                 {viewMode === 'gantt' && (
-                  <div className="border rounded-lg p-4">
+                  <div className="border rounded-sm p-4">
                     <h4 className="font-semibold mb-4">Gantt Chart</h4>
                     {data.tasks.length > 0 ? renderGanttChart() : (
                       <div className="text-center py-8 text-gray-500">
@@ -1759,7 +1759,7 @@ export default function ProjectTimeline({ template: _template, onSave: _onSave, 
                 )}
 
                 {viewMode === 'list' && (
-                  <div className="border rounded-lg p-4">
+                  <div className="border rounded-sm p-4">
                     <h4 className="font-semibold mb-4">Task List</h4>
                     <div className="space-y-2">
                       {data.tasks.map((task: ProjectTask, index: number) => (
@@ -1816,7 +1816,7 @@ export default function ProjectTimeline({ template: _template, onSave: _onSave, 
                 )}
 
                 {/* Project Summary */}
-                <div className="bg-gradient-to-r from-purple-50 to-pink-50 p-6 rounded-lg border-2 border-purple-200">
+                <div className="bg-gradient-to-r from-purple-50 to-pink-50 p-6 rounded-sm border-2 border-neon-purple/50">
                   <h4 className="font-bold text-purple-700 mb-4 flex items-center gap-2">
                     <Lightbulb className="w-5 h-5" />
                     Project Summary

@@ -54,7 +54,7 @@ export function UserTable() {
             // Refresh list
             fetchUsers();
         } catch (error) {
-            logError('Failed to suspend user', error, { userId });
+            logError('Failed to suspend user', { userId }, error instanceof Error ? error : new Error(String(error)));
         }
     };
 

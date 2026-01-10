@@ -17,7 +17,7 @@ const AGENT_INFO = [
     title: "Strategic Decision Architect",
     description: "SPADE Framework expert for Type 1 decisions and strategic planning",
     icon: Target,
-    color: "bg-purple-500",
+    color: "bg-neon-purple",
     specialties: ["Strategic Planning", "Decision Making", "Risk Assessment", "Executive Assistance"]
   },
   {
@@ -35,7 +35,7 @@ const AGENT_INFO = [
     title: "Marketing Maven",
     description: "Content creation and brand strategy with authentic punk rock energy",
     icon: Sparkles,
-    color: "bg-pink-500",
+    color: "bg-neon-magenta",
     specialties: ["Content Creation", "Brand Strategy", "Social Media", "Community Building"]
   },
   {
@@ -53,7 +53,7 @@ const AGENT_INFO = [
     title: "Technical Architect", 
     description: "System design and technical implementation with security-first approach",
     icon: Code,
-    color: "bg-blue-500",
+    color: "bg-neon-cyan",
     specialties: ["System Architecture", "Security", "Performance", "Automation"]
   },
   {
@@ -71,7 +71,7 @@ const AGENT_INFO = [
     title: "Product Designer",
     description: "UI/UX design and user experience optimization with creative flair",
     icon: Palette,
-    color: "bg-cyan-500",
+    color: "bg-neon-cyan",
     specialties: ["UI/UX Design", "User Research", "Prototyping", "Design Systems"]
   },
   {
@@ -95,12 +95,12 @@ export default function CustomAgentsPage() {
       {/* Header */}
       <div className="text-center space-y-4">
         <div className="flex items-center justify-center space-x-2">
-          <Brain className="h-8 w-8 text-purple-600" />
-          <h1 className="text-4xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
+          <Brain className="h-8 w-8 text-neon-purple" />
+          <h1 className="text-4xl font-bold font-orbitron uppercase tracking-wider bg-gradient-to-r from-neon-purple to-neon-magenta bg-clip-text text-transparent">
             Custom AI Agents
           </h1>
         </div>
-        <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+        <p className="text-xl text-gray-300 max-w-3xl mx-auto font-mono">
           Your 8 specialized AI agents working together as a cohesive team. Each agent has unique capabilities, 
           personalities, and expertise areas that complement each other for comprehensive business support.
         </p>
@@ -110,10 +110,10 @@ export default function CustomAgentsPage() {
       <Card>
         <CardHeader>
           <CardTitle className="flex items-center space-x-2">
-            <Users className="h-6 w-6 text-purple-600" />
-            <span>Meet Your AI Team</span>
+            <Users className="h-6 w-6 text-neon-purple" />
+            <span className="font-orbitron uppercase tracking-wider">Meet Your AI Team</span>
           </CardTitle>
-          <CardDescription>
+          <CardDescription className="text-gray-300 font-mono">
             Each agent specializes in different areas and can collaborate seamlessly
           </CardDescription>
         </CardHeader>
@@ -122,18 +122,18 @@ export default function CustomAgentsPage() {
             {AGENT_INFO.map((agent) => {
               const IconComponent = agent.icon
               return (
-                <Card key={agent.id} className="hover:shadow-lg transition-shadow">
+                <Card key={agent.id} className="hover:shadow-[0_0_15px_rgba(179,0,255,0.3)] transition-shadow rounded-sm border-2 border-gray-700">
                   <CardContent className="p-4">
                     <div className="flex items-center space-x-3 mb-3">
-                      <div className={`w-10 h-10 rounded-full ${agent.color} flex items-center justify-center`}>
+                      <div className={`w-10 h-10 rounded-full ${agent.color} flex items-center justify-center border-2 border-white/20`}>
                         <IconComponent className="h-5 w-5 text-white" />
                       </div>
                       <div>
-                        <h3 className="font-semibold text-lg">{agent.name}</h3>
-                        <p className="text-sm text-gray-600">{agent.title}</p>
+                        <h3 className="font-bold font-orbitron text-lg uppercase tracking-wider text-white">{agent.name}</h3>
+                        <p className="text-sm text-gray-400 font-mono">{agent.title}</p>
                       </div>
                     </div>
-                    <p className="text-sm text-gray-700 mb-3">{agent.description}</p>
+                    <p className="text-sm text-gray-300 mb-3 font-mono">{agent.description}</p>
                     <div className="space-y-1">
                       {agent.specialties.map((specialty, index) => (
                         <Badge key={index} variant="purple" className="text-xs mr-1 mb-1">
@@ -153,39 +153,39 @@ export default function CustomAgentsPage() {
       <Card>
         <CardHeader>
           <CardTitle className="flex items-center space-x-2">
-            <Workflow className="h-6 w-6 text-purple-600" />
-            <span>Collaboration Features</span>
+            <Workflow className="h-6 w-6 text-neon-purple" />
+            <span className="font-orbitron uppercase tracking-wider">Collaboration Features</span>
           </CardTitle>
-          <CardDescription>
+          <CardDescription className="text-gray-300 font-mono">
             Your agents work together intelligently to provide comprehensive solutions
           </CardDescription>
         </CardHeader>
         <CardContent>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             <div className="text-center space-y-3">
-              <div className="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center mx-auto">
-                <Brain className="h-6 w-6 text-purple-600" />
+              <div className="w-12 h-12 bg-neon-purple/20 border-2 border-neon-purple/50 rounded-full flex items-center justify-center mx-auto">
+                <Brain className="h-6 w-6 text-neon-purple" />
               </div>
-              <h3 className="font-semibold">Intelligent Routing</h3>
-              <p className="text-sm text-gray-600">
+              <h3 className="font-bold font-orbitron uppercase tracking-wider text-white">Intelligent Routing</h3>
+              <p className="text-sm text-gray-300 font-mono">
                 Requests are automatically routed to the most appropriate agent based on content and context
               </p>
             </div>
             <div className="text-center space-y-3">
-              <div className="w-12 h-12 bg-orange-100 rounded-full flex items-center justify-center mx-auto">
-                <Users className="h-6 w-6 text-orange-600" />
+              <div className="w-12 h-12 bg-neon-orange/20 border-2 border-neon-orange/50 rounded-full flex items-center justify-center mx-auto">
+                <Users className="h-6 w-6 text-neon-orange" />
               </div>
-              <h3 className="font-semibold">Multi-Agent Collaboration</h3>
-              <p className="text-sm text-gray-600">
+              <h3 className="font-bold font-orbitron uppercase tracking-wider text-white">Multi-Agent Collaboration</h3>
+              <p className="text-sm text-gray-300 font-mono">
                 Agents can request help from each other and work together on complex problems
               </p>
             </div>
             <div className="text-center space-y-3">
-              <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center mx-auto">
-                <Workflow className="h-6 w-6 text-green-600" />
+              <div className="w-12 h-12 bg-neon-lime/20 border-2 border-neon-lime/50 rounded-full flex items-center justify-center mx-auto">
+                <Workflow className="h-6 w-6 text-neon-lime" />
               </div>
-              <h3 className="font-semibold">Workflow Orchestration</h3>
-              <p className="text-sm text-gray-600">
+              <h3 className="font-bold font-orbitron uppercase tracking-wider text-white">Workflow Orchestration</h3>
+              <p className="text-sm text-gray-300 font-mono">
                 Complex tasks are broken down into workflows with multiple agents working in sequence
               </p>
             </div>
@@ -196,8 +196,8 @@ export default function CustomAgentsPage() {
       {/* Chat Interface */}
       <Card className="h-[600px]">
         <CardHeader>
-          <CardTitle>Chat with Your AI Agents</CardTitle>
-          <CardDescription>
+          <CardTitle className="font-orbitron uppercase tracking-wider">Chat with Your AI Agents</CardTitle>
+          <CardDescription className="text-gray-300 font-mono">
             Interact with your custom AI agents. They&apos;ll automatically collaborate when needed.
           </CardDescription>
         </CardHeader>

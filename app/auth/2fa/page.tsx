@@ -65,9 +65,9 @@ export default function TwoFactorPage() {
 
       <div className="w-full max-w-md relative z-10">
         <div className="relative group">
-          <div className="absolute -inset-0.5 bg-gradient-to-r from-neon-purple to-neon-cyan rounded-2xl opacity-20 group-hover:opacity-40 transition duration-500 blur"></div>
+          <div className="absolute -inset-0.5 bg-gradient-to-r from-neon-purple to-neon-cyan rounded-sm opacity-20 group-hover:opacity-40 transition duration-500 blur"></div>
           
-          <div className="relative bg-dark-card/90 backdrop-blur-xl p-8 rounded-2xl border border-neon-purple/30">
+          <div className="relative bg-dark-card/90 backdrop-blur-xl p-8 rounded-sm border border-neon-purple/30">
             <div className="text-center mb-8">
               <div className="mx-auto mb-4 w-12 h-12 bg-neon-purple/20 rounded-full flex items-center justify-center">
                 <Shield className="w-6 h-6 text-neon-purple" />

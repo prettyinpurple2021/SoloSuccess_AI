@@ -47,14 +47,14 @@ export default function BlogPage() {
       <div className="pt-32 pb-20">
         <div className="max-w-7xl mx-auto px-6">
           <div className="text-center mb-16">
-            <div className="inline-flex items-center gap-2 px-3 py-1 border border-cyber-purple/30 bg-cyber-purple/5 rounded-none mb-6">
-              <BookOpen className="w-4 h-4 text-cyber-purple" />
-              <span className="text-xs font-bold tracking-widest text-cyber-purple uppercase">Knowledge Base</span>
+            <div className="inline-flex items-center gap-2 px-3 py-1 border border-neon-purple/30 bg-neon-purple/5 rounded-none mb-6">
+              <BookOpen className="w-4 h-4 text-neon-purple" />
+              <span className="text-xs font-bold tracking-widest text-neon-purple uppercase">Knowledge Base</span>
             </div>
-            <h1 className="text-4xl md:text-6xl font-sci font-bold text-white mb-6">
-              BOSS <span className="text-cyber-purple">BLOG</span>
+            <h1 className="text-4xl md:text-6xl font-orbitron font-bold text-white mb-6">
+              BOSS <span className="text-neon-purple">BLOG</span>
             </h1>
-            <p className="text-lg text-gray-400 max-w-2xl mx-auto font-tech">
+            <p className="text-lg text-gray-400 max-w-2xl mx-auto font-mono">
               Strategic intelligence and insights for building your empire.
             </p>
           </div>
@@ -66,7 +66,7 @@ export default function BlogPage() {
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 placeholder="Search articles..."
-                className="pl-10 bg-cyber-dark/50 border-cyber-cyan/30 text-white placeholder:text-gray-500 focus:border-cyber-cyan"
+                className="pl-10 bg-dark-card/50 border-cyber-cyan/30 text-white placeholder:text-gray-500 focus:border-cyber-cyan"
               />
             </div>
           </HudBorder>
@@ -76,15 +76,15 @@ export default function BlogPage() {
               <Link key={post.id} href={`/blog/${post.id}`}>
                 <HudBorder variant="hover" className="p-6 h-full cursor-pointer">
                   <div className="flex items-center gap-2 mb-4">
-                    <span className="text-xs font-sci text-cyber-purple uppercase tracking-widest">
+                    <span className="text-xs font-orbitron text-neon-purple uppercase tracking-widest">
                       {post.category}
                     </span>
-                    <span className="text-xs text-gray-500 font-tech">•</span>
-                    <span className="text-xs text-gray-500 font-tech">{post.readTime}</span>
+                    <span className="text-xs text-gray-500 font-mono">•</span>
+                    <span className="text-xs text-gray-500 font-mono">{post.readTime}</span>
                   </div>
-                  <h3 className="font-sci text-xl text-white mb-3">{post.title}</h3>
-                  <p className="text-sm text-gray-400 font-tech mb-4 leading-relaxed">{post.excerpt}</p>
-                  <div className="flex items-center gap-2 text-xs text-gray-500 font-tech">
+                  <h3 className="font-orbitron text-xl text-white mb-3">{post.title}</h3>
+                  <p className="text-sm text-gray-400 font-mono mb-4 leading-relaxed">{post.excerpt}</p>
+                  <div className="flex items-center gap-2 text-xs text-gray-500 font-mono">
                     <Calendar className="w-4 h-4" />
                     <span>{new Date(post.date).toLocaleDateString()}</span>
                   </div>

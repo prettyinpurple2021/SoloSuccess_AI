@@ -22,10 +22,10 @@ export default function CompareIndexPage() {
               <BarChart3 className="w-4 h-4 text-cyber-cyan" />
               <span className="text-xs font-bold tracking-widest text-cyber-cyan uppercase">System Comparison</span>
             </div>
-            <h1 className="text-4xl md:text-6xl font-sci font-bold text-white mb-6">
+            <h1 className="text-4xl md:text-6xl font-orbitron font-bold text-white mb-6">
               COMPARE <span className="text-cyber-cyan">SYSTEMS</span>
             </h1>
-            <p className="text-lg text-gray-400 max-w-2xl mx-auto font-tech">
+            <p className="text-lg text-gray-400 max-w-2xl mx-auto font-mono">
               See how SoloSuccess AI compares and choose the best fit for your solo business.
             </p>
           </div>
@@ -34,8 +34,8 @@ export default function CompareIndexPage() {
             {comparisons.map((comparison) => (
               <Link key={comparison.href} href={comparison.href}>
                 <HudBorder variant="hover" className="p-6 cursor-pointer">
-                  <h3 className="font-sci text-xl text-white mb-3">{comparison.title}</h3>
-                  <p className="text-sm text-gray-400 font-tech">
+                  <h3 className="font-orbitron text-xl text-white mb-3">{comparison.title}</h3>
+                  <p className="text-sm text-gray-400 font-mono">
                     Feature breakdowns, pricing notes, and best‑fit recommendations.
                   </p>
                 </HudBorder>
@@ -44,9 +44,9 @@ export default function CompareIndexPage() {
           </div>
 
           <div className="mt-12 text-center">
-            <p className="text-gray-400 font-tech">
-              Or explore our <Link href="/pricing" className="text-cyber-cyan hover:text-cyber-purple">pricing</Link> and{' '}
-              <Link href="/features" className="text-cyber-cyan hover:text-cyber-purple">features</Link> directly.
+            <p className="text-gray-400 font-mono">
+              Or explore our <Link href="/pricing" className="text-cyber-cyan hover:text-neon-purple">pricing</Link> and{' '}
+              <Link href="/features" className="text-cyber-cyan hover:text-neon-purple">features</Link> directly.
             </p>
           </div>
         </div>

@@ -160,7 +160,7 @@ export default function FileMetadataPanel({
         <CardHeader className="pb-3">
           <div className="flex items-start justify-between">
             <div className="flex items-center gap-3 min-w-0 flex-1">
-              <div className="w-10 h-10 bg-purple-100 rounded-lg flex items-center justify-center flex-shrink-0">
+              <div className="w-10 h-10 bg-neon-purple/20 border-2 border-neon-purple/50 rounded-sm flex items-center justify-center flex-shrink-0">
                 {getFileIcon(file.file_type)}
               </div>
               <div className="min-w-0 flex-1">
@@ -269,7 +269,7 @@ export default function FileMetadataPanel({
             <div>
               <span className="text-gray-600">File ID:</span>
               <div className="flex items-center gap-2">
-                <code className="text-xs bg-gray-100 px-1 py-0.5 rounded font-mono">
+                <code className="text-xs bg-dark-card px-1 py-0.5 rounded font-mono">
                   {file.id.slice(0, 8)}...
                 </code>
                 <Button
@@ -396,7 +396,7 @@ export default function FileMetadataPanel({
             </div>
           ) : (
             <div className="space-y-2">
-              <p className="text-sm text-gray-700 min-h-[1.5rem]">
+              <p className="text-sm text-gray-300 font-mono min-h-[1.5rem]">
                 {file.description || 'No description provided'}
               </p>
               {onUpdateDescription && (
@@ -472,13 +472,13 @@ export default function FileMetadataPanel({
               {file.ai_insights.summary && (
                 <div>
                   <span className="text-gray-600">Summary:</span>
-                  <p className="text-gray-700 mt-1">{file.ai_insights.summary}</p>
+                  <p className="text-gray-300 font-mono mt-1">{file.ai_insights.summary}</p>
                 </div>
               )}
               {file.ai_insights.keyPoints && file.ai_insights.keyPoints.length > 0 && (
                 <div>
                   <span className="text-gray-600">Key Points:</span>
-                  <ul className="list-disc list-inside text-gray-700 mt-1 space-y-1">
+                  <ul className="list-disc list-inside text-gray-300 font-mono mt-1 space-y-1">
                     {file.ai_insights.keyPoints.map((point: string, index: number) => (
                       <li key={index}>{point}</li>
                     ))}

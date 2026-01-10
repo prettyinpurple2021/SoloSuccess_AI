@@ -66,8 +66,8 @@ export default function AnalyticsDashboard() {
       {/* Header */}
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
-          <h1 className="text-3xl font-bold text-gradient">Analytics Dashboard</h1>
-          <p className="text-purple-200 mt-1">
+          <h1 className="text-3xl font-bold font-orbitron uppercase tracking-wider bg-gradient-to-r from-neon-cyan to-neon-purple bg-clip-text text-transparent">Analytics Dashboard</h1>
+          <p className="text-gray-300 mt-1 font-mono">
             Comprehensive insights into your business performance
           </p>
         </div>
@@ -76,7 +76,7 @@ export default function AnalyticsDashboard() {
             variant="outline"
             onClick={handleRefresh}
             disabled={isLoading}
-            className="text-purple-200 hover:text-white border-purple-700"
+            className="text-gray-300 hover:text-white border-2 border-gray-700 hover:border-neon-cyan font-mono font-bold uppercase tracking-wider rounded-sm"
           >
             <RefreshCw className={`w-4 h-4 mr-2 ${isLoading ? 'animate-spin' : ''}`} />
             Refresh
@@ -84,7 +84,7 @@ export default function AnalyticsDashboard() {
           <Button
             variant="outline"
             onClick={() => handleExport('csv')}
-            className="text-purple-200 hover:text-white border-purple-700"
+            className="text-gray-300 hover:text-white border-2 border-gray-700 hover:border-neon-cyan font-mono font-bold uppercase tracking-wider rounded-sm"
           >
             <Download className="w-4 h-4 mr-2" />
             Export CSV
@@ -94,22 +94,22 @@ export default function AnalyticsDashboard() {
 
       {/* Main Analytics Tabs */}
       <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
-        <TabsList className="grid w-full grid-cols-5 bg-purple-900/50 border border-purple-700">
-          <TabsTrigger value="overview" className="data-[state=active]:bg-cyan-500 data-[state=active]:text-white">
+        <TabsList className="grid w-full grid-cols-5 bg-dark-card/50 border-2 border-gray-700 rounded-sm">
+          <TabsTrigger value="overview" className="data-[state=active]:bg-neon-cyan data-[state=active]:text-white font-mono font-bold uppercase tracking-wider rounded-sm">
             Overview
           </TabsTrigger>
-          <TabsTrigger value="performance" className="data-[state=active]:bg-cyan-500 data-[state=active]:text-white">
+          <TabsTrigger value="performance" className="data-[state=active]:bg-neon-cyan data-[state=active]:text-white font-mono font-bold uppercase tracking-wider rounded-sm">
             Performance
           </TabsTrigger>
-          <TabsTrigger value="predictive" className="data-[state=active]:bg-cyan-500 data-[state=active]:text-white">
+          <TabsTrigger value="predictive" className="data-[state=active]:bg-neon-cyan data-[state=active]:text-white font-mono font-bold uppercase tracking-wider rounded-sm">
             <Brain className="w-4 h-4 mr-2" />
             Predictive
           </TabsTrigger>
-          <TabsTrigger value="reports" className="data-[state=active]:bg-cyan-500 data-[state=active]:text-white">
+          <TabsTrigger value="reports" className="data-[state=active]:bg-neon-cyan data-[state=active]:text-white font-mono font-bold uppercase tracking-wider rounded-sm">
             <Lightbulb className="w-4 h-4 mr-2" />
             Reports
           </TabsTrigger>
-          <TabsTrigger value="insights" className="data-[state=active]:bg-cyan-500 data-[state=active]:text-white">
+          <TabsTrigger value="insights" className="data-[state=active]:bg-neon-cyan data-[state=active]:text-white font-mono font-bold uppercase tracking-wider rounded-sm">
             Insights
           </TabsTrigger>
         </TabsList>
@@ -181,7 +181,7 @@ export default function AnalyticsDashboard() {
                 </CardDescription>
               </CardHeader>
               <CardContent>
-                <div className="h-64 bg-gray-50 rounded-lg flex items-center justify-center">
+                <div className="h-64 bg-dark-card rounded-lg flex items-center justify-center">
                   <p className="text-gray-500">User growth chart will be rendered here</p>
                 </div>
               </CardContent>
@@ -195,7 +195,7 @@ export default function AnalyticsDashboard() {
                 </CardDescription>
               </CardHeader>
               <CardContent>
-                <div className="h-64 bg-gray-50 rounded-lg flex items-center justify-center">
+                <div className="h-64 bg-dark-card rounded-lg flex items-center justify-center">
                   <p className="text-gray-500">Revenue chart will be rendered here</p>
                 </div>
               </CardContent>
@@ -229,7 +229,7 @@ export default function AnalyticsDashboard() {
                   <Badge variant="purple">AI</Badge>
                 </div>
                 <div className="flex items-center space-x-4">
-                  <div className="w-2 h-2 bg-purple-500 rounded-full"></div>
+                  <div className="w-2 h-2 bg-neon-purple rounded-full"></div>
                   <div className="flex-1">
                     <p className="text-sm font-medium">Goal milestone reached</p>
                     <p className="text-xs text-muted-foreground">10 minutes ago</p>
@@ -284,7 +284,7 @@ export default function AnalyticsDashboard() {
                 </CardDescription>
               </CardHeader>
               <CardContent>
-                <div className="h-64 bg-gray-50 rounded-lg flex items-center justify-center">
+                <div className="h-64 bg-dark-card rounded-lg flex items-center justify-center">
                   <p className="text-gray-500">Performance charts will be rendered here</p>
                 </div>
               </CardContent>
@@ -316,7 +316,7 @@ export default function AnalyticsDashboard() {
             </CardHeader>
             <CardContent>
               <div className="space-y-4">
-                <div className="p-4 bg-blue-50 rounded-lg border border-blue-200">
+                <div className="p-4 bg-neon-cyan/10 rounded-sm border-2 border-neon-cyan/50">
                   <h4 className="font-semibold text-blue-900">Growth Opportunity</h4>
                   <p className="text-blue-700 text-sm mt-1">
                     Your user engagement has increased by 23% this month. Consider launching a referral program to capitalize on this momentum.
@@ -328,7 +328,7 @@ export default function AnalyticsDashboard() {
                     AI task completion rates are highest between 9-11 AM. Consider scheduling important tasks during this peak period.
                   </p>
                 </div>
-                <div className="p-4 bg-yellow-50 rounded-lg border border-yellow-200">
+                <div className="p-4 bg-neon-orange/10 rounded-sm border-2 border-neon-orange/50">
                   <h4 className="font-semibold text-yellow-900">Optimization Suggestion</h4>
                   <p className="text-yellow-700 text-sm mt-1">
                     Users who complete onboarding within 3 days have 40% higher retention. Consider streamlining the onboarding process.
@@ -346,7 +346,7 @@ export default function AnalyticsDashboard() {
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <div className="h-64 bg-gray-50 rounded-lg flex items-center justify-center">
+              <div className="h-64 bg-dark-card rounded-lg flex items-center justify-center">
                 <p className="text-gray-500">Performance charts will be rendered here</p>
               </div>
             </CardContent>

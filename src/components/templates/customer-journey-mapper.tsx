@@ -513,9 +513,9 @@ export default function CustomerJourneyMapper({ template, initialData, onSave: _
                 </Select>
               </div>
 
-              <div className="bg-gradient-to-r from-purple-50 to-pink-50 p-4 rounded-lg border">
+              <div className="bg-gradient-to-r from-neon-purple/10 to-neon-magenta/10 border-2 border-neon-purple/50 p-4 rounded-sm border">
                 <h4 className="font-semibold mb-2">Journey Mapping Best Practices</h4>
-                <ul className="text-sm space-y-1 list-disc list-inside text-gray-700">
+                <ul className="text-sm space-y-1 list-disc list-inside text-gray-300 font-mono">
                   <li>Focus on one specific customer journey at a time</li>
                   <li>Include both digital and physical touchpoints</li>
                   <li>Consider emotional aspects, not just functional ones</li>
@@ -893,7 +893,7 @@ export default function CustomerJourneyMapper({ template, initialData, onSave: _
                     key={stage.id}
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
-                    className="p-6 border rounded-lg relative"
+                    className="p-6 border rounded-sm relative"
                   >
                     <div className="flex items-center justify-between mb-4">
                       <div className="flex items-center gap-3">
@@ -1129,7 +1129,7 @@ export default function CustomerJourneyMapper({ template, initialData, onSave: _
                     key={touchpoint.id}
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
-                    className="p-6 border rounded-lg"
+                    className="p-6 border rounded-sm"
                   >
                     <div className="flex justify-between items-start mb-4">
                       <div className="flex items-center gap-3">
@@ -1410,21 +1410,21 @@ export default function CustomerJourneyMapper({ template, initialData, onSave: _
               </CardHeader>
               <CardContent>
                 <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
-                  <div className="text-center p-4 border rounded-lg">
+                  <div className="text-center p-4 border rounded-sm">
                     <div className="text-2xl font-bold text-purple-900">{data.stages.length}</div>
                     <div className="text-sm text-purple-700">Journey Stages</div>
                   </div>
-                  <div className="text-center p-4 border rounded-lg">
+                  <div className="text-center p-4 border rounded-sm">
                     <div className="text-2xl font-bold text-purple-900">{data.touchpoints.length}</div>
                     <div className="text-sm text-purple-700">Touchpoints</div>
                   </div>
-                  <div className="text-center p-4 border rounded-lg">
+                  <div className="text-center p-4 border rounded-sm">
                     <div className="text-2xl font-bold text-purple-900">
                       {calculateOverallSatisfaction()}/10
                     </div>
                     <div className="text-sm text-purple-700">Avg Satisfaction</div>
                   </div>
-                  <div className="text-center p-4 border rounded-lg">
+                  <div className="text-center p-4 border rounded-sm">
                     <div className="text-2xl font-bold text-purple-900">
                       {data.touchpoints.filter(tp => tp.emotionScore <= 5).length}
                     </div>
@@ -1435,7 +1435,7 @@ export default function CustomerJourneyMapper({ template, initialData, onSave: _
                 {/* Emotion Journey */}
                 <div className="mb-6">
                   <h4 className="font-semibold mb-3">Emotional Journey</h4>
-                  <div className="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
+                  <div className="flex items-center justify-between p-4 bg-gray-50 rounded-sm">
                     {data.stages.map((stage, index) => (
                       <div key={stage.id} className="text-center">
                         <div className={`text-2xl ${getEmotionColor(stage.overallEmotion)}`}>
@@ -1453,7 +1453,7 @@ export default function CustomerJourneyMapper({ template, initialData, onSave: _
 
                 {/* Critical Pain Points */}
                 {data.touchpoints.filter(tp => tp.emotionScore <= 5).length > 0 && (
-                  <div className="mb-6 p-4 bg-gradient-to-r from-red-50 to-orange-50 border border-red-200 rounded-lg">
+                  <div className="mb-6 p-4 bg-gradient-to-r from-red-50 to-orange-50 border border-neon-magenta/50 rounded-sm">
                     <h4 className="font-semibold mb-2 flex items-center gap-2 text-red-700">
                       <AlertTriangle className="w-4 h-4" />
                       Critical Pain Points
@@ -1466,7 +1466,7 @@ export default function CustomerJourneyMapper({ template, initialData, onSave: _
                           <div key={touchpoint.id} className="flex items-center justify-between text-sm">
                             <span>{touchpoint.name}</span>
                             <div className="flex items-center gap-2">
-                              <Badge variant="orange" className="text-red-600 border-red-200">
+                              <Badge variant="orange" className="text-red-600 border-neon-magenta/50">
                                 {touchpoint.emotionScore}/10
                               </Badge>
                               <div className="text-red-600">
@@ -1573,7 +1573,7 @@ export default function CustomerJourneyMapper({ template, initialData, onSave: _
                 </div>
 
                 {/* Journey Summary */}
-                <div className="mt-6 p-6 bg-gradient-to-r from-purple-50 to-pink-50 rounded-lg border-2 border-purple-200">
+                <div className="mt-6 p-6 bg-gradient-to-r from-neon-purple/10 to-neon-magenta/10 border-2 border-neon-purple/50 rounded-sm border-2 border-neon-purple/50">
                   <h4 className="font-bold text-purple-700 mb-2 flex items-center gap-2">
                     <Lightbulb className="w-5 h-5" />
                     Journey Summary

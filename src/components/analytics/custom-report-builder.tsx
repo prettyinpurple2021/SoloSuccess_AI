@@ -496,12 +496,12 @@ export function CustomReportBuilder({
                 <ScrollArea className="h-96">
                   {Object.entries(fieldsByCategory).map(([category, fields]) => (
                     <div key={category} className="mb-4">
-                      <h4 className="font-semibold text-sm text-gray-700 mb-2">{category}</h4>
+                      <h4 className="font-semibold text-sm text-gray-300 mb-2">{category}</h4>
                       <div className="space-y-1">
                         {fields.map(field => (
                           <div
                             key={field.id}
-                            className="p-2 bg-gray-50 rounded-md cursor-move hover:bg-gray-100 transition-colors"
+                            className="p-2 bg-dark-card rounded-md cursor-move hover:bg-dark-hover transition-colors"
                             draggable
                           >
                             <div className="flex items-center justify-between">
@@ -534,7 +534,7 @@ export function CustomReportBuilder({
               <CardContent>
                 <div className="space-y-3">
                   {report.globalFilters.map(filter => (
-                    <div key={filter.id} className="flex items-center gap-2 p-2 bg-gray-50 rounded-md">
+                    <div key={filter.id} className="flex items-center gap-2 p-2 bg-dark-card rounded-md">
                       <Select
                         value={filter.field}
                         onValueChange={(value) => updateFilter(filter.id, { field: value }, true)}
@@ -622,7 +622,7 @@ export function CustomReportBuilder({
                       <div className="flex items-center gap-3">
                         {VISUALIZATION_TYPES.find(t => t.id === viz.type)?.icon && (
                           React.createElement(VISUALIZATION_TYPES.find(t => t.id === viz.type)!.icon, {
-                            className: "h-5 w-5 text-purple-500"
+                            className: "h-5 w-5 text-neon-purple"
                           })
                         )}
                         <div>
@@ -983,7 +983,7 @@ export function CustomReportBuilder({
                       {VISUALIZATION_TYPES.find(t => t.id === viz.type)?.name}
                     </Badge>
                   </div>
-                  <div className="h-64 bg-gray-50 rounded-lg flex items-center justify-center">
+                  <div className="h-64 bg-dark-card rounded-lg flex items-center justify-center">
                     <div className="text-center">
                       <BarChart3 className="h-12 w-12 text-gray-400 mx-auto mb-2" />
                       <p className="text-gray-500">Chart preview would appear here</p>

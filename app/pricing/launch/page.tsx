@@ -114,7 +114,7 @@ export default function LaunchPricingPage() {
               <div className="flex items-center justify-between h-20">
                 <Link href="/" className="flex items-center gap-3">
                   <motion.div 
-                    className="w-12 h-12 rounded-xl bg-gradient-to-br from-neon-purple to-neon-magenta flex items-center justify-center shadow-lg"
+                    className="w-12 h-12 rounded-sm bg-gradient-to-br from-neon-purple to-neon-magenta flex items-center justify-center shadow-[0_0_20px_rgba(179,0,255,0.3)]"
                     whileHover={{ scale: 1.05 }}
                   >
                     <Crown className="w-6 h-6 text-white" />
@@ -208,7 +208,7 @@ export default function LaunchPricingPage() {
                       transition={{ duration: 0.6, delay: index * 0.1 }}
                     >
                       <GlassCard className="h-full p-8">
-                        <div className="w-16 h-16 mx-auto mb-6 rounded-xl bg-gradient-to-br from-neon-purple to-neon-magenta flex items-center justify-center">
+                        <div className="w-16 h-16 mx-auto mb-6 rounded-sm bg-gradient-to-br from-neon-purple to-neon-magenta flex items-center justify-center">
                           {index === 0 && <Users className="w-8 h-8 text-white" />}
                           {index === 1 && <Play className="w-8 h-8 text-white" />}
                           {index === 2 && <Heart className="w-8 h-8 text-white" />}
@@ -256,7 +256,7 @@ export default function LaunchPricingPage() {
                   <div className="grid md:grid-cols-2 gap-8">
                     <div className="space-y-6">
                       <div className="flex items-center gap-4">
-                        <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-neon-purple to-neon-magenta flex items-center justify-center">
+                        <div className="w-12 h-12 rounded-sm bg-gradient-to-br from-neon-purple to-neon-magenta flex items-center justify-center">
                           <Gift className="w-6 h-6 text-white" />
                         </div>
                         <div>
@@ -266,7 +266,7 @@ export default function LaunchPricingPage() {
                       </div>
                       
                       <div className="flex items-center gap-4">
-                        <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-neon-purple to-neon-magenta flex items-center justify-center">
+                        <div className="w-12 h-12 rounded-sm bg-gradient-to-br from-neon-purple to-neon-magenta flex items-center justify-center">
                           <Heart className="w-6 h-6 text-white" />
                         </div>
                         <div>
@@ -276,7 +276,7 @@ export default function LaunchPricingPage() {
                       </div>
                       
                       <div className="flex items-center gap-4">
-                        <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-neon-purple to-neon-magenta flex items-center justify-center">
+                        <div className="w-12 h-12 rounded-sm bg-gradient-to-br from-neon-purple to-neon-magenta flex items-center justify-center">
                           <Target className="w-6 h-6 text-white" />
                         </div>
                         <div>
@@ -288,7 +288,7 @@ export default function LaunchPricingPage() {
                     
                     <div className="space-y-6">
                       <div className="flex items-center gap-4">
-                        <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-neon-purple to-neon-magenta flex items-center justify-center">
+                        <div className="w-12 h-12 rounded-sm bg-gradient-to-br from-neon-purple to-neon-magenta flex items-center justify-center">
                           <Shield className="w-6 h-6 text-white" />
                         </div>
                         <div>
@@ -298,7 +298,7 @@ export default function LaunchPricingPage() {
                       </div>
                       
                       <div className="flex items-center gap-4">
-                        <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-neon-purple to-neon-magenta flex items-center justify-center">
+                        <div className="w-12 h-12 rounded-sm bg-gradient-to-br from-neon-purple to-neon-magenta flex items-center justify-center">
                           <TrendingUp className="w-6 h-6 text-white" />
                         </div>
                         <div>
@@ -308,7 +308,7 @@ export default function LaunchPricingPage() {
                       </div>
                       
                       <div className="flex items-center gap-4">
-                        <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-neon-purple to-neon-magenta flex items-center justify-center">
+                        <div className="w-12 h-12 rounded-sm bg-gradient-to-br from-neon-purple to-neon-magenta flex items-center justify-center">
                           <Star className="w-6 h-6 text-white" />
                         </div>
                         <div>

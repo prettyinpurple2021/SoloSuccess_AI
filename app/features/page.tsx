@@ -71,11 +71,11 @@ export default function FeaturesPage() {
       <div className="pt-32 pb-20">
         <div className="max-w-7xl mx-auto px-6">
           <div className="text-center mb-16">
-            <span className="text-cyber-purple font-sci text-sm tracking-widest">/// CAPABILITIES</span>
-            <h1 className="text-4xl md:text-6xl font-sci font-bold text-white mt-4">
-              INTELLIGENCE_MODULES <span className="text-cyber-cyan blinking">_</span>
+            <span className="text-cyber-purple font-orbitron text-sm tracking-widest">/// CAPABILITIES</span>
+            <h1 className="text-4xl md:text-6xl font-orbitron font-bold text-white mt-4">
+              INTELLIGENCE_MODULES <span className="text-neon-cyan blinking">_</span>
             </h1>
-            <p className="text-lg text-gray-400 mt-6 max-w-2xl mx-auto font-tech">
+            <p className="text-lg text-gray-400 mt-6 max-w-2xl mx-auto font-mono">
               Deploy AI agents with intelligent precision to optimize every aspect of your operation
             </p>
           </div>
@@ -84,13 +84,13 @@ export default function FeaturesPage() {
             {features.map((feature) => (
               <HudBorder key={feature.number} variant="hover" className="p-6 group cursor-pointer">
                 <div className="flex justify-between items-start mb-4">
-                  <span className="font-sci text-2xl font-bold text-white/20 group-hover:text-cyber-cyan transition-colors">
+                  <span className="font-orbitron text-2xl font-bold text-white/20 group-hover:text-neon-cyan transition-colors">
                     {feature.number}
                   </span>
                   <feature.icon className="w-6 h-6 text-cyber-purple" />
                 </div>
-                <h3 className="font-sci text-lg text-white mb-2">{feature.title}</h3>
-                <p className="text-sm text-gray-400 font-tech leading-relaxed">{feature.description}</p>
+                <h3 className="font-orbitron text-lg text-white mb-2">{feature.title}</h3>
+                <p className="text-sm text-gray-400 font-mono leading-relaxed">{feature.description}</p>
               </HudBorder>
             ))}
           </div>

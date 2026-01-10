@@ -398,7 +398,7 @@ export default function FileSharingModal({
       case 'editor': return 'bg-blue-100 text-blue-700'
       case 'commenter': return 'bg-yellow-100 text-yellow-700'
       case 'viewer': return 'bg-green-100 text-green-700'
-      default: return 'bg-gray-100 text-gray-700'
+      default: return 'bg-dark-card text-gray-300'
     }
   }
 
@@ -484,7 +484,7 @@ export default function FileSharingModal({
                           initial={{ opacity: 0, y: -10 }}
                           animate={{ opacity: 1, y: 0 }}
                           exit={{ opacity: 0, y: -10 }}
-                          className="absolute z-10 w-full mt-1 bg-white border rounded-md shadow-lg"
+                          className="absolute z-10 w-full mt-1 bg-white border rounded-sm shadow-[0_0_20px_rgba(179,0,255,0.3)]"
                         >
                           {inviteSuggestions.map((suggestion, index) => (
                             <button
@@ -493,7 +493,7 @@ export default function FileSharingModal({
                                 setInviteEmail(suggestion.email)
                                 setInviteSuggestions([])
                               }}
-                              className="w-full px-3 py-2 text-left hover:bg-gray-50 flex items-center gap-2"
+                              className="w-full px-3 py-2 text-left hover:bg-dark-card flex items-center gap-2"
                             >
                               <Avatar className="w-6 h-6">
                                 <AvatarImage src={suggestion.avatar} />
@@ -782,7 +782,7 @@ export default function FileSharingModal({
                           </span>
                         )}
                       </div>
-                      <div className="flex items-center gap-1 text-xs font-mono bg-gray-50 p-2 rounded truncate">
+                      <div className="flex items-center gap-1 text-xs font-mono bg-dark-card p-2 rounded truncate">
                         {link.url}
                       </div>
                     </div>

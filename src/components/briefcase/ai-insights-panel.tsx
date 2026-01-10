@@ -251,7 +251,7 @@ export default function AIInsightsPanel({ file, onClose, className = "" }: AIIns
         return {
           icon: <Meh className="w-4 h-4" />,
           color: 'text-gray-600',
-          bgColor: 'bg-gray-100',
+          bgColor: 'bg-dark-card',
           label: 'Neutral'
         }
     }
@@ -385,7 +385,7 @@ export default function AIInsightsPanel({ file, onClose, className = "" }: AIIns
                         </CardTitle>
                       </CardHeader>
                       <CardContent>
-                        <p className="text-sm text-gray-700 leading-relaxed">
+                        <p className="text-sm text-gray-300 font-mono leading-relaxed">
                           {keyInsights.summary}
                         </p>
                         <div className="flex items-center gap-2 mt-2">
@@ -410,7 +410,7 @@ export default function AIInsightsPanel({ file, onClose, className = "" }: AIIns
                           {keyInsights.keyPoints.map((point, index) => (
                             <li key={index} className="flex items-start gap-2">
                               <ArrowRight className="w-3 h-3 mt-1 text-blue-600 flex-shrink-0" />
-                              <span className="text-sm text-gray-700">{point}</span>
+                              <span className="text-sm text-gray-300 font-mono">{point}</span>
                             </li>
                           ))}
                         </ul>
@@ -560,7 +560,7 @@ export default function AIInsightsPanel({ file, onClose, className = "" }: AIIns
                   <CardContent>
                     <div className="space-y-3">
                       {categories.map((category, index) => (
-                        <div key={index} className="flex items-center justify-between p-3 border rounded-lg">
+                        <div key={index} className="flex items-center justify-between p-3 border rounded-sm">
                           <div className="flex-1">
                             <div className="font-medium">{category.category}</div>
                             <div className="text-sm text-gray-600 mt-1">{category.reasoning}</div>

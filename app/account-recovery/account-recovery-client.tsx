@@ -53,22 +53,22 @@ export default function AccountRecoveryClient() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50 flex items-center justify-center p-4">
-      <Card className="w-full max-w-md border-2 border-purple-200 shadow-lg">
+    <div className="min-h-screen bg-dark-bg flex items-center justify-center p-4">
+      <Card className="w-full max-w-md border-2 border-neon-purple/50 shadow-[0_0_20px_rgba(179,0,255,0.3)] rounded-sm">
         <CardHeader className="text-center">
-          <CardTitle className="text-2xl font-bold boss-text-gradient">
+          <CardTitle className="text-2xl font-bold font-orbitron uppercase tracking-wider bg-gradient-to-r from-neon-cyan to-neon-purple bg-clip-text text-transparent">
             Forgot Your Password?
           </CardTitle>
-          <CardDescription>
+          <CardDescription className="text-gray-300 font-mono">
             No problem. Enter your email below and we&apos;ll send you a link to reset it.
           </CardDescription>
         </CardHeader>
         <CardContent>
           <form onSubmit={handlePasswordResetRequest} className="space-y-6">
             <div className="space-y-2">
-              <Label htmlFor="email" className="font-semibold">Email Address</Label>
+              <Label htmlFor="email" className="font-bold font-mono text-neon-cyan uppercase tracking-wider">Email Address</Label>
               <div className="relative">
-                <Mail className="absolute left-3 top-3 h-5 w-5 text-gray-400" />
+                <Mail className="absolute left-3 top-3 h-5 w-5 text-gray-500" />
                 <Input
                   id="email"
                   type="email"
@@ -76,15 +76,15 @@ export default function AccountRecoveryClient() {
                   onChange={(e: any) => setEmail(e.target.value)}
                   placeholder="you@your-empire.com"
                   required
-                  className="pl-10"
+                  className="pl-10 bg-dark-card border-2 border-gray-700 text-white placeholder:text-gray-500 focus:border-neon-cyan focus:ring-neon-cyan/20 rounded-sm font-mono"
                 />
               </div>
             </div>
             
             {message && (
-              <Alert variant="success" className="bg-green-50 border-green-200">
-                <CheckCircle className="h-4 w-4 text-green-600" />
-                <AlertDescription className="text-green-800">
+              <Alert variant="success" className="bg-neon-lime/10 border-2 border-neon-lime/50 rounded-sm">
+                <CheckCircle className="h-4 w-4 text-neon-lime" />
+                <AlertDescription className="text-neon-lime font-mono">
                   {message}
                 </AlertDescription>
               </Alert>
@@ -99,7 +99,8 @@ export default function AccountRecoveryClient() {
 
             <Button 
               type="submit" 
-              className="w-full boss-button bg-gradient-SoloSuccess hover:bg-gradient-SoloSuccess-light text-white font-bold"
+              variant="cyan"
+              className="w-full font-mono font-bold uppercase tracking-wider"
               disabled={loading}
             >
               {loading ? "Sending..." : "🚀 Send Reset Link"}
@@ -107,7 +108,7 @@ export default function AccountRecoveryClient() {
           </form>
           
           <div className="mt-6 text-center">
-            <Link href="/signin" className="text-sm font-medium text-purple-600 hover:underline">
+            <Link href="/signin" className="text-sm font-medium text-neon-purple hover:text-neon-cyan font-mono transition-colors">
               Remembered your password? Sign In
             </Link>
           </div>

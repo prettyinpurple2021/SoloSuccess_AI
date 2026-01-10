@@ -507,7 +507,7 @@ export default function BulkOperationsPanel({
                     </div>
                   </div>
                 ) : selectedOperation === 'delete' ? (
-                  <div className="p-4 bg-red-50 border border-red-200 rounded-lg">
+                  <div className="p-4 bg-neon-magenta/10 border-2 border-neon-magenta/50 rounded-sm">
                     <div className="flex items-center gap-2 text-red-800">
                       <AlertTriangle className="w-4 h-4" />
                       <span className="font-medium">Warning</span>

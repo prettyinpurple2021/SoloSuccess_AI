@@ -43,10 +43,10 @@ export default function CompliancePage() {
               <Shield className="w-4 h-4 text-cyber-purple" />
               <span className="text-xs font-bold tracking-widest text-cyber-purple uppercase">Compliance Status</span>
             </div>
-            <h1 className="text-4xl md:text-6xl font-sci font-bold text-white mb-6">
+            <h1 className="text-4xl md:text-6xl font-orbitron font-bold text-white mb-6">
               COMPLIANCE <span className="text-cyber-purple">STANDARDS</span>
             </h1>
-            <p className="text-lg text-gray-400 max-w-2xl mx-auto font-tech">
+            <p className="text-lg text-gray-400 max-w-2xl mx-auto font-mono">
               We maintain the highest standards of compliance and security certifications.
             </p>
           </div>
@@ -56,12 +56,12 @@ export default function CompliancePage() {
               <HudBorder key={index} variant="hover" className="p-6">
                 <div className="flex items-start justify-between mb-4">
                   <standard.icon className="w-8 h-8 text-cyber-purple" />
-                  <span className="text-xs font-sci text-cyber-cyan uppercase tracking-widest">
+                  <span className="text-xs font-orbitron text-neon-cyan uppercase tracking-widest">
                     {standard.status}
                   </span>
                 </div>
-                <h3 className="font-sci text-lg text-white mb-2">{standard.title}</h3>
-                <p className="text-sm text-gray-400 font-tech leading-relaxed">{standard.description}</p>
+                <h3 className="font-orbitron text-lg text-white mb-2">{standard.title}</h3>
+                <p className="text-sm text-gray-400 font-mono leading-relaxed">{standard.description}</p>
               </HudBorder>
             ))}
           </div>

@@ -73,10 +73,10 @@ export default function StatusPage() {
               <span className="w-1.5 h-1.5 bg-cyber-cyan rounded-full animate-ping"></span>
               <span className="text-xs font-bold tracking-widest text-cyber-cyan uppercase">System Status</span>
             </div>
-            <h1 className="text-4xl md:text-6xl font-sci font-bold text-white mb-6">
+            <h1 className="text-4xl md:text-6xl font-orbitron font-bold text-white mb-6">
               SYSTEM <span className="text-cyber-cyan">STATUS</span>
             </h1>
-            <p className="text-lg text-gray-400 max-w-2xl mx-auto font-tech">
+            <p className="text-lg text-gray-400 max-w-2xl mx-auto font-mono">
               Real-time status of all SoloSuccess AI services and infrastructure.
             </p>
           </div>
@@ -85,16 +85,16 @@ export default function StatusPage() {
             {services.map((service, index) => (
               <HudBorder key={index} variant="hover" className="p-6">
                 <div className="flex items-start justify-between mb-4">
-                  <service.icon className="w-8 h-8 text-cyber-purple" />
+                  <service.icon className="w-8 h-8 text-neon-purple" />
                   {getStatusIcon(service.status)}
                 </div>
-                <h3 className="font-sci text-lg text-white mb-2">{service.name}</h3>
-                <p className="text-sm text-gray-400 font-tech mb-4">{service.description}</p>
+                <h3 className="font-orbitron text-lg text-white mb-2">{service.name}</h3>
+                <p className="text-sm text-gray-400 font-mono mb-4">{service.description}</p>
                 <div className="flex items-center justify-between">
-                  <span className={`text-xs font-sci uppercase tracking-widest ${getStatusColor(service.status)}`}>
+                  <span className={`text-xs font-orbitron uppercase tracking-widest ${getStatusColor(service.status)}`}>
                     {service.status}
                   </span>
-                  <span className="text-xs text-gray-500 font-tech">Uptime: {service.uptime}</span>
+                  <span className="text-xs text-gray-500 font-mono">Uptime: {service.uptime}</span>
                 </div>
               </HudBorder>
             ))}
@@ -102,10 +102,10 @@ export default function StatusPage() {
 
           <div className="mt-12 text-center">
             <HudBorder className="p-8">
-              <h3 className="font-sci text-2xl text-white mb-4">OVERALL_STATUS</h3>
+              <h3 className="font-orbitron text-2xl text-white mb-4">OVERALL_STATUS</h3>
               <div className="flex items-center justify-center gap-3">
                 <CheckCircle className="w-8 h-8 text-cyber-cyan" />
-                <span className="font-sci text-xl text-cyber-cyan">ALL SYSTEMS OPERATIONAL</span>
+                <span className="font-orbitron text-xl text-cyber-cyan">ALL SYSTEMS OPERATIONAL</span>
               </div>
             </HudBorder>
           </div>

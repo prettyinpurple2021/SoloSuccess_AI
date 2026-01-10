@@ -173,7 +173,7 @@ export default function EnhancedDashboard({ className = "" }: EnhancedDashboardP
     switch (sentiment) {
       case 'positive': return { color: 'text-green-600', bg: 'bg-green-100', label: 'Positive' }
       case 'negative': return { color: 'text-red-600', bg: 'bg-red-100', label: 'Negative' }
-      default: return { color: 'text-gray-600', bg: 'bg-gray-100', label: 'Neutral' }
+      default: return { color: 'text-gray-300', bg: 'bg-dark-card', label: 'Neutral' }
     }
   }
 
@@ -335,7 +335,7 @@ export default function EnhancedDashboard({ className = "" }: EnhancedDashboardP
                 <ScrollArea className="h-64">
                   <div className="space-y-3">
                     {stats?.recentActivity.map((activity) => (
-                      <div key={activity.id} className="flex items-center gap-3 p-2 rounded-lg hover:bg-gray-50">
+                      <div key={activity.id} className="flex items-center gap-3 p-2 rounded-sm hover:bg-gray-50">
                         {getActivityIcon(activity.type)}
                         <div className="flex-1 min-w-0">
                           <div className="text-sm font-medium truncate">{activity.fileName}</div>
@@ -367,7 +367,7 @@ export default function EnhancedDashboard({ className = "" }: EnhancedDashboardP
                 <ScrollArea className="h-64">
                   <div className="space-y-3">
                     {stats?.popularFiles.map((file, index) => (
-                      <div key={file.id} className="flex items-center gap-3 p-2 rounded-lg hover:bg-gray-50">
+                      <div key={file.id} className="flex items-center gap-3 p-2 rounded-sm hover:bg-gray-50">
                         <div className="flex items-center justify-center w-6 h-6 bg-blue-100 rounded text-xs font-medium text-blue-600">
                           {index + 1}
                         </div>
@@ -409,7 +409,7 @@ export default function EnhancedDashboard({ className = "" }: EnhancedDashboardP
             <CardContent>
               <div className="grid gap-4 md:grid-cols-3">
                 {stats?.topCategories.map((category, index) => (
-                  <div key={category.name} className="p-4 border rounded-lg">
+                  <div key={category.name} className="p-4 border rounded-sm">
                     <div className="flex items-center justify-between mb-2">
                       <h3 className="font-medium">{category.name}</h3>
                       <Badge variant="outline">{category.count} files</Badge>
@@ -492,7 +492,7 @@ export default function EnhancedDashboard({ className = "" }: EnhancedDashboardP
               <CardContent>
                 <div className="space-y-3">
                   {storage.largeSuggestions.map((suggestion, _index) => (
-                                          <div key={_index} className="flex items-center justify-between p-3 bg-yellow-50 border border-yellow-200 rounded-lg">
+                                          <div key={_index} className="flex items-center justify-between p-3 bg-neon-orange/10 border-2 border-neon-orange/50 rounded-sm">
                       <div>
                         <div className="font-medium">{suggestion.fileName}</div>
                         <div className="text-sm text-gray-600">{suggestion.suggestion}</div>
@@ -571,7 +571,7 @@ export default function EnhancedDashboard({ className = "" }: EnhancedDashboardP
                 <CardContent>
                   <div className="grid gap-3 md:grid-cols-2">
                     {aiInsights.topTopics.map((topic, index) => (
-                      <div key={topic.name} className="flex items-center justify-between p-3 border rounded-lg">
+                      <div key={topic.name} className="flex items-center justify-between p-3 border rounded-sm">
                         <div className="flex items-center gap-3">
                           <div className="flex items-center justify-center w-8 h-8 bg-purple-100 rounded-full text-sm font-medium text-purple-600">
                             {index + 1}
@@ -595,15 +595,15 @@ export default function EnhancedDashboard({ className = "" }: EnhancedDashboardP
                 </CardHeader>
                 <CardContent>
                   <div className="grid gap-4 md:grid-cols-3">
-                    <div className="p-4 border rounded-lg">
+                    <div className="p-4 border rounded-sm">
                       <div className="text-2xl font-bold text-green-600">{aiInsights.totalAnalyzed}</div>
                       <div className="text-sm text-gray-600">Analyzed</div>
                     </div>
-                    <div className="p-4 border rounded-lg">
+                    <div className="p-4 border rounded-sm">
                       <div className="text-2xl font-bold text-blue-600">{aiInsights.categorized}</div>
                       <div className="text-sm text-gray-600">Categorized</div>
                     </div>
-                    <div className="p-4 border rounded-lg">
+                    <div className="p-4 border rounded-sm">
                       <div className="text-2xl font-bold text-yellow-600">{aiInsights.pendingAnalysis}</div>
                       <div className="text-sm text-gray-600">Pending Analysis</div>
                     </div>
@@ -676,7 +676,7 @@ export default function EnhancedDashboard({ className = "" }: EnhancedDashboardP
                     <ScrollArea className="h-64">
                       <div className="space-y-3">
                         {collaboration.recentCollaborators.map((collaborator, index) => (
-                          <div key={index} className="flex items-center gap-3 p-2 rounded-lg hover:bg-gray-50">
+                          <div key={index} className="flex items-center gap-3 p-2 rounded-sm hover:bg-gray-50">
                             <Avatar className="w-8 h-8">
                               <AvatarImage src={collaborator.avatar} />
                               <AvatarFallback>
@@ -708,7 +708,7 @@ export default function EnhancedDashboard({ className = "" }: EnhancedDashboardP
                     <ScrollArea className="h-64">
                       <div className="space-y-3">
                         {collaboration.shareActivity.map((activity, index) => (
-                          <div key={index} className="flex items-center justify-between p-2 rounded-lg hover:bg-gray-50">
+                          <div key={index} className="flex items-center justify-between p-2 rounded-sm hover:bg-gray-50">
                             <div className="flex-1 min-w-0">
                               <div className="text-sm font-medium truncate">{activity.fileName}</div>
                               <div className="text-xs text-gray-500">

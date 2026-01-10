@@ -160,7 +160,7 @@ export default function PredictiveInsightsDashboard({ className = "" }: Predicti
       case 'medium': return 'bg-yellow-100 text-yellow-800 border-yellow-200'
       case 'high': return 'bg-orange-100 text-orange-800 border-orange-200'
       case 'critical': return 'bg-red-100 text-red-800 border-red-200'
-      default: return 'bg-gray-100 text-gray-800 border-gray-200'
+      default: return 'bg-dark-card text-gray-300 border-gray-700'
     }
   }
 
@@ -187,7 +187,7 @@ export default function PredictiveInsightsDashboard({ className = "" }: Predicti
       <div className={cn("space-y-6", className)}>
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="w-8 h-8 bg-gradient-to-br from-purple-500 to-pink-500 rounded-lg flex items-center justify-center">
+            <div className="w-8 h-8 bg-gradient-to-br from-purple-500 to-pink-500 rounded-sm flex items-center justify-center">
               <Brain className="w-4 h-4 text-white" />
             </div>
             <h2 className="text-2xl font-bold">Predictive Insights</h2>
@@ -224,7 +224,7 @@ export default function PredictiveInsightsDashboard({ className = "" }: Predicti
       {/* Header */}
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-3">
-          <div className="w-8 h-8 bg-gradient-to-br from-purple-500 to-pink-500 rounded-lg flex items-center justify-center">
+          <div className="w-8 h-8 bg-gradient-to-br from-purple-500 to-pink-500 rounded-sm flex items-center justify-center">
             <Brain className="w-4 h-4 text-white" />
           </div>
           <div>
@@ -353,7 +353,7 @@ export default function PredictiveInsightsDashboard({ className = "" }: Predicti
               <CardHeader className="pb-3">
                 <div className="flex items-start justify-between">
                   <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 bg-gradient-to-br from-purple-500 to-pink-500 rounded-lg flex items-center justify-center">
+                    <div className="w-10 h-10 bg-gradient-to-br from-purple-500 to-pink-500 rounded-sm flex items-center justify-center">
                       {getInsightIcon(insight.type)}
                     </div>
                     <div>
@@ -488,7 +488,7 @@ export default function PredictiveInsightsDashboard({ className = "" }: Predicti
           <CardContent>
             <div className="space-y-3">
               {anomalies.map((anomaly) => (
-                <div key={anomaly.id} className="flex items-start gap-3 p-3 bg-white rounded-lg border">
+                <div key={anomaly.id} className="flex items-start gap-3 p-3 bg-dark-card rounded-sm border">
                   <div className={cn(
                     "w-8 h-8 rounded-full flex items-center justify-center",
                     anomaly.severity === 'critical' ? "bg-red-100 text-red-600" :
@@ -499,7 +499,7 @@ export default function PredictiveInsightsDashboard({ className = "" }: Predicti
                     <AlertTriangle className="w-4 h-4" />
                   </div>
                   <div className="flex-1">
-                    <h4 className="font-medium text-gray-900">{anomaly.description}</h4>
+                    <h4 className="font-medium text-white">{anomaly.description}</h4>
                     <p className="text-sm text-gray-600 mt-1">{anomaly.impact}</p>
                     <div className="flex items-center gap-4 mt-2 text-xs text-gray-500">
                       <span>Expected: {anomaly.expectedValue.toFixed(2)}</span>

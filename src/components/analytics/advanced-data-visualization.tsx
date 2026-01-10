@@ -440,7 +440,7 @@ export function AdvancedDataVisualization({
                           <div className="flex items-center gap-2">
                             {CHART_TYPES.find(t => t.id === viz.config.type)?.icon && (
                               React.createElement(CHART_TYPES.find((t: typeof CHART_TYPES[0]) => t.id === viz.config.type)!.icon, {
-                                className: "h-4 w-4 text-purple-500"
+                                className: "h-4 w-4 text-neon-purple"
                               })
                             )}
                             <span className="font-medium text-sm">{viz.config.title}</span>
@@ -529,10 +529,10 @@ export function AdvancedDataVisualization({
                           ref={canvasRef}
                           width={800}
                           height={400}
-                          className="w-full h-96 border rounded-lg bg-white"
+                          className="w-full h-96 border rounded-lg bg-dark-card"
                         />
                         {isAnimating && (
-                          <div className="absolute inset-0 flex items-center justify-center bg-white/80 rounded-lg">
+                          <div className="absolute inset-0 flex items-center justify-center bg-dark-card/80 rounded-lg">
                             <Loading />
                           </div>
                         )}
@@ -728,19 +728,19 @@ export function AdvancedDataVisualization({
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 0.9 }}
-            className="bg-white rounded-lg p-6 max-w-2xl w-full mx-4"
+            className="bg-dark-card rounded-sm border-2 border-gray-700 p-6 max-w-2xl w-full mx-4 shadow-[0_0_20px_rgba(179,0,255,0.3)]"
           >
-            <h3 className="text-lg font-semibold mb-4">Create New Chart</h3>
+            <h3 className="text-lg font-bold font-orbitron uppercase tracking-wider mb-4 text-white">Create New Chart</h3>
             <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
               {CHART_TYPES.map(type => (
                 <button
                   key={type.id}
                   onClick={() => createVisualization(type.id)}
-                  className="p-4 border rounded-lg hover:border-purple-500 hover:bg-purple-50 transition-colors text-left"
+                  className="p-4 border-2 border-gray-700 rounded-sm hover:border-neon-purple hover:bg-neon-purple/10 transition-colors text-left bg-dark-card"
                 >
-                  <type.icon className="h-6 w-6 text-purple-500 mb-2" />
-                  <div className="font-medium text-sm">{type.name}</div>
-                  <div className="text-xs text-gray-500 mt-1">{type.description}</div>
+                  <type.icon className="h-6 w-6 text-neon-purple mb-2" />
+                  <div className="font-bold font-mono text-sm text-white uppercase tracking-wider">{type.name}</div>
+                  <div className="text-xs text-gray-300 mt-1 font-mono">{type.description}</div>
                 </button>
               ))}
             </div>

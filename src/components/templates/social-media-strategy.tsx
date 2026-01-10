@@ -692,7 +692,7 @@ export default function SocialMediaStrategy({ template, onSave, onExport }: Soci
                     key={platform.name}
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
-                    className={`p-4 border rounded-lg ${platform.enabled ? 'border-purple-200 bg-purple-50' : 'border-gray-200'}`}
+                    className={`p-4 border rounded-sm ${platform.enabled ? 'border-neon-purple/50 bg-neon-purple/10' : 'border-gray-200'}`}
                   >
                     <div className="flex items-center justify-between mb-4">
                       <div className="flex items-center space-x-3">
@@ -788,7 +788,7 @@ export default function SocialMediaStrategy({ template, onSave, onExport }: Soci
               </div>
 
               {/* Platform Stats Summary */}
-              <div className="mt-8 p-6 bg-gradient-to-r from-purple-50 to-pink-50 rounded-lg border-2 border-purple-200">
+              <div className="mt-8 p-6 bg-gradient-to-r from-purple-50 to-pink-50 rounded-sm border-2 border-neon-purple/50">
                 <h4 className="font-bold text-purple-700 mb-4 flex items-center gap-2">
                   <BarChart3 className="w-5 h-5" />
                   Platform Overview
@@ -955,7 +955,7 @@ export default function SocialMediaStrategy({ template, onSave, onExport }: Soci
                       key={post.id}
                       initial={{ opacity: 0, y: 20 }}
                       animate={{ opacity: 1, y: 0 }}
-                      className="p-4 border rounded-lg"
+                      className="p-4 border rounded-sm"
                     >
                       <div className="flex justify-between items-start mb-3">
                         <Input
@@ -1062,7 +1062,7 @@ export default function SocialMediaStrategy({ template, onSave, onExport }: Soci
                         <Badge className={
                           post.status === 'published' ? 'bg-green-100 text-green-700' :
                           post.status === 'scheduled' ? 'bg-blue-100 text-blue-700' :
-                          'bg-gray-100 text-gray-700'
+                          'bg-gray-100 text-gray-300 font-mono'
                         }>
                           {post.status}
                         </Badge>
@@ -1144,7 +1144,7 @@ export default function SocialMediaStrategy({ template, onSave, onExport }: Soci
                       key={set.id}
                       initial={{ opacity: 0, y: 20 }}
                       animate={{ opacity: 1, y: 0 }}
-                      className="p-4 border rounded-lg"
+                      className="p-4 border rounded-sm"
                     >
                       <div className="flex justify-between items-start mb-3">
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 flex-1 mr-4">
@@ -1258,7 +1258,7 @@ export default function SocialMediaStrategy({ template, onSave, onExport }: Soci
                 )}
               </div>
 
-              <div className="bg-gradient-to-r from-blue-50 to-purple-50 p-4 rounded-lg border">
+              <div className="bg-gradient-to-r from-neon-cyan/10 to-neon-purple/10 border-2 border-neon-cyan/50 p-4 rounded-sm border">
                 <h4 className="font-semibold mb-2 flex items-center gap-2">
                   <Lightbulb className="w-4 h-4" />
                   Hashtag Best Practices
@@ -1329,7 +1329,7 @@ export default function SocialMediaStrategy({ template, onSave, onExport }: Soci
                         key={goal.id}
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
-                        className="p-4 border rounded-lg"
+                        className="p-4 border rounded-sm"
                       >
                         <div className="flex justify-between items-start mb-3">
                           <Input

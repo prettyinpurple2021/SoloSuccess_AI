@@ -73,10 +73,10 @@ export default function FolderCreationDialog({
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
-            <Folder className="w-5 h-5 text-purple-600" />
-            Create New Folder
+            <Folder className="w-5 h-5 text-neon-purple" />
+            <span className="font-orbitron uppercase tracking-wider">Create New Folder</span>
           </DialogTitle>
-          <DialogDescription>
+          <DialogDescription className="text-gray-300 font-mono">
             {parentFolder 
               ? `Create a new folder inside "${parentFolder}"`
               : 'Create a new folder to organize your files'
@@ -86,7 +86,7 @@ export default function FolderCreationDialog({
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <Label htmlFor="folder-name">Folder Name</Label>
+            <Label htmlFor="folder-name" className="text-neon-cyan font-mono font-bold uppercase tracking-wider">Folder Name</Label>
             <Input
               id="folder-name"
               value={name}
@@ -94,37 +94,38 @@ export default function FolderCreationDialog({
               placeholder="Enter folder name..."
               required
               disabled={loading}
-              className="mt-1"
+              className="mt-1 bg-dark-card border-2 border-gray-700 text-white placeholder:text-gray-500 focus:border-neon-cyan rounded-sm font-mono"
             />
           </div>
 
           <div>
-            <Label htmlFor="folder-description">Description (Optional)</Label>
+            <Label htmlFor="folder-description" className="text-gray-300 font-mono font-bold uppercase tracking-wider">Description (Optional)</Label>
             <Textarea
               id="folder-description"
               value={description}
               onChange={(e) => setDescription(e.target.value)}
               placeholder="Describe what this folder contains..."
               disabled={loading}
-              className="mt-1"
+              className="mt-1 bg-dark-card border-2 border-gray-700 text-white placeholder:text-gray-500 focus:border-neon-cyan rounded-sm font-mono"
               rows={3}
             />
           </div>
 
           {availableFolders.length > 0 && (
             <div>
-              <Label htmlFor="parent-folder">Parent Folder (Optional)</Label>
+              <Label htmlFor="parent-folder" className="text-gray-300 font-mono font-bold uppercase tracking-wider">Parent Folder (Optional)</Label>
               <Select value={selectedParentId} onValueChange={setSelectedParentId} disabled={loading}>
-                <SelectTrigger className="mt-1">
+                <SelectTrigger className="mt-1 bg-dark-card border-2 border-gray-700 text-white rounded-sm font-mono">
                   <SelectValue placeholder="Select parent folder..." />
                 </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="__root__">Root Level</SelectItem>
+                <SelectContent className="bg-dark-card border-2 border-gray-700">
+                  <SelectItem value="__root__" className="text-gray-300 font-mono hover:bg-dark-hover">Root Level</SelectItem>
                   {availableFolders.map((folder) => (
-                  <SelectItem key={folder.id} value={folder.id}>
+                  <SelectItem key={folder.id} value={folder.id} className="text-gray-300 font-mono hover:bg-dark-hover">
                     <div className="flex items-center gap-2">
                       <div 
-                        className="w-3 h-3 rounded-full border border-gray-200"
+                        className="w-3 h-3 rounded-full border-2 border-gray-700"
+                        style={{ backgroundColor: folder.color }}
                         aria-hidden="true"
                       />
                       {folder.name}
@@ -137,8 +138,8 @@ export default function FolderCreationDialog({
           )}
 
           <div>
-            <Label className="flex items-center gap-2">
-              <Palette className="w-4 h-4" />
+            <Label className="flex items-center gap-2 text-gray-300 font-mono font-bold uppercase tracking-wider">
+              <Palette className="w-4 h-4 text-neon-purple" />
               Folder Color
             </Label>
             <div className="grid grid-cols-4 gap-2 mt-2">
@@ -150,8 +151,8 @@ export default function FolderCreationDialog({
                   disabled={loading}
                   className={`w-8 h-8 rounded-full border-2 transition-all ${
                     color === colorOption.value 
-                      ? 'border-gray-900 scale-110' 
-                      : 'border-gray-300 hover:border-gray-400'
+                      ? 'border-white scale-110 shadow-[0_0_10px_rgba(255,255,255,0.5)]' 
+                      : 'border-gray-700 hover:border-gray-600'
                   }`}
                   style={{ backgroundColor: colorOption.value }}
                   title={colorOption.name}
@@ -166,13 +167,15 @@ export default function FolderCreationDialog({
               variant="outline"
               onClick={handleClose}
               disabled={loading}
+              className="border-2 border-gray-700 text-gray-300 hover:border-neon-cyan hover:text-neon-cyan font-mono font-bold uppercase tracking-wider rounded-sm"
             >
               Cancel
             </Button>
             <Button
               type="submit"
               disabled={!name.trim() || loading}
-              className="bg-purple-600 hover:bg-purple-700"
+              variant="purple"
+              className="font-mono font-bold uppercase tracking-wider rounded-sm"
             >
               {loading ? 'Creating...' : 'Create Folder'}
             </Button>
