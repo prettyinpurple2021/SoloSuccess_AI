@@ -34,3 +34,7 @@ Both together: `npm run dev:all` (uses `concurrently`).
 - Next.js dev uses `--webpack` flag (not Turbopack). Type-check for the web app can take ~50 seconds.
 - Login/register requires a real Neon PostgreSQL `DATABASE_URL` to authenticate. Without it, the login form shows "Invalid credentials" (expected).
 - The Express server starts in "API-only mode" without the frontend dist, which is normal for dev.
+- Auth uses NextAuth v5 (beta) with a Credentials provider. The login form uses a server action (`authenticateAction`) that calls NextAuth `signIn('credentials', ...)`. Registration is a separate Next.js API route at `/api/register`. After successful registration, you must log in separately (or use the Express `/auth/signup` endpoint which returns a JWT token directly).
+- The registration page UI auto-redirects to the login page on success; the login page then redirects to `/dashboard` on successful auth.
+- Password minimum is **8 characters** in the NextAuth credentials schema (the Express auth routes require only 6). Use 8+ to be safe.
+- Many dashboard features (AI Squad, Competitor Intel, etc.) are gated behind subscription tiers. Free-tier users see upgrade prompts on those pages.
