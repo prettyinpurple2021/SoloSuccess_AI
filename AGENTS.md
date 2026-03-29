@@ -32,9 +32,9 @@ Both together: `npm run dev:all` (uses `concurrently`).
 - `package-lock.json` is used (npm, not pnpm/yarn). Always use `npm install`.
 - The server has its **own** `node_modules` and `package-lock.json` inside `server/`. Run `npm install` in both root and `server/`.
 - Next.js dev uses `--webpack` flag (not Turbopack). Type-check for the web app can take ~50 seconds.
-- Login/register requires a real Neon PostgreSQL `DATABASE_URL` to authenticate. Without it, the login form shows "Invalid credentials" (expected).
+- Login/register requires a PostgreSQL `DATABASE_URL` (Neon recommended) to authenticate. Without it, the login form shows "Invalid credentials" (expected).
 - The Express server starts in "API-only mode" without the frontend dist, which is normal for dev.
-- Auth uses NextAuth v5 (beta) with a Credentials provider. The login form uses a server action (`authenticateAction`) that calls NextAuth `signIn('credentials', ...)`. Registration is a separate Next.js API route at `/api/register`. After successful registration, you must log in separately (or use the Express `/auth/signup` endpoint which returns a JWT token directly).
-- The registration page UI auto-redirects to the login page on success; the login page then redirects to `/dashboard` on successful auth.
+- Auth uses NextAuth v5 (beta) with a Credentials provider. The login form uses a server action (`authenticateAction`) that calls NextAuth `signIn('credentials', ...)`. Registration is implemented as a Next.js API route at `/api/register`, which **only** creates the user if you call it directly (e.g. from tests or external tools); in that case you still need to authenticate separately (or use the Express `/api/auth/signup` endpoint, which returns a JWT token directly).
+- The `/register` page uses a server action that ultimately calls `/api/register` and, on success, immediately signs the user in via `signIn('credentials', ...)` and navigates to `/dashboard` in the happy path (no separate manual login screen); the "register-only" behavior without auto-login applies only when hitting `/api/register` directly.
 - Password minimum is **8 characters** in the NextAuth credentials schema (the Express auth routes require only 6). Use 8+ to be safe.
 - Many dashboard features (AI Squad, Competitor Intel, etc.) are gated behind subscription tiers. Free-tier users see upgrade prompts on those pages.
